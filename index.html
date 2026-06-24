@@ -11,8 +11,7 @@
   .logo-wrap { display: flex; align-items: center; gap: 12px; }
   .logo-img { height: 28px; width: auto; display: block; }
   .logo-divider { width: 1px; height: 22px; background: #e0e4f0; }
-  .logo-sub-text { font-size: 13px; font-weight: 600; color: #8890b5; letter-spacing: 0.2px; }
-  .header-sub { font-size: 11px; color: #9ba3c5; margin-top: 2px; }
+  .logo-sub-text { font-size: 13px; font-weight: 600; color: #8890b5; }
   .header-right { margin-left: auto; }
   .gh-link { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; background: #f0f2f9; border: 1px solid #e0e4f0; font-size: 12px; font-weight: 600; color: #6b7299; text-decoration: none; transition: all 0.2s; }
   .gh-link:hover { background: #e8eaf5; border-color: #c4b5fd; color: #5c54f0; }
@@ -33,14 +32,20 @@
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 0 40px 60px; max-width: 1100px; margin: 0 auto; }
   .card { background: #fff; border: 1px solid #e0e4f0; border-radius: 14px; overflow: hidden; transition: all 0.25s; text-decoration: none; color: inherit; display: flex; flex-direction: column; box-shadow: 0 1px 4px rgba(30,34,64,0.05); }
   .card:hover { border-color: #a78bfa; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(92,84,240,0.12); }
-  .card-preview { height: 160px; background: linear-gradient(135deg, #f0eeff 0%, #e8eaf8 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-bottom: 1px solid #e8eaf0; }
-  .card-preview-inner { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .card-preview { height: 160px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-bottom: 1px solid #e8eaf0; }
+  .preview-purple { background: linear-gradient(135deg, #f0eeff 0%, #e8eaf8 100%); }
+  .preview-green  { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
+  .preview-amber  { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); }
+  .preview-blue   { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); }
+  .card-preview-inner { display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 1; }
   .preview-icon { font-size: 40px; }
   .preview-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, #5c54f022 1px, transparent 1px); background-size: 18px 18px; }
   .preview-badge { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
-  .tag-oms-pill { background: #f0eeff; color: #6d28d9; border: 1px solid #c4b5fd; }
-  .tag-ops-pill { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
-  .tag-store-pill { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+  .tag-oms-pill    { background: #f0eeff; color: #6d28d9; border: 1px solid #c4b5fd; }
+  .tag-ops-pill    { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .tag-store-pill  { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+  .tag-rider-pill  { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+  .tag-client-pill { background: #fdf4ff; color: #7e22ce; border: 1px solid #e9d5ff; }
   .card-body { padding: 18px 20px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
   .card-title { font-size: 15px; font-weight: 700; color: #1e2240; }
   .card-desc { font-size: 12px; color: #8890b5; line-height: 1.6; flex: 1; }
@@ -80,7 +85,7 @@
 </div>
 
 <div class="stats-row">
-  <div class="stat-chip">&#128193; Total: <strong id="totalCount">1</strong></div>
+  <div class="stat-chip">&#128193; Total: <strong id="totalCount">2</strong></div>
   <div class="stat-chip">&#128336; Last updated: <strong>Jun 2026</strong></div>
   <div class="stat-chip">&#128279; <strong><a href="https://lingrajnm.github.io/wireframes/" style="color:inherit;text-decoration:none">lingrajnm.github.io/wireframes</a></strong></div>
 </div>
@@ -91,12 +96,13 @@
   <button class="filter-btn" onclick="filterTag('oms',this)">OMS</button>
   <button class="filter-btn" onclick="filterTag('ops',this)">Ops</button>
   <button class="filter-btn" onclick="filterTag('store',this)">Store</button>
-  <button class="filter-btn" onclick="filterTag('rider',this)">Rider</button>
+  <button class="filter-btn" onclick="filterTag('client',this)">Client</button>
 </div>
 
 <div class="grid" id="cardGrid">
+
   <a class="card" href="zopping-order-flow.html" data-title="Zopping Order Flow" data-tags="oms store ops">
-    <div class="card-preview">
+    <div class="card-preview preview-purple">
       <div class="preview-dots"></div>
       <div class="card-preview-inner">
         <div class="preview-icon">&#128717;</div>
@@ -105,7 +111,7 @@
     </div>
     <div class="card-body">
       <div class="card-title">Zopping Order Flow</div>
-      <div class="card-desc">Full order lifecycle — placement, geo-store match, picking, item transfer, queue priority, on-hold, and reschedule. Includes DLF &rarr; Devender Vihar transfer scenario.</div>
+      <div class="card-desc">Full order lifecycle &mdash; placement, geo-store match, picking, item transfer, queue priority, on-hold, and reschedule. Includes DLF &rarr; Devender Vihar transfer scenario.</div>
     </div>
     <div class="card-footer">
       <span class="tag tag-oms-pill">OMS</span>
@@ -115,11 +121,33 @@
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
+
+  <a class="card" href="urban_platter_onboarding.html" data-title="Urban Platter Integration Onboarding" data-tags="client ops">
+    <div class="card-preview preview-green">
+      <div class="preview-dots"></div>
+      <div class="card-preview-inner">
+        <div class="preview-icon">&#127813;</div>
+        <div class="preview-badge tag-ops-pill">Client &middot; Onboarding</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-title">Urban Platter — Integration Onboarding</div>
+      <div class="card-desc">Step-by-step client onboarding flow for Urban Platter integrating with Zopping. Covers setup, configuration, and go-live checklist.</div>
+    </div>
+    <div class="card-footer">
+      <span class="tag tag-client-pill">Client</span>
+      <span class="tag tag-ops-pill">Ops</span>
+      <span class="card-date">Jun 2026</span>
+      <div class="card-arrow">&rarr;</div>
+    </div>
+  </a>
+
   <div class="card-add">
     <div class="add-icon">&#43;</div>
     <div class="add-text">Add Wireframe</div>
     <div class="add-sub">Upload a new .html file to the GitHub repo to add it here</div>
   </div>
+
 </div>
 
 <div class="footer">
