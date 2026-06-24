@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zopping Order Flow Wireframe</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f0f2f9;
+    color: #1e2240;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: #ffffff;
+    border-bottom: 1px solid #e0e4f0;
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 1px 4px rgba(30,34,64,0.06);
+  }
+  .logo { font-size: 20px; font-weight: 700; color: #5c54f0; letter-spacing: -0.5px; }
+  .logo span { color: #1e2240; }
+  .header-sub { font-size: 11px; color: #9ba3c5; margin-top: 2px; }
+  .badge {
+    margin-left: auto;
+    background: #f0eeff;
+    border: 1px solid #c4b5fd;
+    color: #6d28d9;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* ── ORDER TABS ── */
+  .order-tabs {
+    background: #ffffff;
+    border-bottom: 1px solid #e0e4f0;
+    padding: 0 32px;
+  }
+  .tab-wrap {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .order-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 20px 9px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    gap: 1px;
+    position: relative;
+  }
+  .order-tab:hover { background: #f5f6ff; }
+  .order-tab.active { border-bottom-color: #5c54f0; background: #f5f3ff; }
+  .order-tab.disabled { opacity: 0.4; cursor: not-allowed; }
+  .order-tab.disabled:hover { background: transparent; }
+  .tab-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7299;
+    transition: color 0.2s;
+  }
+  .order-tab.active .tab-name { color: #5c54f0; }
+  .order-tab:hover:not(.disabled) .tab-name { color: #3d4470; }
+  .tab-sub {
+    font-size: 9px;
+    color: #aab2cc;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .tab-count {
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    background: #eef0f8;
+    color: #6b7299;
+    border-radius: 10px;
+    padding: 1px 6px;
+    min-width: 20px;
+    text-align: center;
+  }
+  .order-tab.active .tab-count { background: #ede9fe; color: #6d28d9; }
+  .tab-count.na { background: transparent; color: #c0c8dc; }
+  /* Tab context note */
+  .tab-context {
+    padding: 6px 32px;
+    background: #f5f3ff;
+    border-bottom: 1px solid #e0e4f0;
+    font-size: 11px;
+    color: #6d28d9;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s;
+  }
+  .tab-context.warn-ctx { background: #fffbeb; border-bottom-color: #fde68a; color: #92400e; }
+  .tab-context.error-ctx { background: #fff1f2; border-bottom-color: #fca5a5; color: #991b1b; }
+  .tab-context.green-ctx { background: #f0fdf4; border-bottom-color: #bbf7d0; color: #15803d; }
+
+  /* ── TIMELINE ── */
+  .timeline-bar {
+    background: #ffffff;
+    border-bottom: 1px solid #e0e4f0;
+    padding: 12px 32px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .tl-event {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 90px;
+    cursor: pointer;
+    position: relative;
+  }
+  .tl-event:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: -30px;
+    width: 60px;
+    height: 2px;
+    background: #e0e4f0;
+    z-index: 0;
+    transition: background 0.5s;
+  }
+  .tl-event.active:not(:last-child)::after { background: #c4b5fd; }
+  .tl-dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: #eef0f8;
+    border: 2px solid #dde0ef;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    transition: all 0.4s;
+    z-index: 1;
+    color: #6b7299;
+  }
+  .tl-event.active .tl-dot { background: #5c54f0; border-color: #7c74ff; box-shadow: 0 0 10px #5c54f044; color: #fff; }
+  .tl-event.done .tl-dot { background: #16a34a; border-color: #22c55e; color: #fff; }
+  .tl-event.warn .tl-dot { background: #d97706; border-color: #f59e0b; color: #fff; }
+  .tl-event.danger .tl-dot { background: #dc2626; border-color: #ef4444; color: #fff; }
+  .tl-label { font-size: 10px; color: #9ba3c5; margin-top: 4px; text-align: center; white-space: nowrap; }
+  .tl-time { font-size: 9px; color: #c0c8dc; }
+  .tl-event.active .tl-label { color: #5c54f0; }
+  .tl-event.done .tl-label { color: #16a34a; }
+  .tl-event.warn .tl-label { color: #d97706; }
+  .tl-event.danger .tl-label { color: #dc2626; }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    display: grid;
+    grid-template-columns: 280px 1fr 280px;
+    gap: 20px;
+    padding: 20px 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* ── PANEL ── */
+  .panel {
+    background: #ffffff;
+    border: 1px solid #e0e4f0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(30,34,64,0.05);
+  }
+  .panel-header {
+    padding: 11px 16px;
+    background: #f8f9fe;
+    border-bottom: 1px solid #e0e4f0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #5c54f0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel-body { padding: 16px; }
+
+  /* ── ORDER CARD ── */
+  .order-card {
+    background: #f8f9fe;
+    border: 1px solid #e0e4f0;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .order-id { font-size: 13px; font-weight: 700; color: #1e2240; }
+  .order-meta { font-size: 11px; color: #8890b5; margin-top: 4px; line-height: 1.6; }
+  .order-meta span { color: #5c54f0; }
+  .status-pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 8px;
+    transition: all 0.4s;
+  }
+  .pill-placed { background: #f0eeff; color: #6d28d9; border: 1px solid #c4b5fd; }
+  .pill-assigned { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+  .pill-picking { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+  .pill-transfer { background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe; }
+  .pill-onhold { background: #fff1f2; color: #dc2626; border: 1px solid #fca5a5; }
+  .pill-rescheduled { background: #ecfeff; color: #0e7490; border: 1px solid #a5f3fc; }
+  .pill-done { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+
+  /* ── MAP AREA ── */
+  .map-container {
+    position: relative;
+    height: 220px;
+    background: #eef0f8;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #e0e4f0;
+    margin-bottom: 16px;
+  }
+  .map-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(#5c54f010 1px, transparent 1px),
+      linear-gradient(90deg, #5c54f010 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  .map-label {
+    position: absolute;
+    top: 10px; left: 12px;
+    font-size: 10px;
+    color: #aab2cc;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .store-marker {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .store-marker:hover { transform: scale(1.15); }
+  .store-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: #ffffff;
+    border: 2px solid #dde0ef;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    transition: all 0.4s;
+    box-shadow: 0 2px 6px rgba(30,34,64,0.08);
+  }
+  .store-icon.active { border-color: #5c54f0; box-shadow: 0 0 14px #5c54f044; }
+  .store-icon.warn { border-color: #f59e0b; box-shadow: 0 0 14px #f59e0b44; }
+  .store-icon.success { border-color: #22c55e; box-shadow: 0 0 14px #22c55e44; }
+  .store-name { font-size: 9px; color: #8890b5; margin-top: 3px; white-space: nowrap; }
+
+  .customer-marker {
+    position: absolute;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #0ea5e9;
+    border: 2px solid #fff;
+    box-shadow: 0 0 10px #0ea5e988;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 10px #0ea5e988; transform: scale(1); }
+    50% { box-shadow: 0 0 20px #0ea5e9; transform: scale(1.2); }
+  }
+
+  .route-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .route-line {
+    stroke-dasharray: 8 4;
+    stroke-dashoffset: 0;
+    animation: dash 1.5s linear infinite;
+  }
+  @keyframes dash { to { stroke-dashoffset: -24; } }
+
+  /* ── STORE ASSIGNMENT FLOW ── */
+  .assign-flow { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .assign-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #f5f6fc;
+    border-radius: 8px;
+    border: 1px solid #e0e4f0;
+    font-size: 11px;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .assign-step.active { border-color: #c4b5fd; background: #f5f3ff; }
+  .assign-step.strikethrough { opacity: 0.5; }
+  .assign-step.strikethrough .step-label::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    top: 50%;
+    height: 1px;
+    background: #ef4444;
+  }
+  .step-icon { font-size: 16px; flex-shrink: 0; }
+  .step-label { position: relative; }
+  .step-label strong { display: block; color: #1e2240; }
+  .step-label span { color: #8890b5; }
+  .step-badge { margin-left: auto; font-size: 9px; padding: 2px 8px; border-radius: 10px; flex-shrink: 0; }
+  .tag-original { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+  .tag-system { background: #f0eeff; color: #6d28d9; border: 1px solid #c4b5fd; }
+  .tag-selected { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+
+  /* ── STAGE BANNER ── */
+  .stage-banner {
+    border-radius: 12px;
+    padding: 16px 20px;
+    background: #ffffff;
+    border: 1px solid #e0e4f0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(30,34,64,0.05);
+  }
+  .stage-icon { font-size: 30px; }
+  .stage-title { font-size: 17px; font-weight: 700; color: #1e2240; }
+  .stage-desc { font-size: 11px; color: #8890b5; margin-top: 3px; }
+  .stage-time { margin-left: auto; text-align: right; }
+  .stage-time .time { font-size: 20px; font-weight: 700; color: #5c54f0; }
+  .stage-time .slot { font-size: 10px; color: #9ba3c5; }
+
+  /* ── FLOW STEPS ── */
+  .flow-steps { display: flex; flex-direction: column; gap: 0; }
+  .flow-step {
+    display: flex;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid #eef0f8;
+    opacity: 0.3;
+    transition: opacity 0.5s, transform 0.5s;
+    transform: translateX(-10px);
+  }
+  .flow-step.visible { opacity: 1; transform: translateX(0); }
+  .flow-step-left { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .fs-icon {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: #f0f2f9;
+    border: 2px solid #e0e4f0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .fs-line { width: 2px; flex: 1; background: #e0e4f0; min-height: 20px; margin-top: 4px; }
+  .fs-content { flex: 1; }
+  .fs-header { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .fs-title { font-size: 13px; font-weight: 600; color: #1e2240; }
+  .fs-time { font-size: 10px; color: #aab2cc; margin-left: auto; }
+  .fs-body { font-size: 11px; color: #8890b5; line-height: 1.6; }
+  .fs-body strong { color: #3d4470; }
+
+  /* Alert box */
+  .alert-box {
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 11px;
+    margin-top: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+  }
+  .alert-warn { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+  .alert-error { background: #fff1f2; border: 1px solid #fca5a5; color: #991b1b; }
+  .alert-info { background: #f0eeff; border: 1px solid #c4b5fd; color: #5b21b6; }
+  .alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; }
+
+  /* Action buttons */
+  .action-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: #5c54f0; color: #fff; }
+  .btn-primary:hover { background: #4b44e0; box-shadow: 0 4px 12px #5c54f044; }
+  .btn-warn { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+  .btn-warn:hover { background: #fef3c7; }
+  .btn-danger { background: #fff1f2; color: #dc2626; border: 1px solid #fca5a5; }
+  .btn-danger:hover { background: #fee2e2; }
+  .btn-success { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .btn-success:hover { background: #dcfce7; }
+  .btn-ghost { background: transparent; color: #8890b5; border: 1px solid #e0e4f0; }
+  .btn-ghost:hover { color: #6b7299; border-color: #c8cde0; }
+
+  /* ── PICKER QUEUE ── */
+  .queue-list { display: flex; flex-direction: column; gap: 8px; }
+  .queue-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #f5f6fc;
+    border-radius: 8px;
+    border: 1px solid #e0e4f0;
+    font-size: 11px;
+    transition: all 0.4s;
+    cursor: grab;
+  }
+  .queue-item.priority {
+    border-color: #c4b5fd;
+    background: #f5f3ff;
+    animation: priorityPulse 2s ease-in-out infinite;
+  }
+  @keyframes priorityPulse {
+    0%, 100% { border-color: #c4b5fd; }
+    50% { border-color: #7c3aed; box-shadow: 0 0 12px #5c54f022; }
+  }
+  .queue-rank {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #eef0f8;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700;
+    color: #8890b5;
+    flex-shrink: 0;
+  }
+  .queue-item.priority .queue-rank { background: #5c54f0; color: #fff; }
+  .queue-info { flex: 1; }
+  .queue-order { font-weight: 600; color: #1e2240; }
+  .queue-store { color: #9ba3c5; font-size: 10px; }
+  .queue-drag { color: #c0c8dc; font-size: 14px; cursor: grab; }
+  .priority-badge {
+    font-size: 9px; padding: 2px 8px; border-radius: 10px;
+    background: #f0eeff; color: #6d28d9; border: 1px solid #c4b5fd;
+  }
+
+  /* ── RIDER CARD ── */
+  .rider-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f5f6fc;
+    border-radius: 8px;
+    border: 1px solid #e0e4f0;
+    margin-bottom: 10px;
+  }
+  .rider-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: #eef0f8;
+    border: 2px solid #e0e4f0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .rider-name { font-size: 12px; font-weight: 600; color: #1e2240; }
+  .rider-meta { font-size: 10px; color: #8890b5; }
+  .rider-status { margin-left: auto; }
+  .rider-ping {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    display: inline-block;
+    margin-right: 4px;
+    animation: blink 1s infinite;
+  }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* ── NOTIFICATIONS ── */
+  .notif-list { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; }
+  .notif-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #f5f6fc;
+    border-radius: 8px;
+    border-left: 3px solid #e0e4f0;
+    font-size: 11px;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.5s;
+  }
+  .notif-item.visible { opacity: 1; transform: translateX(0); }
+  .notif-item.info { border-color: #5c54f0; }
+  .notif-item.warn { border-color: #f59e0b; }
+  .notif-item.error { border-color: #ef4444; }
+  .notif-item.success { border-color: #22c55e; }
+  .notif-icon { font-size: 14px; flex-shrink: 0; }
+  .notif-text { color: #8890b5; line-height: 1.5; }
+  .notif-text strong { color: #3d4470; }
+  .notif-time { margin-left: auto; color: #c0c8dc; font-size: 10px; flex-shrink: 0; }
+
+  /* ── SCHEDULE SLOT ── */
+  .slot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .slot-item {
+    padding: 10px 12px;
+    background: #f5f6fc;
+    border-radius: 8px;
+    border: 1px solid #e0e4f0;
+    font-size: 11px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #8890b5;
+  }
+  .slot-item:hover { border-color: #c4b5fd; color: #5c54f0; }
+  .slot-item.original { border-color: #fca5a5; color: #dc2626; text-decoration: line-through; }
+  .slot-item.selected { background: #f0eeff; border-color: #7c3aed; color: #5c54f0; }
+  .slot-time { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .slot-status { font-size: 9px; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SCROLL ── */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #dde0ef; border-radius: 4px; }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: #eef0f8; margin: 12px 0; }
+
+  /* ── LABEL ── */
+  .label { font-size: 10px; color: #9ba3c5; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+
+  /* ── ONHOLD OVERLAY ── */
+  .onhold-overlay {
+    position: absolute; inset: 0;
+    background: #fff1f222;
+    border: 2px solid #fca5a5;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .onhold-overlay.show { opacity: 1; pointer-events: all; }
+  .onhold-label {
+    font-size: 24px;
+    font-weight: 800;
+    color: #dc2626;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    animation: holdPulse 1.5s ease-in-out infinite;
+  }
+  @keyframes holdPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  /* Step container */
+  .step-view { display: none; animation: slideIn 0.4s ease; }
+  .step-view.active { display: block; }
+
+  /* Highlight chips */
+  .highlight-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+  .hl-chip {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    background: #f5f6fc;
+    border: 1px solid #e0e4f0;
+    color: #8890b5;
+  }
+  .hl-chip strong { color: #1e2240; }
+
+  /* ── FOOTER NAV ── */
+  .footer-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #ffffff;
+    border-top: 1px solid #e0e4f0;
+    padding: 10px 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 50;
+    box-shadow: 0 -2px 8px rgba(30,34,64,0.06);
+  }
+  .nav-label { font-size: 11px; color: #9ba3c5; }
+  .nav-steps { display: flex; gap: 6px; flex: 1; overflow-x: auto; }
+  .nav-step {
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid #e0e4f0;
+    background: transparent;
+    color: #9ba3c5;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-step:hover { border-color: #c8cde0; color: #6b7299; }
+  .nav-step.active { background: #5c54f0; border-color: #5c54f0; color: #fff; }
+  .nav-step.done { background: #f0fdf4; border-color: #bbf7d0; color: #15803d; }
+  .nav-arrows { display: flex; gap: 6px; }
+  .nav-arr {
+    width: 30px; height: 30px;
+    border-radius: 6px;
+    background: #f5f6fc;
+    border: 1px solid #e0e4f0;
+    color: #8890b5;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .nav-arr:hover { background: #5c54f0; border-color: #5c54f0; color: #fff; }
+  .nav-arr:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  body { padding-bottom: 62px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="logo">Zopping <span>OMS</span></div>
+    <div class="header-sub">Order Management System · Wireframe</div>
+  </div>
+  <div class="badge">🔴 Live Demo</div>
+</div>
+
+<!-- ORDER TABS -->
+<div class="order-tabs">
+  <div class="tab-wrap">
+    <button class="order-tab" id="otab-all" onclick="setActiveTab('all')">
+      <span class="tab-count" id="tc-all">47</span>
+      <span class="tab-name">All Orders</span>
+      <span class="tab-sub">Zopping · All orders</span>
+    </button>
+    <button class="order-tab" id="otab-store" onclick="setActiveTab('store')">
+      <span class="tab-count" id="tc-store">18</span>
+      <span class="tab-name">Store / WH Orders</span>
+      <span class="tab-sub">Storewise pending</span>
+    </button>
+    <button class="order-tab" id="otab-topack" onclick="setActiveTab('topack')">
+      <span class="tab-count" id="tc-topack">9</span>
+      <span class="tab-name">To Pack</span>
+      <span class="tab-sub">Picking queue</span>
+    </button>
+    <button class="order-tab" id="otab-queue" onclick="setActiveTab('queue')">
+      <span class="tab-count" id="tc-queue">5</span>
+      <span class="tab-name">Queue</span>
+      <span class="tab-sub">Trip planner</span>
+    </button>
+    <button class="order-tab disabled" id="otab-unassigned" title="Zopping always assigns a store — tab not applicable">
+      <span class="tab-count na">—</span>
+      <span class="tab-name">Unassigned</span>
+      <span class="tab-sub">N/A for Zopping</span>
+    </button>
+    <button class="order-tab" id="otab-dispatch" onclick="setActiveTab('dispatch')">
+      <span class="tab-count" id="tc-dispatch">12</span>
+      <span class="tab-name">Dispatch</span>
+      <span class="tab-sub">Dispatched status</span>
+    </button>
+  </div>
+</div>
+
+<!-- TAB CONTEXT NOTE -->
+<div class="tab-context" id="tabCtx">
+  ● Current view: <strong id="tabCtxText">All Orders — order #8821 just placed, awaiting store assignment</strong>
+</div>
+
+<!-- TIMELINE -->
+<div class="timeline-bar" id="globalTimeline">
+  <div class="tl-event" id="tl0" onclick="goStep(0)">
+    <div class="tl-dot">✓</div>
+    <div class="tl-label">Order Placed</div>
+    <div class="tl-time">11:00 AM</div>
+  </div>
+  <div class="tl-event" id="tl1" onclick="goStep(1)">
+    <div class="tl-dot"></div>
+    <div class="tl-label">Store Assigned</div>
+    <div class="tl-time">11:02 AM</div>
+  </div>
+  <div class="tl-event" id="tl2" onclick="goStep(2)">
+    <div class="tl-dot"></div>
+    <div class="tl-label">Picking Started</div>
+    <div class="tl-time">11:10 AM</div>
+  </div>
+  <div class="tl-event" id="tl3" onclick="goStep(3)">
+    <div class="tl-dot"></div>
+    <div class="tl-label">Item Missing</div>
+    <div class="tl-time">11:30 AM</div>
+  </div>
+  <div class="tl-event" id="tl4" onclick="goStep(4)">
+    <div class="tl-dot"></div>
+    <div class="tl-label">Transferred</div>
+    <div class="tl-time">11:45 AM</div>
+  </div>
+  <div class="tl-event" id="tl5" onclick="goStep(5)">
+    <div class="tl-dot"></div>
+    <div class="tl-label">Queue Priority</div>
+    <div class="tl-time">11:50 AM</div>
+  </div>
+  <div class="tl-event" id="tl6" onclick="goStep(6)">
+    <div class="tl-dot"></div>
+    <div class="tl-label">Damaged → Hold</div>
+    <div class="tl-time">12:30 PM</div>
+  </div>
+  <div class="tl-event" id="tl7" onclick="goStep(7)">
+    <div class="tl-dot"></div>
+    <div class="tl-label">Rescheduled</div>
+    <div class="tl-time">2:00 PM</div>
+  </div>
+</div>
+
+<!-- STEP VIEWS -->
+<div class="main" id="mainGrid">
+
+  <!-- ===== STEP 0: ORDER PLACED ===== -->
+  <div class="step-view active" id="step0">
+    <div class="panel">
+      <div class="panel-header">🛒 Order Details</div>
+      <div class="panel-body">
+        <div class="order-card">
+          <div class="order-id">#ORD-20240610-8821</div>
+          <div class="order-meta">
+            Customer: <span>Rahul Sharma</span><br>
+            Address: <span>City Centre, Huda Sec 55</span><br>
+            Slot: <span>11:00 AM – 12:30 PM</span><br>
+            Items: <span>14 items · ₹1,240</span>
+          </div>
+          <div class="status-pill pill-placed">● Placed</div>
+        </div>
+        <div class="label">Delivery Location</div>
+        <div class="map-container">
+          <div class="map-grid"></div>
+          <div class="map-label">Sector 55, Gurugram</div>
+          <div class="customer-marker" style="top:52%;left:48%"></div>
+          <div class="store-marker" style="top:30%;left:20%">
+            <div class="store-icon">🏪</div>
+            <div class="store-name">Ananda</div>
+          </div>
+          <div class="store-marker" style="top:62%;left:65%">
+            <div class="store-icon">🏬</div>
+            <div class="store-name">DLF</div>
+          </div>
+          <div class="store-marker" style="top:25%;left:72%">
+            <div class="store-icon">🏪</div>
+            <div class="store-name">Devender Vihar</div>
+          </div>
+          <svg class="route-svg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+        </div>
+        <div class="alert-box alert-info">
+          📍 Customer placed order · System locating nearest store via lat/long
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step0-center">
+    <div class="stage-banner">
+      <div class="stage-icon">🛍️</div>
+      <div>
+        <div class="stage-title">Order Placed</div>
+        <div class="stage-desc">Customer confirmed checkout at City Centre, Huda Sec 55</div>
+      </div>
+      <div class="stage-time">
+        <div class="time">11:00 AM</div>
+        <div class="slot">90-min slot</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">📋 Order Flow</div>
+      <div class="panel-body">
+        <div class="flow-steps">
+          <div class="flow-step visible" id="fs0">
+            <div class="flow-step-left">
+              <div class="fs-icon">🛍️</div>
+              <div class="fs-line"></div>
+            </div>
+            <div class="fs-content">
+              <div class="fs-header">
+                <div class="fs-title">Order Placed by Customer</div>
+                <div class="fs-time">11:00 AM</div>
+              </div>
+              <div class="fs-body">
+                Rahul Sharma placed an order from <strong>City Centre, Huda Sec 55</strong>.<br>
+                14 items · ₹1,240 · 90-minute delivery slot.
+              </div>
+            </div>
+          </div>
+          <div class="flow-step" id="fs1">
+            <div class="flow-step-left">
+              <div class="fs-icon">📍</div>
+              <div class="fs-line"></div>
+            </div>
+            <div class="fs-content">
+              <div class="fs-header">
+                <div class="fs-title">Zopping Geo-matches Store</div>
+                <div class="fs-time">11:01 AM</div>
+              </div>
+              <div class="fs-body">
+                System runs lat/long proximity check.<br>
+                Customer intent: <strong>Ananda Store</strong> (original preference)<br>
+                System result: <strong>DLF Store</strong> is nearest ✓
+              </div>
+              <div class="alert-box alert-info" style="margin-top:8px">
+                🔄 System overrides original store with nearest match based on coordinates
+              </div>
+            </div>
+          </div>
+          <div class="flow-step" id="fs2">
+            <div class="flow-step-left">
+              <div class="fs-icon">✅</div>
+            </div>
+            <div class="fs-content">
+              <div class="fs-header">
+                <div class="fs-title">Order Assigned to DLF Store</div>
+                <div class="fs-time">11:02 AM</div>
+              </div>
+              <div class="fs-body">
+                Order routed to <strong>DLF Store</strong>. Picker app notified. Store confirmed capacity for 90-min slot.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="btn btn-primary" onclick="goStep(1)">Next: Store Assignment →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step0-right">
+    <div class="panel">
+      <div class="panel-header">🔔 Notifications</div>
+      <div class="panel-body">
+        <div class="notif-list">
+          <div class="notif-item info visible">
+            <div class="notif-icon">🛒</div>
+            <div class="notif-text"><strong>Order #8821 placed</strong><br>14 items · ₹1,240</div>
+            <div class="notif-time">11:00</div>
+          </div>
+          <div class="notif-item info visible" style="transition-delay:0.2s">
+            <div class="notif-icon">📍</div>
+            <div class="notif-text">Geo-matching nearest store for <strong>Sec 55</strong></div>
+            <div class="notif-time">11:01</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 1: STORE ASSIGNMENT ===== -->
+  <div class="step-view" id="step1">
+    <div class="panel">
+      <div class="panel-header">🏪 Store Assignment</div>
+      <div class="panel-body">
+        <div class="label">Store Selection Logic</div>
+        <div class="assign-flow">
+          <div class="assign-step strikethrough">
+            <div class="step-icon">🏪</div>
+            <div class="step-label">
+              <strong>Ananda Store</strong>
+              <span>Customer's original store</span>
+            </div>
+            <div class="step-badge tag-original">Original</div>
+          </div>
+          <div style="text-align:center;font-size:18px;color:#c0c8dc">↓</div>
+          <div class="assign-step active">
+            <div class="step-icon">🏬</div>
+            <div class="step-label">
+              <strong>DLF Store</strong>
+              <span>1.2 km · Nearest via lat/long</span>
+            </div>
+            <div class="step-badge tag-selected">Assigned ✓</div>
+          </div>
+          <div class="assign-step" style="opacity:0.4">
+            <div class="step-icon">🏪</div>
+            <div class="step-label">
+              <strong>Devender Vihar</strong>
+              <span>3.4 km · Fallback</span>
+            </div>
+            <div class="step-badge tag-system">Backup</div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="label">Picker App</div>
+        <div class="rider-card">
+          <div class="rider-avatar">👨‍🏭</div>
+          <div>
+            <div class="rider-name">Suresh Kumar</div>
+            <div class="rider-meta">DLF Store Picker · App v2.4</div>
+          </div>
+          <div class="rider-status">
+            <span class="rider-ping"></span>
+            <span style="font-size:10px;color:#15803d">Active</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step1-center">
+    <div class="stage-banner">
+      <div class="stage-icon">🏬</div>
+      <div>
+        <div class="stage-title">Store Assigned — DLF</div>
+        <div class="stage-desc">Nearest store selected via lat/long · Picker notified</div>
+      </div>
+      <div class="stage-time">
+        <div class="time">11:02 AM</div>
+        <div class="slot">90-min slot active</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">🗺️ Proximity Analysis</div>
+      <div class="panel-body">
+        <div class="map-container">
+          <div class="map-grid"></div>
+          <div class="map-label">Geo-matching Result</div>
+          <div class="customer-marker" style="top:52%;left:48%"></div>
+          <div class="store-marker" style="top:30%;left:15%">
+            <div class="store-icon warn">🏪</div>
+            <div class="store-name" style="color:#dc2626;text-decoration:line-through">Ananda</div>
+          </div>
+          <div class="store-marker" style="top:55%;left:63%">
+            <div class="store-icon active">🏬</div>
+            <div class="store-name" style="color:#15803d;font-weight:700">DLF ✓</div>
+          </div>
+          <div class="store-marker" style="top:22%;left:72%">
+            <div class="store-icon">🏪</div>
+            <div class="store-name">Devender Vihar</div>
+          </div>
+          <svg class="route-svg" viewBox="0 0 400 240" preserveAspectRatio="none">
+            <line x1="192" y1="124" x2="252" y2="132" stroke="#22c55e" stroke-width="2" class="route-line" stroke-dasharray="6 3"/>
+            <text x="215" y="115" fill="#15803d" font-size="9" text-anchor="middle">1.2 km</text>
+            <line x1="192" y1="124" x2="60" y2="72" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.5"/>
+            <text x="115" y="95" fill="#dc2626" font-size="9" text-anchor="middle" opacity="0.7">4.8 km ✗</text>
+          </svg>
+        </div>
+        <div class="highlight-row">
+          <div class="hl-chip">📍 Customer: <strong>Sec 55</strong></div>
+          <div class="hl-chip">🏬 DLF: <strong>1.2 km</strong></div>
+          <div class="hl-chip">🏪 Ananda: <strong>4.8 km</strong></div>
+        </div>
+        <div class="action-row">
+          <button class="btn btn-primary" onclick="goStep(2)">Next: Picking Started →</button>
+          <button class="btn btn-ghost" onclick="goStep(0)">← Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step1-right">
+    <div class="panel">
+      <div class="panel-header">🔔 Notifications</div>
+      <div class="panel-body">
+        <div class="notif-list">
+          <div class="notif-item success visible">
+            <div class="notif-icon">✅</div>
+            <div class="notif-text"><strong>DLF Store assigned</strong><br>Nearest store (1.2 km) via geo-match</div>
+            <div class="notif-time">11:02</div>
+          </div>
+          <div class="notif-item info visible">
+            <div class="notif-icon">📱</div>
+            <div class="notif-text">Picker app notified: <strong>Suresh Kumar</strong></div>
+            <div class="notif-time">11:03</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 2: PICKING ===== -->
+  <div class="step-view" id="step2">
+    <div class="panel">
+      <div class="panel-header">📦 DLF Store — Picker App</div>
+      <div class="panel-body">
+        <div class="order-card">
+          <div class="order-id">#ORD-8821 · DLF Store</div>
+          <div class="order-meta">
+            Picker: <span>Suresh Kumar</span><br>
+            Started: <span>11:10 AM</span><br>
+            SLA: <span style="color:#b45309">12:30 PM (80 min left)</span>
+          </div>
+          <div class="status-pill pill-picking">⚡ Picking</div>
+        </div>
+        <div class="label">Picking Progress</div>
+        <div style="background:#f5f6fc;border-radius:8px;border:1px solid #e0e4f0;padding:12px;font-size:11px">
+          <div style="margin-bottom:8px;color:#3d4470">Items: 9/14 picked</div>
+          <div style="background:#e0e4f0;height:8px;border-radius:4px;overflow:hidden">
+            <div style="background:#f59e0b;height:100%;width:64%;border-radius:4px;transition:width 1s"></div>
+          </div>
+          <div style="color:#8890b5;margin-top:6px">5 items remaining</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step2-center">
+    <div class="stage-banner">
+      <div class="stage-icon">⚡</div>
+      <div>
+        <div class="stage-title">Picking in Progress</div>
+        <div class="stage-desc">DLF Store · Suresh Kumar picking items</div>
+      </div>
+      <div class="stage-time">
+        <div class="time">11:10 AM</div>
+        <div class="slot">~80 min to SLA</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">📋 Picklist</div>
+      <div class="panel-body">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px;background:#f0fdf4;border-radius:6px;border:1px solid #bbf7d0;font-size:11px">
+            <span style="color:#15803d">✓</span>
+            <span style="color:#8890b5;text-decoration:line-through">Amul Milk 1L × 2</span>
+            <span style="margin-left:auto;color:#15803d;font-size:10px">Picked</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px;background:#f0fdf4;border-radius:6px;border:1px solid #bbf7d0;font-size:11px">
+            <span style="color:#15803d">✓</span>
+            <span style="color:#8890b5;text-decoration:line-through">Bread Loaf × 1</span>
+            <span style="margin-left:auto;color:#15803d;font-size:10px">Picked</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px;background:#fffbeb;border-radius:6px;border:1px solid #fde68a;font-size:11px">
+            <span style="color:#b45309">⟳</span>
+            <span style="color:#b45309">Tomatoes 500g × 3</span>
+            <span style="margin-left:auto;color:#b45309;font-size:10px">Picking...</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px;background:#f5f6fc;border-radius:6px;border:1px solid #e0e4f0;font-size:11px;opacity:0.5">
+            <span style="color:#c0c8dc">○</span>
+            <span style="color:#8890b5">Onions 1kg</span>
+            <span style="margin-left:auto;color:#c0c8dc;font-size:10px">Pending</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px;background:#fff1f2;border-radius:6px;border:1px solid #fca5a5;font-size:11px">
+            <span style="color:#dc2626">!</span>
+            <span style="color:#dc2626">Greek Yogurt 200g × 2</span>
+            <span style="margin-left:auto;font-size:9px;padding:2px 8px;border-radius:10px;background:#fee2e2;color:#dc2626;border:1px solid #fca5a5">Not Found</span>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="btn btn-primary" onclick="goStep(3)">Next: Item Missing →</button>
+          <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step2-right">
+    <div class="panel">
+      <div class="panel-header">🔔 Notifications</div>
+      <div class="panel-body">
+        <div class="notif-list">
+          <div class="notif-item info visible">
+            <div class="notif-icon">📦</div>
+            <div class="notif-text"><strong>Picking started</strong> at DLF Store</div>
+            <div class="notif-time">11:10</div>
+          </div>
+          <div class="notif-item warn visible">
+            <div class="notif-icon">⚠️</div>
+            <div class="notif-text">Greek Yogurt <strong>not found</strong> on shelf</div>
+            <div class="notif-time">11:28</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 3: ITEM MISSING ===== -->
+  <div class="step-view" id="step3">
+    <div class="panel">
+      <div class="panel-header">⚠️ Item Unavailable</div>
+      <div class="panel-body">
+        <div class="order-card" style="border-color:#fde68a">
+          <div class="order-id" style="color:#b45309">Item Not Found</div>
+          <div class="order-meta">
+            Item: <span style="color:#dc2626">Greek Yogurt 200g × 2</span><br>
+            Detected: <span>11:30 AM</span><br>
+            Store: <span>DLF Store</span><br>
+            Picker: <span>Suresh Kumar</span>
+          </div>
+          <div class="status-pill" style="background:#fffbeb;color:#b45309;border:1px solid #fde68a">⚠️ Action Required</div>
+        </div>
+        <div class="label">Store Manager Decision</div>
+        <div class="rider-card" style="border-color:#c4b5fd">
+          <div class="rider-avatar">👨‍💼</div>
+          <div>
+            <div class="rider-name">Vikram Singh</div>
+            <div class="rider-meta">DLF Store Manager</div>
+          </div>
+          <div class="rider-status" style="font-size:10px;color:#6d28d9">Reviewing</div>
+        </div>
+        <div class="action-row">
+          <button class="btn btn-danger" onclick="goStep(4)">Transfer Order →</button>
+          <button class="btn btn-ghost">Substitute Item</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step3-center">
+    <div class="stage-banner" style="border-color:#fde68a">
+      <div class="stage-icon">⚠️</div>
+      <div>
+        <div class="stage-title">Item Not Available</div>
+        <div class="stage-desc">DLF Store · Picker flagged missing item · Manager alerted</div>
+      </div>
+      <div class="stage-time">
+        <div class="time" style="color:#b45309">11:30 AM</div>
+        <div class="slot">60 min to SLA</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">🔄 Transfer Decision Screen</div>
+      <div class="panel-body">
+        <div class="alert-box alert-warn">
+          ⚠️ <strong>Greek Yogurt 200g</strong> is out of stock at DLF Store. Store Manager must decide: transfer or substitute.
+        </div>
+        <div style="height:12px"></div>
+        <div class="label">Transfer Options</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="padding:14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;cursor:pointer" onclick="goStep(4)">
+            <div style="font-size:12px;font-weight:700;color:#15803d;margin-bottom:4px">✓ Transfer to Devender Vihar Store</div>
+            <div style="font-size:11px;color:#8890b5">3.4 km away · Item confirmed in stock · ~15 min transfer time</div>
+            <div style="margin-top:8px">
+              <span class="btn btn-success" style="font-size:10px;padding:4px 12px;display:inline-flex;gap:4px">Select ›</span>
+            </div>
+          </div>
+          <div style="padding:14px;background:#f5f6fc;border:1px solid #e0e4f0;border-radius:8px;opacity:0.5">
+            <div style="font-size:12px;font-weight:700;color:#8890b5;margin-bottom:4px">Skip Item &amp; Deliver Partial</div>
+            <div style="font-size:11px;color:#9ba3c5">Refund item · Deliver rest of order</div>
+          </div>
+        </div>
+        <div class="action-row" style="margin-top:12px">
+          <button class="btn btn-primary" onclick="goStep(4)">Next: Order Transferred →</button>
+          <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step3-right">
+    <div class="panel">
+      <div class="panel-header">🔔 Notifications</div>
+      <div class="panel-body">
+        <div class="notif-list">
+          <div class="notif-item error visible">
+            <div class="notif-icon">❌</div>
+            <div class="notif-text"><strong>Item not found:</strong> Greek Yogurt 200g at DLF</div>
+            <div class="notif-time">11:30</div>
+          </div>
+          <div class="notif-item warn visible">
+            <div class="notif-icon">👨‍💼</div>
+            <div class="notif-text">Store Manager <strong>Vikram Singh</strong> alerted for decision</div>
+            <div class="notif-time">11:31</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 4: TRANSFER ===== -->
+  <div class="step-view" id="step4">
+    <div class="panel">
+      <div class="panel-header">🔄 Order Transfer</div>
+      <div class="panel-body">
+        <div class="assign-flow">
+          <div class="assign-step strikethrough" style="opacity:0.4">
+            <div class="step-icon">🏬</div>
+            <div class="step-label">
+              <strong>DLF Store</strong>
+              <span>Original assignment</span>
+            </div>
+            <div class="step-badge" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5">Released</div>
+          </div>
+          <div style="text-align:center;font-size:20px;color:#c4b5fd">↓</div>
+          <div class="assign-step" style="border-color:#bbf7d0;background:#f0fdf4">
+            <div class="step-icon">🏪</div>
+            <div class="step-label">
+              <strong>Devender Vihar Store</strong>
+              <span>Transferred at 11:45 AM</span>
+            </div>
+            <div class="step-badge tag-selected">Active ✓</div>
+          </div>
+        </div>
+        <div class="label">Transfer Timeline</div>
+        <div style="font-size:11px;color:#8890b5;background:#f5f6fc;border-radius:8px;padding:12px;border:1px solid #e0e4f0;line-height:2">
+          <div>11:30 AM — Item flagged missing at DLF</div>
+          <div>11:35 AM — Manager Vikram approved transfer</div>
+          <div>11:40 AM — Devender Vihar confirmed stock</div>
+          <div style="color:#15803d">11:45 AM — Transfer complete ✓</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step4-center">
+    <div class="stage-banner" style="border-color:#ddd6fe">
+      <div class="stage-icon">🔄</div>
+      <div>
+        <div class="stage-title">Transfer → Devender Vihar</div>
+        <div class="stage-desc">Order moved from DLF Store · New 90-min slot begins</div>
+      </div>
+      <div class="stage-time">
+        <div class="time" style="color:#7c3aed">11:45 AM</div>
+        <div class="slot">New slot: 90 min</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">🗺️ Transfer Map</div>
+      <div class="panel-body">
+        <div class="map-container">
+          <div class="map-grid"></div>
+          <div class="map-label">Transfer Route</div>
+          <div class="customer-marker" style="top:52%;left:48%"></div>
+          <div class="store-marker" style="top:55%;left:63%">
+            <div class="store-icon warn">🏬</div>
+            <div class="store-name" style="color:#dc2626">DLF ✗</div>
+          </div>
+          <div class="store-marker" style="top:22%;left:72%">
+            <div class="store-icon success">🏪</div>
+            <div class="store-name" style="color:#15803d;font-weight:700">Devender Vihar ✓</div>
+          </div>
+          <svg class="route-svg" viewBox="0 0 400 240" preserveAspectRatio="none">
+            <line x1="192" y1="124" x2="288" y2="52" stroke="#22c55e" stroke-width="2" class="route-line" stroke-dasharray="6 3"/>
+            <text x="248" y="95" fill="#15803d" font-size="9" text-anchor="middle">3.4 km</text>
+            <line x1="252" y1="132" x2="288" y2="52" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="5 5" opacity="0.5" class="route-line"/>
+          </svg>
+        </div>
+        <div class="alert-box alert-success">
+          ✅ Transfer complete at 11:45 AM · Devender Vihar Store picker notified
+        </div>
+        <div class="action-row">
+          <button class="btn btn-primary" onclick="goStep(5)">Next: Queue Priority →</button>
+          <button class="btn btn-ghost" onclick="goStep(3)">← Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step4-right">
+    <div class="panel">
+      <div class="panel-header">🔔 Notifications</div>
+      <div class="panel-body">
+        <div class="notif-list">
+          <div class="notif-item info visible">
+            <div class="notif-icon">🔄</div>
+            <div class="notif-text">Transfer initiated: <strong>DLF → Devender Vihar</strong></div>
+            <div class="notif-time">11:35</div>
+          </div>
+          <div class="notif-item success visible">
+            <div class="notif-icon">✅</div>
+            <div class="notif-text"><strong>Transfer complete</strong> at Devender Vihar</div>
+            <div class="notif-time">11:45</div>
+          </div>
+          <div class="notif-item info visible">
+            <div class="notif-icon">📱</div>
+            <div class="notif-text">Devender Vihar picker assigned order <strong>#8821</strong></div>
+            <div class="notif-time">11:46</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 5: QUEUE PRIORITY ===== -->
+  <div class="step-view" id="step5">
+    <div class="panel">
+      <div class="panel-header">📋 Devender Vihar — Picking Queue</div>
+      <div class="panel-body">
+        <div class="label">Ops Team: Manual Queue Management</div>
+        <div class="queue-list">
+          <div class="queue-item priority">
+            <div class="queue-rank">1</div>
+            <div class="queue-info">
+              <div class="queue-order">#ORD-8821 ⚡</div>
+              <div class="queue-store">Transferred · High Priority</div>
+            </div>
+            <div class="priority-badge">PRIORITY</div>
+            <div class="queue-drag">⠿</div>
+          </div>
+          <div class="queue-item">
+            <div class="queue-rank">2</div>
+            <div class="queue-info">
+              <div class="queue-order">#ORD-9102</div>
+              <div class="queue-store">Regular · 12:00 PM slot</div>
+            </div>
+            <div class="queue-drag">⠿</div>
+          </div>
+          <div class="queue-item">
+            <div class="queue-rank">3</div>
+            <div class="queue-info">
+              <div class="queue-order">#ORD-8956</div>
+              <div class="queue-store">Regular · 12:00 PM slot</div>
+            </div>
+            <div class="queue-drag">⠿</div>
+          </div>
+          <div class="queue-item">
+            <div class="queue-rank">4</div>
+            <div class="queue-info">
+              <div class="queue-order">#ORD-9045</div>
+              <div class="queue-store">Regular · 12:30 PM slot</div>
+            </div>
+            <div class="queue-drag">⠿</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step5-center">
+    <div class="stage-banner" style="border-color:#c4b5fd">
+      <div class="stage-icon">📋</div>
+      <div>
+        <div class="stage-title">Queue Prioritized</div>
+        <div class="stage-desc">Ops team manually bumped #8821 to top of Devender Vihar queue</div>
+      </div>
+      <div class="stage-time">
+        <div class="time">11:50 AM</div>
+        <div class="slot">Queue managed</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">⚙️ Queue Management — Ops View</div>
+      <div class="panel-body">
+        <div class="alert-box alert-info">
+          🔧 Ops team manually re-ordered picking queue. Transferred order <strong>#8821</strong> moved to position #1 to compensate for lost time during transfer.
+        </div>
+        <div style="height:12px"></div>
+        <div class="label">Queue Before / After</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <div style="font-size:10px;color:#8890b5;margin-bottom:6px">Before</div>
+            <div style="font-size:11px;background:#f5f6fc;border-radius:8px;padding:10px;border:1px solid #e0e4f0;line-height:2.2;color:#8890b5">
+              <div>1. #ORD-9102</div>
+              <div>2. #ORD-8956</div>
+              <div>3. #ORD-8821</div>
+              <div>4. #ORD-9045</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:10px;color:#15803d;margin-bottom:6px">After ✓</div>
+            <div style="font-size:11px;background:#f0fdf4;border-radius:8px;padding:10px;border:1px solid #bbf7d0;line-height:2.2;color:#3d4470">
+              <div style="color:#15803d;font-weight:700">1. #ORD-8821 ⚡</div>
+              <div style="color:#8890b5">2. #ORD-9102</div>
+              <div style="color:#8890b5">3. #ORD-8956</div>
+              <div style="color:#8890b5">4. #ORD-9045</div>
+            </div>
+          </div>
+        </div>
+        <div class="action-row" style="margin-top:12px">
+          <button class="btn btn-primary" onclick="goStep(6)">Next: Damaged → On Hold →</button>
+          <button class="btn btn-ghost" onclick="goStep(4)">← Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step5-right">
+    <div class="panel">
+      <div class="panel-header">🔔 Notifications</div>
+      <div class="panel-body">
+        <div class="notif-list">
+          <div class="notif-item info visible">
+            <div class="notif-icon">📋</div>
+            <div class="notif-text">Queue updated by <strong>Ops Team</strong></div>
+            <div class="notif-time">11:50</div>
+          </div>
+          <div class="notif-item success visible">
+            <div class="notif-icon">⚡</div>
+            <div class="notif-text"><strong>#8821</strong> moved to priority #1 in queue</div>
+            <div class="notif-time">11:51</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 6: ON HOLD ===== -->
+  <div class="step-view" id="step6">
+    <div class="panel">
+      <div class="panel-header">🔴 Order On Hold</div>
+      <div class="panel-body">
+        <div class="order-card" style="border-color:#fca5a5">
+          <div class="onhold-overlay show" style="position:relative;inset:auto;height:60px;border-radius:6px;margin-bottom:10px">
+            <div class="onhold-label" style="font-size:14px">ON HOLD</div>
+          </div>
+          <div class="order-id">#ORD-8821 · Devender Vihar</div>
+          <div class="order-meta">
+            Issue: <span style="color:#dc2626">Items Damaged</span><br>
+            Detected: <span>12:30 PM</span><br>
+            Picker: <span>Released to next order</span>
+          </div>
+          <div class="status-pill pill-onhold">🔴 On Hold</div>
+        </div>
+        <div class="label">Ops Team Action</div>
+        <div style="font-size:11px;background:#fff1f2;border-radius:8px;padding:12px;border:1px solid #fca5a5;color:#dc2626;line-height:1.9">
+          Picker released ✓<br>
+          Order frozen ✓<br>
+          Ops alerted ✓<br>
+          Customer SMS sent ✓
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step6-center">
+    <div class="stage-banner" style="border-color:#fca5a5">
+      <div class="stage-icon">🔴</div>
+      <div>
+        <div class="stage-title">Items Damaged → On Hold</div>
+        <div class="stage-desc">Picker released · Ops team rescheduling order</div>
+      </div>
+      <div class="stage-time">
+        <div class="time" style="color:#dc2626">12:30 PM</div>
+        <div class="slot">SLA breached</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">🛑 On Hold — Ops Control</div>
+      <div class="panel-body">
+        <div class="alert-box alert-error">
+          🛑 <strong>Picker found damaged items</strong> at Devender Vihar (12:30 PM). Order placed <strong>On Hold</strong>. Picker freed to serve next order in queue.
+        </div>
+        <div style="height:12px"></div>
+        <div class="label">Hold State Machine</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="padding:10px 14px;background:#f5f6fc;border-radius:8px;border:1px solid #e0e4f0;font-size:11px">
+            <div style="font-weight:700;color:#1e2240;margin-bottom:4px">Order State Changed</div>
+            <div style="color:#8890b5">Picking → <span style="color:#dc2626">On Hold</span></div>
+          </div>
+          <div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;font-size:11px">
+            <div style="font-weight:700;color:#15803d;margin-bottom:4px">✓ Picker Released</div>
+            <div style="color:#8890b5">Priya Mehta freed · Now picking #ORD-9102</div>
+          </div>
+          <div style="padding:10px 14px;background:#f0eeff;border-radius:8px;border:1px solid #c4b5fd;font-size:11px">
+            <div style="font-weight:700;color:#6d28d9;margin-bottom:4px">Ops Intervention Required</div>
+            <div style="color:#8890b5">Reschedule order · Await stock replenishment</div>
+          </div>
+        </div>
+        <div class="action-row" style="margin-top:12px">
+          <button class="btn btn-primary" onclick="goStep(7)">Next: Reschedule →</button>
+          <button class="btn btn-ghost" onclick="goStep(5)">← Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step6-right">
+    <div class="panel">
+      <div class="panel-header">🔔 Notifications</div>
+      <div class="panel-body">
+        <div class="notif-list">
+          <div class="notif-item error visible">
+            <div class="notif-icon">🛑</div>
+            <div class="notif-text"><strong>Damaged items</strong> found at Devender Vihar · Order on hold</div>
+            <div class="notif-time">12:30</div>
+          </div>
+          <div class="notif-item info visible">
+            <div class="notif-icon">👷</div>
+            <div class="notif-text">Picker <strong>Priya Mehta</strong> released to queue</div>
+            <div class="notif-time">12:31</div>
+          </div>
+          <div class="notif-item warn visible">
+            <div class="notif-icon">📱</div>
+            <div class="notif-text">SMS sent to customer: <strong>order delayed</strong></div>
+            <div class="notif-time">12:32</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STEP 7: RESCHEDULED ===== -->
+  <div class="step-view" id="step7">
+    <div class="panel">
+      <div class="panel-header">📅 Reschedule — Store Manager</div>
+      <div class="panel-body">
+        <div class="label">New Delivery Slot</div>
+        <div class="slot-grid">
+          <div class="slot-item original">
+            <div class="slot-time">11:00–12:30</div>
+            <div class="slot-status">Original · Failed</div>
+          </div>
+          <div class="slot-item selected">
+            <div class="slot-time">2:00–3:30 PM</div>
+            <div class="slot-status">Rescheduled ✓</div>
+          </div>
+          <div class="slot-item" style="opacity:0.4">
+            <div class="slot-time">4:00–5:30 PM</div>
+            <div class="slot-status">Available</div>
+          </div>
+          <div class="slot-item" style="opacity:0.4">
+            <div class="slot-time">6:00–7:30 PM</div>
+            <div class="slot-status">Available</div>
+          </div>
+        </div>
+        <div style="height:12px"></div>
+        <div class="label">Store Manager Action</div>
+        <div class="rider-card" style="border-color:#bbf7d0">
+          <div class="rider-avatar">👨‍💼</div>
+          <div>
+            <div class="rider-name">Anil Sharma</div>
+            <div class="rider-meta">Devender Vihar Manager</div>
+          </div>
+          <div class="rider-status">
+            <button class="btn btn-success" style="font-size:10px;padding:4px 10px">Release from Hold</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step7-center">
+    <div class="stage-banner" style="border-color:#a5f3fc">
+      <div class="stage-icon">📅</div>
+      <div>
+        <div class="stage-title">Rescheduled — 2:00 PM Slot</div>
+        <div class="stage-desc">Ops rescheduled · Manager will release from hold on stock arrival</div>
+      </div>
+      <div class="stage-time">
+        <div class="time" style="color:#0e7490">2:00 PM</div>
+        <div class="slot">New 90-min slot</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">🔁 Full Lifecycle Summary</div>
+      <div class="panel-body">
+        <div style="display:flex;flex-direction:column;gap:7px;font-size:11px">
+          <div style="display:flex;gap:10px;padding:8px;background:#f5f6fc;border-radius:6px;border:1px solid #bbf7d0">
+            <span style="color:#15803d;font-weight:700;min-width:46px">11:00</span>
+            <span style="color:#8890b5">Order placed by Rahul · City Centre Sec 55</span>
+          </div>
+          <div style="display:flex;gap:10px;padding:8px;background:#f5f6fc;border-radius:6px;border:1px solid #bbf7d0">
+            <span style="color:#15803d;font-weight:700;min-width:46px">11:02</span>
+            <span style="color:#8890b5">Zopping geo-matches → <strong style="color:#3d4470">DLF Store</strong> (nearest)</span>
+          </div>
+          <div style="display:flex;gap:10px;padding:8px;background:#f5f6fc;border-radius:6px;border:1px solid #bbf7d0">
+            <span style="color:#15803d;font-weight:700;min-width:46px">11:10</span>
+            <span style="color:#8890b5">DLF picker starts picking</span>
+          </div>
+          <div style="display:flex;gap:10px;padding:8px;background:#fffbeb;border-radius:6px;border:1px solid #fde68a">
+            <span style="color:#b45309;font-weight:700;min-width:46px">11:30</span>
+            <span style="color:#8890b5">Item missing at DLF · Manager alerted</span>
+          </div>
+          <div style="display:flex;gap:10px;padding:8px;background:#f5f3ff;border-radius:6px;border:1px solid #ddd6fe">
+            <span style="color:#7c3aed;font-weight:700;min-width:46px">11:45</span>
+            <span style="color:#8890b5">Transfer → <strong style="color:#3d4470">Devender Vihar Store</strong></span>
+          </div>
+          <div style="display:flex;gap:10px;padding:8px;background:#f0eeff;border-radius:6px;border:1px solid #c4b5fd">
+            <span style="color:#6d28d9;font-weight:700;min-width:46px">11:50</span>
+            <span style="color:#8890b5">Ops bumps #8821 to queue priority #1</span>
+          </div>
+          <div style="display:flex;gap:10px;padding:8px;background:#fff1f2;border-radius:6px;border:1px solid #fca5a5">
+            <span style="color:#dc2626;font-weight:700;min-width:46px">12:30</span>
+            <span style="color:#8890b5">Damaged items · Order → <strong style="color:#dc2626">On Hold</strong> · Picker released</span>
+          </div>
+          <div style="display:flex;gap:10px;padding:8px;background:#ecfeff;border-radius:6px;border:1px solid #a5f3fc">
+            <span style="color:#0e7490;font-weight:700;min-width:46px">2:00 PM</span>
+            <span style="color:#3d4470"><strong>Rescheduled slot · Manager releases Hold → Pending → Picking → Delivery</strong></span>
+          </div>
+        </div>
+        <div class="action-row" style="margin-top:16px">
+          <button class="btn btn-success">✓ Order Released to 2PM Slot</button>
+          <button class="btn btn-ghost" onclick="goStep(6)">← Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-view" id="step7-right">
+    <div class="panel">
+      <div class="panel-header">🔔 Notifications</div>
+      <div class="panel-body">
+        <div class="notif-list">
+          <div class="notif-item info visible">
+            <div class="notif-icon">📅</div>
+            <div class="notif-text">Ops rescheduled <strong>#8821</strong> to 2:00 PM slot</div>
+            <div class="notif-time">1:00 PM</div>
+          </div>
+          <div class="notif-item success visible">
+            <div class="notif-icon">📦</div>
+            <div class="notif-text">Stock arrived at Devender Vihar · Manager notified</div>
+            <div class="notif-time">1:45 PM</div>
+          </div>
+          <div class="notif-item success visible">
+            <div class="notif-icon">🔓</div>
+            <div class="notif-text"><strong>Order released</strong> from Hold → Pending by Store Manager</div>
+            <div class="notif-time">1:50 PM</div>
+          </div>
+          <div class="notif-item info visible">
+            <div class="notif-icon">⚡</div>
+            <div class="notif-text">Picking restarted for 2PM slot</div>
+            <div class="notif-time">2:00 PM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER NAV -->
+<div class="footer-nav">
+  <div class="nav-label">Step:</div>
+  <div class="nav-steps">
+    <button class="nav-step active" onclick="goStep(0)" id="nav0">1. Order Placed</button>
+    <button class="nav-step" onclick="goStep(1)" id="nav1">2. Store Assigned</button>
+    <button class="nav-step" onclick="goStep(2)" id="nav2">3. Picking</button>
+    <button class="nav-step" onclick="goStep(3)" id="nav3">4. Item Missing</button>
+    <button class="nav-step" onclick="goStep(4)" id="nav4">5. Transfer</button>
+    <button class="nav-step" onclick="goStep(5)" id="nav5">6. Queue Priority</button>
+    <button class="nav-step" onclick="goStep(6)" id="nav6">7. On Hold</button>
+    <button class="nav-step" onclick="goStep(7)" id="nav7">8. Rescheduled</button>
+  </div>
+  <div class="nav-arrows">
+    <button class="nav-arr" id="prevBtn" onclick="prevStep()">‹</button>
+    <button class="nav-arr" id="nextBtn" onclick="nextStep()">›</button>
+  </div>
+</div>
+
+<script>
+  let currentStep = 0;
+  const totalSteps = 8;
+
+  const stepLayouts = {
+    0: {left:'step0', center:'step0-center', right:'step0-right'},
+    1: {left:'step1', center:'step1-center', right:'step1-right'},
+    2: {left:'step2', center:'step2-center', right:'step2-right'},
+    3: {left:'step3', center:'step3-center', right:'step3-right'},
+    4: {left:'step4', center:'step4-center', right:'step4-right'},
+    5: {left:'step5', center:'step5-center', right:'step5-right'},
+    6: {left:'step6', center:'step6-center', right:'step6-right'},
+    7: {left:'step7', center:'step7-center', right:'step7-right'},
+  };
+
+  // Tab mapping per step: which tab is active + context note
+  const stepTabMap = [
+    { tab: 'all',     ctx: 'default', note: 'All Orders — #8821 just placed, awaiting store assignment' },
+    { tab: 'store',   ctx: 'default', note: 'Store / WH Orders — #8821 assigned to DLF Store (storewise pending)' },
+    { tab: 'topack',  ctx: 'default', note: 'To Pack (Picking Queue) — #8821 in DLF picker\'s queue' },
+    { tab: 'topack',  ctx: 'warn',    note: 'To Pack — #8821 flagged: item missing, awaiting manager decision' },
+    { tab: 'store',   ctx: 'default', note: 'Store / WH Orders — #8821 transferring to Devender Vihar Store' },
+    { tab: 'queue',   ctx: 'default', note: 'Queue (Trip Planner) — ops manually prioritised #8821 to slot #1' },
+    { tab: 'all',     ctx: 'error',   note: 'All Orders — #8821 On Hold: damaged items, picker released' },
+    { tab: 'all',     ctx: 'green',   note: 'All Orders — #8821 rescheduled to 2 PM slot, released from hold' },
+  ];
+
+  function setActiveTab(tab) {
+    document.querySelectorAll('.order-tab').forEach(el => el.classList.remove('active'));
+    const el = document.getElementById('otab-' + tab);
+    if (el) el.classList.add('active');
+  }
+
+  function updateTabContext(stepIdx) {
+    const info = stepTabMap[stepIdx];
+    setActiveTab(info.tab);
+    const ctx = document.getElementById('tabCtx');
+    const ctxText = document.getElementById('tabCtxText');
+    ctx.className = 'tab-context';
+    if (info.ctx === 'warn') ctx.classList.add('warn-ctx');
+    if (info.ctx === 'error') ctx.classList.add('error-ctx');
+    if (info.ctx === 'green') ctx.classList.add('green-ctx');
+    ctxText.textContent = info.note;
+  }
+
+  function goStep(n) {
+    document.querySelectorAll('.step-view').forEach(el => el.classList.remove('active'));
+
+    const layout = stepLayouts[n];
+    if (layout) {
+      ['left','center','right'].forEach(col => {
+        const el = document.getElementById(layout[col]);
+        if (el) el.classList.add('active');
+      });
+    }
+
+    // Update timeline
+    for (let i = 0; i < totalSteps; i++) {
+      const tl = document.getElementById('tl' + i);
+      tl.classList.remove('active','done','warn','danger');
+      if (i < n) {
+        tl.classList.add('done');
+        tl.querySelector('.tl-dot').textContent = '✓';
+      } else if (i === n) {
+        tl.querySelector('.tl-dot').textContent = '';
+      } else {
+        tl.querySelector('.tl-dot').textContent = '';
+      }
+    }
+    const activeTl = document.getElementById('tl' + n);
+    if (n === 3 || n === 6) activeTl.classList.add('danger');
+    else if (n === 4 || n === 5) activeTl.classList.add('warn');
+    else activeTl.classList.add('active');
+
+    // Nav buttons
+    document.querySelectorAll('.nav-step').forEach((btn, i) => {
+      btn.classList.remove('active','done');
+      if (i < n) btn.classList.add('done');
+      else if (i === n) btn.classList.add('active');
+    });
+
+    // Tab + context
+    updateTabContext(n);
+
+    // Animate
+    setTimeout(() => {
+      document.querySelectorAll('.flow-step').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), i * 100);
+      });
+      document.querySelectorAll('.notif-item').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), i * 150);
+      });
+    }, 100);
+
+    currentStep = n;
+    document.getElementById('prevBtn').disabled = n === 0;
+    document.getElementById('nextBtn').disabled = n === totalSteps - 1;
+  }
+
+  function nextStep() { if (currentStep < totalSteps - 1) goStep(currentStep + 1); }
+  function prevStep() { if (currentStep > 0) goStep(currentStep - 1); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') nextStep();
+    if (e.key === 'ArrowLeft') prevStep();
+  });
+
+  goStep(0);
+</script>
+</body>
+</html>
