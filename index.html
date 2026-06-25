@@ -37,6 +37,7 @@
   .preview-green  { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
   .preview-amber  { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); }
   .preview-blue   { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); }
+  .preview-teal   { background: linear-gradient(135deg, #e8f5e9 0%, #ddf2ee 100%); }
   .card-preview-inner { display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 1; }
   .preview-icon { font-size: 40px; }
   .preview-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, #5c54f022 1px, transparent 1px); background-size: 18px 18px; }
@@ -46,6 +47,7 @@
   .tag-store-pill  { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
   .tag-rider-pill  { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
   .tag-client-pill { background: #fdf4ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+  .tag-mktg-pill   { background: #ecfdf5; color: #065f46; border: 1px solid #6ee7b7; }
   .card-body { padding: 18px 20px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
   .card-title { font-size: 15px; font-weight: 700; color: #1e2240; }
   .card-desc { font-size: 12px; color: #8890b5; line-height: 1.6; flex: 1; }
@@ -97,6 +99,7 @@
   <button class="filter-btn" onclick="filterTag('ops',this)">Ops</button>
   <button class="filter-btn" onclick="filterTag('store',this)">Store</button>
   <button class="filter-btn" onclick="filterTag('client',this)">Client</button>
+  <button class="filter-btn" onclick="filterTag('marketing',this)">Marketing</button>
 </div>
 
 <div class="grid" id="cardGrid">
@@ -142,21 +145,21 @@
     </div>
   </a>
 
-  <a class="card" href="org_daily_report.html" data-title="Org Level Daily Store Summary" data-tags="store ops">
-    <div class="card-preview preview-amber">
+  <a class="card" href="zopping-demo-combined.html" data-title="Book a Demo — Lead Collection Form" data-tags="marketing store">
+    <div class="card-preview preview-teal">
       <div class="preview-dots"></div>
       <div class="card-preview-inner">
-        <div class="preview-icon">&#128202;</div>
-        <div class="preview-badge tag-store-pill">Store &middot; Daily Report</div>
+        <div class="preview-icon">&#128197;</div>
+        <div class="preview-badge tag-mktg-pill">Marketing &middot; Lead Form</div>
       </div>
     </div>
     <div class="card-body">
-      <div class="card-title">Org Level Daily Store Summary</div>
-      <div class="card-desc">Organisation-wide daily operations report &mdash; aggregated KPIs, store-wise performance table with on-time and fill rate bars, logistics and picking summaries, alerts for exceptions, and returns by reason. Designed to scale to 100+ stores.</div>
+      <div class="card-title">Book a Demo — Lead Collection Form</div>
+      <div class="card-desc">4-step lead capture form for the Zopping website. Covers contact details, city &amp; business info, product category, and scale &amp; operations. Includes both mobile (phone frame) and desktop (split-panel) views.</div>
     </div>
     <div class="card-footer">
+      <span class="tag tag-mktg-pill">Marketing</span>
       <span class="tag tag-store-pill">Store</span>
-      <span class="tag tag-ops-pill">Ops</span>
       <span class="card-date">Jun 2026</span>
       <div class="card-arrow">&rarr;</div>
     </div>
