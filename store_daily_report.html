@@ -318,18 +318,28 @@ tr:hover td { background: #fafbfc; }
   <div class="card">
     <div class="card-head">
       <div class="card-title">Logistics</div>
-      <div class="card-meta">10 trips · 12 deliveries · 0 late</div>
+      <div class="card-meta">15 orders · 3 channels</div>
     </div>
     <div class="card-body">
 
-      <!-- Summary -->
-      <div class="inline-stats">
+      <!-- Dispatch Channel Overview -->
+      <div class="inline-stats" style="margin-bottom:20px;">
+        <div class="is-item"><div class="is-val">15</div><div class="is-lbl">Total Orders</div></div>
+        <div class="is-item"><div class="is-val" style="color:#2196f3;">8</div><div class="is-lbl">In-house</div></div>
+        <div class="is-item"><div class="is-val" style="color:#9c27b0;">5</div><div class="is-lbl">3PL</div></div>
+        <div class="is-item"><div class="is-val" style="color:#607d8b;">2</div><div class="is-lbl">Self Dispatch</div></div>
+      </div>
+
+      <!-- Section divider -->
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#8f95a3;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #f0f0f0;">In-house Delivery</div>
+
+      <!-- In-house Summary -->
+      <div class="inline-stats" style="margin-bottom:14px;">
         <div class="is-item"><div class="is-val">10</div><div class="is-lbl">Trips</div></div>
-        <div class="is-item"><div class="is-val">3</div><div class="is-lbl">Del. Agents</div></div>
-        <div class="is-item"><div class="is-val">12</div><div class="is-lbl">Deliveries</div></div>
+        <div class="is-item"><div class="is-val">3</div><div class="is-lbl">Agents</div></div>
+        <div class="is-item"><div class="is-val">8</div><div class="is-lbl">Orders</div></div>
         <div class="is-item"><div class="is-val">3.3</div><div class="is-lbl">Avg Trips/Agent</div></div>
         <div class="is-item"><div class="is-val">1.2</div><div class="is-lbl">Avg Del/Trip</div></div>
-        <div class="is-item"><div class="is-val">4.0</div><div class="is-lbl">Avg Del/Agent</div></div>
         <div class="is-item"><div class="is-val mute">0 km</div><div class="is-lbl">Total KMs</div></div>
         <div class="is-item"><div class="is-val good">0</div><div class="is-lbl">Late Orders</div></div>
       </div>
@@ -401,13 +411,73 @@ tr:hover td { background: #fafbfc; }
           <tr class="row-total">
             <td colspan="2">Total</td>
             <td class="c">10</td>
-            <td class="c">12</td>
+            <td class="c">8</td>
             <td class="c">0</td>
             <td class="c mute-text">₹0</td>
             <td></td>
           </tr>
         </tbody>
       </table>
+
+      <!-- 3PL Section -->
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#8f95a3;margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid #f0f0f0;">3PL — Courier Partners</div>
+
+      <div class="inline-stats" style="margin-bottom:14px;">
+        <div class="is-item"><div class="is-val" style="color:#9c27b0;">5</div><div class="is-lbl">Orders</div></div>
+        <div class="is-item"><div class="is-val">2</div><div class="is-lbl">Partners</div></div>
+        <div class="is-item"><div class="is-val good">4</div><div class="is-lbl">Delivered</div></div>
+        <div class="is-item"><div class="is-val warn">1</div><div class="is-lbl">In Transit</div></div>
+        <div class="is-item"><div class="is-val mute">0</div><div class="is-lbl">Failed</div></div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Courier Partner</th>
+            <th class="c">Orders Assigned</th>
+            <th class="c">Delivered</th>
+            <th class="c">In Transit</th>
+            <th class="c">Failed</th>
+            <th style="min-width:120px;">Delivery Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="num-bold">Delhivery</td>
+            <td class="c">3</td>
+            <td class="c good-text">3</td>
+            <td class="c mute-text">0</td>
+            <td class="c mute-text">0</td>
+            <td><div class="fb-wrap"><div class="fb-track"><div class="fb-fill g" style="width:100%"></div></div><div class="fb-val good-text">100%</div></div></td>
+          </tr>
+          <tr>
+            <td class="num-bold">Blue Dart</td>
+            <td class="c">2</td>
+            <td class="c good-text">1</td>
+            <td class="c warn-text">1</td>
+            <td class="c mute-text">0</td>
+            <td><div class="fb-wrap"><div class="fb-track"><div class="fb-fill o" style="width:50%"></div></div><div class="fb-val warn-text">50%</div></div></td>
+          </tr>
+          <tr class="row-total">
+            <td>Total</td>
+            <td class="c">5</td>
+            <td class="c good-text">4</td>
+            <td class="c warn-text">1</td>
+            <td class="c mute-text">0</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Self Dispatch Section -->
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#8f95a3;margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid #f0f0f0;">Self Dispatch</div>
+
+      <div class="inline-stats">
+        <div class="is-item"><div class="is-val" style="color:#607d8b;">2</div><div class="is-lbl">Orders</div></div>
+        <div class="is-item"><div class="is-val good">2</div><div class="is-lbl">Completed</div></div>
+        <div class="is-item"><div class="is-val mute">—</div><div class="is-lbl">Dispatch Method</div></div>
+        <div class="is-item"><div class="is-val mute">—</div><div class="is-lbl">Tracking</div></div>
+      </div>
 
     </div>
   </div>
