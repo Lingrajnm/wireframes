@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zopping Admin</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;display:flex;flex-direction:column;background:#f6f1eb}
+
+/* ── CONTROLS BAR ── */
+.ctrl-bar{background:#111827;border-bottom:1px solid rgba(255,255,255,.07);padding:7px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex-shrink:0}
+.ctrl-grp{display:flex;align-items:center;gap:5px}
+.ctrl-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.3)}
+.rbtn{font-size:10px;padding:2px 8px;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.4);cursor:pointer;white-space:nowrap;transition:all .1s}
+.rbtn:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.75)}
+.rbtn.a{color:#fff;border-color:transparent;font-weight:600}
+.r-mgmt.a{background:#534AB7}.r-ord.a{background:#1d4ed8}.r-cat.a{background:#b45309}
+.r-mkt.a{background:#15803d}.r-cs.a{background:#0e7490}.r-log.a{background:#7c3aed}
+.r-wh.a{background:#be123c}.r-ro.a{background:#475569}
+.ctrl-sep{width:1px;height:20px;background:rgba(255,255,255,.1);margin:0 4px}
+.toggle-wrap{display:flex;align-items:center;gap:6px;cursor:pointer}
+.toggle{width:34px;height:18px;background:rgba(255,255,255,.15);border-radius:9px;position:relative;transition:background .2s;flex-shrink:0}
+.toggle.on{background:#16a34a}
+.toggle::after{content:'';position:absolute;width:14px;height:14px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .2s}
+.toggle.on::after{left:18px}
+.toggle-lbl{font-size:10px;color:rgba(255,255,255,.5);font-weight:600}
+.toggle.on+.toggle-lbl{color:#4ade80}
+.rg-name{font-size:9px;font-weight:700;color:rgba(255,255,255,.2);text-transform:uppercase;margin-right:2px}
+.rgroups{display:flex;flex-wrap:wrap;gap:4px;flex:1}
+.rg{display:flex;align-items:center;gap:2px;padding-right:6px;border-right:1px solid rgba(255,255,255,.07)}
+.rg:last-child{border:none}
+
+/* ── SHELL ── */
+.app{display:grid;grid-template-columns:220px 1fr;flex:1;overflow:hidden}
+
+/* ── SIDEBAR ── */
+.sidebar{background:#1a1f2e;display:flex;flex-direction:column;overflow:hidden;position:relative}
+.sb-brand{display:flex;align-items:center;gap:10px;padding:14px 14px 12px;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0}
+.sb-logo-img{height:26px;filter:brightness(0) invert(1)}
+.sb-logo-fallback{font-size:18px;font-weight:800;color:#4ade80;letter-spacing:-1px}
+
+/* Store/Lang selectors */
+.sb-selectors{flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.06)}
+.sel-row{display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;transition:background .1s;position:relative}
+.sel-row.store-sel{background:rgba(22,163,74,.12)}
+.sel-row.store-sel:hover{background:rgba(22,163,74,.18)}
+.sel-row.lang-sel{background:rgba(255,255,255,.03)}
+.sel-row.lang-sel:hover{background:rgba(255,255,255,.06)}
+.sel-row.lang-sel{border-top:1px solid rgba(255,255,255,.04)}
+.sel-ic{font-size:13px;flex-shrink:0}
+.store-sel .sel-ic{color:#4ade80}
+.lang-sel .sel-ic{color:rgba(255,255,255,.4)}
+.sel-text{font-size:11.5px;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.store-sel .sel-text{color:#4ade80}
+.lang-sel .sel-text{color:rgba(255,255,255,.45)}
+.sel-caret{font-size:10px;flex-shrink:0}
+.store-sel .sel-caret{color:rgba(74,222,128,.5)}
+.lang-sel .sel-caret{color:rgba(255,255,255,.2)}
+.dd-panel{position:absolute;top:100%;left:0;right:0;background:#252c3d;border:1px solid rgba(255,255,255,.1);border-radius:0 0 8px 8px;z-index:500;box-shadow:0 8px 24px rgba(0,0,0,.4);max-height:200px;overflow-y:auto}
+.dd-item{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:11.5px;color:rgba(255,255,255,.55);cursor:pointer;border-bottom:1px solid rgba(255,255,255,.04)}
+.dd-item:last-child{border:none}
+.dd-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.dd-item.sel{color:#4ade80;font-weight:600}
+.dd-item i{font-size:13px;opacity:.5}
+.dd-item.sel i{opacity:1;color:#4ade80}
+
+/* Nav */
+.sb-nav{flex:1;overflow-y:auto;padding:4px 0 8px}
+.sb-nav::-webkit-scrollbar{width:3px}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
+.nav-sec{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.22);padding:10px 14px 3px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:6px 14px;cursor:pointer;color:rgba(255,255,255,.48);font-size:12.5px;border-left:2px solid transparent;transition:all .1s;margin:0}
+.nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.82)}
+.nav-item.active{background:rgba(22,163,74,.11);color:#4ade80;border-left-color:#16a34a;font-weight:600}
+.nav-item i{font-size:15px;flex-shrink:0}
+.nav-item .nbadge{font-size:9px;margin-left:auto;background:#ef4444;color:#fff;padding:1px 5px;border-radius:10px;font-weight:700}
+.nav-item .nview{font-size:9px;margin-left:auto;color:rgba(255,255,255,.2);font-style:italic}
+.nav-item .nadmin{font-size:9px;margin-left:auto;background:rgba(29,78,216,.4);color:#93c5fd;padding:1px 5px;border-radius:5px}
+
+/* Enterprise badge */
+.ent-badge{display:flex;align-items:center;gap:6px;margin:8px 12px;padding:7px 10px;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.2);border-radius:8px;cursor:pointer}
+.ent-badge i{font-size:14px;color:#eab308}
+.ent-text{font-size:11px;font-weight:600;color:#fbbf24;flex:1}
+.ent-sub{font-size:9.5px;color:rgba(251,191,36,.6)}
+
+/* User at bottom */
+.sb-user{border-top:1px solid rgba(255,255,255,.06);padding:10px 14px;flex-shrink:0}
+.user-row{display:flex;align-items:center;gap:9px;cursor:pointer}
+.user-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.user-info{flex:1;min-width:0}
+.user-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-role{font-size:10px;color:rgba(255,255,255,.35)}
+.user-cog{font-size:15px;color:rgba(255,255,255,.3);cursor:pointer;transition:color .1s}
+.user-cog:hover{color:rgba(255,255,255,.7)}
+
+/* ── MAIN ── */
+.main{background:#f6f1eb;display:flex;flex-direction:column;overflow:hidden;position:relative}
+.topbar{background:#fff;border-bottom:1px solid #ede8e0;padding:0 20px;display:flex;align-items:center;gap:12px;height:54px;flex-shrink:0}
+.topbar-logo{display:none}
+.tb-title{font-size:15px;font-weight:700;color:#111827;flex:1}
+.tb-breadcrumb{display:flex;align-items:center;gap:5px;font-size:12px;color:#94a3b8;flex:1}
+.tb-breadcrumb span{cursor:pointer;transition:color .1s}
+.tb-breadcrumb span:hover{color:#16a34a}
+.tb-breadcrumb .sep{color:#d1d5db}
+.tb-breadcrumb .cur{color:#374151;font-weight:600}
+.tb-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.cta-btn{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:8px;border:1.5px solid #e2d9ce;background:#fff;color:#374151;cursor:pointer;transition:all .1s;white-space:nowrap}
+.cta-btn:hover{border-color:#16a34a;color:#16a34a;background:#f0fdf4}
+.cta-btn.primary{background:#16a34a;color:#fff;border-color:#16a34a;box-shadow:0 1px 4px rgba(22,163,74,.3)}
+.cta-btn.primary:hover{background:#15803d}
+.cta-btn i{font-size:14px}
+.tb-icon-btn{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#6b7280;transition:all .1s;position:relative;background:transparent;border:none}
+.tb-icon-btn:hover{background:#f3f4f6;color:#374151}
+.tb-icon-btn i{font-size:18px}
+.tb-notif-badge{position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;background:#ef4444;border:1.5px solid #fff}
+.tb-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;border:2px solid transparent;transition:border-color .1s}
+.tb-avatar:hover{border-color:rgba(22,163,74,.4)}
+
+/* Scrollable content */
+.main-scroll{flex:1;overflow-y:auto;padding:20px}
+.main-scroll::-webkit-scrollbar{width:5px}
+.main-scroll::-webkit-scrollbar-thumb{background:#d6cec4;border-radius:3px}
+
+/* ── PROFILE DROPDOWN ── */
+.profile-dd{position:absolute;top:58px;right:12px;width:300px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.12);z-index:999;overflow:hidden}
+.pdd-header{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #f3f4f6}
+.pdd-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.pdd-name{font-size:13px;font-weight:700;color:#111827}
+.pdd-role{font-size:11px;color:#6b7280;margin-top:1px}
+.pdd-section{padding:12px 16px;border-bottom:1px solid #f3f4f6}
+.pdd-sec-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.pdd-sec-title a{font-size:11px;color:#16a34a;font-weight:600;cursor:pointer;text-transform:none;letter-spacing:0}
+.pdd-info-row{display:flex;align-items:center;gap:8px;font-size:12px;color:#374151;margin-bottom:5px}
+.pdd-info-row i{font-size:14px;color:#9ca3af;flex-shrink:0}
+.pdd-plan{background:#f0fdf4;border-radius:8px;padding:10px 12px;margin-bottom:6px}
+.pdd-plan-name{font-size:12.5px;font-weight:700;color:#15803d;margin-bottom:2px}
+.pdd-plan-sub{font-size:11px;color:#6b7280}
+.pdd-plan-cta{font-size:11.5px;color:#16a34a;font-weight:600;cursor:pointer;margin-top:4px;display:inline-block}
+.pdd-ent-plan{background:#fffbeb;border-radius:8px;padding:10px 12px;border:1px solid #fef08a;margin-bottom:6px}
+.pdd-ent-name{font-size:12.5px;font-weight:700;color:#92400e;display:flex;align-items:center;gap:5px}
+.pdd-actions{padding:8px 16px}
+.pdd-action{display:flex;align-items:center;gap:9px;padding:7px 0;font-size:12.5px;color:#374151;cursor:pointer;border-bottom:1px solid #f9fafb;transition:color .1s}
+.pdd-action:last-child{border:none}
+.pdd-action:hover{color:#16a34a}
+.pdd-action.danger{color:#ef4444}
+.pdd-action.danger:hover{color:#dc2626}
+.pdd-action i{font-size:15px;color:#9ca3af}
+.pdd-action.danger i{color:#fca5a5}
+
+/* ── OVERVIEW DASHBOARD ── */
+.ov-greeting{margin-bottom:16px}
+.ov-greeting h1{font-size:22px;font-weight:700;color:#111827;letter-spacing:-.3px}
+.ov-greeting p{font-size:12px;color:#94a3b8;margin-top:3px}
+.industry-tabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+.ind-tab{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;border:1.5px solid #e2d9ce;background:#fff;color:#6b7280;font-size:11.5px;font-weight:500;cursor:pointer;transition:all .1s}
+.ind-tab:hover{border-color:#16a34a;color:#16a34a}
+.ind-tab.active{background:#16a34a;color:#fff;border-color:#16a34a}
+.ind-tab i{font-size:14px}
+.stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+.stat-card{background:#fff;border-radius:10px;padding:14px;border:1px solid #ede8e0;box-shadow:0 1px 3px rgba(0,0,0,.04);cursor:pointer;transition:box-shadow .12s}
+.stat-card:hover{box-shadow:0 3px 10px rgba(0,0,0,.08)}
+.sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sc-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sc-chg{font-size:10px;font-weight:600;padding:2px 6px;border-radius:10px}
+.sc-chg.up{background:#dcfce7;color:#15803d}
+.sc-chg.dn{background:#fee2e2;color:#b91c1c}
+.sc-chg.nu{background:#f3f4f6;color:#6b7280}
+.sc-val{font-size:22px;font-weight:700;color:#111827;line-height:1}
+.sc-lbl{font-size:10.5px;color:#9ca3af;margin-top:3px;font-weight:500}
+.sc-sub{font-size:10px;color:#cbd5e1;margin-top:3px}
+.charts-row{display:grid;grid-template-columns:1fr 280px;gap:12px;margin-bottom:14px}
+.card{background:#fff;border-radius:10px;border:1px solid #ede8e0;box-shadow:0 1px 3px rgba(0,0,0,.04);padding:16px}
+.card-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.card-title{font-size:13px;font-weight:700;color:#111827}
+.card-sub{font-size:10.5px;color:#9ca3af;margin-top:2px}
+.card-link{font-size:11px;color:#16a34a;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:3px;white-space:nowrap}
+.chart-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#64748b}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.health-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f5f2ee;cursor:pointer}
+.health-item:last-child{border:none}
+.health-item:hover .ha{color:#16a34a}
+.hi-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.hi-body{flex:1}
+.hi-title{font-size:12.5px;font-weight:600;color:#111827}
+.hi-sub{font-size:10.5px;color:#9ca3af;margin-top:1px}
+.hi-count{font-size:18px;font-weight:700;margin-right:4px}
+.ha{font-size:16px;color:#d1cdc7;transition:color .1s}
+.activity-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f5f2ee}
+.activity-item:last-child{border:none}
+.ai-ic{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.ai-body{flex:1;min-width:0}
+.ai-title{font-size:12px;font-weight:600;color:#111827}
+.ai-sub{font-size:10.5px;color:#9ca3af;margin-top:1px}
+.ai-time{font-size:10.5px;color:#b0a99f;white-space:nowrap;margin-top:1px;flex-shrink:0}
+/* donut */
+.donut-wrap{position:relative;display:flex;justify-content:center;margin:4px 0}
+.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.dc-num{font-size:22px;font-weight:700;color:#111827}
+.dc-lbl{font-size:9px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.dl-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f5f2ee}
+.dl-row:last-child{border:none}
+.dl-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.dl-name{font-size:11.5px;color:#374151;flex:1}
+.dl-val{font-size:11.5px;font-weight:700;color:#111827}
+
+/* ── MY ACCOUNT PAGE ── */
+.myacc-layout{display:grid;grid-template-columns:200px 1fr;gap:16px;height:100%}
+.myacc-sidebar{background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:16px 0;box-shadow:0 1px 3px rgba(0,0,0,.04);height:fit-content}
+.myacc-profile{text-align:center;padding:0 16px 14px;border-bottom:1px solid #f3f4f6;margin-bottom:8px}
+.myacc-av{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;margin:0 auto 8px}
+.myacc-name{font-size:13px;font-weight:700;color:#111827}
+.myacc-email{font-size:10.5px;color:#9ca3af;margin-top:2px;word-break:break-all}
+.myacc-nav-item{display:flex;align-items:center;gap:8px;padding:7px 16px;cursor:pointer;color:#475569;font-size:12.5px;border-left:2px solid transparent;transition:all .1s}
+.myacc-nav-item:hover{background:#f9fafb;color:#111827}
+.myacc-nav-item.active{color:#16a34a;border-left-color:#16a34a;background:#f0fdf4;font-weight:600}
+.myacc-nav-item i{font-size:15px;color:#9ca3af}
+.myacc-nav-item.active i{color:#16a34a}
+.myacc-nav-item.danger{color:#ef4444}
+.myacc-nav-item.danger i{color:#fca5a5}
+.myacc-content{background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.acc-sec-title{font-size:16px;font-weight:700;color:#111827;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f3f4f6}
+.form-group{margin-bottom:16px}
+.form-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;margin-bottom:6px}
+.form-input{width:100%;padding:9px 12px;border:1.5px solid #e2d9ce;border-radius:8px;font-size:13px;color:#374151;outline:none;transition:border-color .1s;background:#fff;font-family:inherit}
+.form-input:focus{border-color:#16a34a}
+.form-input:disabled{background:#f9fafb;color:#9ca3af}
+.form-hint{font-size:10.5px;color:#9ca3af;margin-top:4px}
+.form-save{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:background .1s;font-family:inherit}
+.form-save:hover{background:#15803d}
+.billing-card{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.bc-plan{font-size:15px;font-weight:700;color:#15803d}
+.bc-sub{font-size:12px;color:#6b7280;margin-top:3px}
+.bc-ent{background:#fffbeb;border-color:#fef08a;border-radius:10px;padding:14px 16px;margin-bottom:12px;border-width:1.5px;border-style:solid}
+.notif-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6}
+.notif-row:last-child{border:none}
+.notif-info .notif-title{font-size:12.5px;font-weight:600;color:#111827}
+.notif-info .notif-sub{font-size:10.5px;color:#9ca3af;margin-top:1px}
+.notif-toggle{width:36px;height:20px;background:#d1d5db;border-radius:10px;position:relative;cursor:pointer;transition:background .2s}
+.notif-toggle.on{background:#16a34a}
+.notif-toggle::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.notif-toggle.on::after{left:18px}
+
+/* ── GLOBAL TOPBAR DROPDOWNS (store + lang) ── */
+.gb-dd{position:relative;display:inline-flex}
+.gb-btn{display:flex;align-items:center;gap:6px;padding:5px 11px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;color:#374151;cursor:pointer;font-size:11.5px;font-weight:500;white-space:nowrap;transition:all .1s;font-family:inherit}
+.gb-btn:hover{border-color:#16a34a;color:#16a34a;background:#f0fdf4}
+.gb-btn .gbi{font-size:14px;color:#9ca3af}
+.gb-btn:hover .gbi{color:#16a34a}
+.gb-btn .gbcv{font-size:10px;color:#9ca3af;margin-left:2px}
+.gb-panel{position:absolute;top:calc(100% + 6px);left:0;min-width:215px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:9999;display:none;overflow:hidden}
+.gb-panel.rgt{left:auto;right:0}
+.gb-panel.open{display:block}
+.gbpt{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;padding:10px 12px 4px}
+.gbpi{display:flex;align-items:center;gap:8px;padding:8px 12px;font-size:12px;color:#374151;cursor:pointer}
+.gbpi:hover{background:#f0fdf4;color:#16a34a}
+.gbpi.sel{color:#16a34a;font-weight:600;background:#f0fdf4}
+.gbpi i{font-size:13px;color:#9ca3af}
+.gbpi.sel i{color:#16a34a}
+.gbdiv{height:1px;background:#f3f4f6;margin:3px 0}
+.tbvsep{width:1px;height:20px;background:#e5e7eb;flex-shrink:0}
+
+/* ── AI ASK BAR ── */
+.ai-bar{background:linear-gradient(135deg,#f0fdf4 0%,#eff6ff 50%,#faf5ff 100%);border:1.5px solid #d1fae5;border-radius:14px;padding:14px 16px;margin-bottom:16px;position:relative;overflow:hidden}
+.ai-bar::before{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:radial-gradient(circle,rgba(22,163,74,.08) 0%,transparent 70%);pointer-events:none}
+.ai-bar-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ai-icon-wrap{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#16a34a,#0ea5e9);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(22,163,74,.3)}
+.ai-icon-wrap i{font-size:16px;color:#fff}
+.ai-bar-label{font-size:13px;font-weight:700;color:#111827}
+.ai-bar-sub{font-size:11px;color:#6b7280;margin-top:1px}
+.ai-input-row{display:flex;gap:8px;margin-bottom:10px}
+.ai-input{flex:1;padding:9px 14px;border:1.5px solid #d1fae5;border-radius:9px;font-size:13px;color:#374151;outline:none;background:#fff;font-family:inherit;transition:border-color .1s}
+.ai-input:focus{border-color:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.08)}
+.ai-input::placeholder{color:#9ca3af}
+.ai-ask-btn{padding:9px 16px;background:#16a34a;color:#fff;border:none;border-radius:9px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;transition:background .1s;flex-shrink:0}
+.ai-ask-btn:hover{background:#15803d}
+.ai-ask-btn i{font-size:14px}
+.ai-chips{display:flex;gap:6px;flex-wrap:wrap}
+.ai-chip{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;border:1px solid #d1fae5;background:#fff;color:#374151;font-size:11.5px;cursor:pointer;transition:all .1s;white-space:nowrap}
+.ai-chip:hover{border-color:#16a34a;color:#16a34a;background:#f0fdf4}
+.ai-chip i{font-size:12px;color:#9ca3af}
+.ai-chip:hover i{color:#16a34a}
+.ai-response{margin-top:10px;padding:10px 13px;background:#fff;border-radius:9px;border:1px solid #e5e7eb;font-size:12.5px;color:#374151;line-height:1.6;display:none}
+.ai-response.show{display:block}
+.ai-resp-head{display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:11px;font-weight:600;color:#16a34a}
+
+/* ── ANALYTICS PAGE ── */
+.an-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.an-card{background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.an-kpi-val{font-size:24px;font-weight:800;color:#111827;letter-spacing:-.3px;line-height:1}
+.an-kpi-lbl{font-size:11px;color:#9ca3af;margin:3px 0;font-weight:500}
+.an-kpi-chg{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:10px;display:inline-block}
+.an-row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.an-full{margin-bottom:12px}
+.an-table{width:100%;border-collapse:collapse;font-size:12px}
+.an-table th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:6px 10px;border-bottom:1px solid #f0ece4;text-align:left;background:#fafaf8}
+.an-table td{padding:9px 10px;border-bottom:1px solid #f5f2ee;color:#374151;vertical-align:middle}
+.an-table tr:last-child td{border:none}
+.an-table tr:hover td{background:#fafaf9}
+.an-add-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1.5px solid #16a34a;border-radius:8px;background:#f0fdf4;color:#16a34a;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .1s}
+.an-add-btn:hover{background:#16a34a;color:#fff}
+
+/* ── GENERIC PLACEHOLDER ── */
+.page-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:calc(100% - 40px);text-align:center;color:#9ca3af}
+.pp-icon{font-size:56px;color:#e2d9ce;margin-bottom:12px}
+.pp-title{font-size:16px;font-weight:700;color:#374151;margin-bottom:6px}
+.pp-sub{font-size:13px}
+</style>
+</head>
+<body>
+
+<!-- ── CONTROLS ── -->
+<div class="ctrl-bar">
+  <span class="ctrl-lbl">Role</span>
+  <div class="rgroups">
+    <div class="rg">
+      <span class="rg-name">Mgmt</span>
+      <button class="rbtn r-mgmt a" data-role="STORE_MANAGER">Store Mgr</button>
+      <button class="rbtn r-mgmt" data-role="OPS_MANAGER">OPS Mgr</button>
+      <button class="rbtn r-mgmt" data-role="HR_MANAGER">HR Mgr</button>
+    </div>
+    <div class="rg">
+      <span class="rg-name">Orders</span>
+      <button class="rbtn r-ord" data-role="ORDER_MANAGER">Order Mgr</button>
+      <button class="rbtn r-ord" data-role="CASHIER">Cashier</button>
+      <button class="rbtn r-ord" data-role="ACCOUNTANT">Accountant</button>
+    </div>
+    <div class="rg">
+      <span class="rg-name">Catalogue</span>
+      <button class="rbtn r-cat" data-role="CONTENT_MANAGER">Content Mgr</button>
+      <button class="rbtn r-cat" data-role="SELLER_ADMIN">Seller Admin</button>
+    </div>
+    <div class="rg">
+      <span class="rg-name">Mktg</span>
+      <button class="rbtn r-mkt" data-role="MARKETING_MANAGER">Mkt Mgr</button>
+      <button class="rbtn r-mkt" data-role="MARKETING_EXEC">Mkt Exec</button>
+    </div>
+    <div class="rg">
+      <span class="rg-name">CS</span>
+      <button class="rbtn r-cs" data-role="CS_MANAGER">CS Mgr</button>
+      <button class="rbtn r-cs" data-role="CS_AGENT">CS Agent</button>
+    </div>
+    <div class="rg">
+      <span class="rg-name">Logistics</span>
+      <button class="rbtn r-log" data-role="LOGISTICS_MANAGER">Logistics Mgr</button>
+      <button class="rbtn r-log" data-role="TRANSPORT_COORD">Transport</button>
+    </div>
+    <div class="rg">
+      <span class="rg-name">WH</span>
+      <button class="rbtn r-wh" data-role="PICKING_MANAGER">Picking Mgr</button>
+      <button class="rbtn r-wh" data-role="PICKER">Picker</button>
+      <button class="rbtn r-wh" data-role="PACKER">Packer</button>
+    </div>
+    <div class="rg"><button class="rbtn r-ro" data-role="READ_ONLY">Read Only</button></div>
+  </div>
+  <div class="ctrl-sep"></div>
+  <div class="toggle-wrap" onclick="toggleEnt()">
+    <div class="toggle" id="entToggle"></div>
+    <span class="toggle-lbl" id="entLbl">isEnterprise</span>
+  </div>
+</div>
+
+<!-- ── SHELL ── -->
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <!-- Brand -->
+    <div class="sb-brand">
+      <img src="https://zopping.com/assets/images/Zopping.svg" alt="Zopping" class="sb-logo-img"
+           onerror="this.style.display='none';document.getElementById('logoFallback').style.display='block'">
+      <span class="sb-logo-fallback" id="logoFallback" style="display:none">Zopping</span>
+    </div>
+
+    <!-- Nav -->
+    <div class="sb-nav" id="sbNav"></div>
+
+    <!-- Enterprise badge -->
+    <div class="ent-badge" id="entBadge" style="display:none" onclick="gotoPage('billing')">
+      <i class="ti ti-crown"></i>
+      <div>
+        <div class="ent-text">Enterprise Plan</div>
+        <div class="ent-sub">Contact sales to scale</div>
+      </div>
+    </div>
+
+    <!-- User -->
+    <div class="sb-user">
+      <div class="user-row" onclick="toggleProfile()">
+        <div class="user-av" id="sbAv">SM</div>
+        <div class="user-info">
+          <div class="user-name" id="sbName">Lingraj</div>
+          <div class="user-role" id="sbRole">Store Manager</div>
+        </div>
+        <i class="ti ti-dots-vertical user-cog"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="tb-breadcrumb" id="tbBreadcrumb">
+        <span onclick="gotoPage('overview')">Overview</span>
+      </div>
+      <div class="tb-right" id="tbRight"></div>
+    </div>
+
+    <!-- Profile dropdown -->
+    <div class="profile-dd" id="profileDD" style="display:none">
+      <div class="pdd-header">
+        <div class="pdd-av" id="pddAv">SM</div>
+        <div>
+          <div class="pdd-name" id="pddName">Sodhis Supermarket</div>
+          <div class="pdd-role" id="pddRole">Store Manager</div>
+        </div>
+      </div>
+      <div class="pdd-section">
+        <div class="pdd-sec-title">My Account <a onclick="gotoPage('myaccount')">Go to account →</a></div>
+        <div class="pdd-info-row"><i class="ti ti-mail"></i> lingraj@zopping.com</div>
+        <div class="pdd-info-row"><i class="ti ti-phone"></i> +91 98101 05183</div>
+      </div>
+      <div class="pdd-section" id="pddPlan"></div>
+      <div class="pdd-actions">
+        <div class="pdd-action" onclick="gotoPage('myaccount')"><i class="ti ti-user"></i> Personal Information</div>
+        <div class="pdd-action" onclick="gotoPage('notifications')"><i class="ti ti-bell"></i> Manage Notifications</div>
+        <div class="pdd-action" onclick="gotoPage('changepassword')"><i class="ti ti-lock"></i> Change Password</div>
+        <div class="pdd-action danger" onclick=""><i class="ti ti-logout"></i> Logout</div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="main-scroll" id="mainScroll"></div>
+  </div>
+</div>
+
+<script>
+// ── ROLE META ──────────────────────────────────────────────────────
+const RM={
+  STORE_MANAGER:    {l:'Store Manager',    init:'LR',c:'#534AB7',n:'Lingraj',   store:'Sodhis Supermarket', grp:['admin','store','ops','mkt','cat','cs','log','wh','hr']},
+  OPS_MANAGER:      {l:'OPS Manager',      init:'OM',c:'#1d4ed8',n:'Priya',     store:'Corniche Road',       grp:['ops','wh','log']},
+  HR_MANAGER:       {l:'HR Manager',       init:'HM',c:'#1d4ed8',n:'Suresh',    store:'All Stores',          grp:['hr']},
+  ORDER_MANAGER:    {l:'Order Manager',    init:'OR',c:'#1d4ed8',n:'Anjali',    store:'Al Hamra',            grp:['store','cs']},
+  CASHIER:          {l:'Cashier',          init:'CA',c:'#1d4ed8',n:'Rahul',     store:'Shola',               grp:['store','wh']},
+  ACCOUNTANT:       {l:'Accountant',       init:'AC',c:'#1d4ed8',n:'Meera',     store:'All Stores',          grp:['store']},
+  CONTENT_MANAGER:  {l:'Content Manager',  init:'CM',c:'#b45309',n:'Karan',     store:'All Stores',          grp:['cat']},
+  SELLER_ADMIN:     {l:'Seller Admin',     init:'SA',c:'#b45309',n:'Divya',     store:'All Stores',          grp:['cat','mkt']},
+  MARKETING_MANAGER:{l:'Marketing Manager',init:'MM',c:'#15803d',n:'Arun',      store:'All Stores',          grp:['mkt']},
+  MARKETING_EXEC:   {l:'Mkt Executive',   init:'ME',c:'#15803d',n:'Sona',      store:'All Stores',          grp:['mkt']},
+  CS_MANAGER:       {l:'CS Manager',       init:'CS',c:'#0e7490',n:'Jai',       store:'All Stores',          grp:['cs','store']},
+  CS_AGENT:         {l:'CS Agent',         init:'CA',c:'#0e7490',n:'Ritu',      store:'Ajlan',               grp:['cs','store']},
+  LOGISTICS_MANAGER:{l:'Logistics Manager',init:'LM',c:'#7c3aed',n:'Mohan',    store:'Corniche Road',       grp:['log','ops']},
+  TRANSPORT_COORD:  {l:'Transport Coord',  init:'TC',c:'#7c3aed',n:'Siva',      store:'Khozam',              grp:['log','ops']},
+  PICKING_MANAGER:  {l:'Picking Manager',  init:'PM',c:'#be123c',n:'Arjun',    store:'Corniche Road',       grp:['wh','ops']},
+  PICKER:           {l:'Picker',           init:'PK',c:'#be123c',n:'Babu',      store:'Corniche Road',       grp:['wh']},
+  PACKER:           {l:'Packer',           init:'PA',c:'#be123c',n:'Ramu',      store:'Corniche Road',       grp:['wh']},
+  READ_ONLY:        {l:'Read Only',        init:'RO',c:'#475569',n:'Viewer',    store:'All Stores',          grp:['admin','store','ops','mkt','cat','cs','log','wh','hr']},
+};
+const inG=(r,g)=>(RM[r]?.grp||[]).includes(g);
+
+// ── NAVIGATION STRUCTURE ─────────────────────────────────────────
+const NAV=[
+  {sec:'Operations', g:['admin','store','ops','wh'], items:[
+    {id:'orders',     l:'Orders',           ic:'ti-shopping-bag',     g:['admin','store','ops','wh','cs'],  badge:14},
+    {id:'abandoned',  l:'Abandoned Carts',  ic:'ti-shopping-cart-off',g:['admin','store','mkt']},
+    {id:'picking',    l:'Picking Queue',    ic:'ti-stack',            g:['admin','ops','wh'],               badge:7},
+    {id:'packing',    l:'Packing Queue',    ic:'ti-archive',          g:['admin','ops','wh']},
+    {id:'checking',   l:'Checking Queue',   ic:'ti-list-check',       g:['admin','ops','wh']},
+    {id:'rack',       l:'Rack Management',  ic:'ti-server',           g:['admin','ops','wh']},
+    {id:'slotblock',  l:'Slot Blocking',    ic:'ti-hand-stop',        g:['admin','ops','store']},
+    {id:'capacity',   l:'Capacity Planning',ic:'ti-chart-area',       g:['admin','ops','store']},
+  ]},
+  {sec:'Customer Support', g:['admin','store','cs'], items:[
+    {id:'customers',  l:'Customers',        ic:'ti-users',            g:['admin','store','cs']},
+    {id:'cs-orders',  l:'Orders',           ic:'ti-shopping-bag',     g:['admin','store','cs'],
+     note:'Customer-centric order view — lookup by email, phone, or order ID'},
+  ]},
+  {sec:'Catalogue', g:['admin','store','cat'], items:[
+    {id:'products',   l:'Products',         ic:'ti-package',          g:['admin','store','cat']},
+    {id:'categories', l:'Categories',       ic:'ti-category',         g:['admin','store','cat']},
+    {id:'brands',     l:'Brands',           ic:'ti-registered',       g:['admin','cat']},
+    {id:'tags',       l:'Tags',             ic:'ti-tag',              g:['admin','cat']},
+    {id:'variants',   l:'Product Variants', ic:'ti-versions',         g:['admin','cat','store']},
+    {id:'subs',       l:'Substitution Groups',ic:'ti-refresh',        g:['admin','cat']},
+    {id:'inventory',  l:'Inventory',        ic:'ti-archive',          g:['admin','store','cat']},
+    {id:'bulkupload', l:'Bulk Upload',      ic:'ti-upload',           g:['admin','cat','store']},
+  ]},
+  {sec:'Marketing', g:['admin','store','mkt','cat'], items:[
+    {id:'coupons',    l:'Coupons',          ic:'ti-discount',         g:['admin','store','mkt','cat']},
+    {id:'offers',     l:'Offers',           ic:'ti-percentage',       g:['admin','store','mkt','cat']},
+    {id:'campaigns',  l:'Campaigns',        ic:'ti-message-circle',   g:['admin','mkt']},
+    {id:'banners',    l:'Banners',          ic:'ti-ad',               g:['admin','mkt','store']},
+    {id:'segments',   l:'Segments',         ic:'ti-chart-pie',        g:['admin','mkt']},
+  ]},
+  {sec:'Website', g:['admin','store','mkt'], items:[
+    {id:'web-layout', l:'Layout & Theme',   ic:'ti-layout',           g:['admin','mkt','store']},
+    {id:'web-nav',    l:'Navigation',       ic:'ti-sitemap',          g:['admin','mkt'],
+     note:'Manage storefront menus — page links, category trees, brand pages, footer'},
+    {id:'web-pages',  l:'Static Pages',     ic:'ti-files',            g:['admin','mkt','cat']},
+    {id:'web-blog',   l:'Blog',             ic:'ti-file-text',        g:['admin','mkt','cat']},
+    {id:'web-sched',  l:'Page Scheduling',  ic:'ti-calendar-event',   g:['admin','mkt']},
+    {id:'web-ann',    l:'Announcements',    ic:'ti-speakerphone',     g:['admin','mkt','store']},
+  ]},
+  {sec:'Logistics', g:['admin','ops','log'], items:[
+    {id:'vehicles',   l:'Vehicles',         ic:'ti-car',              g:['admin','ops','log']},
+    {id:'vplanning',  l:'Vehicle Planning', ic:'ti-steering-wheel',   g:['admin','ops','log']},
+    {id:'trips',      l:'Trips',            ic:'ti-route',            g:['admin','ops','log']},
+    {id:'tripplan',   l:'Trip Planner',     ic:'ti-map',              g:['admin','ops','log']},
+    {id:'runners',    l:'Runner Executives',ic:'ti-run',              g:['admin','ops','log']},
+    {id:'area',       l:'Delivery Area',    ic:'ti-map-pin',          g:['admin','ops','log','store','wh'], ro:['ops','log','store','wh']},
+    {id:'shipping',   l:'Shipping & Couriers',ic:'ti-truck-delivery', g:['admin','ops','log']},
+  ]},
+  {sec:'Analytics', g:['admin','store','mkt','ops','cat'], items:[
+    {id:'analytics',  l:'Analytics',        ic:'ti-chart-line',       g:['admin','store','ops','mkt']},
+    {id:'reports',    l:'Reports',          ic:'ti-file-analytics',   g:['admin','store','mkt','ops','cat']},
+    {id:'actlogs',    l:'Activity Logs',    ic:'ti-activity',         g:['admin','store','hr']},
+  ]},
+  {sec:'Staff & HR', g:['admin','store','hr'], items:[
+    {id:'employees',  l:'Employees',        ic:'ti-users',            g:['admin','store','hr']},
+    {id:'designations',l:'Designations',    ic:'ti-id-badge',         g:['admin','hr']},
+    {id:'attendance', l:'Attendance',       ic:'ti-calendar-event',   g:['admin','store','hr','ops']},
+    {id:'leave',      l:'Leave Management', ic:'ti-beach',            g:['admin','hr']},
+    {id:'roles',      l:'Roles & Permissions',ic:'ti-lock',           g:['admin','hr']},
+  ]},
+  // Settings & Extensions hidden when isEnterprise
+  {sec:'Admin', g:['admin'], ent:false, items:[
+    {id:'stores-cfg', l:'Stores & Info',    ic:'ti-building-store',   g:['admin'], adm:true},
+    {id:'orderconf',  l:'Order Configuration',ic:'ti-settings-2',     g:['admin'], adm:true},
+    {id:'slotsetup',  l:'Slot Set-up',      ic:'ti-calendar-plus',    g:['admin'], adm:true},
+    {id:'payments',   l:'Payments',         ic:'ti-credit-card',      g:['admin']},
+    {id:'comms',      l:'Communication',    ic:'ti-message',          g:['admin']},
+    {id:'mobile',     l:'Mobile Apps',      ic:'ti-device-mobile',    g:['admin']},
+    {id:'api',        l:'API Integrations', ic:'ti-api',              g:['admin']},
+  ]},
+  {sec:'Extensions', g:['admin'], ent:false, items:[
+    {id:'ext',        l:'Extensions Library',ic:'ti-puzzle',          g:['admin']},
+  ]},
+];
+
+// ── INDUSTRY CONFIG ──────────────────────────────────────────────
+const INDUSTRIES={
+  grocery:{l:'Grocery',ic:'ti-shopping-cart',
+    stats:[
+      {l:'Orders Today',v:'142',c:'+18%',up:true,ic:'ti-shopping-bag',bg:'#dbeafe',ic_c:'#1d4ed8'},
+      {l:'Revenue',v:'₹68,420',c:'+11%',up:true,ic:'ti-currency-rupee',bg:'#dcfce7',ic_c:'#16a34a'},
+      {l:'Fill Rate',v:'94.2%',c:'+1.1%',up:true,ic:'ti-check-circle',bg:'#f0fdf4',ic_c:'#16a34a'},
+      {l:'Avg Delivery',v:'28 min',c:'-3 min',up:true,ic:'ti-clock',bg:'#f5f3ff',ic_c:'#7c3aed'},
+      {l:'Slot Utilisation',v:'76%',c:'today',up:true,ic:'ti-calendar-time',bg:'#fff7ed',ic_c:'#ea580c'},
+    ],
+    health:[
+      {dot:'#ef4444',t:'Low stock',s:'Below reorder threshold',n:2,c:'#ef4444'},
+      {dot:'#f97316',t:'Expiring soon',s:'Within 7 days',n:5,c:'#f97316'},
+      {dot:'#eab308',t:'Slot near full',s:'Over 85% capacity',n:3,c:'#eab308'},
+    ],
+    chartLbl:'Orders & delivery time',line1Lbl:'Orders placed',line2Lbl:'Orders delivered',
+    donutTitle:'Order mix',
+    donut:[{c:'#3b82f6',v:89,l:'Delivered'},{c:'#16a34a',v:32,l:'Dispatched'},{c:'#f97316',v:14,l:'Processing'},{c:'#ef4444',v:7,l:'Cancelled'}],
+  },
+  fashion:{l:'Fashion',ic:'ti-hanger',
+    stats:[
+      {l:'Revenue',v:'₹1,24,800',c:'+22%',up:true,ic:'ti-currency-rupee',bg:'#dcfce7',ic_c:'#16a34a'},
+      {l:'Orders',v:'38',c:'+8%',up:true,ic:'ti-shopping-bag',bg:'#dbeafe',ic_c:'#1d4ed8'},
+      {l:'Return Rate',v:'12.4%',c:'-2.1%',up:true,ic:'ti-arrow-back-up',bg:'#fce7f3',ic_c:'#be185d'},
+      {l:'Avg Order Value',v:'₹3,284',c:'+14%',up:true,ic:'ti-chart-bar',bg:'#f5f3ff',ic_c:'#7c3aed'},
+      {l:'Abandoned Carts',v:'7',c:'₹18.4k',up:false,ic:'ti-shopping-cart-off',bg:'#fff7ed',ic_c:'#ea580c'},
+    ],
+    health:[
+      {dot:'#f97316',t:'High-return SKUs',s:'Return rate > 20%',n:4,c:'#f97316'},
+      {dot:'#eab308',t:'Slow-moving inventory',s:'No sale in 30 days',n:18,c:'#eab308'},
+      {dot:'#ef4444',t:'Abandoned carts',s:'High value — ₹18,400',n:7,c:'#ef4444'},
+    ],
+    chartLbl:'Revenue & returns trend',line1Lbl:'Revenue (₹k)',line2Lbl:'Returns',
+    donutTitle:'Category mix',
+    donut:[{c:'#7c3aed',v:45,l:'Clothing'},{c:'#f97316',v:22,l:'Footwear'},{c:'#3b82f6',v:18,l:'Accessories'},{c:'#16a34a',v:15,l:'Others'}],
+  },
+  b2b:{l:'B2B',ic:'ti-building',
+    stats:[
+      {l:'Invoice Value',v:'₹8.2L',c:'+31%',up:true,ic:'ti-file-invoice',bg:'#dbeafe',ic_c:'#1d4ed8'},
+      {l:'Purchase Orders',v:'26',c:'+6',up:true,ic:'ti-clipboard-list',bg:'#dcfce7',ic_c:'#16a34a'},
+      {l:'Outstanding Credit',v:'₹1.4L',c:'4 accounts',up:false,ic:'ti-credit-card',bg:'#fef9c3',ic_c:'#ca8a04'},
+      {l:'New B2B Accounts',v:'3',c:'this month',up:true,ic:'ti-building',bg:'#f5f3ff',ic_c:'#7c3aed'},
+      {l:'PO Fill Rate',v:'97.1%',c:'+0.8%',up:true,ic:'ti-check',bg:'#f0fdf4',ic_c:'#16a34a'},
+    ],
+    health:[
+      {dot:'#ef4444',t:'Overdue invoices',s:'Payment past due date',n:3,c:'#ef4444'},
+      {dot:'#f97316',t:'Credit limit reached',s:'Accounts near limit',n:2,c:'#f97316'},
+      {dot:'#eab308',t:'PO pending approval',s:'Awaiting confirmation',n:5,c:'#eab308'},
+    ],
+    chartLbl:'B2B sales & credit trend',line1Lbl:'Invoice value (₹L)',line2Lbl:'Credit utilised',
+    donutTitle:'Order type',
+    donut:[{c:'#1d4ed8',v:60,l:'Credit orders'},{c:'#16a34a',v:28,l:'Prepaid'},{c:'#f97316',v:12,l:'COD'}],
+  },
+  qcommerce:{l:'Quick Commerce',ic:'ti-bolt',
+    stats:[
+      {l:'Orders/Hour',v:'18',c:'+4',up:true,ic:'ti-bolt',bg:'#fef9c3',ic_c:'#ca8a04'},
+      {l:'Revenue',v:'₹42,300',c:'+9%',up:true,ic:'ti-currency-rupee',bg:'#dcfce7',ic_c:'#16a34a'},
+      {l:'Avg Delivery',v:'19 min',c:'-2 min',up:true,ic:'ti-clock',bg:'#f5f3ff',ic_c:'#7c3aed'},
+      {l:'SLA Met',v:'96.2%',c:'+1%',up:true,ic:'ti-check-circle',bg:'#f0fdf4',ic_c:'#16a34a'},
+      {l:'Cancellation',v:'1.8%',c:'-0.4%',up:true,ic:'ti-x',bg:'#fee2e2',ic_c:'#b91c1c'},
+    ],
+    health:[
+      {dot:'#ef4444',t:'SLA breach risk',s:'3 slots near capacity',n:3,c:'#ef4444'},
+      {dot:'#f97316',t:'Low stock — fast movers',s:'Critical SKUs',n:6,c:'#f97316'},
+      {dot:'#eab308',t:'Delayed trips',s:'Beyond SLA',n:1,c:'#eab308'},
+    ],
+    chartLbl:'Orders per hour of day',line1Lbl:'Orders',line2Lbl:'SLA met',
+    donutTitle:'Delivery status',
+    donut:[{c:'#16a34a',v:110,l:'On time'},{c:'#f97316',v:8,l:'Delayed'},{c:'#ef4444',v:3,l:'Failed'},{c:'#3b82f6',v:24,l:'In transit'}],
+  },
+  ecommerce:{l:'Ecommerce',ic:'ti-world',
+    stats:[
+      {l:'Revenue',v:'₹94,200',c:'+16%',up:true,ic:'ti-currency-rupee',bg:'#dcfce7',ic_c:'#16a34a'},
+      {l:'Conversion Rate',v:'3.8%',c:'+0.6%',up:true,ic:'ti-trending-up',bg:'#dbeafe',ic_c:'#1d4ed8'},
+      {l:'New Customers',v:'84',c:'+22%',up:true,ic:'ti-user-plus',bg:'#fce7f3',ic_c:'#be185d'},
+      {l:'Repeat Customers',v:'61%',c:'+3%',up:true,ic:'ti-refresh',bg:'#f0fdf4',ic_c:'#16a34a'},
+      {l:'Avg Order Value',v:'₹1,124',c:'+8%',up:true,ic:'ti-chart-bar',bg:'#f5f3ff',ic_c:'#7c3aed'},
+    ],
+    health:[
+      {dot:'#ef4444',t:'Abandoned carts',s:'₹12,400 recoverable',n:11,c:'#ef4444'},
+      {dot:'#eab308',t:'Products without images',s:'Affects conversion',n:1240,c:'#eab308'},
+      {dot:'#f97316',t:'Low-stock bestsellers',s:'Risk of lost sales',n:4,c:'#f97316'},
+    ],
+    chartLbl:'Revenue & conversion trend',line1Lbl:'Revenue (₹k)',line2Lbl:'Conversion %',
+    donutTitle:'Traffic source',
+    donut:[{c:'#16a34a',v:42,l:'Organic'},{c:'#3b82f6',v:28,l:'Direct'},{c:'#f97316',v:18,l:'Referral'},{c:'#7c3aed',v:12,l:'Campaign'}],
+  },
+  integration:{l:'Integration',ic:'ti-api',
+    stats:[
+      {l:'API Calls Today',v:'24,481',c:'+3%',up:true,ic:'ti-api',bg:'#dbeafe',ic_c:'#1d4ed8'},
+      {l:'Success Rate',v:'99.7%',c:'+0.1%',up:true,ic:'ti-check-circle',bg:'#dcfce7',ic_c:'#16a34a'},
+      {l:'Webhook Delivery',v:'99.1%',c:'+0.3%',up:true,ic:'ti-webhook',bg:'#f0fdf4',ic_c:'#16a34a'},
+      {l:'Active Integrations',v:'7',c:'connected',up:true,ic:'ti-plug',bg:'#f5f3ff',ic_c:'#7c3aed'},
+      {l:'Errors Today',v:'12',c:'-8',up:true,ic:'ti-alert-triangle',bg:'#fef9c3',ic_c:'#ca8a04'},
+    ],
+    health:[
+      {dot:'#ef4444',t:'Webhook failures',s:'Retry needed',n:3,c:'#ef4444'},
+      {dot:'#f97316',t:'API error spike',s:'OMS integration',n:1,c:'#f97316'},
+      {dot:'#eab308',t:'Rate limit warnings',s:'Approaching limit',n:2,c:'#eab308'},
+    ],
+    chartLbl:'API call volume',line1Lbl:'Successful calls',line2Lbl:'Errors',
+    donutTitle:'Integration traffic',
+    donut:[{c:'#1d4ed8',v:62,l:'OMS/WMS'},{c:'#16a34a',v:18,l:'Payment'},{c:'#f97316',v:12,l:'Courier'},{c:'#7c3aed',v:8,l:'Analytics'}],
+  },
+};
+
+// Role-based CTA buttons
+const ROLE_CTAS={
+  admin:  [{l:'View Store',ic:'ti-world',p:false,ext:true},{l:'New Order',ic:'ti-plus',p:true},{l:'Add Product',ic:'ti-package',p:false}],
+  store:  [{l:'View Store',ic:'ti-world',p:false,ext:true},{l:'New Order',ic:'ti-plus',p:true},{l:'Add Product',ic:'ti-package',p:false}],
+  ops:    [{l:'Picking Queue',ic:'ti-stack',p:true},{l:'Plan Trip',ic:'ti-map',p:false},{l:'Slot Blocking',ic:'ti-hand-stop',p:false}],
+  mkt:    [{l:'New Campaign',ic:'ti-speakerphone',p:true},{l:'Add Coupon',ic:'ti-discount',p:false},{l:'View Reports',ic:'ti-chart-bar',p:false}],
+  cat:    [{l:'Add Product',ic:'ti-package',p:true},{l:'Bulk Upload',ic:'ti-upload',p:false}],
+  cs:     [{l:'Search Customer',ic:'ti-search',p:true},{l:'New Order',ic:'ti-plus',p:false}],
+  log:    [{l:'Plan Trip',ic:'ti-map',p:true},{l:'Manage Fleet',ic:'ti-car',p:false}],
+  wh:     [{l:'Picking Queue',ic:'ti-stack',p:true}],
+  hr:     [{l:'Add Employee',ic:'ti-user-plus',p:true},{l:'Attendance',ic:'ti-calendar-event',p:false}],
+};
+
+// Activity feed
+const ACTIVITIES=[
+  {ic:'ti-shopping-bag',bg:'#dbeafe',ic_c:'#1d4ed8',t:'Order #1042 placed',s:'Rahul M. — ₹1,240',time:'2 min ago'},
+  {ic:'ti-route',bg:'#f5f3ff',ic_c:'#7c3aed',t:'Trip TRP-2026-0063 dispatched',s:'Corniche Road store',time:'18 min ago'},
+  {ic:'ti-discount',bg:'#f0fdf4',ic_c:'#16a34a',t:'Coupon SAVE20 applied',s:'3 orders today',time:'34 min ago'},
+  {ic:'ti-shopping-cart-off',bg:'#fff7ed',ic_c:'#ea580c',t:'Abandoned cart recovered',s:'Priya S. — ₹3,850',time:'1 hr ago'},
+  {ic:'ti-package',bg:'#fff7ed',ic_c:'#b45309',t:'Product "Organic Honey" updated',s:'SKU-8872 · stock adjusted',time:'2 hr ago'},
+  {ic:'ti-check-circle',bg:'#dcfce7',ic_c:'#16a34a',t:'Order #1038 delivered',s:'Meera L. — ₹560',time:'4 hr ago'},
+];
+
+// ── STATE ──────────────────────────────────────────────────────────
+let role='STORE_MANAGER', isEnterprise=false, industry='grocery';
+let activePage='overview', profileOpen=false;
+let storeVal='All Stores (8)', langVal='English';
+let ddOpen=null; // 'store' | 'lang' | null
+
+const STORES=['All Stores (8)','Corniche Road, V101','Al Hamra, V502','Khozam Compound, V161','Shola, V123','Ajlan, V168'];
+const LANGS=['English','Arabic (عربي)','French (Français)'];
+
+// ── HELPERS ────────────────────────────────────────────────────────
+function getFirstG(){
+  const gs=RM[role]?.grp||[];
+  return ['admin','store','ops','mkt','cat','cs','log','wh','hr'].find(g=>gs.includes(g))||'store';
+}
+function canSeeItem(item){
+  return (item.g||[]).some(g=>(RM[role]?.grp||[]).includes(g));
+}
+function isItemRO(item){
+  if(role==='READ_ONLY') return true;
+  if(!item.ro) return false;
+  return item.ro.some(g=>inG(role,g))&&!inG(role,'admin');
+}
+
+// ── DROPDOWNS ──────────────────────────────────────────────────────
+function toggleDD(which){
+  const other=which==='store'?'lang':'store';
+  document.getElementById(other+'DD').style.display='none';
+  ddOpen=ddOpen===which?null:which;
+  const dd=document.getElementById(which+'DD');
+  if(ddOpen===which){
+    const items=which==='store'?STORES:LANGS;
+    const cur=which==='store'?storeVal:langVal;
+    const ic=which==='store'?'ti-building-store':'ti-language';
+    dd.innerHTML=items.map(v=>`<div class="dd-item${v===cur?' sel':''}" onclick="selectDD('${which}','${v.replace(/'/g,'\\\'')}')">`+
+      `<i class="ti ${ic}"></i>${v}</div>`).join('');
+    dd.style.display='block';
+  } else { dd.style.display='none'; }
+}
+function selectDD(which,val){
+  if(which==='store'){storeVal=val;document.getElementById('storeTxt').textContent=val;}
+  else{langVal=val;document.getElementById('langTxt').textContent=val;}
+  ddOpen=null;
+  document.getElementById(which+'DD').style.display='none';
+  if(activePage==='overview') renderMain();
+}
+// ── GLOBAL STORE / LANGUAGE DROPDOWNS ──────────────────────────────
+function gbToggle(which, e){
+  if(e) e.stopPropagation();
+  const p = document.getElementById(which==='store' ? 'gbStorePanel' : 'gbLangPanel');
+  const o = document.getElementById(which==='store' ? 'gbLangPanel'  : 'gbStorePanel');
+  if(o) o.classList.remove('open');
+  if(p) p.classList.toggle('open');
+}
+function gbSetStore(v){
+  storeVal = v;
+  const p = document.getElementById('gbStorePanel');
+  if(p){ p.classList.remove('open'); p.querySelectorAll('.gbpi').forEach(el=>el.classList.toggle('sel', el.textContent.trim()===v)); }
+  const t = document.getElementById('gbStoreTxt'); if(t) t.textContent = v;
+  if(activePage==='overview') renderMain();
+}
+function gbSetLang(v){
+  langVal = v;
+  const p = document.getElementById('gbLangPanel');
+  if(p){ p.classList.remove('open'); p.querySelectorAll('.gbpi').forEach(el=>el.classList.toggle('sel', el.textContent.trim()===v)); }
+  const t = document.getElementById('gbLangTxt'); if(t) t.textContent = v;
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#gbStoreDD')){ const p=document.getElementById('gbStorePanel'); if(p) p.classList.remove('open'); }
+  if(!e.target.closest('#gbLangDD')){ const p=document.getElementById('gbLangPanel'); if(p) p.classList.remove('open'); }
+  if(!e.target.closest('.profile-dd')&&!e.target.closest('.tb-avatar')&&!e.target.closest('.user-row')){
+    if(ddOpen){ const el=document.getElementById(ddOpen+'DD'); if(el) el.style.display='none'; ddOpen=null; }
+    if(profileOpen){ profileOpen=false; const pd=document.getElementById('profileDD'); if(pd) pd.style.display='none'; }
+  }
+});
+
+// ── PROFILE DROPDOWN ───────────────────────────────────────────────
+function toggleProfile(){
+  profileOpen=!profileOpen;
+  const dd=document.getElementById('profileDD');
+  dd.style.display=profileOpen?'block':'none';
+  if(profileOpen) renderProfileDD();
+}
+function renderProfileDD(){
+  const rm=RM[role];
+  document.getElementById('pddAv').textContent=rm.init;
+  document.getElementById('pddAv').style.background=rm.c+'30';
+  document.getElementById('pddAv').style.color=rm.c;
+  document.getElementById('pddName').textContent=rm.store||'Store';
+  document.getElementById('pddRole').textContent=rm.l;
+  const planEl=document.getElementById('pddPlan');
+  if(isEnterprise){
+    planEl.innerHTML=`<div class="pdd-sec-title">Plan &amp; Billing</div>
+      <div class="pdd-ent-plan">
+        <div class="pdd-ent-name"><i class="ti ti-crown" style="font-size:14px;color:#eab308"></i> Enterprise Plan</div>
+        <div style="font-size:11px;color:#6b7280;margin-top:3px">Need to scale further?</div>
+        <div class="pdd-plan-cta">Contact Sales →</div>
+      </div>`;
+  } else {
+    planEl.innerHTML=`<div class="pdd-sec-title">Plan &amp; Billing <a onclick="gotoPage('billing')">View →</a></div>
+      <div class="pdd-plan">
+        <div class="pdd-plan-name">Pro Plan</div>
+        <div class="pdd-plan-sub">8 stores · 23 staff · Renews 25 Jul 2026</div>
+        <div class="pdd-plan-cta">Upgrade to Enterprise →</div>
+      </div>`;
+  }
+}
+
+// ── ENTERPRISE TOGGLE ──────────────────────────────────────────────
+function toggleEnt(){
+  isEnterprise=!isEnterprise;
+  document.getElementById('entToggle').classList.toggle('on',isEnterprise);
+  document.getElementById('entLbl').textContent=isEnterprise?'Enterprise ✓':'isEnterprise';
+  document.getElementById('entBadge').style.display=isEnterprise?'flex':'none';
+  renderNav();
+  if(activePage==='overview') renderMain();
+}
+
+// ── RENDER NAV ─────────────────────────────────────────────────────
+function renderNav(){
+  const rm=RM[role];
+  // ── Overview is GLOBAL — top-level, outside any department section ──
+  let h=`<div class="nav-item${activePage==='overview'?' active':''}" onclick="gotoPage('overview')" style="border-bottom:1px solid rgba(255,255,255,.06);padding:9px 14px;margin-bottom:4px">
+    <i class="ti ti-layout-dashboard"></i>Overview
+  </div>`;
+  NAV.forEach(grp=>{
+    // Hide Admin/Extensions sections when enterprise
+    if(isEnterprise && grp.ent===false) return;
+    const vis=grp.items.filter(canSeeItem);
+    if(!vis.length) return;
+    h+=`<div class="nav-sec">${grp.sec}</div>`;
+    vis.forEach(item=>{
+      const ro=isItemRO(item);
+      const active=activePage===item.id;
+      h+=`<div class="nav-item${active?' active':''}" onclick="gotoPage('${item.id}')">
+        <i class="ti ${item.ic}"></i>${item.l}
+        ${item.badge&&!ro?`<span class="nbadge">${item.badge}</span>`:''}
+        ${ro?`<span class="nview">view</span>`:''}
+        ${item.adm?`<span class="nadmin">admin</span>`:''}
+      </div>`;
+    });
+  });
+  // My Account link
+  h+=`<div class="nav-sec">Account</div>
+    <div class="nav-item${activePage==='myaccount'?' active':''}" onclick="gotoPage('myaccount')">
+      <i class="ti ti-user-circle"></i>My Account
+    </div>`;
+  document.getElementById('sbNav').innerHTML=h;
+  // Update sidebar user
+  document.getElementById('sbAv').textContent=rm.init;
+  document.getElementById('sbAv').style.background=rm.c+'35';
+  document.getElementById('sbAv').style.color=rm.c;
+  document.getElementById('sbName').textContent=rm.n;
+  document.getElementById('sbRole').textContent=rm.l;
+  document.getElementById('entBadge').style.display=isEnterprise?'flex':'none';
+}
+
+// ── TOPBAR ─────────────────────────────────────────────────────────
+function renderTopbar(){
+  const rm=RM[role];
+  const pg=activePage;
+  // Breadcrumb
+  let bc='';
+  if(pg==='overview') bc=`<span class="cur">Overview</span>`;
+  else if(pg==='myaccount'||pg==='billing'||pg==='notifications'||pg==='changepassword'){
+    bc=`<span onclick="gotoPage('overview')">Overview</span><span class="sep">›</span><span class="cur">My Account</span>`;
+  } else {
+    const item=NAV.flatMap(g=>g.items).find(x=>x.id===pg);
+    bc=`<span onclick="gotoPage('overview')">Overview</span><span class="sep">›</span><span class="cur">${item?.l||pg}</span>`;
+  }
+  document.getElementById('tbBreadcrumb').innerHTML=bc;
+
+  // CTAs
+  const firstG=getFirstG();
+  const ctas=ROLE_CTAS[firstG]||ROLE_CTAS.store;
+  let ctaH='';
+
+  // View Store only for relevant roles
+  if(inG(role,'admin')||inG(role,'store')){
+    ctaH+=`<button class="cta-btn" onclick="window.open('https://tabsports.in','_blank')"><i class="ti ti-world"></i>View Store</button>`;
+  }
+
+  // Role-specific CTAs (skip View Store since added above)
+  ctas.filter(c=>!c.ext).forEach(c=>{
+    ctaH+=`<button class="cta-btn${c.p?' primary':''}"><i class="ti ${c.ic}"></i>${c.l}</button>`;
+  });
+
+  // ── Store global dropdown ──
+  ctaH+=`<div class="gb-dd" id="gbStoreDD">
+    <button class="gb-btn" onclick="gbToggle('store',event)">
+      <i class="ti ti-building-store gbi"></i>
+      <span id="gbStoreTxt">${storeVal}</span>
+      <i class="ti ti-chevron-down gbcv"></i>
+    </button>
+    <div class="gb-panel" id="gbStorePanel">
+      <div class="gbpt">Select Store</div>
+      ${STORES.map((s,i)=>(i>0?'<div class="gbdiv"></div>':'')+`<div class="gbpi${s===storeVal?' sel':''}" onclick="gbSetStore('${s.replace(/'/g,"\\'")}')" ><i class="ti ti-building-store"></i>${s}</div>`).join('')}
+    </div>
+  </div>`;
+  // ── Language global dropdown ──
+  ctaH+=`<div class="gb-dd" id="gbLangDD">
+    <button class="gb-btn" onclick="gbToggle('lang',event)">
+      <i class="ti ti-language gbi"></i>
+      <span id="gbLangTxt">${langVal}</span>
+      <i class="ti ti-chevron-down gbcv"></i>
+    </button>
+    <div class="gb-panel rgt" id="gbLangPanel">
+      <div class="gbpt">Language</div>
+      ${LANGS.map(l=>`<div class="gbpi${l===langVal?' sel':''}" onclick="gbSetLang('${l}')"><i class="ti ti-${l===langVal?'check':'circle'}"></i>${l}</div>`).join('')}
+    </div>
+  </div>`;
+  ctaH+=`<div class="tbvsep"></div>`;
+  ctaH+=`<div class="tb-icon-btn" title="Notifications"><i class="ti ti-bell"></i><span class="tb-notif-badge"></span></div>`;
+
+  document.getElementById('tbRight').innerHTML=ctaH;
+  // profile click is on sidebar user row
+}
+
+// ── CHART HELPERS ──────────────────────────────────────────────────
+function genData(n,base,v){return Array.from({length:n},()=>Math.max(0,Math.round(base+Math.sin(Math.random()*3)*v+(Math.random()-.45)*v)));}
+function makePath(data,w,h,pad){
+  const cw=w-pad.l-pad.r,ch=h-pad.t-pad.b;
+  const max=Math.max(...data)*1.15||1;
+  const X=i=>pad.l+(i/(data.length-1))*cw;
+  const Y=v=>pad.t+ch-(v/max)*ch;
+  return {path:data.map((v,i)=>(i===0?'M':'L')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join(' '),
+          area:data.map((v,i)=>(i===0?'M':'L')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join(' ')+` L${X(data.length-1).toFixed(1)} ${pad.t+ch} L${pad.l} ${pad.t+ch} Z`,
+          X,Y,max,cw,ch};
+}
+function renderLineChart(el,d1,d2,c1,c2){
+  const w=el.offsetWidth||460,h=160;
+  const pad={t:16,r:12,b:28,l:34};
+  const p1=makePath(d1,w,h,pad),p2=makePath(d2,w,h,pad);
+  const max=Math.max(p1.max,p2.max);
+  const grids=[0,.25,.5,.75,1].map(pct=>{
+    const yy=(pad.t+(h-pad.t-pad.b)-(pct*(h-pad.t-pad.b))).toFixed(1);
+    return `<line x1="${pad.l}" y1="${yy}" x2="${w-pad.r}" y2="${yy}" stroke="#f0ebe3" stroke-width="1"/>
+    <text x="${pad.l-4}" y="${yy}" text-anchor="end" font-size="9" fill="#c4b8aa" dominant-baseline="middle">${Math.round(max*pct)}</text>`;
+  }).join('');
+  const now=new Date();
+  const xlabels=d1.map((_,i)=>{if(i%7!==0&&i!==d1.length-1) return '';const d=new Date(now);d.setDate(d.getDate()-(d1.length-1-i));
+    return `<text x="${p1.X(i).toFixed(1)}" y="${pad.t+(h-pad.t-pad.b)+16}" text-anchor="middle" font-size="9" fill="#c4b8aa">${d.getDate()} ${d.toLocaleString('default',{month:'short'})}</text>`;
+  }).join('');
+  el.innerHTML=`<svg width="${w}" height="${h}" style="display:block;overflow:visible">
+    ${grids}${xlabels}
+    <path d="${p1.area}" fill="${c1}15"/>
+    <path d="${p2.area}" fill="${c2}10"/>
+    <path d="${p1.path}" fill="none" stroke="${c1}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="${p2.path}" fill="none" stroke="${c2}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4,3"/>
+    <circle cx="${p1.X(d1.length-1).toFixed(1)}" cy="${p1.Y(d1[d1.length-1]).toFixed(1)}" r="3.5" fill="${c1}" stroke="#fff" stroke-width="1.5"/>
+  </svg>`;
+}
+function renderDonut(el,slices,size){
+  const r=size*.38,cx=size/2,cy=size/2,sw=size*.12,circ=2*Math.PI*r;
+  const total=slices.reduce((s,x)=>s+x.v,0)||1;
+  let off=0;
+  const paths=slices.map(s=>{
+    const frac=s.v/total,dash=frac*circ;
+    const p=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${s.c}" stroke-width="${sw}" stroke-dasharray="${dash.toFixed(1)} ${(circ-dash).toFixed(1)}" stroke-dashoffset="${(-off*circ).toFixed(1)}" transform="rotate(-90 ${cx} ${cy})"/>`;
+    off+=frac;return p;
+  }).join('');
+  el.innerHTML=`<div class="donut-wrap"><svg width="${size}" height="${size}" style="display:block">${paths}</svg>
+    <div class="donut-center"><div class="dc-num">${total}</div><div class="dc-lbl">total</div></div>
+  </div>`;
+}
+
+// ── RENDER MAIN ────────────────────────────────────────────────────
+function renderMain(){
+  const scroll=document.getElementById('mainScroll');
+  if(activePage==='overview') renderOverview(scroll);
+  else if(activePage==='analytics') renderAnalytics(scroll);
+  else if(['myaccount','billing','notifications','changepassword'].includes(activePage)) renderMyAccount(scroll);
+  else renderGeneric(scroll);
+}
+
+function renderOverview(scroll){
+  const rm=RM[role];
+  const firstG=getFirstG();
+  const isOwner=inG(role,'admin')||inG(role,'store');
+  const ind=INDUSTRIES[industry];
+  const h=new Date().getHours();
+  const greeting=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+
+  // Role-specific stats override for non-owner roles
+  let stats=ind.stats;
+  if(!isOwner){
+    const statOverrides={
+      ops:   [{l:'Orders Today',v:'14',c:'+12%',up:true,ic:'ti-shopping-bag',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Picking Pending',v:'7',c:'items',up:false,ic:'ti-stack',bg:'#fef9c3',ic_c:'#ca8a04'},{l:'Vehicles on Trip',v:'4',c:'of 8',up:true,ic:'ti-truck',bg:'#f5f3ff',ic_c:'#7c3aed'},{l:'Slot Utilisation',v:'76%',c:'today',up:true,ic:'ti-calendar-time',bg:'#f0fdf4',ic_c:'#16a34a'},{l:'Delayed Trips',v:'1',c:'alert',up:false,ic:'ti-alert-triangle',bg:'#fee2e2',ic_c:'#b91c1c'}],
+      mkt:   [{l:'Revenue',v:'₹24,850',c:'+8%',up:true,ic:'ti-currency-rupee',bg:'#dcfce7',ic_c:'#16a34a'},{l:'Customers',v:'9',c:'today',up:true,ic:'ti-users',bg:'#fce7f3',ic_c:'#be185d'},{l:'Campaigns Active',v:'5',c:'running',up:true,ic:'ti-speakerphone',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Abandoned Carts',v:'3',c:'₹4.2k',up:false,ic:'ti-shopping-cart-off',bg:'#fff7ed',ic_c:'#ea580c'},{l:'Conversion Rate',v:'3.2%',c:'+0.4%',up:true,ic:'ti-trending-up',bg:'#f0fdf4',ic_c:'#16a34a'}],
+      cat:   [{l:'Products',v:'54,334',c:'total',up:true,ic:'ti-package',bg:'#fff7ed',ic_c:'#b45309'},{l:'Missing Images',v:'22,441',c:'fix needed',up:false,ic:'ti-photo-off',bg:'#fee2e2',ic_c:'#b91c1c'},{l:'Missing Desc.',v:'19,491',c:'affects SEO',up:false,ic:'ti-file-off',bg:'#fef9c3',ic_c:'#ca8a04'},{l:'Categories',v:'300',c:'live',up:true,ic:'ti-category',bg:'#fce7f3',ic_c:'#be185d'},{l:'Brands',v:'3,375',c:'listed',up:true,ic:'ti-registered',bg:'#f5f3ff',ic_c:'#7c3aed'}],
+      cs:    [{l:'Customers',v:'9',c:'today',up:true,ic:'ti-users',bg:'#fce7f3',ic_c:'#be185d'},{l:'Abandoned Carts',v:'3',c:'₹4.2k',up:false,ic:'ti-shopping-cart-off',bg:'#fff7ed',ic_c:'#ea580c'},{l:'Wallet Txns',v:'12',c:'today',up:true,ic:'ti-wallet',bg:'#f0fdf4',ic_c:'#16a34a'},{l:'Orders Today',v:'14',c:'+12%',up:true,ic:'ti-shopping-bag',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Revenue',v:'₹24,850',c:'+8%',up:true,ic:'ti-currency-rupee',bg:'#dcfce7',ic_c:'#16a34a'}],
+      log:   [{l:'Vehicles Active',v:'4',c:'of 8',up:true,ic:'ti-car',bg:'#f5f3ff',ic_c:'#7c3aed'},{l:'Trips Today',v:'6',c:'planned',up:true,ic:'ti-route',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Runners on Duty',v:'12',c:'active',up:true,ic:'ti-run',bg:'#f0fdf4',ic_c:'#16a34a'},{l:'Delayed',v:'1',c:'alert',up:false,ic:'ti-alert-triangle',bg:'#fee2e2',ic_c:'#b91c1c'},{l:'Orders Dispatched',v:'9',c:'today',up:true,ic:'ti-check',bg:'#dcfce7',ic_c:'#16a34a'}],
+      wh:    [{l:'Picking Queue',v:'7',c:'pending',up:false,ic:'ti-stack',bg:'#fef9c3',ic_c:'#ca8a04'},{l:'Packing Queue',v:'5',c:'ready',up:false,ic:'ti-archive',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Checking Queue',v:'3',c:'items',up:false,ic:'ti-list-check',bg:'#f5f3ff',ic_c:'#7c3aed'},{l:'Dispatched',v:'9',c:'today',up:true,ic:'ti-check',bg:'#dcfce7',ic_c:'#16a34a'},{l:'Rack Locations',v:'48',c:'active',up:true,ic:'ti-server',bg:'#f0fdf4',ic_c:'#16a34a'}],
+      hr:    [{l:'Employees',v:'47',c:'total',up:true,ic:'ti-users',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Present Today',v:'39',c:'of 47',up:true,ic:'ti-check',bg:'#dcfce7',ic_c:'#16a34a'},{l:'Absent',v:'5',c:'today',up:false,ic:'ti-x',bg:'#fee2e2',ic_c:'#b91c1c'},{l:'On Leave',v:'3',c:'approved',up:true,ic:'ti-beach',bg:'#fef9c3',ic_c:'#ca8a04'},{l:'Leave Pending',v:'3',c:'approve',up:false,ic:'ti-clock',bg:'#fff7ed',ic_c:'#ea580c'}],
+    };
+    stats=statOverrides[firstG]||stats;
+  }
+
+  // Use unified stats for admin/store, role overrides for others
+  const UNIFIED_STATS=[
+    {l:'Orders Today',v:'142',c:'+18%',up:true,ic:'ti-shopping-bag',bg:'#dbeafe',ic_c:'#1d4ed8'},
+    {l:'Revenue',v:'₹68,420',c:'+11%',up:true,ic:'ti-currency-rupee',bg:'#dcfce7',ic_c:'#16a34a'},
+    {l:'Fill Rate',v:'94.2%',c:'+1.1%',up:true,ic:'ti-check-circle',bg:'#f0fdf4',ic_c:'#16a34a'},
+    {l:'Avg Delivery',v:'28 min',c:'-3 min',up:true,ic:'ti-clock',bg:'#f5f3ff',ic_c:'#7c3aed'},
+    {l:'Slot Utilisation',v:'76%',c:'today',up:true,ic:'ti-calendar-time',bg:'#fff7ed',ic_c:'#ea580c'},
+  ];
+  if(isOwner) stats=UNIFIED_STATS;
+
+  const d1=genData(30,142,40);
+  const d2=genData(30,114,32);
+
+  let html=`<div class="ov-greeting">
+    <h1>${greeting}, ${rm.n}</h1>
+    <p>${rm.store||'Zopping'} &nbsp;·&nbsp; ${new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</p>
+  </div>`;
+
+  // ── AI ASK BAR ──
+  html+=`<div class="ai-bar">
+    <div class="ai-bar-top">
+      <div class="ai-icon-wrap"><i class="ti ti-sparkles"></i></div>
+      <div>
+        <div class="ai-bar-label">Ask Zopping AI</div>
+        <div class="ai-bar-sub">Get instant insights about your store performance</div>
+      </div>
+    </div>
+    <div class="ai-input-row">
+      <input class="ai-input" id="aiInput" placeholder="Ask anything… e.g. Why did orders drop yesterday?" onkeydown="if(event.key==='Enter') askAI()">
+      <button class="ai-ask-btn" onclick="askAI()"><i class="ti ti-send"></i>Ask</button>
+    </div>
+    <div class="ai-chips">
+      <div class="ai-chip" onclick="askChip('Why did orders drop yesterday?')"><i class="ti ti-trending-down"></i>Why did orders drop?</div>
+      <div class="ai-chip" onclick="askChip('Which store has lowest fill rate this week?')"><i class="ti ti-building-store"></i>Lowest fill rate store</div>
+      <div class="ai-chip" onclick="askChip('What are my top 5 selling products?')"><i class="ti ti-trophy"></i>Top selling products</div>
+      <div class="ai-chip" onclick="askChip('Show slot utilisation for today')"><i class="ti ti-calendar-time"></i>Slot utilisation today</div>
+      <div class="ai-chip" onclick="askChip('How many abandoned carts can be recovered?')"><i class="ti ti-shopping-cart-off"></i>Recoverable carts</div>
+    </div>
+    <div class="ai-response" id="aiResponse">
+      <div class="ai-resp-head"><i class="ti ti-sparkles"></i> Zopping AI</div>
+      <div id="aiResponseText"></div>
+    </div>
+  </div>`;
+
+  // Stat cards
+  html+=`<div class="stat-row">${stats.map(s=>`
+    <div class="stat-card">
+      <div class="sc-top">
+        <div class="sc-icon" style="background:${s.bg}"><i class="ti ${s.ic}" style="color:${s.ic_c}"></i></div>
+        <span class="sc-chg ${s.up?'up':'dn'}">${s.c}</span>
+      </div>
+      <div class="sc-val">${s.v}</div>
+      <div class="sc-lbl">${s.l}</div>
+    </div>`).join('')}</div>`;
+
+  const DONUT_DATA=[{c:'#3b82f6',v:89,l:'Delivered'},{c:'#16a34a',v:32,l:'Dispatched'},{c:'#f97316',v:14,l:'Processing'},{c:'#ef4444',v:7,l:'Cancelled'}];
+  const HEALTH_DATA=[{dot:'#ef4444',t:'Low stock',s:'Below reorder threshold',n:2,c:'#ef4444'},{dot:'#f97316',t:'Slot near full',s:'Over 85% capacity',n:3,c:'#f97316'},{dot:'#eab308',t:'Expiring soon',s:'Within 7 days',n:5,c:'#eab308'}];
+
+  // Charts
+  html+=`<div class="charts-row">
+    <div class="card">
+      <div class="card-hd">
+        <div><div class="card-title">Orders & revenue trend</div><div class="card-sub">Last 30 days · ${storeVal}</div></div>
+        <a class="card-link" onclick="gotoPage('analytics')">View analytics <i class="ti ti-arrow-right" style="font-size:12px"></i></a>
+      </div>
+      <div id="lineChartEl"></div>
+      <div class="chart-legend">
+        <div class="leg-item"><span class="leg-dot" style="background:#16a34a"></span>Orders placed</div>
+        <div class="leg-item"><span class="leg-dot" style="background:#f97316;opacity:.7"></span>Orders fulfilled</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd">
+        <div><div class="card-title">Order mix</div><div class="card-sub">Last 30 days</div></div>
+      </div>
+      <div id="donutEl"></div>
+      <div style="margin-top:10px">
+        ${DONUT_DATA.map(s=>`<div class="dl-row">
+          <div class="dl-dot" style="background:${s.c}"></div>
+          <span class="dl-name">${s.l}</span>
+          <span class="dl-val">${s.v}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+
+  // Bottom
+  const healthItems=isOwner?HEALTH_DATA:[
+    {dot:'#f97316',t:'Action needed',s:'Check your queues',n:5,c:'#f97316'},
+    {dot:'#eab308',t:'Pending items',s:'Require your attention',n:3,c:'#eab308'},
+  ];
+  html+=`<div class="bottom-row">
+    <div class="card">
+      <div class="card-hd"><div><div class="card-title">Operations health</div><div class="card-sub">What needs attention</div></div></div>
+      <div style="margin-top:10px">
+        ${healthItems.map(h=>`<div class="health-item">
+          <span class="hi-dot" style="background:${h.dot}"></span>
+          <div class="hi-body"><div class="hi-title">${h.t}</div><div class="hi-sub">${h.s}</div></div>
+          <span class="hi-count" style="color:${h.c}">${h.n>999?(h.n/1000).toFixed(0)+'k':h.n}</span>
+          <i class="ti ti-chevron-right ha"></i>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><div class="card-title">Recent activity</div><a class="card-link">Latest events</a></div>
+      <div style="margin-top:10px">
+        ${ACTIVITIES.map(a=>`<div class="activity-item">
+          <div class="ai-ic" style="background:${a.bg}"><i class="ti ${a.ic}" style="color:${a.ic_c}"></i></div>
+          <div class="ai-body"><div class="ai-title">${a.t}</div><div class="ai-sub">${a.s}</div></div>
+          <div class="ai-time">${a.time}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+
+  scroll.innerHTML=html;
+
+  requestAnimationFrame(()=>{
+    const lc=document.getElementById('lineChartEl');
+    if(lc) renderLineChart(lc,d1,d2,'#16a34a','#f97316');
+    const dc=document.getElementById('donutEl');
+    if(dc) renderDonut(dc,DONUT_DATA,120);
+  });
+}
+
+function renderMyAccount(scroll){
+  const rm=RM[role];
+  const sub=activePage;
+  const myPages=[
+    {id:'myaccount',   l:'Personal Information',ic:'ti-user'},
+    {id:'billing',     l:'Billing Information',  ic:'ti-file-invoice'},
+    {id:'notifications',l:'Manage Notifications',ic:'ti-bell'},
+    {id:'balance',     l:'Account Balance',      ic:'ti-wallet'},
+    {id:'changepassword',l:'Change Password',    ic:'ti-lock'},
+    {id:'deleteaccount',l:'Delete Account',      ic:'ti-trash',danger:true},
+    {id:'__logout',    l:'Logout',               ic:'ti-logout',danger:true},
+  ];
+
+  let content='';
+  if(sub==='myaccount'){
+    content=`<div class="acc-sec-title">Personal Information</div>
+      <div class="form-group"><div class="form-label">Name *</div>
+        <input class="form-input" value="${rm.store||rm.n}"></div>
+      <div class="form-group"><div class="form-label">Email</div>
+        <input class="form-input" disabled value="lingraj@zopping.com">
+        <div class="form-hint">Customer, order and store communications will be mailed here</div></div>
+      <div class="form-group"><div class="form-label">Phone Number</div>
+        <input class="form-input" value="+91 98101 05183">
+        <div class="form-hint">Customer, order and store communications will be sent here</div></div>
+      <div class="form-group"><div class="form-label">Country</div>
+        <input class="form-input" disabled value="India">
+        <div class="form-hint">To change country, write to support@zopping.com</div></div>
+      <button class="form-save">Save</button>`;
+  } else if(sub==='billing'){
+    content=`<div class="acc-sec-title">Billing Information</div>
+      ${isEnterprise?`<div class="bc-ent">
+        <div style="display:flex;align-items:center;gap:6px;font-size:15px;font-weight:700;color:#92400e"><i class="ti ti-crown" style="color:#eab308"></i>Enterprise Plan</div>
+        <div style="font-size:12px;color:#6b7280;margin-top:4px">Need to scale further? Contact our sales team.</div>
+        <button class="form-save" style="margin-top:10px;background:#eab308;border:none">Contact Sales</button>
+      </div>`:
+      `<div class="billing-card">
+        <div class="bc-plan">Pro Plan — ₹9,999/month</div>
+        <div class="bc-sub">8 stores · 23 staff accounts · Renews 25 Jul 2026</div>
+        <button class="form-save" style="margin-top:10px">Upgrade to Enterprise</button>
+      </div>`}
+      <div class="form-group"><div class="form-label">GST Number</div><input class="form-input" placeholder="Enter GST number"></div>
+      <div class="form-group"><div class="form-label">Billing Address</div><input class="form-input" placeholder="Enter billing address"></div>
+      <button class="form-save">Save</button>`;
+  } else if(sub==='notifications'){
+    const notifs=[
+      {t:'Order Placed',s:'When a new order is placed',on:true},
+      {t:'Order Cancelled',s:'When an order is cancelled',on:true},
+      {t:'Payment Received',s:'When a payment is confirmed',on:true},
+      {t:'Low Stock Alert',s:'When inventory falls below threshold',on:false},
+      {t:'New Customer',s:'When a new customer registers',on:false},
+      {t:'Campaign Performance',s:'Weekly campaign summary',on:true},
+      {t:'Slot Utilisation',s:'Daily slot fill rate summary',on:false},
+    ];
+    content=`<div class="acc-sec-title">Manage Notifications</div>
+      ${notifs.map(n=>`<div class="notif-row">
+        <div class="notif-info"><div class="notif-title">${n.t}</div><div class="notif-sub">${n.s}</div></div>
+        <div class="notif-toggle${n.on?' on':''}" onclick="this.classList.toggle('on')"></div>
+      </div>`).join('')}`;
+  } else if(sub==='changepassword'){
+    content=`<div class="acc-sec-title">Change Password</div>
+      <div class="form-group"><div class="form-label">Current Password</div><input class="form-input" type="password" placeholder="Enter current password"></div>
+      <div class="form-group"><div class="form-label">New Password</div><input class="form-input" type="password" placeholder="Enter new password"></div>
+      <div class="form-group"><div class="form-label">Confirm New Password</div><input class="form-input" type="password" placeholder="Confirm new password"></div>
+      <button class="form-save">Update Password</button>`;
+  } else {
+    content=`<div class="acc-sec-title">Account Balance</div>
+      <div class="billing-card"><div class="bc-plan">₹2,400.00</div><div class="bc-sub">Available balance · Last topped up 12 Jun 2026</div></div>
+      <button class="form-save">Add Balance</button>`;
+  }
+
+  scroll.innerHTML=`<div class="myacc-layout">
+    <div class="myacc-sidebar">
+      <div class="myacc-profile">
+        <div class="myacc-av" style="background:${rm.c}25;color:${rm.c}">${rm.init}</div>
+        <div class="myacc-name">${rm.store||rm.n}</div>
+        <div class="myacc-email">lingraj@zopping.com · +91 98101 05183</div>
+      </div>
+      <div style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;padding:8px 16px 3px">My Account</div>
+      ${myPages.map(p=>`<div class="myacc-nav-item${activePage===p.id?' active':''}${p.danger?' danger':''}" onclick="gotoPage('${p.id}')">
+        <i class="ti ${p.ic}"></i>${p.l}
+      </div>`).join('')}
+    </div>
+    <div class="myacc-content">${content}</div>
+  </div>`;
+}
+
+// ── AI BAR FUNCTIONS ─────────────────────────────────────────────────
+const AI_ANSWERS={
+  'Why did orders drop yesterday?':'<strong>Orders dropped 12% yesterday</strong> compared to the day before. Key reasons:<br>• Corniche Road had 2 slots blocked due to a vehicle issue (–18 orders)<br>• Fill rate at Ajlan dipped to 78% — 4 orders cancelled due to OOS items<br>• Evening slot (6–8 PM) had 0 capacity — 9 orders were turned away.<br><span style="color:#16a34a;font-size:11px;font-weight:600">Recommended action: Open emergency capacity for tomorrow\'s 6 PM slot →</span>',
+  'Which store has lowest fill rate this week?':'<strong>Ajlan (V168) has the lowest fill rate at 84.2%</strong> this week.<br>Main culprits: Full Cream Milk 1L (OOS since Mon), Greek Yogurt 200g (3 left).<br>• Al Hamra: 91.8% | Khozam: 88.4% | Corniche Rd: 96.2%<br><span style="color:#16a34a;font-size:11px;font-weight:600">Restock Ajlan now to recover ~18 orders/day →</span>',
+  'What are my top 5 selling products?':'<strong>Top 5 products today</strong> by order count:<br>1. Fresh Whole Milk 1L — 28 orders (⚠️ low stock)<br>2. Basmati Rice 5kg — 21 orders<br>3. Greek Yogurt 200g — 18 orders (⚠️ 3 units left)<br>4. Organic Eggs (12) — 14 orders<br>5. Sourdough Bread — 11 orders<br><span style="color:#16a34a;font-size:11px;font-weight:600">Items #1 and #3 need immediate restocking →</span>',
+  'Show slot utilisation for today':'<strong>Slot utilisation for today:</strong><br>• 10:30–11:30 AM — 17/20 (85%) 🟠<br>• 12:30–01:30 PM — 14/25 (56%) 🟢<br>• 12:30–03:30 PM — 28/30 (93%) 🔴 Near full<br>• 03:30–05:00 PM — 31/35 (89%) 🟠<br>• 06:00–08:00 PM — 18/40 (45%) 🟢<br><span style="color:#16a34a;font-size:11px;font-weight:600">12:30–03:30 PM is at risk — consider blocking new orders →</span>',
+  'How many abandoned carts can be recovered?':'<strong>3 abandoned carts totalling ₹6,830</strong> are recoverable right now.<br>• Rahul M. — ₹3,850 (28 min ago, 3 items) — high recovery chance<br>• Priya S. — ₹2,100 (45 min ago, 5 items) — medium chance<br>• Anjali K. — ₹880 (12 min ago) — high recovery chance<br>Historical recovery rate with coupon: <strong>68%</strong> → Expected recovery: <strong>₹4,644</strong><br><span style="color:#16a34a;font-size:11px;font-weight:600">Send SAVE10 coupon to all 3 now →</span>',
+};
+function askAI(){
+  const input=document.getElementById('aiInput');
+  const q=input?.value?.trim();
+  if(!q) return;
+  showAIResponse(q);
+  if(input) input.value='';
+}
+function askChip(q){
+  const input=document.getElementById('aiInput');
+  if(input) input.value=q;
+  showAIResponse(q);
+}
+function showAIResponse(q){
+  const resp=document.getElementById('aiResponse');
+  const txt=document.getElementById('aiResponseText');
+  if(!resp||!txt) return;
+  const answer=AI_ANSWERS[q]||`<strong>Analysing your query…</strong><br>Based on your store data for ${new Date().toLocaleDateString('en-US',{weekday:'long'})}: orders are tracking <strong>+18% vs yesterday</strong>, revenue at <strong>₹68,420</strong>, and fill rate across all 8 stores is <strong>93.2%</strong>. What specific metric would you like to drill into?`;
+  txt.innerHTML=answer;
+  resp.classList.add('show');
+}
+
+// ── ANALYTICS PAGE ────────────────────────────────────────────────────
+let anWidgets=['an_revenue','an_orders','an_customers','an_conv','an_aov','an_chart','an_funnel','an_top_products','an_by_store','an_by_hour','an_campaigns','an_cohort'];
+let anPanelOpen=false;
+
+const AN_DEFS={
+  an_revenue:   {title:'Total Revenue',    ic:'ti-currency-rupee', bg:'#dcfce7', ic_c:'#16a34a', span:1, desc:'Gross revenue for selected period'},
+  an_orders:    {title:'Total Orders',     ic:'ti-shopping-bag',   bg:'#dbeafe', ic_c:'#1d4ed8', span:1, desc:'Order count for selected period'},
+  an_customers: {title:'New Customers',    ic:'ti-user-plus',      bg:'#fce7f3', ic_c:'#be185d', span:1, desc:'Newly acquired customers'},
+  an_conv:      {title:'Conversion Rate',  ic:'ti-trending-up',    bg:'#f5f3ff', ic_c:'#7c3aed', span:1, desc:'Visitor to order conversion'},
+  an_aov:       {title:'Avg Order Value',  ic:'ti-receipt',        bg:'#fff7ed', ic_c:'#ea580c', span:1, desc:'Average value per order'},
+  an_chart:     {title:'Revenue & Orders Trend', ic:'ti-chart-line', bg:'#dcfce7', ic_c:'#16a34a', span:3, desc:'30-day revenue and order count chart'},
+  an_funnel:    {title:'Order Status Funnel', ic:'ti-filter', bg:'#dbeafe', ic_c:'#1d4ed8', span:1, desc:'Order status breakdown'},
+  an_top_products:{title:'Top Products',   ic:'ti-trophy',         bg:'#fff7ed', ic_c:'#ea580c', span:1, desc:'Best-selling products this period'},
+  an_by_store:  {title:'Revenue by Store', ic:'ti-building-store', bg:'#f0fdf4', ic_c:'#16a34a', span:1, desc:'Store-wise revenue breakdown'},
+  an_by_hour:   {title:'Orders by Hour',   ic:'ti-clock',          bg:'#eff6ff', ic_c:'#3b82f6', span:2, desc:'Hourly order demand heatmap'},
+  an_campaigns: {title:'Campaign Impact',  ic:'ti-speakerphone',   bg:'#f0fdf4', ic_c:'#16a34a', span:1, desc:'Revenue attributed to campaigns'},
+  an_cohort:    {title:'Customer Retention', ic:'ti-users-group',  bg:'#fce7f3', ic_c:'#be185d', span:2, desc:'Cohort-based retention analysis'},
+};
+
+function renderAnalytics(scroll){
+  const rm=RM[role];
+  const kpis=[
+    {label:'Total Revenue',val:'₹68,420',chg:'+11%',up:true,c:'#16a34a',bg:'#dcfce7'},
+    {label:'Total Orders',val:'142',chg:'+18%',up:true,c:'#1d4ed8',bg:'#dbeafe'},
+    {label:'New Customers',val:'84',chg:'+24%',up:true,c:'#be185d',bg:'#fce7f3'},
+    {label:'Conversion Rate',val:'3.8%',chg:'+0.6%',up:true,c:'#7c3aed',bg:'#f5f3ff'},
+    {label:'Avg Order Value',val:'₹482',chg:'+8%',up:true,c:'#ea580c',bg:'#fff7ed'},
+  ];
+
+  const funnel=[{l:'New',n:46,c:'#3b82f6',p:100},{l:'Picking',n:38,c:'#8b5cf6',p:83},{l:'Packing',n:28,c:'#f97316',p:61},{l:'Delivered',n:89,c:'#16a34a',p:100},{l:'Cancelled',n:7,c:'#ef4444',p:15}];
+  const products=[{n:'Fresh Whole Milk 1L',o:28,rev:'₹6,720',trend:'up'},{n:'Basmati Rice 5kg',o:21,rev:'₹5,040',trend:'up'},{n:'Greek Yogurt 200g',o:18,rev:'₹2,880',trend:'dn'},{n:'Organic Eggs (12)',o:14,rev:'₹2,100',trend:'up'},{n:'Sourdough Bread',o:11,rev:'₹1,650',trend:'up'},{n:'Olive Oil 500ml',o:9,rev:'₹3,150',trend:'dn'},{n:'Fresh OJ 1L',o:8,rev:'₹960',trend:'up'},{n:'Whole Wheat Pasta',o:7,rev:'₹840',trend:'up'}];
+  const stores=[{n:'Corniche Rd, V101',rev:'₹18,240',pct:100,c:'#16a34a'},{n:'Al Hamra, V502',rev:'₹14,820',pct:81,c:'#22c55e'},{n:'Shola, V123',rev:'₹11,200',pct:61,c:'#3b82f6'},{n:'Khozam, V161',rev:'₹9,400',pct:52,c:'#8b5cf6'},{n:'Ajlan, V168',rev:'₹7,800',pct:43,c:'#f97316'},{n:'Al Aarid, V167',rev:'₹6,960',pct:38,c:'#94a3b8'}];
+  const hours=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+  const hourVals=hours.map(h=>{if(h<6)return Math.max(0,Math.round(2+(Math.random()-.4)*2));if(h<9)return Math.max(0,Math.round(12+(Math.random()-.4)*8));if(h<12)return Math.max(0,Math.round(28+(Math.random()-.4)*10));if(h<14)return Math.max(0,Math.round(38+(Math.random()-.4)*12));if(h<17)return Math.max(0,Math.round(22+(Math.random()-.4)*8));if(h<20)return Math.max(0,Math.round(32+(Math.random()-.4)*10));if(h<22)return Math.max(0,Math.round(18+(Math.random()-.4)*6));return Math.max(0,Math.round(8+(Math.random()-.4)*4));});
+  const hmMax=Math.max(...hourVals);
+  const hmCols=['#f0fdf4','#bbf7d0','#86efac','#4ade80','#22c55e','#16a34a','#15803d'];
+  const hmLbls=['12a','1a','2a','3a','4a','5a','6a','7a','8a','9a','10a','11a','12p','1p','2p','3p','4p','5p','6p','7p','8p','9p','10p','11p'];
+  const camps=[{n:'Summer Sale 20%',orders:42,rev:'₹18,240',cvr:'4.2%',roas:'3.8×'},{n:'Loyalty Reward',orders:28,rev:'₹12,800',cvr:'3.8%',roas:'2.9×'},{n:'New User Offer',orders:16,rev:'₹6,400',cvr:'5.1%',roas:'4.2×'},{n:'Weekend Flash',orders:11,rev:'₹3,960',cvr:'2.9%',roas:'2.1×'},{n:'Bulk Buy Deal',orders:8,rev:'₹9,200',cvr:'6.4%',roas:'5.1×'}];
+
+  let widH=anWidgets.map(id=>{
+    const wd=AN_DEFS[id]; if(!wd) return '';
+    let inner='';
+    if(id==='an_revenue') inner=`<div class="an-kpi-val">₹68,420</div><div class="an-kpi-lbl">Total Revenue</div><span class="an-kpi-chg" style="background:#dcfce7;color:#15803d">↑ +11% vs yesterday</span>`;
+    else if(id==='an_orders') inner=`<div class="an-kpi-val">142</div><div class="an-kpi-lbl">Total Orders</div><span class="an-kpi-chg" style="background:#dbeafe;color:#1d4ed8">↑ +18% vs yesterday</span>`;
+    else if(id==='an_customers') inner=`<div class="an-kpi-val">84</div><div class="an-kpi-lbl">New Customers</div><span class="an-kpi-chg" style="background:#fce7f3;color:#be185d">↑ +24% vs yesterday</span>`;
+    else if(id==='an_conv') inner=`<div class="an-kpi-val">3.8%</div><div class="an-kpi-lbl">Conversion Rate</div><span class="an-kpi-chg" style="background:#f5f3ff;color:#7c3aed">↑ +0.6%</span>`;
+    else if(id==='an_aov') inner=`<div class="an-kpi-val">₹482</div><div class="an-kpi-lbl">Avg Order Value</div><span class="an-kpi-chg" style="background:#fff7ed;color:#ea580c">↑ +₹38</span>`;
+    else if(id==='an_chart') inner=`<div id="anChartEl"></div><div style="display:flex;gap:14px;margin-top:8px;flex-wrap:wrap"><div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#64748b"><span style="width:8px;height:8px;border-radius:50%;background:#16a34a;display:inline-block"></span>Revenue</div><div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#64748b"><span style="width:8px;height:8px;border-radius:50%;background:#3b82f6;display:inline-block"></span>Orders</div></div>`;
+    else if(id==='an_funnel') inner=funnel.map(r=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:11px;color:#475569;width:68px;flex-shrink:0;font-weight:500">${r.l}</span><div style="flex:1;height:18px;background:#f5f2ee;border-radius:4px;overflow:hidden"><div style="width:${r.p}%;height:100%;background:${r.c};border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px"><span style="font-size:10px;font-weight:700;color:#fff">${r.n}</span></div></div><span style="font-size:10.5px;font-weight:600;color:#6b7280;width:28px;text-align:right">${r.p}%</span></div>`).join('');
+    else if(id==='an_top_products') inner=`<table class="an-table"><tr><th>#</th><th>Product</th><th>Orders</th><th>Revenue</th><th>Trend</th></tr>${products.map((p,i)=>`<tr><td style="color:#9ca3af;font-weight:600">${i+1}</td><td style="font-weight:500;color:#111827;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.n}</td><td><strong>${p.o}</strong></td><td style="color:#16a34a;font-weight:600">${p.rev}</td><td><i class="ti ti-trending-${p.trend}" style="font-size:13px;color:${p.trend==='up'?'#16a34a':'#ef4444'}"></i></td></tr>`).join('')}</table>`;
+    else if(id==='an_by_store') inner=stores.map(s=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:10.5px;color:#374151;width:90px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.n}</span><div style="flex:1;height:7px;background:#f1ede6;border-radius:4px;overflow:hidden"><div style="width:${s.pct}%;height:100%;background:${s.c};border-radius:4px"></div></div><span style="font-size:10.5px;font-weight:700;color:${s.c};width:44px;text-align:right;flex-shrink:0">${s.rev}</span></div>`).join('');
+    else if(id==='an_by_hour') inner=`<div style="display:grid;grid-template-columns:repeat(12,1fr);gap:3px">${hourVals.map((v,i)=>{const ci=Math.min(Math.floor((v/hmMax)*6),6);return `<div style="height:26px;border-radius:4px;background:${hmCols[ci]};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:${ci>3?'#fff':'#374151'}" title="${hmLbls[i]}: ${v}">${v}</div>`;}).join('')}</div><div style="display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin-top:3px">${hmLbls.map(l=>`<div style="font-size:8.5px;color:#94a3b8;text-align:center">${l}</div>`).join('')}</div><div style="display:flex;align-items:center;gap:5px;margin-top:8px;font-size:10.5px;color:#9ca3af"><span>Low</span>${hmCols.map(c=>`<div style="width:14px;height:7px;border-radius:2px;background:${c}"></div>`).join('')}<span>High</span><span style="margin-left:auto">Peak: 12–2 PM · ${hmMax}/hr</span></div>`;
+    else if(id==='an_campaigns') inner=`<table class="an-table"><tr><th>Campaign</th><th>Orders</th><th>Revenue</th><th>CVR</th><th>ROAS</th></tr>${camps.map(c=>`<tr><td style="font-weight:600;color:#111827;font-size:11px">${c.n}</td><td><strong>${c.orders}</strong></td><td style="color:#16a34a;font-weight:600">${c.rev}</td><td>${c.cvr}</td><td style="color:#7c3aed;font-weight:600">${c.roas}</td></tr>`).join('')}</table>`;
+    else if(id==='an_cohort') inner=`<div style="font-size:12px;color:#374151;margin-bottom:10px">Customer retention by first-order month</div>
+      <div style="overflow-x:auto"><table class="an-table" style="min-width:420px"><tr><th>Cohort</th><th>Month 0</th><th>Month 1</th><th>Month 2</th><th>Month 3</th></tr>
+      ${[{m:'Apr 2026',vals:[100,42,28,18]},{m:'Mar 2026',vals:[100,38,24,15]},{m:'Feb 2026',vals:[100,45,31,21]},{m:'Jan 2026',vals:[100,40,26,17]}].map(r=>`<tr><td style="font-weight:600;color:#374151">${r.m}</td>${r.vals.map((v,i)=>`<td><span style="padding:2px 7px;border-radius:8px;font-weight:700;font-size:11px;background:${v===100?'#dcfce7':v>35?'#dbeafe':v>25?'#fef9c3':'#fee2e2'};color:${v===100?'#15803d':v>35?'#1d4ed8':v>25?'#ca8a04':'#b91c1c'}">${v}%</span></td>`).join('')}</tr>`).join('')}
+      </table></div>`;
+    return `<div class="an-card${wd.span>1?' style="grid-column:span '+wd.span+'"':''}" id="anw_${id}">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="width:28px;height:28px;border-radius:7px;background:${wd.bg};display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0"><i class="ti ${wd.ic}" style="color:${wd.ic_c}"></i></div>
+        <div style="font-size:12.5px;font-weight:700;color:#111827;flex:1">${wd.title}</div>
+        <button onclick="removeAnWidget('${id}')" style="border:none;background:transparent;cursor:pointer;color:#d1d5db;font-size:14px;padding:2px" title="Remove"><i class="ti ti-x"></i></button>
+      </div>
+      ${inner}
+    </div>`;
+  }).join('');
+
+  const availForAdd=Object.entries(AN_DEFS).filter(([id])=>!anWidgets.includes(id));
+
+  scroll.innerHTML=`<div style="padding:16px 20px 24px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+      <div style="display:flex;background:#f1ede6;border-radius:8px;padding:2px;gap:1px">
+        ${['Today','7D','30D','Custom'].map((l,i)=>`<div style="font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;color:${i===0?'#111827':'#6b7280'};font-weight:${i===0?'600':'500'};background:${i===0?'#fff':'transparent'};box-shadow:${i===0?'0 1px 2px rgba(0,0,0,.08)':'none'}" onclick="document.querySelectorAll('.an-dp').forEach(d=>d.style.background='transparent');this.style.background='#fff'">${l}</div>`).join('')}
+      </div>
+      <select style="font-size:11.5px;padding:5px 10px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;color:#374151;outline:none;cursor:pointer">
+        <option>All Stores (8)</option><option>Corniche Road, V101</option><option>Al Hamra, V502</option>
+      </select>
+      <select style="font-size:11.5px;padding:5px 10px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;color:#374151;outline:none;cursor:pointer">
+        <option>vs Yesterday</option><option>vs Last Week</option><option>vs Last Month</option>
+      </select>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        ${availForAdd.length?`<div style="display:flex;gap:6px;flex-wrap:wrap">${availForAdd.slice(0,3).map(([id,wd])=>`<button onclick="addAnWidget('${id}')" style="display:flex;align-items:center;gap:5px;padding:5px 10px;border:1.5px dashed #d1d5db;border-radius:8px;background:#fff;color:#6b7280;font-size:11px;cursor:pointer;font-family:inherit;transition:all .1s" onmouseover="this.style.borderColor='#16a34a';this.style.color='#16a34a'" onmouseout="this.style.borderColor='#d1d5db';this.style.color='#6b7280'"><i class="ti ${wd.ic}" style="font-size:13px"></i>${wd.title}</button>`).join('')}</div>`:''}
+        <button onclick="openAnPanel()" style="display:flex;align-items:center;gap:5px;padding:6px 13px;border:1.5px solid #16a34a;border-radius:8px;background:#f0fdf4;color:#16a34a;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit" onmouseover="this.style.background='#16a34a';this.style.color='#fff'" onmouseout="this.style.background='#f0fdf4';this.style.color='#16a34a'"><i class="ti ti-layout-grid-add" style="font-size:14px"></i>Add Widget</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">${widH}</div>
+  </div>`;
+
+  requestAnimationFrame(()=>{
+    const el=document.getElementById('anChartEl');
+    if(el){
+      const w=el.offsetWidth||700,h=150;
+      const d1=genData(30,68000,20000),d2=genData(30,142,40);
+      renderLineChart(el,d1,d2,'#16a34a','#3b82f6');
+    }
+  });
+}
+
+function removeAnWidget(id){anWidgets=anWidgets.filter(w=>w!==id);if(activePage==='analytics')renderMain();}
+function addAnWidget(id){if(!anWidgets.includes(id)){anWidgets.push(id);if(activePage==='analytics')renderMain();}}
+function openAnPanel(){
+  const avail=Object.entries(AN_DEFS).filter(([id])=>!anWidgets.includes(id));
+  if(!avail.length){alert('All widgets are already on the page.');return;}
+  const chosen=prompt('Add widget (type name):\n'+avail.map(([id,wd])=>id+' — '+wd.title).join('\n'));
+  if(chosen&&AN_DEFS[chosen]){addAnWidget(chosen);}
+}
+
+function renderGeneric(scroll){
+  const item=NAV.flatMap(g=>g.items).find(x=>x.id===activePage);
+  const rm=RM[role];
+  scroll.innerHTML=`<div style="text-align:center;padding:48px 20px;color:#9ca3af">
+    <i class="ti ${item?.ic||'ti-box'}" style="font-size:56px;display:block;margin-bottom:12px;color:#ddd6cc"></i>
+    <div style="font-size:16px;font-weight:700;color:#374151;margin-bottom:6px">${item?.l||activePage}</div>
+    <div style="font-size:13px">${item?.note||'Content for this section will appear here.'}</div>
+    ${isItemRO(item||{})?`<div style="margin-top:12px;background:#fffbeb;border-radius:8px;padding:10px 16px;font-size:12px;color:#92400e;display:inline-block">
+      <i class="ti ti-eye" style="font-size:14px;vertical-align:-2px"></i> View only for ${rm.l}</div>`:''}
+  </div>`;
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────────────
+function gotoPage(id){
+  if(id==='__logout') return;
+  activePage=id; profileOpen=false;
+  document.getElementById('profileDD').style.display='none';
+  renderNav(); renderTopbar(); renderMain();
+  window.scrollTo(0,0);
+}
+
+function setIndustry(ind){
+  industry=ind;
+  if(activePage==='overview') renderMain();
+}
+
+function setRole(r){
+  role=r;
+  document.querySelectorAll('.rbtn').forEach(b=>b.classList.toggle('a',b.dataset.role===r));
+  activePage='overview'; profileOpen=false;
+  document.getElementById('profileDD').style.display='none';
+  // update store selector text
+  const rm=RM[r];
+  storeVal=rm.store||'All Stores'; const gst=document.getElementById('gbStoreTxt'); if(gst) gst.textContent=storeVal;
+  renderNav(); renderTopbar(); renderMain();
+}
+
+// ── WINDOW RESIZE ──────────────────────────────────────────────────
+window.addEventListener('resize',()=>{if(activePage==='overview')renderMain();});
+
+// ── INIT ───────────────────────────────────────────────────────────
+document.querySelectorAll('.rbtn').forEach(b=>b.addEventListener('click',()=>setRole(b.dataset.role)));
+setRole('STORE_MANAGER');
+</script>
+</body>
+</html>
