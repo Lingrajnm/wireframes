@@ -5,350 +5,385 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Daily Store Report — SODHI'S | SEC-55 | GURUGRAM</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#1e2240;font-size:13px;}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-.page{max-width:860px;margin:24px auto;}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  background: #f4f5f7;
+  color: #1a1a2e;
+  font-size: 13px;
+  line-height: 1.5;
+}
 
-/* ── HEADER CARD ── */
-.hdr-card{background:linear-gradient(135deg,#1a2e1a 0%,#2d4a2d 60%,#3a5e3a 100%);border-radius:12px;padding:24px 28px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;}
-.hdr-card::before{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.04);}
-.hdr-card::after{content:'';position:absolute;right:60px;bottom:-60px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,0.03);}
-.hdr-logo{font-size:20px;font-weight:900;color:#6fcf6f;letter-spacing:-0.5px;margin-bottom:6px;}
-.hdr-store{font-size:22px;font-weight:800;color:#fff;line-height:1.2;}
-.hdr-meta{font-size:12px;color:rgba(255,255,255,0.55);margin-top:6px;display:flex;gap:14px;flex-wrap:wrap;}
-.hdr-meta span{display:flex;align-items:center;gap:4px;}
-.hdr-right{text-align:right;z-index:1;}
-.health-score{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px 18px;text-align:center;}
-.health-lbl{font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;}
-.health-val{font-size:13px;font-weight:700;}
-.health-val.warn{color:#ffd166;}
-.health-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle;}
-.dot-warn{background:#ffd166;}
-.dot-good{background:#6fcf6f;}
-.dot-bad{background:#ff6b6b;}
+/* ── TYPE SCALE ── */
+/* 22px  — page title         */
+/* 15px  — section title      */
+/* 13px  — body / table       */
+/* 11px  — label / meta       */
+/* 10px  — uppercase caps     */
 
-/* ── KPI ROW ── */
-.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px;}
-.kpi-card{background:#fff;border-radius:10px;padding:20px 16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.07);position:relative;overflow:hidden;}
-.kpi-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;}
-.kpi-card.good::after{background:linear-gradient(90deg,#4caf50,#8bc34a);}
-.kpi-card.warn::after{background:linear-gradient(90deg,#ff9800,#ffc107);}
-.kpi-card.bad::after{background:linear-gradient(90deg,#f44336,#e91e63);}
-.kpi-card.neutral::after{background:linear-gradient(90deg,#90a4ae,#b0bec5);}
-.kpi-val{font-size:32px;font-weight:900;line-height:1;letter-spacing:-1px;}
-.kpi-val.good{color:#2e7d32;}
-.kpi-val.warn{color:#e65100;}
-.kpi-val.bad{color:#c62828;}
-.kpi-val.neutral{color:#37474f;}
-.kpi-lbl{font-size:10px;color:#90a4ae;text-transform:uppercase;letter-spacing:.5px;margin-top:6px;}
-.kpi-sub{font-size:11px;font-weight:600;margin-top:6px;display:inline-flex;align-items:center;gap:4px;padding:2px 0;}
-.kpi-sub .kd{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.kpi-sub.s-good{color:#2e7d32;} .kpi-sub.s-good .kd{background:#4caf50;}
-.kpi-sub.s-warn{color:#e65100;} .kpi-sub.s-warn .kd{background:#ff9800;}
-.kpi-sub.s-bad{color:#c62828;} .kpi-sub.s-bad .kd{background:#f44336;}
-.kpi-sub.s-grey{color:#90a4ae;} .kpi-sub.s-grey .kd{background:#b0bec5;}
+.page { max-width: 820px; margin: 24px auto; }
 
-/* ── RING ── (SVG circles for on-time and fill rate) */
-.ring-wrap{display:flex;align-items:center;justify-content:center;margin:4px 0 2px;}
-.ring-wrap svg{transform:rotate(-90deg);}
-.ring-center{position:absolute;font-size:22px;font-weight:900;letter-spacing:-1px;}
-.ring-container{position:relative;display:flex;align-items:center;justify-content:center;}
-
-/* ── SECTION CARD ── */
-.card{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.07);margin-bottom:12px;overflow:hidden;}
-.card-hdr{padding:14px 20px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;}
-.card-hdr-title{font-size:13px;font-weight:700;color:#1e2240;}
-.card-hdr-meta{font-size:11px;color:#90a4ae;}
-.card-body{padding:16px 20px;}
-
-/* ── PILL ── */
-.pill{font-size:10px;font-weight:600;padding:2px 9px;border-radius:10px;border:1px solid;}
-.pill-green{background:#e8f5e9;color:#2e7d32;border-color:#c8e6c9;}
-.pill-orange{background:#fff3e0;color:#e65100;border-color:#ffe0b2;}
-.pill-red{background:#ffebee;color:#c62828;border-color:#ffcdd2;}
-.pill-grey{background:#f5f5f5;color:#78909c;border-color:#e0e0e0;}
-.pill-blue{background:#e3f2fd;color:#1565c0;border-color:#bbdefb;}
+/* ── HEADER ── */
+.hdr {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e8eaed;
+  padding: 20px 24px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.hdr-left .logo { font-size: 13px; font-weight: 700; color: #4caf50; letter-spacing: .2px; margin-bottom: 4px; }
+.hdr-left .store { font-size: 20px; font-weight: 800; color: #1a1a2e; letter-spacing: -.3px; }
+.hdr-left .meta { font-size: 11px; color: #8f95a3; margin-top: 4px; }
+.hdr-left .meta span { margin-right: 14px; }
+.hdr-right { text-align: right; }
+.health { font-size: 12px; font-weight: 600; }
+.health-label { font-size: 10px; color: #8f95a3; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px; }
+.h-warn { color: #d97706; }
+.h-good { color: #16a34a; }
+.h-bad  { color: #dc2626; }
 
 /* ── ALERT ── */
-.alert-bar{background:linear-gradient(90deg,#fff8e1,#fffde7);border-left:4px solid #ff9800;border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
-.alert-bar .ai{font-size:18px;}
-.alert-bar .at{font-size:12px;color:#5d4037;font-weight:500;}
-.alert-bar .at strong{color:#e65100;}
+.alert {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-left: 3px solid #d97706;
+  border-radius: 8px;
+  padding: 11px 16px;
+  font-size: 12px;
+  color: #78350f;
+  margin-bottom: 10px;
+}
+.alert strong { color: #b45309; }
 
-/* ── STATS GRID ── */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;}
-.stat{background:#f8faf8;border:1px solid #e8f5e9;border-radius:8px;padding:10px 12px;text-align:center;}
-.stat .sv{font-size:20px;font-weight:800;color:#2e7d32;}
-.stat .sl{font-size:10px;color:#90a4ae;text-transform:uppercase;margin-top:2px;letter-spacing:.3px;}
+/* ── KPI ROW ── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.kpi {
+  background: #fff;
+  border: 1px solid #e8eaed;
+  border-radius: 10px;
+  padding: 16px 14px;
+}
+.kpi-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: #8f95a3;
+  margin-bottom: 8px;
+}
+.kpi-value {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.5px;
+}
+.kv-neutral { color: #1a1a2e; }
+.kv-bad     { color: #dc2626; }
+.kv-good    { color: #16a34a; }
+.kv-warn    { color: #d97706; }
+.kpi-context {
+  font-size: 11px;
+  margin-top: 5px;
+  color: #8f95a3;
+}
+.kpi-context.ctx-bad  { color: #dc2626; }
+.kpi-context.ctx-good { color: #16a34a; }
+.kpi-context.ctx-warn { color: #d97706; }
+
+/* ── CARD ── */
+.card {
+  background: #fff;
+  border: 1px solid #e8eaed;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.card-head {
+  padding: 13px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-title { font-size: 13px; font-weight: 700; color: #1a1a2e; }
+.card-meta  { font-size: 11px; color: #8f95a3; }
+.card-body  { padding: 16px 20px; }
+
+/* ── INLINE STATS ── */
+.inline-stats {
+  display: flex;
+  gap: 0;
+  border: 1px solid #e8eaed;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.is-item {
+  flex: 1;
+  padding: 10px 12px;
+  text-align: center;
+  border-right: 1px solid #e8eaed;
+}
+.is-item:last-child { border-right: none; }
+.is-val { font-size: 18px; font-weight: 800; color: #1a1a2e; }
+.is-val.good { color: #16a34a; }
+.is-val.bad  { color: #dc2626; }
+.is-val.mute { color: #8f95a3; }
+.is-lbl { font-size: 10px; color: #8f95a3; text-transform: uppercase; letter-spacing: .4px; margin-top: 2px; }
+
+/* ── TIMELINE ── */
+.timeline-wrap {
+  background: #f8f9fb;
+  border: 1px solid #e8eaed;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+.tl-heading {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: #8f95a3;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.tl-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+.tl-row:last-child { margin-bottom: 0; }
+.tl-name { font-size: 11px; font-weight: 600; color: #3d4354; width: 116px; flex-shrink: 0; }
+.tl-track { flex: 1; height: 6px; background: #e8eaed; border-radius: 3px; position: relative; }
+.tl-bar   { position: absolute; height: 100%; border-radius: 3px; background: #4caf50; }
+.tl-dur   { font-size: 10px; color: #8f95a3; width: 44px; text-align: right; flex-shrink: 0; }
 
 /* ── TABLE ── */
-table{width:100%;border-collapse:collapse;font-size:12px;}
-th{padding:8px 10px;text-align:left;font-size:10px;font-weight:700;color:#90a4ae;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid #f0f0f0;white-space:nowrap;}
-td{padding:10px 10px;border-bottom:1px solid #f8f8f8;vertical-align:middle;}
-tr:last-child td{border-bottom:none;}
-th.c,td.c{text-align:center;}
-tr:hover td{background:#fafff9;}
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th {
+  padding: 7px 10px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color: #8f95a3;
+  border-bottom: 1px solid #e8eaed;
+  white-space: nowrap;
+}
+td { padding: 9px 10px; border-bottom: 1px solid #f4f5f7; vertical-align: middle; color: #1a1a2e; }
+tr:last-child td { border-bottom: none; }
+th.c, td.c { text-align: center; }
+tr:hover td { background: #fafbfc; }
 
-.re-name{font-weight:600;color:#1e2240;display:flex;align-items:center;gap:7px;}
-.avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;}
-.av-green{background:linear-gradient(135deg,#4caf50,#8bc34a);}
-.av-blue{background:linear-gradient(135deg,#2196f3,#03a9f4);}
-.av-purple{background:linear-gradient(135deg,#9c27b0,#673ab7);}
+.agent-cell { display: flex; align-items: center; gap: 8px; }
+.avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  font-size: 10px; font-weight: 700;
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.av-a { background: #4caf50; }
+.av-b { background: #2196f3; }
+.av-c { background: #9c27b0; }
+.av-d { background: #ff9800; }
+.av-e { background: #00bcd4; }
 
-/* shift bar */
-.shift-wrap{display:flex;align-items:center;gap:6px;min-width:120px;}
-.shift-track{flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden;position:relative;}
-.shift-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#4caf50,#8bc34a);}
+.agent-name { font-weight: 600; font-size: 12px; color: #1a1a2e; }
+.shift-time { font-size: 11px; color: #8f95a3; }
+.num-bold   { font-weight: 700; }
+.good-text  { color: #16a34a; font-weight: 600; }
+.bad-text   { color: #dc2626; font-weight: 600; }
+.warn-text  { color: #d97706; font-weight: 600; }
+.mute-text  { color: #8f95a3; }
 
-/* fill rate mini bar */
-.fr-wrap{display:flex;align-items:center;gap:6px;}
-.fr-bar{flex:1;height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden;}
-.fr-fill{height:100%;border-radius:4px;}
-.fr-fill.g{background:linear-gradient(90deg,#4caf50,#8bc34a);}
-.fr-fill.o{background:linear-gradient(90deg,#ff9800,#ffc107);}
-.fr-fill.r{background:linear-gradient(90deg,#f44336,#e57373);}
-.fr-val{font-size:11px;font-weight:700;min-width:38px;text-align:right;}
+/* mini fill bar inside table */
+.fb-wrap { display: flex; align-items: center; gap: 6px; }
+.fb-track { flex: 1; height: 4px; background: #e8eaed; border-radius: 2px; overflow: hidden; }
+.fb-fill  { height: 100%; border-radius: 2px; }
+.fb-fill.g { background: #4caf50; }
+.fb-fill.o { background: #d97706; }
+.fb-fill.r { background: #dc2626; }
+.fb-val   { font-size: 11px; font-weight: 700; min-width: 36px; text-align: right; }
 
-/* badge */
-.badge{display:inline-block;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:600;}
-.b-green{background:#e8f5e9;color:#2e7d32;}
-.b-red{background:#ffebee;color:#c62828;}
-.b-grey{background:#f5f5f5;color:#78909c;}
+/* total row */
+.row-total td { background: #f4f5f7; font-weight: 700; border-top: 1px solid #e8eaed; color: #1a1a2e; }
 
-/* totals */
-.tot td{background:#f1f8e9;font-weight:700;border-top:2px solid #c5e1a5;}
+/* ── RETURNS REASON STRIP ── */
+.reason-strip { display: flex; gap: 8px; margin-bottom: 14px; }
+.reason-item {
+  flex: 1;
+  border: 1px solid #e8eaed;
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.reason-item.active { border-color: #fde68a; background: #fffbeb; }
+.ri-val { font-size: 20px; font-weight: 800; color: #1a1a2e; }
+.ri-val.warn { color: #d97706; }
+.ri-lbl { font-size: 10px; color: #8f95a3; text-transform: uppercase; letter-spacing: .4px; margin-top: 3px; }
 
-/* ── RE TIMELINE ── */
-.timeline-wrap{background:#f8faf8;border-radius:8px;padding:12px 14px;margin-bottom:16px;}
-.timeline-label{font-size:10px;font-weight:700;color:#90a4ae;text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px;display:flex;justify-content:space-between;}
-.timeline-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-.timeline-row:last-child{margin-bottom:0;}
-.tl-name{font-size:11px;font-weight:600;color:#546e7a;width:110px;flex-shrink:0;}
-.tl-track{flex:1;height:8px;background:#e8f5e9;border-radius:4px;position:relative;}
-.tl-bar{position:absolute;height:100%;border-radius:4px;background:linear-gradient(90deg,#4caf50,#8bc34a);}
-.tl-hrs{font-size:10px;color:#90a4ae;width:50px;text-align:right;flex-shrink:0;}
-/* Hour markers */
-.tl-markers{display:flex;justify-content:space-between;padding:0 0 4px 118px;margin-bottom:2px;}
-.tl-markers span{font-size:9px;color:#b0bec5;}
-
-/* ── TWO COL ── */
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+/* status chip */
+.chip { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.chip-red    { background: #fee2e2; color: #dc2626; }
+.chip-green  { background: #dcfce7; color: #16a34a; }
+.chip-grey   { background: #f1f5f9; color: #64748b; }
 
 /* ── EMPTY STATE ── */
-.empty{text-align:center;padding:24px;color:#b0bec5;font-size:12px;}
-.empty .ei{font-size:28px;margin-bottom:8px;}
+.empty { text-align: center; padding: 24px 16px; color: #8f95a3; font-size: 12px; }
 
 /* ── FOOTER ── */
-.footer{text-align:center;padding:16px;font-size:10px;color:#b0bec5;margin-top:4px;}
-
-@media(max-width:640px){
-  .kpi-row{grid-template-columns:repeat(2,1fr);}
-  .stats-grid{grid-template-columns:repeat(2,1fr);}
-  .two-col{grid-template-columns:1fr;}
-  .hdr-card{flex-direction:column;gap:14px;text-align:center;}
-}
+.footer { text-align: center; padding: 14px; font-size: 10px; color: #c0c4ce; }
 </style>
 </head>
 <body>
 <div class="page">
 
-  <!-- ── HEADER ── -->
-  <div class="hdr-card">
-    <div>
-      <div class="hdr-logo">Zopping</div>
-      <div class="hdr-store">SODHI'S | SEC-55 | GURUGRAM</div>
-      <div class="hdr-meta">
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="logo">Zopping</div>
+      <div class="store">SODHI'S | SEC-55 | GURUGRAM</div>
+      <div class="meta">
         <span>22 June 2026, Monday</span>
         <span>Report at 01:00 AM</span>
-        <span>3 Delivery Agents &nbsp;·&nbsp; 3 Pickers</span>
+        <span>3 Delivery Agents · 3 Pickers</span>
       </div>
     </div>
     <div class="hdr-right">
-      <div class="health-score">
-        <div class="health-lbl">Store Health</div>
-        <div class="health-val warn"><span class="health-dot dot-warn"></span>Needs Attention</div>
-      </div>
+      <div class="health-label">Store Health</div>
+      <div class="health h-warn">Needs Attention</div>
     </div>
   </div>
 
-  <!-- ── ALERT ── -->
-  <div class="alert-bar">
-    <div class="at"><strong>On-Time Delivery: 20%</strong> — Only 3 of 15 orders delivered on time. Fill rate is healthy at 91%. Review delivery agent dispatch timings and route assignments.</div>
+  <!-- ALERT -->
+  <div class="alert">
+    <strong>On-Time Delivery at 20%</strong> — Only 3 of 15 orders delivered on time. Fill rate is healthy at 91%. Review delivery agent dispatch timings and route assignments.
   </div>
 
-  <!-- ── KPI ROW ── -->
+  <!-- KPI ROW -->
   <div class="kpi-row">
-
-    <!-- Orders -->
-    <div class="kpi-card neutral">
-      <div class="kpi-val neutral">15</div>
-      <div class="kpi-lbl">Orders Served</div>
-      <div class="kpi-sub s-grey"><span class="kd"></span>0 unprocessed</div>
+    <div class="kpi">
+      <div class="kpi-label">Orders Served</div>
+      <div class="kpi-value kv-neutral">15</div>
+      <div class="kpi-context">0 unprocessed</div>
     </div>
-
-    <!-- On Time — ring -->
-    <div class="kpi-card bad">
-      <div class="ring-container" style="height:68px;">
-        <svg width="68" height="68" viewBox="0 0 68 68">
-          <circle cx="34" cy="34" r="28" fill="none" stroke="#ffebee" stroke-width="7"/>
-          <circle cx="34" cy="34" r="28" fill="none" stroke="#f44336" stroke-width="7"
-            stroke-dasharray="175.9" stroke-dashoffset="140.7" stroke-linecap="round"/>
-        </svg>
-        <div class="ring-center" style="color:#c62828;">20%</div>
-      </div>
-      <div class="kpi-lbl">On Time %</div>
-      <div class="kpi-sub s-bad"><span class="kd"></span>3 of 15 on time</div>
+    <div class="kpi">
+      <div class="kpi-label">On Time %</div>
+      <div class="kpi-value kv-bad">20%</div>
+      <div class="kpi-context ctx-bad">3 of 15 orders</div>
     </div>
-
-    <!-- Fill Rate — ring -->
-    <div class="kpi-card good">
-      <div class="ring-container" style="height:68px;">
-        <svg width="68" height="68" viewBox="0 0 68 68">
-          <circle cx="34" cy="34" r="28" fill="none" stroke="#e8f5e9" stroke-width="7"/>
-          <circle cx="34" cy="34" r="28" fill="none" stroke="#4caf50" stroke-width="7"
-            stroke-dasharray="175.9" stroke-dashoffset="15.8" stroke-linecap="round"/>
-        </svg>
-        <div class="ring-center" style="color:#2e7d32;font-size:18px;">91%</div>
-      </div>
-      <div class="kpi-lbl">Fill Rate %</div>
-      <div class="kpi-sub s-good"><span class="kd"></span>174 of 182 items</div>
+    <div class="kpi">
+      <div class="kpi-label">Fill Rate %</div>
+      <div class="kpi-value kv-good">91.0%</div>
+      <div class="kpi-context ctx-good">174 of 182 items</div>
     </div>
-
-    <!-- Returns -->
-    <div class="kpi-card warn">
-      <div class="kpi-val warn">3</div>
-      <div class="kpi-lbl">Returns</div>
-      <div class="kpi-sub s-warn"><span class="kd"></span>Payment not captured</div>
+    <div class="kpi">
+      <div class="kpi-label">Returns</div>
+      <div class="kpi-value kv-warn">3</div>
+      <div class="kpi-context ctx-warn">Payment not captured</div>
     </div>
-
   </div>
 
-  <!-- ── LOGISTICS ── -->
+  <!-- LOGISTICS -->
   <div class="card">
-    <div class="card-hdr">
-      <div class="card-hdr-title">Logistics</div>
-      <div class="card-hdr-meta">10 trips &nbsp;·&nbsp; 12 deliveries &nbsp;·&nbsp; 0 late</div>
+    <div class="card-head">
+      <div class="card-title">Logistics</div>
+      <div class="card-meta">10 trips · 12 deliveries · 0 late</div>
     </div>
     <div class="card-body">
 
-      <!-- Stats -->
-      <div class="stats-grid">
-        <div class="stat"><div class="sv">10</div><div class="sl">Trips</div></div>
-        <div class="stat"><div class="sv">3</div><div class="sl">Del. Agents</div></div>
-        <div class="stat"><div class="sv">12</div><div class="sl">Deliveries</div></div>
-        <div class="stat"><div class="sv">3.3</div><div class="sl">Avg Trips/Agent</div></div>
-        <div class="stat"><div class="sv">1.2</div><div class="sl">Avg Del/Trip</div></div>
-        <div class="stat"><div class="sv">4.0</div><div class="sl">Avg Del/Agent</div></div>
-        <div class="stat"><div class="sv" style="color:#78909c;">0 km</div><div class="sl">Total KMs</div></div>
-        <div class="stat"><div class="sv">9h 34m</div><div class="sl">Vehicle On-Trip</div></div>
+      <!-- Summary -->
+      <div class="inline-stats">
+        <div class="is-item"><div class="is-val">10</div><div class="is-lbl">Trips</div></div>
+        <div class="is-item"><div class="is-val">3</div><div class="is-lbl">Del. Agents</div></div>
+        <div class="is-item"><div class="is-val">12</div><div class="is-lbl">Deliveries</div></div>
+        <div class="is-item"><div class="is-val">3.3</div><div class="is-lbl">Avg Trips/Agent</div></div>
+        <div class="is-item"><div class="is-val">1.2</div><div class="is-lbl">Avg Del/Trip</div></div>
+        <div class="is-item"><div class="is-val">4.0</div><div class="is-lbl">Avg Del/Agent</div></div>
+        <div class="is-item"><div class="is-val mute">0 km</div><div class="is-lbl">Total KMs</div></div>
+        <div class="is-item"><div class="is-val good">0</div><div class="is-lbl">Late Orders</div></div>
       </div>
 
-      <!-- RE Shift Timeline -->
+      <!-- Shift Timeline -->
       <div class="timeline-wrap">
-        <div class="timeline-label">
+        <div class="tl-heading">
           <span>Delivery Agent Shift Timeline</span>
-          <span>12 AM ————————————————— 11 PM</span>
+          <span>12 AM ─────────────────── 11 PM</span>
         </div>
-        <!-- Day = 23 hrs. Each RE bar: offset & width as % of 23h -->
-        <!-- Sudhir: 12:42 AM → 7:18 PM = 0.7hr start, 18.6hr end → 3% → 81% -->
-        <div class="timeline-row">
+        <div class="tl-row">
           <div class="tl-name">Sudhir Solanki</div>
-          <div class="tl-track">
-            <div class="tl-bar" style="left:3%;width:78%;"></div>
-          </div>
-          <div class="tl-hrs">18h 36m</div>
+          <div class="tl-track"><div class="tl-bar" style="left:3%;width:78%;"></div></div>
+          <div class="tl-dur">18h 36m</div>
         </div>
-        <!-- Subodh: 4:50 PM → 10:28 PM = 16.8hr start, 22.5hr end → 73% → 25% -->
-        <div class="timeline-row">
+        <div class="tl-row">
           <div class="tl-name">Subodh Yadav</div>
-          <div class="tl-track">
-            <div class="tl-bar" style="left:73%;width:24%;"></div>
-          </div>
-          <div class="tl-hrs">5h 38m</div>
+          <div class="tl-track"><div class="tl-bar" style="left:73%;width:24%;"></div></div>
+          <div class="tl-dur">5h 38m</div>
         </div>
-        <!-- Vishal: 4:52 PM → 10:13 PM = 16.9hr → 22.2hr → 73% → 23% -->
-        <div class="timeline-row">
+        <div class="tl-row">
           <div class="tl-name">Vishal Yadav</div>
-          <div class="tl-track">
-            <div class="tl-bar" style="left:73%;width:23%;"></div>
-          </div>
-          <div class="tl-hrs">5h 21m</div>
+          <div class="tl-track"><div class="tl-bar" style="left:73%;width:23%;"></div></div>
+          <div class="tl-dur">5h 21m</div>
         </div>
       </div>
 
-      <!-- RE Table -->
+      <!-- Agent Table -->
       <table>
         <thead>
           <tr>
             <th>Delivery Agent</th>
-            <th>Start → End</th>
+            <th>Shift</th>
             <th class="c">Trips</th>
             <th class="c">Orders</th>
             <th class="c">Late</th>
             <th class="c">Pending</th>
-            <th style="min-width:110px;">On-Time Rate</th>
+            <th style="min-width:120px;">On-Time Rate</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>
-              <div class="re-name">
-                <div class="avatar av-green">SY</div>
-                Subodh Yadav
-              </div>
-            </td>
-            <td style="color:#78909c;font-size:11px;">4:50 PM → 10:28 PM</td>
-            <td class="c">3</td><td class="c" style="font-weight:700;">3</td>
-            <td class="c"><span class="badge b-green">0</span></td>
-            <td class="c" style="color:#78909c;">₹0</td>
-            <td>
-              <div class="fr-wrap">
-                <div class="fr-bar"><div class="fr-fill g" style="width:100%"></div></div>
-                <div class="fr-val" style="color:#2e7d32;">100%</div>
-              </div>
-            </td>
+            <td><div class="agent-cell"><div class="avatar av-a">SY</div><span class="agent-name">Subodh Yadav</span></div></td>
+            <td class="shift-time">4:50 PM → 10:28 PM</td>
+            <td class="c">3</td>
+            <td class="c num-bold">3</td>
+            <td class="c good-text">0</td>
+            <td class="c mute-text">₹0</td>
+            <td><div class="fb-wrap"><div class="fb-track"><div class="fb-fill g" style="width:100%"></div></div><div class="fb-val good-text">100%</div></div></td>
           </tr>
           <tr>
-            <td>
-              <div class="re-name">
-                <div class="avatar av-blue">SS</div>
-                Sudhir Solanki
-              </div>
-            </td>
-            <td style="color:#78909c;font-size:11px;">12:42 AM → 7:18 PM</td>
-            <td class="c">4</td><td class="c" style="font-weight:700;">5</td>
-            <td class="c"><span class="badge b-green">0</span></td>
-            <td class="c" style="color:#78909c;">₹0</td>
-            <td>
-              <div class="fr-wrap">
-                <div class="fr-bar"><div class="fr-fill g" style="width:100%"></div></div>
-                <div class="fr-val" style="color:#2e7d32;">100%</div>
-              </div>
-            </td>
+            <td><div class="agent-cell"><div class="avatar av-b">SS</div><span class="agent-name">Sudhir Solanki</span></div></td>
+            <td class="shift-time">12:42 AM → 7:18 PM</td>
+            <td class="c">4</td>
+            <td class="c num-bold">5</td>
+            <td class="c good-text">0</td>
+            <td class="c mute-text">₹0</td>
+            <td><div class="fb-wrap"><div class="fb-track"><div class="fb-fill g" style="width:100%"></div></div><div class="fb-val good-text">100%</div></div></td>
           </tr>
           <tr>
-            <td>
-              <div class="re-name">
-                <div class="avatar av-purple">VY</div>
-                Vishal Yadav
-              </div>
-            </td>
-            <td style="color:#78909c;font-size:11px;">4:52 PM → 10:13 PM</td>
-            <td class="c">3</td><td class="c" style="font-weight:700;">4</td>
-            <td class="c"><span class="badge b-green">0</span></td>
-            <td class="c" style="color:#78909c;">₹0</td>
-            <td>
-              <div class="fr-wrap">
-                <div class="fr-bar"><div class="fr-fill g" style="width:100%"></div></div>
-                <div class="fr-val" style="color:#2e7d32;">100%</div>
-              </div>
-            </td>
+            <td><div class="agent-cell"><div class="avatar av-c">VY</div><span class="agent-name">Vishal Yadav</span></div></td>
+            <td class="shift-time">4:52 PM → 10:13 PM</td>
+            <td class="c">3</td>
+            <td class="c num-bold">4</td>
+            <td class="c good-text">0</td>
+            <td class="c mute-text">₹0</td>
+            <td><div class="fb-wrap"><div class="fb-track"><div class="fb-fill g" style="width:100%"></div></div><div class="fb-val good-text">100%</div></div></td>
           </tr>
-          <tr class="tot">
+          <tr class="row-total">
             <td colspan="2">Total</td>
-            <td class="c">10</td><td class="c">12</td>
-            <td class="c">0</td><td class="c">₹0</td>
+            <td class="c">10</td>
+            <td class="c">12</td>
+            <td class="c">0</td>
+            <td class="c mute-text">₹0</td>
             <td></td>
           </tr>
         </tbody>
@@ -357,23 +392,22 @@ tr:hover td{background:#fafff9;}
     </div>
   </div>
 
-  <!-- ── PICKING ── -->
+  <!-- PICKING -->
   <div class="card">
-    <div class="card-hdr">
-      <div class="card-hdr-title">Picking</div>
-      <div class="card-hdr-meta">3 pickers &nbsp;·&nbsp; 91.0% fill rate &nbsp;·&nbsp; 0 substitutions</div>
+    <div class="card-head">
+      <div class="card-title">Picking</div>
+      <div class="card-meta">3 pickers · 91.0% fill rate · 0 substitutions</div>
     </div>
     <div class="card-body">
 
-      <div class="stats-grid">
-        <div class="stat"><div class="sv">3</div><div class="sl">Pickers</div></div>
-        <div class="stat"><div class="sv">182</div><div class="sl">Items Ordered</div></div>
-        <div class="stat"><div class="sv">174</div><div class="sl">Items Delivered</div></div>
-        <div class="stat"><div class="sv" style="color:#78909c;">0</div><div class="sl">Substituted</div></div>
-        <div class="stat"><div class="sv">4.67</div><div class="sl">Avg Orders/Picker</div></div>
-        <div class="stat"><div class="sv">58.0</div><div class="sl">Avg Items/Picker</div></div>
-        <div class="stat"><div class="sv" style="color:#2e7d32;">91.0%</div><div class="sl">Fill Rate</div></div>
-        <div class="stat"><div class="sv" style="color:#78909c;">—</div><div class="sl">Avg Pick Time</div></div>
+      <div class="inline-stats">
+        <div class="is-item"><div class="is-val">3</div><div class="is-lbl">Pickers</div></div>
+        <div class="is-item"><div class="is-val">182</div><div class="is-lbl">Items Ordered</div></div>
+        <div class="is-item"><div class="is-val good">174</div><div class="is-lbl">Items Delivered</div></div>
+        <div class="is-item"><div class="is-val mute">0</div><div class="is-lbl">Substituted</div></div>
+        <div class="is-item"><div class="is-val">4.67</div><div class="is-lbl">Avg Orders/Picker</div></div>
+        <div class="is-item"><div class="is-val">58.0</div><div class="is-lbl">Avg Items/Picker</div></div>
+        <div class="is-item"><div class="is-val good">91.0%</div><div class="is-lbl">Fill Rate</div></div>
       </div>
 
       <table>
@@ -381,73 +415,38 @@ tr:hover td{background:#fafff9;}
           <tr>
             <th>Picker</th>
             <th>Shift</th>
-            <th class="c">Items</th>
+            <th class="c">Items Picked</th>
             <th class="c">Avg Pick Time</th>
-            <th style="min-width:140px;">Fill Rate</th>
+            <th style="min-width:130px;">Fill Rate</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>
-              <div class="re-name">
-                <div class="avatar av-green">V</div>
-                Vairagi
-              </div>
-            </td>
-            <td style="color:#78909c;font-size:11px;">12:00 AM → 7:38 PM</td>
-            <td class="c" style="font-weight:700;">90</td>
-            <td class="c" style="color:#78909c;">856:08 min</td>
-            <td>
-              <div class="fr-wrap">
-                <div class="fr-bar"><div class="fr-fill g" style="width:93.8%"></div></div>
-                <div class="fr-val" style="color:#2e7d32;">93.80%</div>
-              </div>
-            </td>
+            <td><div class="agent-cell"><div class="avatar av-a">V</div><span class="agent-name">Vairagi</span></div></td>
+            <td class="shift-time">12:00 AM → 7:38 PM</td>
+            <td class="c num-bold">90</td>
+            <td class="c mute-text">856:08 min</td>
+            <td><div class="fb-wrap"><div class="fb-track"><div class="fb-fill g" style="width:93.8%"></div></div><div class="fb-val good-text">93.80%</div></div></td>
           </tr>
           <tr>
-            <td>
-              <div class="re-name">
-                <div class="avatar av-blue">B</div>
-                Babita
-              </div>
-            </td>
-            <td style="color:#78909c;font-size:11px;">4:03 PM → 8:43 PM</td>
-            <td class="c" style="font-weight:700;">79</td>
-            <td class="c" style="color:#78909c;">102:50 min</td>
-            <td>
-              <div class="fr-wrap">
-                <div class="fr-bar"><div class="fr-fill g" style="width:97.5%"></div></div>
-                <div class="fr-val" style="color:#2e7d32;">97.50%</div>
-              </div>
-            </td>
+            <td><div class="agent-cell"><div class="avatar av-b">B</div><span class="agent-name">Babita</span></div></td>
+            <td class="shift-time">4:03 PM → 8:43 PM</td>
+            <td class="c num-bold">79</td>
+            <td class="c mute-text">102:50 min</td>
+            <td><div class="fb-wrap"><div class="fb-track"><div class="fb-fill g" style="width:97.5%"></div></div><div class="fb-val good-text">97.50%</div></div></td>
           </tr>
           <tr>
-            <td>
-              <div class="re-name">
-                <div class="avatar av-purple">P</div>
-                Preeti
-              </div>
-            </td>
-            <td style="color:#78909c;font-size:11px;">8:17 PM → 8:54 PM</td>
-            <td class="c" style="font-weight:700;">5</td>
-            <td class="c" style="color:#78909c;">183:30 min</td>
-            <td>
-              <div class="fr-wrap">
-                <div class="fr-bar"><div class="fr-fill g" style="width:100%"></div></div>
-                <div class="fr-val" style="color:#2e7d32;">100%</div>
-              </div>
-            </td>
+            <td><div class="agent-cell"><div class="avatar av-c">P</div><span class="agent-name">Preeti</span></div></td>
+            <td class="shift-time">8:17 PM → 8:54 PM</td>
+            <td class="c num-bold">5</td>
+            <td class="c mute-text">183:30 min</td>
+            <td><div class="fb-wrap"><div class="fb-track"><div class="fb-fill g" style="width:100%"></div></div><div class="fb-val good-text">100%</div></div></td>
           </tr>
-          <tr class="tot">
+          <tr class="row-total">
             <td colspan="2">Total</td>
             <td class="c">174</td>
             <td class="c">—</td>
-            <td>
-              <div class="fr-wrap">
-                <div class="fr-bar"><div class="fr-fill g" style="width:91%"></div></div>
-                <div class="fr-val" style="color:#2e7d32;">91.0%</div>
-              </div>
-            </td>
+            <td><div class="fb-wrap"><div class="fb-track"><div class="fb-fill g" style="width:91%"></div></div><div class="fb-val good-text">91.0%</div></div></td>
           </tr>
         </tbody>
       </table>
@@ -455,30 +454,30 @@ tr:hover td{background:#fafff9;}
     </div>
   </div>
 
-  <!-- ── RETURNS ── -->
+  <!-- RETURNS -->
   <div class="card">
-    <div class="card-hdr">
-      <div class="card-hdr-title">Returns &amp; Cancellations</div>
-      <div class="card-hdr-meta" style="color:#e65100;font-weight:600;">3 orders affected</div>
+    <div class="card-head">
+      <div class="card-title">Returns &amp; Cancellations</div>
+      <div class="card-meta" style="color:#d97706;font-weight:600;">3 orders affected</div>
     </div>
     <div class="card-body">
-      <!-- Reason summary strip -->
-      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
-        <div style="background:#fff8e1;border:1px solid #ffe0b2;border-radius:6px;padding:10px 16px;flex:1;min-width:140px;">
-          <div style="font-size:20px;font-weight:800;color:#e65100;">3</div>
-          <div style="font-size:10px;color:#90a4ae;text-transform:uppercase;margin-top:2px;letter-spacing:.3px;">Payment Not Captured</div>
+
+      <div class="reason-strip">
+        <div class="reason-item active">
+          <div class="ri-val warn">3</div>
+          <div class="ri-lbl">Payment Not Captured</div>
         </div>
-        <div style="background:#f5f5f5;border:1px solid #e0e0e0;border-radius:6px;padding:10px 16px;flex:1;min-width:140px;">
-          <div style="font-size:20px;font-weight:800;color:#78909c;">0</div>
-          <div style="font-size:10px;color:#90a4ae;text-transform:uppercase;margin-top:2px;letter-spacing:.3px;">Customer Returns</div>
+        <div class="reason-item">
+          <div class="ri-val">0</div>
+          <div class="ri-lbl">Customer Returns</div>
         </div>
-        <div style="background:#f5f5f5;border:1px solid #e0e0e0;border-radius:6px;padding:10px 16px;flex:1;min-width:140px;">
-          <div style="font-size:20px;font-weight:800;color:#78909c;">0</div>
-          <div style="font-size:10px;color:#90a4ae;text-transform:uppercase;margin-top:2px;letter-spacing:.3px;">Late Delivery</div>
+        <div class="reason-item">
+          <div class="ri-val">0</div>
+          <div class="ri-lbl">Late Delivery</div>
         </div>
-        <div style="background:#f5f5f5;border:1px solid #e0e0e0;border-radius:6px;padding:10px 16px;flex:1;min-width:140px;">
-          <div style="font-size:20px;font-weight:800;color:#78909c;">0</div>
-          <div style="font-size:10px;color:#90a4ae;text-transform:uppercase;margin-top:2px;letter-spacing:.3px;">Duplicates</div>
+        <div class="reason-item">
+          <div class="ri-val">0</div>
+          <div class="ri-lbl">Duplicates</div>
         </div>
       </div>
 
@@ -495,37 +494,36 @@ tr:hover td{background:#fafff9;}
         </thead>
         <tbody>
           <tr>
-            <td style="font-weight:600;color:#1e2240;">194083</td>
-            <td style="color:#78909c;">6 AM – 7 AM</td>
+            <td class="num-bold">194083</td>
+            <td class="mute-text">6 AM – 7 AM</td>
             <td>System</td>
-            <td style="color:#78909c;">—</td>
+            <td class="mute-text">—</td>
             <td>Payment not captured</td>
-            <td class="c"><span class="badge b-red">Cancelled</span></td>
+            <td class="c"><span class="chip chip-red">Cancelled</span></td>
           </tr>
           <tr>
-            <td style="font-weight:600;color:#1e2240;">194088</td>
-            <td style="color:#78909c;">6 AM – 7 AM</td>
+            <td class="num-bold">194088</td>
+            <td class="mute-text">6 AM – 7 AM</td>
             <td>System</td>
-            <td style="color:#78909c;">—</td>
+            <td class="mute-text">—</td>
             <td>Payment not captured</td>
-            <td class="c"><span class="badge b-red">Cancelled</span></td>
+            <td class="c"><span class="chip chip-red">Cancelled</span></td>
           </tr>
           <tr>
-            <td style="font-weight:600;color:#1e2240;">194333</td>
-            <td style="color:#78909c;">12 PM – 1 PM</td>
+            <td class="num-bold">194333</td>
+            <td class="mute-text">12 PM – 1 PM</td>
             <td>System</td>
-            <td style="color:#78909c;">—</td>
+            <td class="mute-text">—</td>
             <td>Payment not captured</td>
-            <td class="c"><span class="badge b-red">Cancelled</span></td>
+            <td class="c"><span class="chip chip-red">Cancelled</span></td>
           </tr>
         </tbody>
       </table>
+
     </div>
   </div>
 
-  <div class="footer">
-    Daily Store Report &nbsp;·&nbsp; SODHI'S | SEC-55 | GURUGRAM &nbsp;·&nbsp; 22 June 2026 &nbsp;·&nbsp; Zopping · zopping.com
-  </div>
+  <div class="footer">Daily Store Report · SODHI'S | SEC-55 | GURUGRAM · 22 June 2026 · Zopping</div>
 
 </div>
 </body>
