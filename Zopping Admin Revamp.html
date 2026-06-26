@@ -459,6 +459,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
     <div class="toggle" id="entToggle"></div>
     <span class="toggle-lbl" id="entLbl">isEnterprise</span>
   </div>
+  <div class="ctrl-sep"></div>
+  <div class="toggle-wrap" onclick="toggleData()">
+    <div class="toggle" id="dataToggle"></div>
+    <span class="toggle-lbl" id="dataLbl">Empty State</span>
+  </div>
 </div>
 
 <!-- ── SHELL ── -->
@@ -909,6 +914,15 @@ function renderProfileDD(){
         <div class="pdd-plan-cta">Upgrade to Enterprise →</div>
       </div>`;
   }
+}
+
+// ── DATA TOGGLE ────────────────────────────────────────────────────
+let hasData=false;
+function toggleData(){
+  hasData=!hasData;
+  document.getElementById('dataToggle').classList.toggle('on',hasData);
+  document.getElementById('dataLbl').textContent=hasData?'With Data':'Empty State';
+  renderMain();
 }
 
 // ── ENTERPRISE TOGGLE ──────────────────────────────────────────────
@@ -1964,7 +1978,190 @@ function getIllo(type){
   return illos[type]||`<div style="width:80px;height:80px;border-radius:20px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:36px">📄</div>`;
 }
 
+// ── DATA-FILLED PAGE RENDERS ─────────────────────────────────────────
+function renderFilled(scroll){
+  const pg=activePage;
+  const pw=`<div style="padding:16px 20px 24px">`;
+  const tbl=(cols,rows,opts={})=>`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+    ${opts.filters?`<div style="padding:12px 16px;border-bottom:1px solid #f5f2ee;display:flex;gap:8px;flex-wrap:wrap">${opts.filters}</div>`:''}
+    <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+    <thead><tr>${cols.map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead>
+    <tbody>${rows.map(r=>`<tr style="cursor:pointer" onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody>
+    </table></div>`;
+  const badge=(t,c,bg)=>`<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:${bg};color:${c}">${t}</span>`;
+  const av=(init,c)=>`<div style="width:28px;height:28px;border-radius:50%;background:${c}25;color:${c};display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;vertical-align:middle">${init}</div>`;
+  const stat=(v,l,ic,bg,c,chg,up)=>`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,.04)"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><div style="width:32px;height:32px;border-radius:8px;background:${bg};display:flex;align-items:center;justify-content:center"><i class="ti ${ic}" style="font-size:16px;color:${c}"></i></div><span style="font-size:11px;background:${up?'#dcfce7':'#fee2e2'};color:${up?'#15803d':'#b91c1c'};font-weight:700;padding:2px 7px;border-radius:10px;margin-left:auto">${up?'↑':'↓'} ${chg}</span></div><div style="font-size:22px;font-weight:800;color:#111827">${v}</div><div style="font-size:10.5px;color:#9ca3af;margin-top:3px">${l}</div></div>`;
+  const filterBar=`<input style="padding:7px 12px;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;outline:none;font-family:inherit;width:220px" placeholder="Search…">
+    <div style="display:flex;gap:5px">${['All','Active','Inactive'].map((s,i)=>`<span style="font-size:11px;padding:4px 10px;border-radius:20px;border:1.5px solid ${i===0?'#16a34a':'#e2d9ce'};background:${i===0?'#16a34a':'#fff'};color:${i===0?'#fff':'#6b7280'};cursor:pointer;font-weight:500">${s}</span>`).join('')}</div>`;
+
+  const pages={
+    orders: ()=>{
+      const statuses=[['New','#1d4ed8','#dbeafe'],['Picking','#ca8a04','#fef9c3'],['Packing','#0369a1','#e0f2fe'],['Dispatched','#7c3aed','#f5f3ff'],['Delivered','#15803d','#dcfce7'],['Cancelled','#b91c1c','#fee2e2']];
+      const rows=[
+        ['<strong style="color:#111827">#1042</strong>',av('RM','#534AB7')+' Rahul Mehta','3 items','12:30–01:30 PM','<strong>₹1,240</strong>',badge('New','#1d4ed8','#dbeafe'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong style="color:#111827">#1041</strong>',av('PS','#be185d')+' Priya Sharma','5 items','10:30–11:30 AM','<strong>₹3,850</strong>',badge('Picking','#ca8a04','#fef9c3'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong style="color:#111827">#1040</strong>',av('AK','#0369a1')+' Anjali Kumar','2 items','12:30–03:30 PM','<strong>₹980</strong>',badge('Packing','#0369a1','#e0f2fe'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong style="color:#111827">#1039</strong>',av('SR','#7c3aed')+' Suresh R.','4 items','01:30–02:30 PM','<strong>₹2,100</strong>',badge('Dispatched','#7c3aed','#f5f3ff'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong style="color:#111827">#1038</strong>',av('ML','#15803d')+' Meera Lal','1 item','03:30–05:00 PM','<strong>₹560</strong>',badge('Delivered','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong style="color:#111827">#1037</strong>',av('KN','#b45309')+' Karan Nair','7 items','06:00–08:00 PM','<strong>₹4,200</strong>',badge('New','#1d4ed8','#dbeafe'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong style="color:#111827">#1036</strong>',av('DS','#ea580c')+' Divya Shah','2 items','10:30–11:30 AM','<strong>₹890</strong>',badge('Cancelled','#b91c1c','#fee2e2'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong style="color:#111827">#1035</strong>',av('AK','#7c3aed')+' Arun Kumar','3 items','12:30–01:30 PM','<strong>₹1,680</strong>',badge('Delivered','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      ];
+      const stats=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">${[['142','Orders Today','ti-shopping-bag','#dbeafe','#1d4ed8','+18%',true],['₹68,420','Revenue Today','ti-currency-rupee','#dcfce7','#16a34a','+11%',true],['94.2%','Fill Rate','ti-check-circle','#f0fdf4','#16a34a','+1.1%',true],['28 min','Avg Delivery','ti-clock','#f5f3ff','#7c3aed','-3 min',true]].map(s=>stat(...s)).join('')}</div>`;
+      const filterPills=`<input style="padding:7px 12px;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;outline:none;font-family:inherit;width:200px" placeholder="Search orders…">
+        <div style="display:flex;gap:5px">${['All (142)','New (46)','Picking (38)','Packing (28)','Dispatched (22)','Delivered (89)','Cancelled (7)'].map((s,i)=>`<span style="font-size:11px;padding:4px 10px;border-radius:20px;border:1.5px solid ${i===0?'#16a34a':'#e2d9ce'};background:${i===0?'#16a34a':'#fff'};color:${i===0?'#fff':'#6b7280'};cursor:pointer;font-weight:500;white-space:nowrap">${s}</span>`).join('')}</div>`;
+      scroll.innerHTML=pw+stats+tbl(['Order #','Customer','Items','Slot','Amount','Status',''],rows,{filters:filterPills})+'</div>';
+    },
+    products: ()=>{
+      const rows=[
+        ['<strong>Fresh Whole Milk 1L</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-4421 · Dairy & Eggs</span>','₹58','₹65',badge('In Stock','#15803d','#dcfce7'),'28 orders today',badge('Published','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Basmati Rice 5kg</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-8812 · Grains</span>','₹320','₹380',badge('In Stock','#15803d','#dcfce7'),'21 orders today',badge('Published','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Greek Yogurt 200g</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-8872 · Dairy & Eggs</span>','₹82','₹95',badge('3 left','#ea580c','#fff7ed'),'18 orders today',badge('Published','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Organic Eggs (12)</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-3310 · Dairy & Eggs</span>','₹110','₹135',badge('In Stock','#15803d','#dcfce7'),'14 orders today',badge('Published','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Sourdough Bread</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-2241 · Bakery</span>','₹85','₹110',badge('In Stock','#15803d','#dcfce7'),'11 orders today',badge('Published','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Olive Oil 500ml</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-5521 · Pantry</span>','₹280','₹350',badge('In Stock','#15803d','#dcfce7'),'9 orders today',badge('Published','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Full Cream Milk 1L</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-4422 · Dairy & Eggs</span>','₹56','₹62',badge('Out of Stock','#b91c1c','#fee2e2'),'0 orders today',badge('Published','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      ];
+      const catStats=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">${[['54,334','Total Products','ti-package','#fff7ed','#b45309','+12',true],['300','Categories','ti-category','#dbeafe','#1d4ed8','+2',true],['3,375','Brands','ti-registered','#f5f3ff','#7c3aed','+5',true]].map(s=>stat(...s)).join('')}</div>`;
+      const fp=`<input style="padding:7px 12px;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;outline:none;font-family:inherit;width:200px" placeholder="Search products…">
+        <div style="display:flex;gap:5px">${['All','Published','Draft','Out of Stock'].map((s,i)=>`<span style="font-size:11px;padding:4px 10px;border-radius:20px;border:1.5px solid ${i===0?'#16a34a':'#e2d9ce'};background:${i===0?'#16a34a':'#fff'};color:${i===0?'#fff':'#6b7280'};cursor:pointer;font-weight:500">${s}</span>`).join('')}</div>`;
+      scroll.innerHTML=pw+catStats+tbl(['Product','Cost','MRP','Stock','Sales','Status',''],rows,{filters:fp})+'</div>';
+    },
+    categories: ()=>{
+      const rows=[
+        ['<strong>Dairy & Eggs</strong>','12,840 products','3 sub-categories',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Fresh Produce</strong>','8,220 products','5 sub-categories',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Bakery</strong>','3,410 products','2 sub-categories',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Beverages</strong>','6,100 products','4 sub-categories',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Snacks & Confectionery</strong>','9,840 products','6 sub-categories',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Pantry Staples</strong>','7,200 products','4 sub-categories',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Personal Care</strong>','2,980 products','3 sub-categories',badge('Draft','#ca8a04','#fef9c3'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      ];
+      scroll.innerHTML=pw+tbl(['Category Name','Products','Sub-categories','Status',''],rows,{filters:filterBar})+'</div>';
+    },
+    brands: ()=>{
+      const rows=[
+        [av('AM','#15803d')+'<strong style="margin-left:8px">Amul</strong>','840 products','Dairy & Eggs, Bakery',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('NE','#1d4ed8')+'<strong style="margin-left:8px">Nestle</strong>','420 products','Dairy, Beverages, Snacks',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('BD','#7c3aed')+'<strong style="margin-left:8px">Britannia</strong>','210 products','Bakery, Dairy',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('ITC','#b45309')+'<strong style="margin-left:8px">ITC</strong>','380 products','Snacks, Pantry',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('MO','#ea580c')+'<strong style="margin-left:8px">Mother Dairy</strong>','120 products','Dairy & Eggs',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('TR','#be185d')+'<strong style="margin-left:8px">Tata Consumer</strong>','290 products','Beverages, Pantry',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      ];
+      scroll.innerHTML=pw+tbl(['Brand','Products','Categories','Status',''],rows,{filters:filterBar})+'</div>';
+    },
+    tags: ()=>{
+      const tagData=[{t:'New Arrivals',n:248,c:'#1d4ed8',bg:'#dbeafe'},{t:'Bestsellers',n:182,c:'#15803d',bg:'#dcfce7'},{t:'Organic',n:420,c:'#65a30d',bg:'#ecfccb'},{t:'Gluten Free',n:96,c:'#7c3aed',bg:'#f5f3ff'},{t:'Vegan',n:74,c:'#0e7490',bg:'#e0f7fa'},{t:'Sugar Free',n:58,c:'#b45309',bg:'#fff7ed'},{t:'Low Fat',n:112,c:'#be185d',bg:'#fce7f3'},{t:'Imported',n:340,c:'#475569',bg:'#f3f4f6'},{t:'On Sale',n:88,c:'#dc2626',bg:'#fee2e2'},{t:'Staff Picks',n:64,c:'#ca8a04',bg:'#fef9c3'}];
+      scroll.innerHTML=pw+`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><input style="padding:7px 12px;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;outline:none;font-family:inherit;flex:1" placeholder="Search tags…"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">${tagData.map(t=>`<div style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;cursor:pointer" onmouseover="this.style.borderColor='${t.c}'" onmouseout="this.style.borderColor='#e5e7eb'"><span style="font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:20px;background:${t.bg};color:${t.c}">${t.t}</span><span style="font-size:11px;color:#9ca3af">${t.n} products</span><i class="ti ti-dots-vertical" style="font-size:14px;color:#d1d5db;cursor:pointer"></i></div>`).join('')}
+        </div></div>`+'</div>';
+    },
+    customers: ()=>{
+      const rows=[
+        [av('RM','#534AB7')+' <strong>Rahul Mehta</strong><br><span style="font-size:10.5px;color:#9ca3af">rahul@email.com · +91 98101 00001</span>','18 orders','₹42,400',badge('VIP','#7c3aed','#f5f3ff'),'2 days ago','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('PS','#be185d')+' <strong>Priya Sharma</strong><br><span style="font-size:10.5px;color:#9ca3af">priya@email.com · +91 98101 00002</span>','14 orders','₹28,600',badge('VIP','#7c3aed','#f5f3ff'),'Today','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('AK','#0e7490')+' <strong>Anjali Kumar</strong><br><span style="font-size:10.5px;color:#9ca3af">anjali@email.com · +91 98101 00003</span>','11 orders','₹19,800',badge('Active','#15803d','#dcfce7'),'Today','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('SR','#7c3aed')+' <strong>Suresh R.</strong><br><span style="font-size:10.5px;color:#9ca3af">suresh@email.com · +91 98101 00004</span>','9 orders','₹14,200',badge('Active','#15803d','#dcfce7'),'3 days ago','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('ML','#ca8a04')+' <strong>Meera Lal</strong><br><span style="font-size:10.5px;color:#9ca3af">meera@email.com · +91 98101 00005</span>','7 orders','₹9,600',badge('New','#1d4ed8','#dbeafe'),'Today','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('KN','#b45309')+' <strong>Karan Nair</strong><br><span style="font-size:10.5px;color:#9ca3af">karan@email.com · +91 98101 00006</span>','4 orders','₹6,200',badge('New','#1d4ed8','#dbeafe'),'1 week ago','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('DS','#ea580c')+' <strong>Divya Shah</strong><br><span style="font-size:10.5px;color:#9ca3af">divya@email.com · +91 98101 00007</span>','2 orders','₹2,100',badge('At Risk','#ca8a04','#fef9c3'),'3 weeks ago','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      ];
+      const cf=`<input style="padding:7px 12px;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;outline:none;font-family:inherit;width:200px" placeholder="Search customers…">
+        <div style="display:flex;gap:5px">${['All','VIP','Active','New','At Risk','Lost'].map((s,i)=>`<span style="font-size:11px;padding:4px 10px;border-radius:20px;border:1.5px solid ${i===0?'#16a34a':'#e2d9ce'};background:${i===0?'#16a34a':'#fff'};color:${i===0?'#fff':'#6b7280'};cursor:pointer;font-weight:500">${s}</span>`).join('')}</div>`;
+      scroll.innerHTML=pw+tbl(['Customer','Orders','Lifetime Value','Segment','Last Order',''],rows,{filters:cf})+'</div>';
+    },
+    coupons: ()=>{
+      const rows=[
+        ['<strong style="font-family:monospace;color:#15803d">WELCOME10</strong><br><span style="font-size:10.5px;color:#9ca3af">10% off first order</span>','42 used / unlimited','All products',badge('Active','#15803d','#dcfce7'),'No expiry','₹4,200 revenue','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong style="font-family:monospace;color:#1d4ed8">SAVE20</strong><br><span style="font-size:10.5px;color:#9ca3af">₹20 flat off min ₹200</span>','128 used / 500','All products',badge('Active','#15803d','#dcfce7'),'31 Jul 2026','₹2,560 revenue','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong style="font-family:monospace;color:#7c3aed">VIP50</strong><br><span style="font-size:10.5px;color:#9ca3af">₹50 off for VIP customers</span>','18 used / 100','VIP segment',badge('Active','#15803d','#dcfce7'),'30 Jun 2026','₹900 revenue','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong style="font-family:monospace;color:#ca8a04">FLASH30</strong><br><span style="font-size:10.5px;color:#9ca3af">30% off — flash sale</span>','84 used / 100','Selected items',badge('Expired','#9ca3af','#f3f4f6'),'25 Jun 2026','₹6,300 revenue','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong style="font-family:monospace;color:#b91c1c">CART15</strong><br><span style="font-size:10.5px;color:#9ca3af">15% off abandoned cart</span>','12 used / unlimited','Auto — abandoned carts',badge('Active','#15803d','#dcfce7'),'No expiry','₹1,440 revenue','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      ];
+      scroll.innerHTML=pw+tbl(['Coupon','Usage','Applicable On','Status','Expiry','Revenue',''],rows,{filters:filterBar})+'</div>';
+    },
+    campaigns: ()=>{
+      const rows=[
+        ['<strong>Summer Sale Announcement</strong><br><span style="font-size:10.5px;color:#9ca3af">SMS · 4,200 recipients</span>',badge('Active','#15803d','#dcfce7'),'24 Jun 2026','4,200','98.1%','4.2%','₹18,240','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Loyalty Reward — June</strong><br><span style="font-size:10.5px;color:#9ca3af">Email · VIP segment</span>',badge('Active','#15803d','#dcfce7'),'20 Jun 2026','842','24.6%','3.8%','₹12,800','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>New User Welcome Series</strong><br><span style="font-size:10.5px;color:#9ca3af">Push · New customers</span>',badge('Active','#15803d','#dcfce7'),'Ongoing','284','8.4%','5.1%','₹6,400','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Weekend Flash Sale</strong><br><span style="font-size:10.5px;color:#9ca3af">SMS · All subscribers</span>',badge('Completed','#6b7280','#f3f4f6'),'21 Jun 2026','8,400','97.2%','2.9%','₹3,960','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Abandoned Cart Recovery</strong><br><span style="font-size:10.5px;color:#9ca3af">Email · Auto-triggered</span>',badge('Active','#15803d','#dcfce7'),'Ongoing','142','31.2%','68%','₹4,200','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      ];
+      scroll.innerHTML=pw+tbl(['Campaign','Status','Date','Sent','Delivery','CTR / Recovery','Revenue',''],rows,{filters:filterBar})+'</div>';
+    },
+    vehicles: ()=>{
+      const rows=[
+        ['Al Shrouq 4 Wheeler','4 Wheeler','Al Shrouq Logistics',badge('On Trip','#7c3aed','#f5f3ff'),'Trip TRP-063 · Corniche Route','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['Al Hamra Van 1','4 Wheeler','Afkar Transport',badge('Idle','#6b7280','#f3f4f6'),'Available for assignment','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['Shola Bike 2','2 Wheeler','Direct (owned)',badge('On Trip','#7c3aed','#f5f3ff'),'Trip TRP-061 · Shola Route','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['ASA 2966 Wheeler','4 Wheeler','ASA Logistics',badge('On Trip','#7c3aed','#f5f3ff'),'Trip TRP-059 · Khozam Route','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['Afkar Delivery 1','4 Wheeler','Afkar Transport',badge('Maintenance','#ea580c','#fff7ed'),'Service scheduled 28 Jun','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['Ajlan Runner Bike','2 Wheeler','Direct (owned)',badge('Idle','#6b7280','#f3f4f6'),'Available for assignment','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      ];
+      const vs=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">${[['8','Total Vehicles','ti-car','#f5f3ff','#7c3aed','+2',true],['4','On Trip','ti-route','#dbeafe','#1d4ed8','today',true],['2','Idle','ti-clock','#f3f4f6','#6b7280','available',true],['1','In Maintenance','ti-tool','#fff7ed','#ea580c','scheduled',false]].map(s=>stat(...s)).join('')}</div>`;
+      scroll.innerHTML=pw+vs+tbl(['Vehicle','Type','Vendor','Status','Current Assignment',''],rows,{filters:filterBar})+'</div>';
+    },
+    trips: ()=>{
+      const rows=[
+        ['<strong>TRP-2026-0063</strong>','Al Shrouq 4 Wheeler','Babu K.',badge('In Progress','#7c3aed','#f5f3ff'),'6 orders','12:30–03:30 PM','Corniche Route','<i class="ti ti-map-pin" style="color:#16a34a;cursor:pointer"></i>'],
+        ['<strong>TRP-2026-0062</strong>','Shola Bike 2','Ramu S.',badge('In Progress','#7c3aed','#f5f3ff'),'4 orders','10:30–11:30 AM','Shola Route','<i class="ti ti-map-pin" style="color:#16a34a;cursor:pointer"></i>'],
+        ['<strong>TRP-2026-0061</strong>','ASA 2966','Vijay M.',badge('Completed','#15803d','#dcfce7'),'8 orders','08:00–10:00 AM','Khozam Route','<i class="ti ti-check" style="color:#16a34a"></i>'],
+        ['<strong>TRP-2026-0060</strong>','Al Hamra Van 1','—',badge('Pending','#ca8a04','#fef9c3'),'5 orders','03:30–05:00 PM','Al Hamra Route','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>TRP-2026-0059</strong>','Ajlan Bike','Arjun P.',badge('Delayed','#b91c1c','#fee2e2'),'3 orders','12:30–01:30 PM','Ajlan Route','<i class="ti ti-alert-triangle" style="color:#ea580c"></i>'],
+      ];
+      scroll.innerHTML=pw+tbl(['Trip ID','Vehicle','Runner','Status','Orders','Slot','Route',''],rows,{filters:filterBar})+'</div>';
+    },
+    runners: ()=>{
+      const rows=[
+        [av('BK','#7c3aed')+' <strong>Babu K.</strong>','Delivery Agent','Corniche Rd',badge('On Trip','#7c3aed','#f5f3ff'),'28 delivered today','96.4%','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('RS','#15803d')+' <strong>Ramu S.</strong>','Delivery Agent','Shola',badge('On Trip','#7c3aed','#f5f3ff'),'24 delivered today','91.2%','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('VM','#1d4ed8')+' <strong>Vijay M.</strong>','Delivery Agent','Khozam',badge('Available','#15803d','#dcfce7'),'22 delivered today','97.8%','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('AP','#ea580c')+' <strong>Arjun P.</strong>','Delivery Agent','Ajlan',badge('Delayed','#b91c1c','#fee2e2'),'19 delivered today','82.1%','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('KR','#ca8a04')+' <strong>Kumar R.</strong>','Delivery Agent','Al Hamra',badge('Available','#15803d','#dcfce7'),'16 delivered today','94.5%','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      ];
+      scroll.innerHTML=pw+tbl(['Agent','Role','Assigned Store','Status','Today','On-time Rate',''],rows,{filters:filterBar})+'</div>';
+    },
+    employees: ()=>{
+      const rows=[
+        [av('AS','#7c3aed')+' <strong>Al Shrouqq 4</strong><br><span style="font-size:10.5px;color:#9ca3af">Delivery Agent</span>','Corniche Rd','12:30 PM – 12:30 AM','<button style="font-size:11px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:3px 10px;cursor:pointer;font-weight:500;color:#374151">Check-Out</button>',badge('Present','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('AS','#1d4ed8')+' <strong>Al Shrouqq 3</strong><br><span style="font-size:10.5px;color:#9ca3af">Delivery Agent</span>','Corniche Rd','12:30 PM – 12:30 AM','<button style="font-size:11px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:3px 10px;cursor:pointer;font-weight:500;color:#374151">Check-Out</button>',badge('Present','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('PM','#be123c')+' <strong>Arjun P.</strong><br><span style="font-size:10.5px;color:#9ca3af">Picking Manager</span>','Corniche Rd','09:00 AM – 06:00 PM','<button style="font-size:11px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:3px 10px;cursor:pointer;font-weight:500;color:#374151">Check-Out</button>',badge('Present','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('BK','#ca8a04')+' <strong>Babu K.</strong><br><span style="font-size:10.5px;color:#9ca3af">Picker</span>','Corniche Rd','09:00 AM – 06:00 PM','—',badge('Absent','#b91c1c','#fee2e2'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        [av('RK','#7c3aed')+' <strong>Ramu S.</strong><br><span style="font-size:10.5px;color:#9ca3af">Packer</span>','Al Hamra','09:00 AM – 05:00 PM','—',badge('On Leave','#ca8a04','#fef9c3'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      ];
+      const es=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">${[['47','Total Staff','ti-users','#dbeafe','#1d4ed8','total',true],['39','Present Today','ti-check','#dcfce7','#15803d','of 47',true],['5','Absent','ti-x','#fee2e2','#b91c1c','today',false],['3','On Leave','ti-beach','#fef9c3','#ca8a04','approved',true]].map(s=>stat(...s)).join('')}</div>`;
+      scroll.innerHTML=pw+es+tbl(['Staff Member','Store','Timings','Check-in/out','Status',''],rows,{filters:filterBar})+'</div>';
+    },
+    inventory: ()=>{
+      const rows=[
+        ['<strong>Fresh Whole Milk 1L</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-4421</span>',badge('Out of Stock','#b91c1c','#fee2e2'),'0','50','50',badge('Critical','#b91c1c','#fee2e2'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Greek Yogurt 200g</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-8872</span>',badge('Low Stock','#ea580c','#fff7ed'),'3','30','30',badge('Low','#ea580c','#fff7ed'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Basmati Rice 5kg</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-8812</span>',badge('In Stock','#15803d','#dcfce7'),'84','20','20',badge('OK','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Sourdough Bread</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-2241</span>',badge('In Stock','#15803d','#dcfce7'),'42','15','15',badge('OK','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Organic Eggs (12)</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-3310</span>',badge('Low Stock','#ca8a04','#fef9c3'),'8','25','25',badge('Low','#ca8a04','#fef9c3'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['<strong>Olive Oil 500ml</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-5521</span>',badge('In Stock','#15803d','#dcfce7'),'124','10','10',badge('OK','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      ];
+      scroll.innerHTML=pw+tbl(['Product','Status','Stock','Reorder Point','Reorder Qty','Alert',''],rows,{filters:filterBar})+'</div>';
+    },
+  };
+
+  const renderer=pages[pg];
+  if(renderer){ renderer(); return; }
+
+  // Generic data-filled fallback
+  scroll.innerHTML=`<div style="padding:40px 24px;text-align:center;color:#9ca3af">
+    <i class="ti ${NAV.flatMap(g=>g.items).find(x=>x.id===pg)?.ic||'ti-table'}" style="font-size:48px;display:block;margin-bottom:12px;color:#d1d5db"></i>
+    <div style="font-size:15px;font-weight:600;color:#374151;margin-bottom:6px">${NAV.flatMap(g=>g.items).find(x=>x.id===pg)?.l||pg} — Sample Data</div>
+    <div style="font-size:13px">Switch to <strong>Empty State</strong> to see onboarding guidance.</div>
+  </div>`;
+}
+
 function renderGeneric(scroll){
+  // If "With Data" toggle is ON, show data-filled view instead of empty state
+  if(hasData){ renderFilled(scroll); return; }
+
   const pg=activePage;
   const rm=RM[role];
   const item=NAV.flatMap(g=>g.items).find(x=>x.id===pg);
