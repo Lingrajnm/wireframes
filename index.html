@@ -53,7 +53,9 @@
   .card-desc { font-size: 12px; color: #8890b5; line-height: 1.6; flex: 1; }
   .card-footer { padding: 12px 20px; border-top: 1px solid #f0f2f9; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
-  .card-date { margin-left: auto; font-size: 10px; color: #c0c8dc; }
+  .card-date { font-size: 10px; color: #c0c8dc; }
+  .view-chip { display:inline-flex; align-items:center; gap:3px; font-size:10px; font-weight:600; color:#8890b5; background:#f0f2f9; border:1px solid #e0e4f0; border-radius:10px; padding:2px 8px; margin-left:auto; }
+  .view-chip svg { opacity:0.6; }
   .card-arrow { width: 28px; height: 28px; border-radius: 6px; background: #f0f2f9; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #9ba3c5; transition: all 0.2s; }
   .card:hover .card-arrow { background: #5c54f0; color: #fff; }
   .card-add { background: #f8f9fe; border: 2px dashed #dde0ef; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 220px; }
@@ -104,7 +106,7 @@
 
 <div class="grid" id="cardGrid">
 
-  <a class="card" href="zopping-order-flow.html" data-title="Zopping Order Flow" data-tags="oms store ops">
+  <a class="card" href="zopping-order-flow.html" data-title="Zopping Order Flow" data-tags="oms store ops" data-counter="zopping-order-flow">
     <div class="card-preview preview-purple">
       <div class="preview-dots"></div>
       <div class="card-preview-inner">
@@ -120,12 +122,12 @@
       <span class="tag tag-oms-pill">OMS</span>
       <span class="tag tag-store-pill">Store</span>
       <span class="tag tag-ops-pill">Ops</span>
-      <span class="card-date">Jun 2026</span>
+      <span class="view-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span class="vc-num">—</span></span><span class="card-date">Jun 2026</span>
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
 
-  <a class="card" href="urban_platter_onboarding.html" data-title="Urban Platter Integration Onboarding" data-tags="client ops">
+  <a class="card" href="urban_platter_onboarding.html" data-title="Urban Platter Integration Onboarding" data-tags="client ops" data-counter="urban-platter-onboarding">
     <div class="card-preview preview-green">
       <div class="preview-dots"></div>
       <div class="card-preview-inner">
@@ -181,7 +183,7 @@
     <div class="card-footer">
       <span class="tag tag-ops-pill">Ops</span>
       <span class="tag tag-store-pill">Store</span>
-      <span class="card-date">Jun 2026</span>
+      <span class="view-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span class="vc-num">—</span></span><span class="card-date">Jun 2026</span>
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
@@ -222,5 +224,23 @@
 </script>
 
 <script data-goatcounter="https://lingraj.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+<script>
+  async function loadViewCounts() {
+    const cards = document.querySelectorAll('.card[data-counter]');
+    for (const card of cards) {
+      const key = card.dataset.counter;
+      try {
+        const res = await fetch(`https://api.counterapi.dev/v1/lingrajnm-wireframes/${key}/`);
+        const data = await res.json();
+        const chip = card.querySelector('.vc-num');
+        if (chip && data.count !== undefined) {
+          chip.textContent = data.count === 1 ? '1 view' : data.count + ' views';
+        }
+      } catch(e) {}
+    }
+  }
+  loadViewCounts();
+</script>
 </body>
 </html>
