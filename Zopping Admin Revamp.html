@@ -989,16 +989,21 @@ function renderTopbar(){
   const rm=RM[role];
   const pg=activePage;
 
-  // Breadcrumb
+  // Breadcrumb — Overview is standalone, not a parent
   let bc='';
-  if(pg==='overview') bc=`<span class="cur">Overview</span>`;
-  else if(['myaccount','billing','notifications','changepassword','balance','deleteaccount'].includes(pg)){
-    const tabLabel={myaccount:'Personal Information',billing:'Billing',notifications:'Notifications',changepassword:'Change Password',balance:'Account Balance',deleteaccount:'Delete Account'};
-    bc=`<span onclick="gotoPage('overview')">Overview</span><span class="sep">›</span><span style="color:#9ca3af">My Account</span><span class="sep">›</span><span class="cur">${tabLabel[pg]||pg}</span>`;
+  if(pg==='overview'){
+    bc=`<span class="cur">Overview</span>`;
+  } else if(['myaccount','billing','notifications','changepassword','balance','deleteaccount'].includes(pg)){
+    const tabLabel={myaccount:'Personal Information',billing:'Billing Information',notifications:'Manage Notifications',changepassword:'Change Password',balance:'Account Balance',deleteaccount:'Delete Account'};
+    bc=`<span style="color:#9ca3af">My Account</span><span class="sep">›</span><span class="cur">${tabLabel[pg]||pg}</span>`;
   } else {
     const item=NAV.flatMap(g=>g.items).find(x=>x.id===pg);
     const sec=NAV.find(s=>s.items.some(i=>i.id===pg));
-    bc=`<span onclick="gotoPage('overview')">Overview</span><span class="sep">›</span>${sec?`<span style="cursor:pointer;color:#9ca3af">${sec.sec}</span><span class="sep">›</span>`:''}<span class="cur">${item?.l||pg}</span>`;
+    // Section name is clickable — goes to first item of that section
+    const firstItem=sec?.items.find(canSeeItem);
+    bc=sec
+      ? `<span style="cursor:pointer;color:#9ca3af" onclick="gotoPage('${firstItem?.id||pg}')">${sec.sec}</span><span class="sep">›</span><span class="cur">${item?.l||pg}</span>`
+      : `<span class="cur">${item?.l||pg}</span>`;
   }
   document.getElementById('tbBreadcrumb').innerHTML=bc;
 
