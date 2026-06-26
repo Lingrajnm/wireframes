@@ -245,6 +245,37 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .notif-toggle::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
 .notif-toggle.on::after{left:18px}
 
+/* ── EMPTY STATE ANIMATIONS ── */
+@keyframes es-fadein{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes es-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes es-pulse{0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,.3)}50%{box-shadow:0 0 0 8px rgba(22,163,74,0)}}
+@keyframes es-stagger{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.es-wrap{animation:es-fadein .5s ease both;padding:32px 24px 40px;display:flex;flex-direction:column;align-items:center;max-width:800px;margin:0 auto}
+.es-illo{animation:es-float 4s ease-in-out infinite;margin-bottom:24px}
+.es-headline{font-size:20px;font-weight:700;color:#111827;text-align:center;margin-bottom:8px;letter-spacing:-.3px}
+.es-desc{font-size:13.5px;color:#6b7280;text-align:center;line-height:1.65;max-width:480px;margin-bottom:24px}
+.es-actions{display:flex;gap:10px;align-items:center;margin-bottom:36px;flex-wrap:wrap;justify-content:center}
+.es-cta{display:flex;align-items:center;gap:6px;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .15s;animation:es-pulse 2.5s ease-in-out infinite}
+.es-cta.primary{background:#16a34a;color:#fff;box-shadow:0 2px 8px rgba(22,163,74,.3)}
+.es-cta.primary:hover{background:#15803d;animation:none;box-shadow:0 4px 12px rgba(22,163,74,.4)}
+.es-cta.secondary{background:#fff;color:#374151;border:1.5px solid #e2d9ce;animation:none}
+.es-cta.secondary:hover{border-color:#16a34a;color:#16a34a}
+.es-cta i{font-size:16px}
+.es-divider{display:flex;align-items:center;gap:12px;width:100%;margin-bottom:24px}
+.es-divider-line{flex:1;height:1px;background:#e5e7eb}
+.es-divider-text{font-size:12px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.es-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%}
+.es-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;animation:es-stagger .4s ease both}
+.es-card:nth-child(1){animation-delay:.1s}
+.es-card:nth-child(2){animation-delay:.2s}
+.es-card:nth-child(3){animation-delay:.3s}
+.es-card:hover{border-color:#16a34a;box-shadow:0 4px 14px rgba(0,0,0,.06);transform:translateY(-2px);transition:all .15s}
+.es-card-ic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px}
+.es-card-title{font-size:13px;font-weight:700;color:#111827;margin-bottom:6px}
+.es-card-desc{font-size:12px;color:#6b7280;line-height:1.55}
+.es-card-link{font-size:11.5px;color:#16a34a;font-weight:600;margin-top:10px;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.es-tag{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:10px;margin-bottom:14px}
+
 /* ── NOTIFICATION PANEL ── */
 .notif-panel{position:absolute;top:58px;right:12px;width:360px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.12);z-index:999;overflow:hidden;display:none}
 .notif-panel.open{display:block}
@@ -1664,15 +1695,310 @@ document.addEventListener('click',e=>{
   }
 });
 
+// ── EMPTY STATES ───────────────────────────────────────────────────
+const ES={
+  // ── OPERATIONS ──
+  orders:{tag:{l:'New Store',c:'#1d4ed8',bg:'#dbeafe'},illo:'order',headline:'No orders yet',
+    desc:'Once customers start placing orders, every order will appear here with real-time status tracking, slot info, and payment details.',
+    ctas:[{l:'Create Order Manually',ic:'ti-plus',p:true},{l:'Share Store Link',ic:'ti-share',p:false,action:"navigator.clipboard&&navigator.clipboard.writeText('https://tabsports.zopping.com')"}],
+    cards:[
+      {ic:'ti-link',bg:'#dbeafe',c:'#1d4ed8',title:'Share your store link',desc:'Send your store URL to customers via WhatsApp, Instagram, or print a QR code for your outlet.',link:'Copy store link'},
+      {ic:'ti-discount',bg:'#dcfce7',c:'#15803d',title:'Create a launch offer',desc:'A WELCOME10 coupon attracts first-time customers and gets your first orders rolling quickly.',link:'Create coupon →',action:"gotoPage('coupons')"},
+      {ic:'ti-speakerphone',bg:'#f5f3ff',c:'#7c3aed',title:'Launch an SMS campaign',desc:'Reach your existing contacts with a store opening announcement and drive them to order now.',link:'Create campaign →',action:"gotoPage('campaigns')"},
+    ]},
+  picking:{tag:{l:'Operations',c:'#ca8a04',bg:'#fef9c3'},illo:'pick',headline:'Picking queue is empty',
+    desc:'When orders are placed and ready to be picked, they will appear here. Pickers can scan, pick, and update status in real time.',
+    ctas:[{l:'View Orders',ic:'ti-shopping-bag',p:true,action:"gotoPage('orders')"}],
+    cards:[
+      {ic:'ti-scan',bg:'#dbeafe',c:'#1d4ed8',title:'How picking works',desc:'Orders move here after they are assigned to a picker. Items are listed by aisle/rack location for efficiency.'},
+      {ic:'ti-server',bg:'#f0fdf4',c:'#15803d',title:'Set up rack management',desc:'Define your warehouse racks and zones so pickers know exactly where to find each product.',link:'Set up racks →',action:"gotoPage('rack')"},
+      {ic:'ti-clock',bg:'#fef9c3',c:'#ca8a04',title:'Beat your SLA',desc:'The picking queue is sorted by delivery slot — earliest slots are always at the top to prevent delays.'},
+    ]},
+  packing:{tag:{l:'Operations',c:'#ca8a04',bg:'#fef9c3'},illo:'pack',headline:'Nothing to pack right now',
+    desc:'Orders that have been picked and are ready for packing will appear here. Packers can mark items packed and trigger dispatch.',
+    ctas:[{l:'View Orders',ic:'ti-shopping-bag',p:true,action:"gotoPage('orders')"}],
+    cards:[
+      {ic:'ti-package',bg:'#dbeafe',c:'#1d4ed8',title:'Packing flow',desc:'Orders move from Picking → Packing → Dispatch automatically. Packers scan or tap to confirm each item.'},
+      {ic:'ti-ruler',bg:'#f0fdf4',c:'#15803d',title:'Set up packaging types',desc:'Configure box sizes and packaging materials so packers always pick the right packaging for each order.',link:'Configure packaging →',action:"gotoPage('payments')"},
+      {ic:'ti-star',bg:'#fef9c3',c:'#ca8a04',title:'Quality matters',desc:'Add a packing checklist or QC step to reduce returns and improve customer satisfaction scores.'},
+    ]},
+  slotblock:{tag:{l:'Operations',c:'#ca8a04',bg:'#fef9c3'},illo:'slot',headline:'No slots blocked',
+    desc:'Block delivery slots to prevent new orders during high-demand periods, maintenance, or when capacity is reached.',
+    ctas:[{l:'Block a Slot',ic:'ti-calendar-off',p:true},{l:'Configure Slots',ic:'ti-settings-2',p:false,action:"gotoPage('slotsetup')"}],
+    cards:[
+      {ic:'ti-calendar-off',bg:'#fee2e2',c:'#b91c1c',title:'When to block slots',desc:'Block slots for holidays, vehicle maintenance, staff shortages, or when a store is overwhelmed with orders.'},
+      {ic:'ti-chart-area',bg:'#f0fdf4',c:'#15803d',title:'Capacity planning',desc:'Use capacity planning to auto-limit bookings when slots hit a threshold — no manual blocking needed.',link:'Set up capacity →',action:"gotoPage('capacity')"},
+      {ic:'ti-bell',bg:'#dbeafe',c:'#1d4ed8',title:'Customer communication',desc:'Blocked slots show as unavailable to customers automatically. No manual messaging required.'},
+    ]},
+  vehicles:{tag:{l:'Logistics',c:'#7c3aed',bg:'#f5f3ff'},illo:'truck',headline:'No vehicles added yet',
+    desc:'Add your delivery fleet here — two-wheelers, four-wheelers, or any vehicle type. Each vehicle is assigned to trips and tracked in real time.',
+    ctas:[{l:'Add First Vehicle',ic:'ti-plus',p:true},{l:'Add Vehicle Vendor',ic:'ti-building',p:false}],
+    cards:[
+      {ic:'ti-car',bg:'#f5f3ff',c:'#7c3aed',title:'Add your fleet',desc:'Add each vehicle with its number plate, type, and vendor. Multiple vendors supported for outsourced delivery.'},
+      {ic:'ti-steering-wheel',bg:'#dbeafe',c:'#1d4ed8',title:'Vehicle planning',desc:'After adding vehicles, use Vehicle Planning to assign them to daily routes and schedule trips.',link:'Plan vehicles →',action:"gotoPage('vplanning')"},
+      {ic:'ti-map-pin',bg:'#dcfce7',c:'#15803d',title:'Live trip tracking',desc:'Once trips start, vehicles are tracked on a live map. Customers get real-time delivery ETAs.'},
+    ]},
+  trips:{tag:{l:'Logistics',c:'#7c3aed',bg:'#f5f3ff'},illo:'truck',headline:'No trips created today',
+    desc:'Trips are collections of orders assigned to a vehicle and runner for delivery. Create trips to start dispatching orders.',
+    ctas:[{l:'Create Trip',ic:'ti-plus',p:true},{l:'Plan Tomorrow',ic:'ti-map',p:false,action:"gotoPage('tripplan')"}],
+    cards:[
+      {ic:'ti-route',bg:'#f5f3ff',c:'#7c3aed',title:'How trips work',desc:'A trip groups multiple orders going to nearby locations, assigned to one vehicle and one delivery agent.'},
+      {ic:'ti-users-group',bg:'#dcfce7',c:'#15803d',title:'Assign delivery agents',desc:'Add your delivery agents first, then assign them to trips for seamless dispatch.',link:'Add agents →',action:"gotoPage('runners')"},
+      {ic:'ti-clock',bg:'#dbeafe',c:'#1d4ed8',title:'Optimize for slots',desc:'The trip planner automatically groups orders by delivery slot and proximity to minimize travel time.'},
+    ]},
+  runners:{tag:{l:'Logistics',c:'#7c3aed',bg:'#f5f3ff'},illo:'run',headline:'No delivery agents added',
+    desc:'Add your delivery agents here. They\'ll be assigned to trips and can update delivery status from the Zopping mobile app.',
+    ctas:[{l:'Add Delivery Agent',ic:'ti-user-plus',p:true},{l:'Download Agent App',ic:'ti-device-mobile',p:false}],
+    cards:[
+      {ic:'ti-run',bg:'#f5f3ff',c:'#7c3aed',title:'Agent mobile app',desc:'Each delivery agent gets a login to the Zopping app. They can view their trips, mark deliveries, and collect payments.'},
+      {ic:'ti-map-pin',bg:'#dbeafe',c:'#1d4ed8',title:'Live location tracking',desc:'Once a trip starts, the agent\'s location is shared live — visible to you and optionally to the customer.'},
+      {ic:'ti-star',bg:'#dcfce7',c:'#15803d',title:'Performance tracking',desc:'Track on-time delivery rate, orders delivered, and customer ratings for each agent over time.'},
+    ]},
+  // ── CATALOGUE ──
+  products:{tag:{l:'Catalogue',c:'#b45309',bg:'#fff7ed'},illo:'shelf',headline:'Your catalogue is empty',
+    desc:'Add your products so customers can browse and order. Products can include images, descriptions, pricing, variants, and inventory levels.',
+    ctas:[{l:'Add First Product',ic:'ti-package',p:true},{l:'Import via CSV',ic:'ti-download',p:false,action:"gotoPage('bulkupload')"}],
+    cards:[
+      {ic:'ti-photo',bg:'#dbeafe',c:'#1d4ed8',title:'Add great images',desc:'Products with clear photos sell 3× more. Upload at least one image per product for best results.'},
+      {ic:'ti-file-text',bg:'#dcfce7',c:'#15803d',title:'Write good descriptions',desc:'Clear product descriptions reduce returns and help customers make confident purchase decisions.'},
+      {ic:'ti-download',bg:'#fff7ed',c:'#b45309',title:'Bulk upload via CSV',desc:'Have 100+ products? Import them all at once using our CSV template — saves hours of manual entry.',link:'Get CSV template →',action:"gotoPage('bulkupload')"},
+    ]},
+  categories:{tag:{l:'Catalogue',c:'#b45309',bg:'#fff7ed'},illo:'category',headline:'No categories yet',
+    desc:'Categories help customers navigate your store and find products faster. Well-structured categories also improve your store\'s SEO.',
+    ctas:[{l:'Add Category',ic:'ti-plus',p:true}],
+    cards:[
+      {ic:'ti-sitemap',bg:'#dbeafe',c:'#1d4ed8',title:'Keep it simple',desc:'Aim for 5–10 top-level categories. Too many choices overwhelm customers — group similar items together.'},
+      {ic:'ti-search',bg:'#dcfce7',c:'#15803d',title:'SEO benefit',desc:'Each category gets its own page. Good category names and descriptions help Google send you free traffic.'},
+      {ic:'ti-photo',bg:'#fff7ed',c:'#b45309',title:'Add category images',desc:'Visual category tiles on your storefront improve click-through rates by up to 40%.'},
+    ]},
+  brands:{tag:{l:'Catalogue',c:'#b45309',bg:'#fff7ed'},illo:'brand',headline:'No brands added yet',
+    desc:'Add the brands you carry so customers can filter products by brand. Brand pages also help with SEO and trust.',
+    ctas:[{l:'Add Brand',ic:'ti-plus',p:true},{l:'Import Brands',ic:'ti-download',p:false}],
+    cards:[
+      {ic:'ti-registered',bg:'#fff7ed',c:'#b45309',title:'Why brands matter',desc:'40% of customers search by brand. Without brands, you miss this traffic and make discovery harder.'},
+      {ic:'ti-star',bg:'#dbeafe',c:'#1d4ed8',title:'Brand loyalty',desc:'Customers who filter by brand convert better — they already trust the product and are ready to buy.'},
+      {ic:'ti-link',bg:'#dcfce7',c:'#15803d',title:'Link to products',desc:'After adding brands, assign them to each product so the brand page shows all relevant items automatically.'},
+    ]},
+  tags:{tag:{l:'Catalogue',c:'#b45309',bg:'#fff7ed'},illo:'tag',headline:'No tags created yet',
+    desc:'Tags help with internal product organisation and can power smart collections on your storefront — e.g. "New Arrivals", "Bestsellers", "Gluten Free".',
+    ctas:[{l:'Add Tag',ic:'ti-plus',p:true},{l:'Import Tags',ic:'ti-download',p:false}],
+    cards:[
+      {ic:'ti-tag',bg:'#fff7ed',c:'#b45309',title:'Tags vs categories',desc:'Categories are your main navigation. Tags are flexible labels for filtering, collections, and campaigns.'},
+      {ic:'ti-speakerphone',bg:'#dbeafe',c:'#1d4ed8',title:'Power your campaigns',desc:'Create segments based on tags — e.g. target all customers who bought "Organic" tagged products.'},
+      {ic:'ti-search',bg:'#dcfce7',c:'#15803d',title:'Improve discovery',desc:'Tags power "You might also like" recommendations, helping customers find more products.'},
+    ]},
+  inventory:{tag:{l:'Catalogue',c:'#b45309',bg:'#fff7ed'},illo:'stock',headline:'No inventory data yet',
+    desc:'Track stock levels for each product across all your stores. Set reorder points to get alerts before items run out.',
+    ctas:[{l:'Update Stock',ic:'ti-refresh',p:true},{l:'Import Stock',ic:'ti-download',p:false}],
+    cards:[
+      {ic:'ti-archive',bg:'#fff7ed',c:'#b45309',title:'Real-time tracking',desc:'Every order automatically deducts from inventory. You always see accurate stock levels per store.'},
+      {ic:'ti-bell',bg:'#fee2e2',c:'#b91c1c',title:'Low stock alerts',desc:'Set reorder thresholds and get notified before items run out — never lose a sale to stockouts.',link:'Enable alerts →'},
+      {ic:'ti-download',bg:'#dbeafe',c:'#1d4ed8',title:'Bulk update via CSV',desc:'Update hundreds of stock counts at once by uploading a simple CSV — no manual entry needed.'},
+    ]},
+  subs:{tag:{l:'Catalogue',c:'#b45309',bg:'#fff7ed'},illo:'swap',headline:'No substitution groups',
+    desc:'When a product is out of stock, automatically suggest a substitute to the customer instead of cancelling their order. Reduce cancellations by up to 30%.',
+    ctas:[{l:'Create Substitution Group',ic:'ti-plus',p:true}],
+    cards:[
+      {ic:'ti-refresh',bg:'#dcfce7',c:'#15803d',title:'Reduce cancellations',desc:'Stores using substitution groups reduce order cancellations by 25–35% on average.'},
+      {ic:'ti-users',bg:'#dbeafe',c:'#1d4ed8',title:'Customer choice',desc:'Customers can accept, reject, or choose from the suggested substitutes before dispatch.'},
+      {ic:'ti-star',bg:'#fff7ed',c:'#b45309',title:'Build trust',desc:'Offering alternatives instead of cancellations shows customers you care about fulfilling their order.'},
+    ]},
+  // ── CUSTOMERS / CS ──
+  customers:{tag:{l:'Customer Support',c:'#0e7490',bg:'#e0f7fa'},illo:'customer',headline:'No customers yet',
+    desc:'Your customer base will grow here as people place orders. Search any customer by email, phone, or order number to view their history and manage their account.',
+    ctas:[{l:'Share Store Link',ic:'ti-share',p:true},{l:'Run a Campaign',ic:'ti-speakerphone',p:false,action:"gotoPage('campaigns')"}],
+    cards:[
+      {ic:'ti-link',bg:'#e0f7fa',c:'#0e7490',title:'Drive your first visits',desc:'Share your store URL on WhatsApp groups, Instagram, and neighbourhood apps to get your first customers.'},
+      {ic:'ti-gift',bg:'#dcfce7',c:'#15803d',title:'Welcome offer converts',desc:'A first-order discount (WELCOME15) is the single most effective way to turn visitors into customers.'},
+      {ic:'ti-users-group',bg:'#dbeafe',c:'#1d4ed8',title:'Referral programme',desc:'Enable the referral extension so existing customers bring in new ones for you — zero ad spend.'},
+    ]},
+  // ── MARKETING ──
+  coupons:{tag:{l:'Marketing',c:'#15803d',bg:'#dcfce7'},illo:'coupon',headline:'No coupons created yet',
+    desc:'Create discount coupons to attract first-time buyers, reward loyal customers, or recover abandoned carts. Coupons are redeemable at checkout.',
+    ctas:[{l:'Create First Coupon',ic:'ti-plus',p:true}],
+    cards:[
+      {ic:'ti-user-plus',bg:'#dbeafe',c:'#1d4ed8',title:'First-order coupon',desc:'WELCOME10 — 10% off first order. This single coupon drives more first-time conversions than any ad.'},
+      {ic:'ti-shopping-cart-off',bg:'#fff7ed',c:'#ea580c',title:'Recover abandoned carts',desc:'Send a timed coupon to users who left items in their cart. Average recovery rate: 15–20%.'},
+      {ic:'ti-crown',bg:'#fef9c3',c:'#ca8a04',title:'Reward loyal customers',desc:'Give VIP customers an exclusive coupon after their 5th order to drive repeat purchases.'},
+    ]},
+  offers:{tag:{l:'Marketing',c:'#15803d',bg:'#dcfce7'},illo:'offer',headline:'No offers running yet',
+    desc:'Offers are automatic discounts applied at checkout — Buy 2 Get 1, percentage off, flat discount, bulk pricing, and more. No coupon code needed.',
+    ctas:[{l:'Create First Offer',ic:'ti-percentage',p:true}],
+    cards:[
+      {ic:'ti-package',bg:'#dcfce7',c:'#15803d',title:'Bundle deals',desc:'"Buy any 3 items, get 10% off" offers increase average order value by 20–30%.'},
+      {ic:'ti-bolt',bg:'#fee2e2',c:'#b91c1c',title:'Flash sales',desc:'Time-limited offers (2 hours only!) create urgency and spike order volumes during slow periods.'},
+      {ic:'ti-crown',bg:'#fef9c3',c:'#ca8a04',title:'Loyalty pricing',desc:'Offer special prices to customer segments — VIPs see different pricing than new customers.'},
+    ]},
+  campaigns:{tag:{l:'Marketing',c:'#15803d',bg:'#dcfce7'},illo:'campaign',headline:'No campaigns yet',
+    desc:'Campaigns let you reach customers via Email, SMS, WhatsApp, and push notifications — for promotions, order updates, or re-engagement.',
+    ctas:[{l:'Create Campaign',ic:'ti-speakerphone',p:true}],
+    cards:[
+      {ic:'ti-message',bg:'#dbeafe',c:'#1d4ed8',title:'SMS campaigns',desc:'SMS open rates are 98%. A single well-timed SMS to your list drives 3–5% order conversion.'},
+      {ic:'ti-bell',bg:'#dcfce7',c:'#15803d',title:'Push notifications',desc:'App users who receive push notifications order 2× more often than those who don\'t.'},
+      {ic:'ti-users-group',bg:'#f5f3ff',c:'#7c3aed',title:'Segment your audience',desc:'Send a flash sale only to customers who haven\'t ordered in 30 days — not to everyone.'},
+    ]},
+  banners:{tag:{l:'Marketing',c:'#15803d',bg:'#dcfce7'},illo:'banner',headline:'No banners yet',
+    desc:'Banners appear prominently on your storefront homepage. Use them to highlight promotions, new categories, or seasonal campaigns.',
+    ctas:[{l:'Add Banner',ic:'ti-plus',p:true}],
+    cards:[
+      {ic:'ti-photo',bg:'#dbeafe',c:'#1d4ed8',title:'First impression',desc:'The homepage banner is seen by 100% of visitors. Make it count with a clear offer and strong image.'},
+      {ic:'ti-calendar',bg:'#dcfce7',c:'#15803d',title:'Seasonal campaigns',desc:'Update banners weekly for festivals, weekends, and seasonal peaks to keep the store feeling fresh.'},
+      {ic:'ti-trending-up',bg:'#fff7ed',c:'#ea580c',title:'Drive category traffic',desc:'Link banners directly to product categories or specific offers to convert more banner clicks.'},
+    ]},
+  segments:{tag:{l:'Marketing',c:'#15803d',bg:'#dcfce7'},illo:'segment',headline:'No segments created',
+    desc:'Segments are groups of customers based on behaviour — purchase history, location, spending, or inactivity. Use them to send targeted campaigns.',
+    ctas:[{l:'Create Segment',ic:'ti-plus',p:true}],
+    cards:[
+      {ic:'ti-users-group',bg:'#dbeafe',c:'#1d4ed8',title:'Target the right people',desc:'"Customers who ordered last week but not this week" — this segment alone can recover ₹20,000+ in revenue.'},
+      {ic:'ti-map-pin',bg:'#dcfce7',c:'#15803d',title:'Location segments',desc:'Target customers near a specific store with hyper-local promotions and delivery offers.'},
+      {ic:'ti-crown',bg:'#fef9c3',c:'#ca8a04',title:'VIP segment',desc:'Identify your top 10% spenders automatically and give them early access, exclusive prices, or a loyalty reward.'},
+    ]},
+  // ── WEBSITE ──
+  'web-layout':{tag:{l:'Website',c:'#7c3aed',bg:'#f5f3ff'},illo:'website',headline:'Customise your storefront',
+    desc:'Your online store is live but running on the default theme. Personalise colours, fonts, layout, and branding to match your identity.',
+    ctas:[{l:'Start Customising',ic:'ti-layout',p:true},{l:'Preview Store',ic:'ti-world',p:false}],
+    cards:[
+      {ic:'ti-palette',bg:'#f5f3ff',c:'#7c3aed',title:'Brand your store',desc:'Set your brand colours and logo. A branded store builds 40% more customer trust than a generic one.'},
+      {ic:'ti-layout-grid',bg:'#dbeafe',c:'#1d4ed8',title:'Choose a layout',desc:'Pick from homepage layouts: hero banner, category grid, featured products, or a combination.'},
+      {ic:'ti-device-mobile',bg:'#dcfce7',c:'#15803d',title:'Mobile-first',desc:'Over 80% of your customers will shop on mobile. Preview and test the mobile layout before publishing.'},
+    ]},
+  'web-blog':{tag:{l:'Website',c:'#7c3aed',bg:'#f5f3ff'},illo:'blog',headline:'No blog posts yet',
+    desc:'A blog helps you rank on Google, educate customers, and build trust. Write about your products, recipes, tips, or industry news.',
+    ctas:[{l:'Write First Post',ic:'ti-plus',p:true}],
+    cards:[
+      {ic:'ti-search',bg:'#dcfce7',c:'#15803d',title:'Get free traffic',desc:'A post titled "Best milk delivery in Corniche Road" can rank on Google and bring free organic orders.'},
+      {ic:'ti-users',bg:'#dbeafe',c:'#1d4ed8',title:'Build trust',desc:'Customers who read your blog before ordering spend 2× more on average.'},
+      {ic:'ti-calendar',bg:'#f5f3ff',c:'#7c3aed',title:'Post consistently',desc:'Even 2 posts per month is enough to see SEO results within 3–4 months.'},
+    ]},
+  // ── HR ──
+  employees:{tag:{l:'Staff & HR',c:'#1d4ed8',bg:'#dbeafe'},illo:'staff',headline:'No staff added yet',
+    desc:'Add your team members — store staff, delivery agents, pickers, and managers. Each gets a role-based login with access to only what they need.',
+    ctas:[{l:'Add First Staff Member',ic:'ti-user-plus',p:true}],
+    cards:[
+      {ic:'ti-lock',bg:'#f5f3ff',c:'#7c3aed',title:'Role-based access',desc:'Each role sees only what\'s relevant to their job. Pickers see the picking queue. Managers see everything.'},
+      {ic:'ti-calendar-event',bg:'#dbeafe',c:'#1d4ed8',title:'Attendance tracking',desc:'Staff can check in and out from the app. You see live attendance and generate monthly summaries.'},
+      {ic:'ti-chart-bar',bg:'#dcfce7',c:'#15803d',title:'Performance insights',desc:'Track orders picked, deliveries made, and punctuality for each staff member over time.'},
+    ]},
+  designations:{tag:{l:'Staff & HR',c:'#1d4ed8',bg:'#dbeafe'},illo:'staff',headline:'No designations set up',
+    desc:'Designations are job titles within your organisation — Store Manager, Picker, Delivery Agent, etc. Required before you can add staff.',
+    ctas:[{l:'Add Designation',ic:'ti-plus',p:true}],
+    cards:[
+      {ic:'ti-id-badge',bg:'#dbeafe',c:'#1d4ed8',title:'Start with basics',desc:'Add at minimum: Store Manager, Picker, Delivery Agent. You can always add more later.'},
+      {ic:'ti-lock',bg:'#f5f3ff',c:'#7c3aed',title:'Tied to roles',desc:'Each designation maps to a permission role — so the right people get the right system access.'},
+      {ic:'ti-users-group',bg:'#dcfce7',c:'#15803d',title:'Scale your team',desc:'Clear designations make it easier to onboard new staff — they know exactly what they\'re responsible for.'},
+    ]},
+  // ── ANALYTICS ──
+  reports:{tag:{l:'Analytics',c:'#374151',bg:'#f3f4f6'},illo:'chart',headline:'Reports will appear here',
+    desc:'As your store gets orders, this section will show detailed performance reports — sales, inventory, customers, staff, and delivery analytics.',
+    ctas:[{l:'View Analytics',ic:'ti-chart-line',p:true,action:"gotoPage('analytics')"},{l:'Export Sample',ic:'ti-download',p:false}],
+    cards:[
+      {ic:'ti-chart-bar',bg:'#dbeafe',c:'#1d4ed8',title:'Sales reports',desc:'Daily, weekly, and monthly revenue broken down by store, category, and product — with trend comparisons.'},
+      {ic:'ti-users',bg:'#dcfce7',c:'#15803d',title:'Customer reports',desc:'New vs returning customers, retention rates, RFM analysis, and lifetime value by cohort.'},
+      {ic:'ti-truck',bg:'#f5f3ff',c:'#7c3aed',title:'Operations reports',desc:'Fill rate, on-time delivery, slot utilisation, and picker performance — all in one place.'},
+    ]},
+  // ── SETTINGS ──
+  'stores-cfg':{tag:{l:'Settings',c:'#374151',bg:'#f3f4f6'},illo:'store',headline:'Set up your first store',
+    desc:'Configure your store details — name, address, operating hours, and store-specific settings. Each store can have its own delivery zones and slots.',
+    ctas:[{l:'Configure Store',ic:'ti-settings',p:true}],
+    cards:[
+      {ic:'ti-building-store',bg:'#dbeafe',c:'#1d4ed8',title:'Store profile',desc:'Add your store name, address, contact number, and operating hours. Shown to customers on your storefront.'},
+      {ic:'ti-calendar-time',bg:'#dcfce7',c:'#15803d',title:'Delivery slots',desc:'Configure delivery time slots specific to each store based on your capacity and team size.',link:'Set up slots →',action:"gotoPage('slotsetup')"},
+      {ic:'ti-map-pin',bg:'#fff7ed',c:'#ea580c',title:'Delivery zones',desc:'Define which pin codes or areas each store delivers to. Customers outside the zone cannot checkout.'},
+    ]},
+  payments:{tag:{l:'Settings',c:'#374151',bg:'#f3f4f6'},illo:'payment',headline:'No payment gateways configured',
+    desc:'Add payment gateways so customers can pay online. Zopping supports Razorpay, Stripe, PayU, PayTM, and more. COD is enabled by default.',
+    ctas:[{l:'Add Payment Gateway',ic:'ti-credit-card',p:true}],
+    cards:[
+      {ic:'ti-credit-card',bg:'#dbeafe',c:'#1d4ed8',title:'Online payments',desc:'Stores with online payment see 35% higher order values than COD-only stores — customers spend more when paying digitally.'},
+      {ic:'ti-wallet',bg:'#dcfce7',c:'#15803d',title:'Customer wallet',desc:'Enable a store wallet so customers can top up and pay instantly — reduces payment friction by 60%.'},
+      {ic:'ti-shield',bg:'#f5f3ff',c:'#7c3aed',title:'PCI compliant',desc:'All payment processing is handled by the gateway — Zopping never stores card details.'},
+    ]},
+  api:{tag:{l:'Settings',c:'#374151',bg:'#f3f4f6'},illo:'api',headline:'No API keys configured',
+    desc:'Connect third-party services — OMS/WMS systems, analytics platforms, shipping partners, and custom integrations using your API keys and webhooks.',
+    ctas:[{l:'Generate API Key',ic:'ti-key',p:true}],
+    cards:[
+      {ic:'ti-plug-connected',bg:'#dbeafe',c:'#1d4ed8',title:'Connect your stack',desc:'Use the API to sync orders with your ERP, push data to your data warehouse, or connect any custom tool.'},
+      {ic:'ti-webhook',bg:'#dcfce7',c:'#15803d',title:'Real-time webhooks',desc:'Get instant notifications when orders are placed, delivered, or cancelled — trigger your own workflows.'},
+      {ic:'ti-shield-lock',bg:'#f5f3ff',c:'#7c3aed',title:'Secure by default',desc:'API keys are scoped and rotatable. Every call is logged so you can audit access at any time.'},
+    ]},
+  ext:{tag:{l:'Extensions',c:'#374151',bg:'#f3f4f6'},illo:'puzzle',headline:'Extend your store\'s capabilities',
+    desc:'Browse and install extensions to add new features — loyalty programmes, B2B pricing, digital products, referrals, and 40+ more.',
+    ctas:[{l:'Browse Extensions',ic:'ti-puzzle',p:true}],
+    cards:[
+      {ic:'ti-crown',bg:'#fef9c3',c:'#ca8a04',title:'Top picks',desc:'VIP Membership, Referral Programme, and Abandoned Cart Recovery are installed by 80% of growing stores.'},
+      {ic:'ti-bolt',bg:'#dcfce7',c:'#15803d',title:'One-click install',desc:'Extensions install in seconds with no code. Enable, configure, and go live immediately.'},
+      {ic:'ti-puzzle',bg:'#dbeafe',c:'#1d4ed8',title:'Built by Zopping',desc:'All extensions are officially maintained — no compatibility issues, no third-party risks.'},
+    ]},
+};
+
+// ── SVG ILLUSTRATIONS ──────────────────────────────────────────────
+function getIllo(type){
+  const illos={
+    order:`<svg viewBox="0 0 200 180" width="180"><ellipse cx="100" cy="90" rx="80" ry="55" fill="#dbeafe" opacity=".5"/><rect x="55" y="55" width="90" height="90" rx="10" fill="#fff" stroke="#bfdbfe" stroke-width="1.5"/><rect x="55" y="55" width="90" height="28" rx="10" fill="#3b82f6" opacity=".15"/><path d="M75 100 l8 8 16-18" stroke="#16a34a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="75" y="118" width="50" height="6" rx="3" fill="#e5e7eb"/><rect x="80" y="129" width="40" height="5" rx="2.5" fill="#f3f4f6"/><circle cx="155" cy="55" r="14" fill="#16a34a"/><text x="155" y="60" text-anchor="middle" font-size="16" fill="white" font-family="sans-serif">+</text></svg>`,
+    shelf:`<svg viewBox="0 0 200 170" width="180"><ellipse cx="100" cy="90" rx="80" ry="55" fill="#fff7ed" opacity=".5"/><rect x="50" y="95" width="100" height="5" rx="2" fill="#d1d5db"/><rect x="50" y="130" width="100" height="5" rx="2" fill="#d1d5db"/><rect x="60" y="60" width="14" height="35" rx="3" fill="#fca5a5"/><rect x="78" y="67" width="12" height="28" rx="2" fill="#93c5fd"/><rect x="94" y="54" width="16" height="41" rx="3" fill="#c4b5fd"/><rect x="114" y="63" width="12" height="32" rx="2" fill="#6ee7b7"/><rect x="130" y="70" width="14" height="25" rx="2" fill="#fcd34d"/><rect x="60" y="102" width="12" height="28" rx="2" fill="#fcd34d"/><rect x="76" y="108" width="16" height="22" rx="3" fill="#fca5a5"/><rect x="96" y="100" width="14" height="30" rx="2" fill="#93c5fd"/><rect x="114" y="105" width="12" height="25" rx="2" fill="#c4b5fd"/></svg>`,
+    truck:`<svg viewBox="0 0 200 160" width="180"><ellipse cx="100" cy="85" rx="80" ry="50" fill="#f5f3ff" opacity=".5"/><rect x="30" y="60" width="90" height="60" rx="6" fill="#e0e7ff"/><rect x="30" y="60" width="90" height="60" rx="6" fill="none" stroke="#818cf8" stroke-width="1.5"/><rect x="120" y="75" width="50" height="45" rx="6" fill="#c7d2fe"/><rect x="120" y="75" width="50" height="45" rx="6" fill="none" stroke="#818cf8" stroke-width="1.5"/><rect x="125" y="80" width="38" height="22" rx="3" fill="#a5b4fc"/><circle cx="60" cy="125" r="12" fill="#4f46e5"/><circle cx="60" cy="125" r="5" fill="white"/><circle cx="145" cy="125" r="12" fill="#4f46e5"/><circle cx="145" cy="125" r="5" fill="white"/><path d="M120 95 l0-20 15-10 20 0 0 30" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/></svg>`,
+    customer:`<svg viewBox="0 0 200 170" width="180"><ellipse cx="100" cy="90" rx="75" ry="52" fill="#e0f7fa" opacity=".5"/><circle cx="100" cy="68" r="28" fill="#b2ebf2"/><circle cx="100" cy="58" r="18" fill="#80deea"/><path d="M60 120 Q100 100 140 120 L140 145 Q100 155 60 145 Z" fill="#80deea"/><rect x="82" y="76" width="36" height="28" rx="4" fill="#fff" stroke="#4dd0e1" stroke-width="1.5"/><circle cx="91" cy="87" r="4" fill="#4dd0e1"/><circle cx="109" cy="87" r="4" fill="#4dd0e1"/><path d="M88 96 Q100 104 112 96" stroke="#4dd0e1" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`,
+    coupon:`<svg viewBox="0 0 200 160" width="180"><ellipse cx="100" cy="85" rx="75" ry="48" fill="#dcfce7" opacity=".5"/><rect x="30" y="52" width="140" height="72" rx="8" fill="#fff" stroke="#d1fae5" stroke-width="2"/><circle cx="30" cy="88" r="12" fill="#f6f1eb"/><circle cx="170" cy="88" r="12" fill="#f6f1eb"/><line x1="85" y1="55" x2="85" y2="121" stroke="#d1fae5" stroke-width="1.5" stroke-dasharray="4,3"/><text x="55" y="92" text-anchor="middle" font-size="22" font-weight="800" fill="#16a34a" font-family="sans-serif">20%</text><text x="55" y="106" text-anchor="middle" font-size="9" fill="#6b7280" font-family="sans-serif">OFF</text><text x="128" y="82" text-anchor="middle" font-size="8" fill="#9ca3af" font-family="sans-serif">USE CODE</text><text x="128" y="95" text-anchor="middle" font-size="11" font-weight="700" fill="#16a34a" font-family="monospace">WELCOME10</text></svg>`,
+    campaign:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#f5f3ff" opacity=".5"/><path d="M65 75 L110 55 L110 115 L65 95 Z" fill="#818cf8"/><rect x="45" y="75" width="20" height="20" rx="2" fill="#c7d2fe"/><rect x="110" y="62" width="5" height="50" fill="#e0e7ff" stroke="#818cf8" stroke-width="1"/><ellipse cx="115" cy="87" rx="25" ry="25" fill="none" stroke="#a5b4fc" stroke-width="1.5" stroke-dasharray="4,3"/><ellipse cx="115" cy="87" rx="38" ry="38" fill="none" stroke="#c7d2fe" stroke-width="1" stroke-dasharray="3,4"/><circle cx="48" cy="107" r="8" fill="#dcfce7"/><text x="48" y="111" text-anchor="middle" font-size="9" fill="#15803d" font-family="sans-serif">SMS</text></svg>`,
+    chart:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#f3f4f6" opacity=".5"/><rect x="40" y="130" width="18" height="30" rx="3" fill="#e5e7eb"/><rect x="65" y="108" width="18" height="52" rx="3" fill="#d1d5db"/><rect x="90" y="88" width="18" height="72" rx="3" fill="#9ca3af"/><rect x="115" y="70" width="18" height="90" rx="3" fill="#6b7280"/><rect x="140" y="50" width="18" height="110" rx="3" fill="#16a34a"/><line x1="35" y1="160" x2="165" y2="160" stroke="#d1d5db" stroke-width="1.5"/><path d="M40 120 Q65 100 90 80 Q115 60 140 45" stroke="#16a34a" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="140" cy="45" r="5" fill="#16a34a"/></svg>`,
+    staff:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="90" rx="75" ry="50" fill="#dbeafe" opacity=".4"/><circle cx="75" cy="72" r="18" fill="#bfdbfe"/><circle cx="75" cy="65" r="12" fill="#93c5fd"/><path d="M45 110 Q75 95 105 110 L105 130 Q75 140 45 130 Z" fill="#93c5fd"/><circle cx="128" cy="78" r="16" fill="#bfdbfe"/><circle cx="128" cy="72" r="11" fill="#93c5fd"/><path d="M100 112 Q128 99 156 112 L156 130 Q128 140 100 130 Z" fill="#bfdbfe"/><rect x="100" y="58" width="22" height="14" rx="3" fill="#fff" stroke="#60a5fa" stroke-width="1"/><rect x="78" y="50" width="20" height="13" rx="3" fill="#fff" stroke="#60a5fa" stroke-width="1"/></svg>`,
+    website:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="90" rx="75" ry="50" fill="#f5f3ff" opacity=".5"/><rect x="35" y="45" width="130" height="90" rx="8" fill="#fff" stroke="#e0e7ff" stroke-width="1.5"/><rect x="35" y="45" width="130" height="24" rx="8" fill="#818cf8" opacity=".2"/><circle cx="50" cy="57" r="4" fill="#fca5a5"/><circle cx="63" cy="57" r="4" fill="#fcd34d"/><circle cx="76" cy="57" r="4" fill="#6ee7b7"/><rect x="45" y="80" width="110" height="12" rx="3" fill="#e0e7ff"/><rect x="45" y="98" width="80" height="8" rx="2" fill="#f3f4f6"/><rect x="45" y="111" width="95" height="8" rx="2" fill="#f3f4f6"/><rect x="135" y="95" width="22" height="28" rx="3" fill="#c7d2fe"/></svg>`,
+    blog:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="90" rx="75" ry="50" fill="#f5f3ff" opacity=".4"/><rect x="45" y="40" width="110" height="95" rx="8" fill="#fff" stroke="#e5e7eb" stroke-width="1.5"/><rect x="45" y="40" width="110" height="30" rx="8" fill="#f3f4f6"/><rect x="55" y="80" width="90" height="8" rx="2" fill="#374151"/><rect x="55" y="94" width="80" height="5" rx="2" fill="#d1d5db"/><rect x="55" y="104" width="85" height="5" rx="2" fill="#d1d5db"/><rect x="55" y="114" width="75" height="5" rx="2" fill="#d1d5db"/><circle cx="70" cy="58" r="12" fill="#c7d2fe"/><text x="70" y="63" text-anchor="middle" font-size="13" fill="#7c3aed" font-family="sans-serif">✍</text></svg>`,
+    store:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="90" rx="75" ry="50" fill="#f3f4f6" opacity=".5"/><rect x="45" y="75" width="110" height="75" rx="4" fill="#fff" stroke="#d1d5db" stroke-width="1.5"/><polygon points="35,80 100,42 165,80" fill="#e5e7eb" stroke="#d1d5db" stroke-width="1.5"/><rect x="78" y="95" width="44" height="55" rx="3" fill="#dcfce7" stroke="#bbf7d0" stroke-width="1"/><circle cx="103" cy="122" r="4" fill="#16a34a"/><rect x="50" y="90" width="22" height="30" rx="2" fill="#dbeafe" stroke="#bfdbfe" stroke-width="1"/><rect x="128" y="90" width="22" height="30" rx="2" fill="#dbeafe" stroke="#bfdbfe" stroke-width="1"/><text x="61" y="108" text-anchor="middle" font-size="8" fill="#3b82f6" font-family="sans-serif">Store</text></svg>`,
+    payment:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="90" rx="75" ry="50" fill="#dcfce7" opacity=".4"/><rect x="35" y="58" width="130" height="80" rx="8" fill="#fff" stroke="#d1fae5" stroke-width="1.5"/><rect x="35" y="58" width="130" height="24" rx="8" fill="#16a34a" opacity=".15"/><rect x="45" y="95" width="45" height="8" rx="2" fill="#e5e7eb"/><rect x="45" y="108" width="60" height="8" rx="2" fill="#e5e7eb"/><rect x="120" y="90" width="35" height="22" rx="4" fill="#16a34a" opacity=".8"/><text x="137" y="105" text-anchor="middle" font-size="10" fill="white" font-family="sans-serif">Pay</text></svg>`,
+    api:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="90" rx="75" ry="50" fill="#dbeafe" opacity=".4"/><rect x="35" y="60" width="55" height="70" rx="6" fill="#fff" stroke="#bfdbfe" stroke-width="1.5"/><rect x="110" y="60" width="55" height="70" rx="6" fill="#fff" stroke="#bfdbfe" stroke-width="1.5"/><text x="62" y="100" text-anchor="middle" font-size="10" fill="#3b82f6" font-family="monospace">API</text><text x="137" y="100" text-anchor="middle" font-size="9" fill="#3b82f6" font-family="monospace">App</text><path d="M90 85 L110 85" stroke="#16a34a" stroke-width="2" marker-end="url(#arr)"/><path d="M110 100 L90 100" stroke="#f97316" stroke-width="2"/><circle cx="90" cy="85" r="4" fill="#16a34a"/><circle cx="110" cy="100" r="4" fill="#f97316"/></svg>`,
+    puzzle:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="90" rx="75" ry="50" fill="#fef9c3" opacity=".4"/><rect x="55" y="55" width="40" height="40" rx="4" fill="#fde68a"/><rect x="105" y="55" width="40" height="40" rx="4" fill="#fcd34d"/><rect x="55" y="105" width="40" height="40" rx="4" fill="#fcd34d"/><rect x="105" y="105" width="40" height="40" rx="4" fill="#fde68a"/><circle cx="95" cy="75" r="8" fill="#f6f1eb"/><circle cx="145" cy="75" r="8" fill="#f6f1eb"/><circle cx="75" cy="125" r="8" fill="#f6f1eb"/><circle cx="125" cy="105" r="8" fill="#f6f1eb"/></svg>`,
+    swap:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#dcfce7" opacity=".4"/><rect x="35" y="60" width="50" height="60" rx="6" fill="#bbf7d0" stroke="#86efac" stroke-width="1.5"/><rect x="115" y="60" width="50" height="60" rx="6" fill="#bfdbfe" stroke="#93c5fd" stroke-width="1.5"/><path d="M85 82 Q100 70 115 82" stroke="#16a34a" stroke-width="2" fill="none" marker-end="url(#)"/><path d="M115 102 Q100 114 85 102" stroke="#3b82f6" stroke-width="2" fill="none"/><text x="60" y="95" text-anchor="middle" font-size="9" fill="#15803d" font-family="sans-serif">Product A</text><text x="140" y="95" text-anchor="middle" font-size="9" fill="#1d4ed8" font-family="sans-serif">Alt. B</text></svg>`,
+    stock:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#fff7ed" opacity=".4"/><rect x="40" y="60" width="120" height="80" rx="6" fill="#fff" stroke="#fed7aa" stroke-width="1.5"/><rect x="55" y="80" width="30" height="40" rx="2" fill="#86efac"/><rect x="90" y="90" width="30" height="30" rx="2" fill="#fcd34d"/><rect x="125" y="100" width="20" height="20" rx="2" fill="#fca5a5"/><line x1="40" y1="120" x2="160" y2="120" stroke="#f3f4f6" stroke-width="1"/><text x="70" y="75" text-anchor="middle" font-size="7" fill="#6b7280" font-family="sans-serif">Full</text><text x="105" y="85" text-anchor="middle" font-size="7" fill="#6b7280" font-family="sans-serif">Low</text><text x="135" y="95" text-anchor="middle" font-size="7" fill="#6b7280" font-family="sans-serif">OOS</text></svg>`,
+    tag:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#fff7ed" opacity=".4"/><path d="M55 60 L120 60 L155 90 L120 120 L55 120 Z" fill="#fde68a" stroke="#fbbf24" stroke-width="1.5"/><circle cx="75" cy="90" r="8" fill="#fff" stroke="#fbbf24" stroke-width="1.5"/><text x="110" y="86" text-anchor="middle" font-size="9" fill="#92400e" font-family="sans-serif">New</text><text x="110" y="98" text-anchor="middle" font-size="9" fill="#92400e" font-family="sans-serif">Arrivals</text></svg>`,
+    brand:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#fff7ed" opacity=".4"/><circle cx="100" cy="82" r="40" fill="#fed7aa" stroke="#fb923c" stroke-width="1.5"/><circle cx="100" cy="82" r="28" fill="#fff"/><text x="100" y="78" text-anchor="middle" font-size="11" font-weight="700" fill="#ea580c" font-family="sans-serif">BRAND</text><text x="100" y="92" text-anchor="middle" font-size="8" fill="#9ca3af" font-family="sans-serif">Your Logo Here</text></svg>`,
+    category:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#fff7ed" opacity=".4"/><rect x="40" y="52" width="52" height="52" rx="6" fill="#fed7aa"/><rect x="108" y="52" width="52" height="52" rx="6" fill="#bfdbfe"/><rect x="40" y="114" width="52" height="30" rx="6" fill="#bbf7d0"/><rect x="108" y="114" width="52" height="30" rx="6" fill="#c4b5fd"/><text x="66" y="82" text-anchor="middle" font-size="18" font-family="sans-serif">🛒</text><text x="134" y="82" text-anchor="middle" font-size="18" font-family="sans-serif">🥬</text><text x="66" y="133" text-anchor="middle" font-size="14" font-family="sans-serif">🥛</text><text x="134" y="133" text-anchor="middle" font-size="14" font-family="sans-serif">🍞</text></svg>`,
+    run:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#f5f3ff" opacity=".4"/><circle cx="100" cy="62" r="16" fill="#c4b5fd"/><path d="M100 78 L88 108 L76 128" stroke="#818cf8" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M100 78 L112 108 L126 128" stroke="#818cf8" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M88 92 L72 88" stroke="#818cf8" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M112 92 L128 88" stroke="#a5b4fc" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M40 80 Q55 75 65 82" stroke="#c7d2fe" stroke-width="2" fill="none"/><path d="M135 80 Q148 75 158 82" stroke="#c7d2fe" stroke-width="2" fill="none"/><path d="M35 90 Q50 85 60 92" stroke="#e0e7ff" stroke-width="1.5" fill="none"/><path d="M140 90 Q153 85 163 92" stroke="#e0e7ff" stroke-width="1.5" fill="none"/></svg>`,
+    pick:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#fef9c3" opacity=".4"/><rect x="50" y="55" width="100" height="80" rx="6" fill="#fff" stroke="#fde68a" stroke-width="1.5"/><rect x="60" y="70" width="80" height="8" rx="2" fill="#fde68a"/><rect x="60" y="85" width="80" height="8" rx="2" fill="#fde68a"/><rect x="60" y="100" width="80" height="8" rx="2" fill="#fde68a"/><circle cx="67" cy="74" r="5" fill="#16a34a"/><circle cx="67" cy="89" r="5" fill="#16a34a"/><circle cx="67" cy="104" r="5" fill="#e5e7eb"/><path d="M63 72 l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M63 87 l2.5 2.5 5-5" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`,
+    pack:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#dbeafe" opacity=".4"/><rect x="55" y="60" width="90" height="80" rx="6" fill="#fff" stroke="#bfdbfe" stroke-width="1.5"/><rect x="55" y="60" width="90" height="20" rx="6" fill="#3b82f6" opacity=".15"/><path d="M100 60 L100 80" stroke="#3b82f6" stroke-width="1.5"/><path d="M70 85 L130 85" stroke="#e5e7eb" stroke-width="1"/><rect x="65" y="92" width="30" height="6" rx="2" fill="#bfdbfe"/><rect x="65" y="103" width="50" height="6" rx="2" fill="#bfdbfe"/><rect x="65" y="114" width="40" height="6" rx="2" fill="#bfdbfe"/><circle cx="140" cy="110" r="16" fill="#16a34a"/><path d="M133 110 l4 4 8-8" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
+    slot:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#fef9c3" opacity=".4"/><rect x="40" y="52" width="120" height="100" rx="8" fill="#fff" stroke="#fde68a" stroke-width="1.5"/><rect x="40" y="52" width="120" height="28" rx="8" fill="#fde68a" opacity=".5"/><text x="100" y="71" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="sans-serif">Delivery Slots</text><rect x="52" y="90" width="22" height="18" rx="3" fill="#bbf7d0"/><rect x="78" y="90" width="22" height="18" rx="3" fill="#bbf7d0"/><rect x="104" y="90" width="22" height="18" rx="3" fill="#fca5a5"/><rect x="130" y="90" width="22" height="18" rx="3" fill="#bbf7d0"/><rect x="52" y="114" width="22" height="18" rx="3" fill="#bbf7d0"/><rect x="78" y="114" width="22" height="18" rx="3" fill="#fde68a"/><rect x="104" y="114" width="22" height="18" rx="3" fill="#bbf7d0"/><rect x="130" y="114" width="22" height="18" rx="3" fill="#bbf7d0"/></svg>`,
+    segment:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#dcfce7" opacity=".4"/><circle cx="78" cy="78" r="28" fill="#bbf7d0" stroke="#86efac" stroke-width="1.5"/><circle cx="122" cy="78" r="28" fill="#bfdbfe" stroke="#93c5fd" stroke-width="1.5"/><ellipse cx="100" cy="78" rx="10" ry="28" fill="#a7f3d0" opacity=".7"/><text x="65" y="82" text-anchor="middle" font-size="8" fill="#15803d" font-family="sans-serif">VIP</text><text x="135" y="82" text-anchor="middle" font-size="8" fill="#1d4ed8" font-family="sans-serif">New</text><text x="100" y="82" text-anchor="middle" font-size="7" fill="#374151" font-family="sans-serif">Both</text></svg>`,
+    offer:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#dcfce7" opacity=".4"/><rect x="35" y="55" width="130" height="75" rx="8" fill="#fff" stroke="#bbf7d0" stroke-width="1.5"/><text x="100" y="90" text-anchor="middle" font-size="28" font-weight="800" fill="#16a34a" font-family="sans-serif">BUY 2</text><text x="100" y="108" text-anchor="middle" font-size="13" fill="#6b7280" font-family="sans-serif">GET 1 FREE</text><rect x="35" y="55" width="130" height="20" rx="8" fill="#16a34a" opacity=".12"/></svg>`,
+    banner:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#f5f3ff" opacity=".4"/><rect x="30" y="60" width="140" height="75" rx="6" fill="#e0e7ff" stroke="#c7d2fe" stroke-width="1.5"/><rect x="30" y="60" width="80" height="75" rx="6" fill="#c7d2fe"/><circle cx="65" cy="88" r="18" fill="#a5b4fc"/><text x="65" y="93" text-anchor="middle" font-size="11" fill="white" font-family="sans-serif">SALE</text><rect x="120" y="72" width="38" height="6" rx="2" fill="#e0e7ff"/><rect x="120" y="84" width="28" height="5" rx="2" fill="#e0e7ff"/><rect x="120" y="96" width="32" height="5" rx="2" fill="#e0e7ff"/><rect x="120" y="110" width="30" height="14" rx="3" fill="#818cf8"/></svg>`,
+  };
+  return illos[type]||`<div style="width:80px;height:80px;border-radius:20px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:36px">📄</div>`;
+}
+
 function renderGeneric(scroll){
-  const item=NAV.flatMap(g=>g.items).find(x=>x.id===activePage);
+  const pg=activePage;
   const rm=RM[role];
-  scroll.innerHTML=`<div style="text-align:center;padding:48px 20px;color:#9ca3af">
-    <i class="ti ${item?.ic||'ti-box'}" style="font-size:56px;display:block;margin-bottom:12px;color:#ddd6cc"></i>
-    <div style="font-size:16px;font-weight:700;color:#374151;margin-bottom:6px">${item?.l||activePage}</div>
-    <div style="font-size:13px">${item?.note||'Content for this section will appear here.'}</div>
-    ${isItemRO(item||{})?`<div style="margin-top:12px;background:#fffbeb;border-radius:8px;padding:10px 16px;font-size:12px;color:#92400e;display:inline-block">
-      <i class="ti ti-eye" style="font-size:14px;vertical-align:-2px"></i> View only for ${rm.l}</div>`:''}
+  const item=NAV.flatMap(g=>g.items).find(x=>x.id===pg);
+  const es=ES[pg];
+
+  if(isItemRO(item||{})){
+    scroll.innerHTML=`<div style="text-align:center;padding:48px 20px"><i class="ti ${item?.ic||'ti-eye'}" style="font-size:48px;display:block;margin-bottom:12px;color:#d1d5db"></i><div style="font-size:15px;font-weight:600;color:#374151;margin-bottom:6px">${item?.l||pg}</div><div style="font-size:12px;background:#fffbeb;border-radius:8px;padding:10px 16px;color:#92400e;display:inline-block;margin-top:8px"><i class="ti ti-eye" style="font-size:13px;vertical-align:-1px"></i> View only for ${rm.l}</div></div>`;
+    return;
+  }
+
+  if(!es){
+    scroll.innerHTML=`<div style="text-align:center;padding:60px 20px;color:#9ca3af"><i class="ti ${item?.ic||'ti-box'}" style="font-size:52px;display:block;margin-bottom:12px;color:#e5e7eb"></i><div style="font-size:16px;font-weight:700;color:#374151;margin-bottom:6px">${item?.l||pg}</div><div style="font-size:13px">Content for this section will appear here.</div></div>`;
+    return;
+  }
+
+  const ctaBtns=es.ctas.map((c,i)=>`<button class="es-cta ${c.p?'primary':'secondary'}" ${c.action?`onclick="${c.action}"`:''} style="${i>0?'animation:none':''}">${c.l?`<i class="ti ${c.ic}" style="font-size:15px"></i>${c.l}`:`<i class="ti ${c.ic}" style="font-size:15px"></i>`}</button>`).join('');
+
+  const tipCards=es.cards.map((card,i)=>`<div class="es-card" style="animation-delay:${.1+i*.1}s">
+    <div class="es-card-ic" style="background:${card.bg}"><i class="ti ${card.ic}" style="color:${card.c};font-size:20px"></i></div>
+    <div class="es-card-title">${card.title}</div>
+    <div class="es-card-desc">${card.desc}</div>
+    ${card.link?`<div class="es-card-link" ${card.action?`onclick="${card.action}"`:''} >${card.link} <i class="ti ti-arrow-right" style="font-size:11px"></i></div>`:''}
+  </div>`).join('');
+
+  scroll.innerHTML=`<div class="es-wrap">
+    <span class="es-tag" style="background:${es.tag.bg};color:${es.tag.c}">
+      <i class="ti ti-sparkles" style="font-size:11px"></i>${es.tag.l}
+    </span>
+    <div class="es-illo">${getIllo(es.illo)}</div>
+    <div class="es-headline">${es.headline}</div>
+    <div class="es-desc">${es.desc}</div>
+    <div class="es-actions">${ctaBtns}</div>
+    <div class="es-divider"><div class="es-divider-line"></div><span class="es-divider-text">How to get started</span><div class="es-divider-line"></div></div>
+    <div class="es-cards">${tipCards}</div>
   </div>`;
 }
 
