@@ -137,6 +137,7 @@ body {
 .is-val { font-size: 18px; font-weight: 800; color: #1a1a2e; }
 .is-val.good { color: #16a34a; }
 .is-val.bad  { color: #dc2626; }
+.is-val.warn { color: #d97706; }
 .is-val.mute { color: #8f95a3; }
 .is-lbl { font-size: 10px; color: #8f95a3; text-transform: uppercase; letter-spacing: .4px; margin-top: 2px; }
 
@@ -237,6 +238,7 @@ tr:hover td { background: #fafbfc; }
 .chip-red    { background: #fee2e2; color: #dc2626; }
 .chip-green  { background: #dcfce7; color: #16a34a; }
 .chip-grey   { background: #f1f5f9; color: #64748b; }
+.chip-warn   { background: #fef3c7; color: #d97706; }
 
 /* ── EMPTY STATE ── */
 .empty { text-align: center; padding: 24px 16px; color: #8f95a3; font-size: 12px; }
@@ -275,7 +277,7 @@ tr:hover td { background: #fafbfc; }
     <div class="kpi">
       <div class="kpi-label">Orders Served</div>
       <div class="kpi-value kv-neutral">15</div>
-      <div class="kpi-context">0 unprocessed</div>
+      <div class="kpi-context ctx-warn">4 unprocessed</div>
     </div>
     <div class="kpi">
       <div class="kpi-label">On Time %</div>
@@ -291,6 +293,77 @@ tr:hover td { background: #fafbfc; }
       <div class="kpi-label">Returns</div>
       <div class="kpi-value kv-warn">3</div>
       <div class="kpi-context ctx-warn">Payment not captured</div>
+    </div>
+  </div>
+
+  <!-- UNPROCESSED ORDERS -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">Unprocessed Orders</div>
+      <div class="card-meta" style="color:#d97706;font-weight:600;">4 orders pending action</div>
+    </div>
+    <div class="card-body">
+
+      <!-- Bifurcation strip -->
+      <div class="inline-stats" style="margin-bottom:16px;">
+        <div class="is-item"><div class="is-val warn">2</div><div class="is-lbl">Payment Pending</div></div>
+        <div class="is-item"><div class="is-val warn">1</div><div class="is-lbl">Slot Unavailable</div></div>
+        <div class="is-item"><div class="is-val warn">1</div><div class="is-lbl">Manager Review</div></div>
+        <div class="is-item"><div class="is-val mute">0</div><div class="is-lbl">Store Closed</div></div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Order Ref</th>
+            <th>Slot</th>
+            <th>Customer</th>
+            <th>Items</th>
+            <th>Order Value</th>
+            <th>Reason</th>
+            <th class="c">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="num-bold">194410</td>
+            <td class="mute-text">9 AM – 11 AM</td>
+            <td>Rahul Sharma</td>
+            <td class="c">8</td>
+            <td>₹ 1,240</td>
+            <td>Payment verification pending</td>
+            <td class="c"><span class="chip chip-warn">Pending</span></td>
+          </tr>
+          <tr>
+            <td class="num-bold">194418</td>
+            <td class="mute-text">9 AM – 11 AM</td>
+            <td>Priya Mehta</td>
+            <td class="c">5</td>
+            <td>₹ 780</td>
+            <td>Payment verification pending</td>
+            <td class="c"><span class="chip chip-warn">Pending</span></td>
+          </tr>
+          <tr>
+            <td class="num-bold">194452</td>
+            <td class="mute-text">12 PM – 2 PM</td>
+            <td>Amit Verma</td>
+            <td class="c">12</td>
+            <td>₹ 2,100</td>
+            <td>Requested slot unavailable</td>
+            <td class="c"><span class="chip chip-warn">On Hold</span></td>
+          </tr>
+          <tr>
+            <td class="num-bold">194471</td>
+            <td class="mute-text">4 PM – 6 PM</td>
+            <td>Sunita Rao</td>
+            <td class="c">3</td>
+            <td>₹ 430</td>
+            <td>Flagged for manager review</td>
+            <td class="c"><span class="chip chip-warn">Review</span></td>
+          </tr>
+        </tbody>
+      </table>
+
     </div>
   </div>
 
@@ -404,10 +477,74 @@ tr:hover td { background: #fafbfc; }
         <div class="is-item"><div class="is-val">3</div><div class="is-lbl">Pickers</div></div>
         <div class="is-item"><div class="is-val">182</div><div class="is-lbl">Items Ordered</div></div>
         <div class="is-item"><div class="is-val good">174</div><div class="is-lbl">Items Delivered</div></div>
-        <div class="is-item"><div class="is-val mute">0</div><div class="is-lbl">Substituted</div></div>
+        <div class="is-item"><div class="is-val warn">18</div><div class="is-lbl">Substituted</div></div>
         <div class="is-item"><div class="is-val">4.67</div><div class="is-lbl">Avg Orders/Picker</div></div>
         <div class="is-item"><div class="is-val">58.0</div><div class="is-lbl">Avg Items/Picker</div></div>
         <div class="is-item"><div class="is-val good">91.0%</div><div class="is-lbl">Fill Rate</div></div>
+      </div>
+
+      <!-- Substitution Group Breakdown -->
+      <div class="timeline-wrap" style="margin-bottom:16px;">
+        <div class="tl-heading">
+          <span>Substitutions by Category</span>
+          <span>18 items across 4 groups</span>
+        </div>
+        <table style="font-size:12px;">
+          <thead>
+            <tr>
+              <th>Category / Group</th>
+              <th class="c">Items Substituted</th>
+              <th class="c">Orders Affected</th>
+              <th>Top Substituted Item</th>
+              <th class="c">Share</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="num-bold">Salt &amp; Spices</td>
+              <td class="c warn-text">5</td>
+              <td class="c mute-text">12 orders</td>
+              <td class="mute-text">Tata Salt 1kg → Catch Salt 1kg</td>
+              <td class="c">
+                <div class="fb-wrap"><div class="fb-track"><div class="fb-fill o" style="width:78%"></div></div><div class="fb-val warn-text">28%</div></div>
+              </td>
+            </tr>
+            <tr>
+              <td class="num-bold">Juices &amp; Beverages</td>
+              <td class="c warn-text">7</td>
+              <td class="c mute-text">9 orders</td>
+              <td class="mute-text">Real Juice 1L → Tropicana 1L</td>
+              <td class="c">
+                <div class="fb-wrap"><div class="fb-track"><div class="fb-fill o" style="width:100%"></div></div><div class="fb-val warn-text">39%</div></div>
+              </td>
+            </tr>
+            <tr>
+              <td class="num-bold">Dairy &amp; Eggs</td>
+              <td class="c warn-text">4</td>
+              <td class="c mute-text">6 orders</td>
+              <td class="mute-text">Amul Curd 400g → Mother Dairy 400g</td>
+              <td class="c">
+                <div class="fb-wrap"><div class="fb-track"><div class="fb-fill o" style="width:56%"></div></div><div class="fb-val warn-text">22%</div></div>
+              </td>
+            </tr>
+            <tr>
+              <td class="num-bold">Snacks &amp; Bakery</td>
+              <td class="c warn-text">2</td>
+              <td class="c mute-text">4 orders</td>
+              <td class="mute-text">Lays Classic 50g → Kurkure 50g</td>
+              <td class="c">
+                <div class="fb-wrap"><div class="fb-track"><div class="fb-fill o" style="width:28%"></div></div><div class="fb-val warn-text">11%</div></div>
+              </td>
+            </tr>
+            <tr class="row-total">
+              <td>Total</td>
+              <td class="c">18</td>
+              <td class="c mute-text">31 orders</td>
+              <td></td>
+              <td class="c">100%</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <table>
