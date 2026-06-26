@@ -36,18 +36,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;ba
 .kpi-card.warn::after{background:linear-gradient(90deg,#ff9800,#ffc107);}
 .kpi-card.bad::after{background:linear-gradient(90deg,#f44336,#e91e63);}
 .kpi-card.neutral::after{background:linear-gradient(90deg,#90a4ae,#b0bec5);}
-.kpi-icon{font-size:22px;margin-bottom:6px;}
 .kpi-val{font-size:32px;font-weight:900;line-height:1;letter-spacing:-1px;}
 .kpi-val.good{color:#2e7d32;}
 .kpi-val.warn{color:#e65100;}
 .kpi-val.bad{color:#c62828;}
 .kpi-val.neutral{color:#37474f;}
 .kpi-lbl{font-size:10px;color:#90a4ae;text-transform:uppercase;letter-spacing:.5px;margin-top:6px;}
-.kpi-sub{font-size:11px;color:#b0bec5;margin-top:3px;}
-.kpi-flag{position:absolute;top:10px;right:10px;font-size:9px;font-weight:700;padding:2px 6px;border-radius:6px;}
-.flag-bad{background:#ffebee;color:#c62828;}
-.flag-good{background:#e8f5e9;color:#2e7d32;}
-.flag-warn{background:#fff8e1;color:#f57f17;}
+.kpi-sub{font-size:11px;font-weight:600;margin-top:6px;display:inline-flex;align-items:center;gap:4px;padding:2px 0;}
+.kpi-sub .kd{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.kpi-sub.s-good{color:#2e7d32;} .kpi-sub.s-good .kd{background:#4caf50;}
+.kpi-sub.s-warn{color:#e65100;} .kpi-sub.s-warn .kd{background:#ff9800;}
+.kpi-sub.s-bad{color:#c62828;} .kpi-sub.s-bad .kd{background:#f44336;}
+.kpi-sub.s-grey{color:#90a4ae;} .kpi-sub.s-grey .kd{background:#b0bec5;}
 
 /* ── RING ── (SVG circles for on-time and fill rate) */
 .ring-wrap{display:flex;align-items:center;justify-content:center;margin:4px 0 2px;}
@@ -58,8 +58,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;ba
 /* ── SECTION CARD ── */
 .card{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.07);margin-bottom:12px;overflow:hidden;}
 .card-hdr{padding:14px 20px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;}
-.card-hdr-title{font-size:13px;font-weight:700;color:#1e2240;display:flex;align-items:center;gap:8px;}
-.card-hdr-title .icon{font-size:16px;}
+.card-hdr-title{font-size:13px;font-weight:700;color:#1e2240;}
+.card-hdr-meta{font-size:11px;color:#90a4ae;}
 .card-body{padding:16px 20px;}
 
 /* ── PILL ── */
@@ -159,9 +159,9 @@ tr:hover td{background:#fafff9;}
       <div class="hdr-logo">Zopping</div>
       <div class="hdr-store">SODHI'S | SEC-55 | GURUGRAM</div>
       <div class="hdr-meta">
-        <span>📅 22 June 2026, Monday</span>
-        <span>🕐 Report at 01:00 AM</span>
-        <span>👥 3 REs &nbsp;·&nbsp; 3 Pickers</span>
+        <span>22 June 2026, Monday</span>
+        <span>Report at 01:00 AM</span>
+        <span>3 Delivery Agents &nbsp;·&nbsp; 3 Pickers</span>
       </div>
     </div>
     <div class="hdr-right">
@@ -174,8 +174,7 @@ tr:hover td{background:#fafff9;}
 
   <!-- ── ALERT ── -->
   <div class="alert-bar">
-    <div class="ai">⚠️</div>
-    <div class="at"><strong>On-Time Delivery: 20%</strong> — Only 3 of 15 orders delivered on time. Fill rate is healthy at 91%. Review RE dispatch timings and route assignments.</div>
+    <div class="at"><strong>On-Time Delivery: 20%</strong> — Only 3 of 15 orders delivered on time. Fill rate is healthy at 91%. Review delivery agent dispatch timings and route assignments.</div>
   </div>
 
   <!-- ── KPI ROW ── -->
@@ -183,15 +182,13 @@ tr:hover td{background:#fafff9;}
 
     <!-- Orders -->
     <div class="kpi-card neutral">
-      <div class="kpi-icon">🛒</div>
       <div class="kpi-val neutral">15</div>
       <div class="kpi-lbl">Orders Served</div>
-      <div class="kpi-sub">0 unprocessed</div>
+      <div class="kpi-sub s-grey"><span class="kd"></span>0 unprocessed</div>
     </div>
 
     <!-- On Time — ring -->
     <div class="kpi-card bad">
-      <span class="kpi-flag flag-bad">⚠ Low</span>
       <div class="ring-container" style="height:68px;">
         <svg width="68" height="68" viewBox="0 0 68 68">
           <circle cx="34" cy="34" r="28" fill="none" stroke="#ffebee" stroke-width="7"/>
@@ -201,12 +198,11 @@ tr:hover td{background:#fafff9;}
         <div class="ring-center" style="color:#c62828;">20%</div>
       </div>
       <div class="kpi-lbl">On Time %</div>
-      <div class="kpi-sub">3 of 15 orders</div>
+      <div class="kpi-sub s-bad"><span class="kd"></span>3 of 15 on time</div>
     </div>
 
     <!-- Fill Rate — ring -->
     <div class="kpi-card good">
-      <span class="kpi-flag flag-good">✓ Good</span>
       <div class="ring-container" style="height:68px;">
         <svg width="68" height="68" viewBox="0 0 68 68">
           <circle cx="34" cy="34" r="28" fill="none" stroke="#e8f5e9" stroke-width="7"/>
@@ -216,15 +212,14 @@ tr:hover td{background:#fafff9;}
         <div class="ring-center" style="color:#2e7d32;font-size:18px;">91%</div>
       </div>
       <div class="kpi-lbl">Fill Rate %</div>
-      <div class="kpi-sub">174 of 182 items</div>
+      <div class="kpi-sub s-good"><span class="kd"></span>174 of 182 items</div>
     </div>
 
     <!-- Returns -->
-    <div class="kpi-card good">
-      <div class="kpi-icon">↩️</div>
-      <div class="kpi-val good">0</div>
+    <div class="kpi-card warn">
+      <div class="kpi-val warn">3</div>
       <div class="kpi-lbl">Returns</div>
-      <div class="kpi-sub">No cancellations</div>
+      <div class="kpi-sub s-warn"><span class="kd"></span>Payment not captured</div>
     </div>
 
   </div>
@@ -232,23 +227,19 @@ tr:hover td{background:#fafff9;}
   <!-- ── LOGISTICS ── -->
   <div class="card">
     <div class="card-hdr">
-      <div class="card-hdr-title"><span class="icon">🚚</span> Logistics</div>
-      <div style="display:flex;gap:6px;">
-        <span class="pill pill-grey">10 Trips</span>
-        <span class="pill pill-green">12 Deliveries</span>
-        <span class="pill pill-green">0 Late</span>
-      </div>
+      <div class="card-hdr-title">Logistics</div>
+      <div class="card-hdr-meta">10 trips &nbsp;·&nbsp; 12 deliveries &nbsp;·&nbsp; 0 late</div>
     </div>
     <div class="card-body">
 
       <!-- Stats -->
       <div class="stats-grid">
         <div class="stat"><div class="sv">10</div><div class="sl">Trips</div></div>
-        <div class="stat"><div class="sv">3</div><div class="sl">REs</div></div>
+        <div class="stat"><div class="sv">3</div><div class="sl">Del. Agents</div></div>
         <div class="stat"><div class="sv">12</div><div class="sl">Deliveries</div></div>
-        <div class="stat"><div class="sv">3.3</div><div class="sl">Avg Trips/RE</div></div>
+        <div class="stat"><div class="sv">3.3</div><div class="sl">Avg Trips/Agent</div></div>
         <div class="stat"><div class="sv">1.2</div><div class="sl">Avg Del/Trip</div></div>
-        <div class="stat"><div class="sv">4.0</div><div class="sl">Avg Del/RE</div></div>
+        <div class="stat"><div class="sv">4.0</div><div class="sl">Avg Del/Agent</div></div>
         <div class="stat"><div class="sv" style="color:#78909c;">0 km</div><div class="sl">Total KMs</div></div>
         <div class="stat"><div class="sv">9h 34m</div><div class="sl">Vehicle On-Trip</div></div>
       </div>
@@ -256,7 +247,7 @@ tr:hover td{background:#fafff9;}
       <!-- RE Shift Timeline -->
       <div class="timeline-wrap">
         <div class="timeline-label">
-          <span>RE Shift Timeline</span>
+          <span>Delivery Agent Shift Timeline</span>
           <span>12 AM ————————————————— 11 PM</span>
         </div>
         <!-- Day = 23 hrs. Each RE bar: offset & width as % of 23h -->
@@ -290,7 +281,7 @@ tr:hover td{background:#fafff9;}
       <table>
         <thead>
           <tr>
-            <th>RE Name</th>
+            <th>Delivery Agent</th>
             <th>Start → End</th>
             <th class="c">Trips</th>
             <th class="c">Orders</th>
@@ -369,12 +360,8 @@ tr:hover td{background:#fafff9;}
   <!-- ── PICKING ── -->
   <div class="card">
     <div class="card-hdr">
-      <div class="card-hdr-title"><span class="icon">📦</span> Picking</div>
-      <div style="display:flex;gap:6px;">
-        <span class="pill pill-grey">3 Pickers</span>
-        <span class="pill pill-green">91.0% Fill Rate</span>
-        <span class="pill pill-blue">0 Substitutions</span>
-      </div>
+      <div class="card-hdr-title">Picking</div>
+      <div class="card-hdr-meta">3 pickers &nbsp;·&nbsp; 91.0% fill rate &nbsp;·&nbsp; 0 substitutions</div>
     </div>
     <div class="card-body">
 
@@ -471,14 +458,68 @@ tr:hover td{background:#fafff9;}
   <!-- ── RETURNS ── -->
   <div class="card">
     <div class="card-hdr">
-      <div class="card-hdr-title"><span class="icon">↩️</span> Returns &amp; Cancellations</div>
-      <span class="pill pill-green">✓ 0 Returns</span>
+      <div class="card-hdr-title">Returns &amp; Cancellations</div>
+      <div class="card-hdr-meta" style="color:#e65100;font-weight:600;">3 orders affected</div>
     </div>
     <div class="card-body">
-      <div class="empty">
-        <div class="ei">✅</div>
-        No returns or cancellations today — great job!
+      <!-- Reason summary strip -->
+      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+        <div style="background:#fff8e1;border:1px solid #ffe0b2;border-radius:6px;padding:10px 16px;flex:1;min-width:140px;">
+          <div style="font-size:20px;font-weight:800;color:#e65100;">3</div>
+          <div style="font-size:10px;color:#90a4ae;text-transform:uppercase;margin-top:2px;letter-spacing:.3px;">Payment Not Captured</div>
+        </div>
+        <div style="background:#f5f5f5;border:1px solid #e0e0e0;border-radius:6px;padding:10px 16px;flex:1;min-width:140px;">
+          <div style="font-size:20px;font-weight:800;color:#78909c;">0</div>
+          <div style="font-size:10px;color:#90a4ae;text-transform:uppercase;margin-top:2px;letter-spacing:.3px;">Customer Returns</div>
+        </div>
+        <div style="background:#f5f5f5;border:1px solid #e0e0e0;border-radius:6px;padding:10px 16px;flex:1;min-width:140px;">
+          <div style="font-size:20px;font-weight:800;color:#78909c;">0</div>
+          <div style="font-size:10px;color:#90a4ae;text-transform:uppercase;margin-top:2px;letter-spacing:.3px;">Late Delivery</div>
+        </div>
+        <div style="background:#f5f5f5;border:1px solid #e0e0e0;border-radius:6px;padding:10px 16px;flex:1;min-width:140px;">
+          <div style="font-size:20px;font-weight:800;color:#78909c;">0</div>
+          <div style="font-size:10px;color:#90a4ae;text-transform:uppercase;margin-top:2px;letter-spacing:.3px;">Duplicates</div>
+        </div>
       </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Ref #</th>
+            <th>Slot</th>
+            <th>Cancelled By</th>
+            <th>Delivery Agent</th>
+            <th>Reason</th>
+            <th class="c">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600;color:#1e2240;">194083</td>
+            <td style="color:#78909c;">6 AM – 7 AM</td>
+            <td>System</td>
+            <td style="color:#78909c;">—</td>
+            <td>Payment not captured</td>
+            <td class="c"><span class="badge b-red">Cancelled</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;color:#1e2240;">194088</td>
+            <td style="color:#78909c;">6 AM – 7 AM</td>
+            <td>System</td>
+            <td style="color:#78909c;">—</td>
+            <td>Payment not captured</td>
+            <td class="c"><span class="badge b-red">Cancelled</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;color:#1e2240;">194333</td>
+            <td style="color:#78909c;">12 PM – 1 PM</td>
+            <td>System</td>
+            <td style="color:#78909c;">—</td>
+            <td>Payment not captured</td>
+            <td class="c"><span class="badge b-red">Cancelled</span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
