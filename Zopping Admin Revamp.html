@@ -264,6 +264,47 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .gbdiv{height:1px;background:#f3f4f6;margin:3px 0}
 .tbvsep{width:1px;height:20px;background:#e5e7eb;flex-shrink:0}
 
+/* ── AI CHAT MODAL ── */
+.ai-modal{position:fixed;inset:0;z-index:2000;display:none;align-items:flex-end;justify-content:flex-end;padding:16px;pointer-events:none}
+.ai-modal.open{display:flex;pointer-events:all}
+.ai-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.25);backdrop-filter:blur(2px)}
+.ai-chat-box{position:relative;z-index:1;width:440px;height:600px;background:#fff;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.18);display:flex;flex-direction:column;overflow:hidden;border:1px solid #e5e7eb}
+.ai-chat-hd{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #f3f4f6;flex-shrink:0;background:linear-gradient(135deg,#f0fdf4,#eff6ff)}
+.ai-chat-av{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#16a34a,#0ea5e9);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(22,163,74,.3)}
+.ai-chat-av i{font-size:18px;color:#fff}
+.ai-chat-title{font-size:13.5px;font-weight:700;color:#111827}
+.ai-chat-sub{font-size:10.5px;color:#6b7280;margin-top:1px}
+.ai-chat-close{margin-left:auto;width:28px;height:28px;border-radius:7px;border:none;background:#f3f4f6;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#6b7280}
+.ai-chat-close:hover{background:#e5e7eb;color:#374151}
+.ai-chat-new{font-size:11px;padding:4px 10px;border-radius:8px;border:1.5px solid #d1fae5;background:#f0fdf4;color:#16a34a;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:4px;margin-right:6px}
+.ai-chat-new:hover{background:#16a34a;color:#fff;border-color:#16a34a}
+.ai-chat-msgs{flex:1;overflow-y:auto;padding:14px 14px 8px;display:flex;flex-direction:column;gap:12px;background:#fafaf9}
+.ai-chat-msgs::-webkit-scrollbar{width:3px}
+.ai-chat-msgs::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:2px}
+.ai-msg{display:flex;gap:8px;align-items:flex-start}
+.ai-msg.user{flex-direction:row-reverse}
+.ai-msg-av{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px}
+.ai-msg-av.bot{background:linear-gradient(135deg,#16a34a,#0ea5e9)}
+.ai-msg-av.bot i{font-size:14px;color:#fff}
+.ai-msg-bubble{max-width:82%;padding:10px 13px;border-radius:12px;font-size:12.5px;line-height:1.6}
+.ai-msg.bot .ai-msg-bubble{background:#fff;border:1px solid #e5e7eb;color:#374151;border-radius:4px 12px 12px 12px}
+.ai-msg.user .ai-msg-bubble{background:#16a34a;color:#fff;border-radius:12px 4px 12px 12px}
+.ai-msg-time{font-size:9.5px;color:#9ca3af;margin-top:4px;text-align:right}
+.ai-typing{display:flex;gap:4px;align-items:center;padding:10px 13px;background:#fff;border:1px solid #e5e7eb;border-radius:4px 12px 12px 12px;width:fit-content}
+.ai-typing span{width:6px;height:6px;border-radius:50%;background:#9ca3af;animation:typing 1.2s infinite}
+.ai-typing span:nth-child(2){animation-delay:.2s}
+.ai-typing span:nth-child(3){animation-delay:.4s}
+@keyframes typing{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.ai-chat-foot{padding:10px 12px;border-top:1px solid #f3f4f6;background:#fff;flex-shrink:0}
+.ai-chat-input-row{display:flex;gap:8px;align-items:flex-end}
+.ai-chat-input{flex:1;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:13px;color:#374151;outline:none;font-family:inherit;resize:none;max-height:100px;line-height:1.5;transition:border-color .1s}
+.ai-chat-input:focus{border-color:#16a34a}
+.ai-chat-send{width:36px;height:36px;border-radius:9px;background:#16a34a;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:background .1s}
+.ai-chat-send:hover{background:#15803d}
+.ai-quick-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.ai-qchip{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #d1fae5;background:#f0fdf4;color:#374151;cursor:pointer;transition:all .1s;white-space:nowrap}
+.ai-qchip:hover{border-color:#16a34a;color:#16a34a;background:#dcfce7}
+
 /* ── AI ASK BAR ── */
 .ai-bar{background:linear-gradient(135deg,#f0fdf4 0%,#eff6ff 50%,#faf5ff 100%);border:1.5px solid #d1fae5;border-radius:14px;padding:14px 16px;margin-bottom:16px;position:relative;overflow:hidden}
 .ai-bar::before{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:radial-gradient(circle,rgba(22,163,74,.08) 0%,transparent 70%);pointer-events:none}
@@ -436,6 +477,29 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 
     <!-- Main content -->
     <div class="main-scroll" id="mainScroll"></div>
+  </div>
+</div>
+
+<!-- ── AI CHAT MODAL ── -->
+<div class="ai-modal" id="aiModal">
+  <div class="ai-modal-bg" onclick="closeAIChat()"></div>
+  <div class="ai-chat-box">
+    <div class="ai-chat-hd">
+      <div class="ai-chat-av"><i class="ti ti-sparkles"></i></div>
+      <div><div class="ai-chat-title">Zopping AI</div><div class="ai-chat-sub">Ask anything about your store</div></div>
+      <button class="ai-chat-new" onclick="clearAIChat()"><i class="ti ti-plus" style="font-size:11px"></i>New chat</button>
+      <button class="ai-chat-close" onclick="closeAIChat()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="ai-chat-msgs" id="aiChatMsgs"></div>
+    <div class="ai-chat-foot">
+      <div class="ai-quick-chips" id="aiQuickChips"></div>
+      <div class="ai-chat-input-row">
+        <textarea class="ai-chat-input" id="aiChatInput" placeholder="Ask anything about your store…" rows="1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAIMsg()}"
+          oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
+        <button class="ai-chat-send" onclick="sendAIMsg()"><i class="ti ti-send"></i></button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -827,65 +891,84 @@ function renderNav(){
   document.getElementById('entBadge').style.display=isEnterprise?'flex':'none';
 }
 
+// ── SECTION CTA MAP ────────────────────────────────────────────────
+// Returns {ctas, showStore, showLang} for the current page
+function getSectionContext(){
+  const pg=activePage;
+  if(pg==='overview') return {ctas:[],showStore:true,showLang:false};
+  // Find which NAV section this page belongs to
+  const sec=NAV.find(s=>s.items.some(i=>i.id===pg));
+  const secName=sec?.sec||'';
+  const map={
+    'Operations':     {ctas:[{l:'Create Order',ic:'ti-plus',p:true}],                          showStore:true, showLang:false},
+    'Customer Support':{ctas:[{l:'Search Customer',ic:'ti-search',p:true}],                    showStore:false,showLang:false},
+    'Catalogue':      {ctas:[{l:'Add Product',ic:'ti-package',p:true},{l:'Bulk Upload',ic:'ti-upload',p:false}], showStore:false,showLang:true},
+    'Marketing':      {ctas:[{l:'New Campaign',ic:'ti-speakerphone',p:true},{l:'Add Coupon',ic:'ti-discount',p:false}], showStore:false,showLang:true},
+    'Website':        {ctas:[{l:'Add Page',ic:'ti-plus',p:true},{l:'Preview Store',ic:'ti-world',p:false}],    showStore:false,showLang:true},
+    'Logistics':      {ctas:[{l:'Plan Trip',ic:'ti-map',p:true},{l:'Add Vehicle',ic:'ti-car',p:false}],         showStore:true, showLang:false},
+    'Analytics':      {ctas:[{l:'Export Report',ic:'ti-download',p:false}],                    showStore:true, showLang:false},
+    'Staff & HR':     {ctas:[{l:'Add Employee',ic:'ti-user-plus',p:true}],                     showStore:false,showLang:false},
+    'Admin':          {ctas:[],                                                                 showStore:false,showLang:false},
+    'Extensions':     {ctas:[],                                                                 showStore:false,showLang:false},
+  };
+  return map[secName]||{ctas:[],showStore:false,showLang:false};
+}
+
 // ── TOPBAR ─────────────────────────────────────────────────────────
 function renderTopbar(){
   const rm=RM[role];
   const pg=activePage;
+
   // Breadcrumb
   let bc='';
   if(pg==='overview') bc=`<span class="cur">Overview</span>`;
-  else if(pg==='myaccount'||pg==='billing'||pg==='notifications'||pg==='changepassword'){
+  else if(['myaccount','billing','notifications','changepassword'].includes(pg)){
     bc=`<span onclick="gotoPage('overview')">Overview</span><span class="sep">›</span><span class="cur">My Account</span>`;
   } else {
     const item=NAV.flatMap(g=>g.items).find(x=>x.id===pg);
-    bc=`<span onclick="gotoPage('overview')">Overview</span><span class="sep">›</span><span class="cur">${item?.l||pg}</span>`;
+    const sec=NAV.find(s=>s.items.some(i=>i.id===pg));
+    bc=`<span onclick="gotoPage('overview')">Overview</span><span class="sep">›</span>${sec?`<span style="cursor:pointer;color:#9ca3af">${sec.sec}</span><span class="sep">›</span>`:''}<span class="cur">${item?.l||pg}</span>`;
   }
   document.getElementById('tbBreadcrumb').innerHTML=bc;
 
-  // CTAs
-  const firstG=getFirstG();
-  const ctas=ROLE_CTAS[firstG]||ROLE_CTAS.store;
+  const ctx=getSectionContext();
   let ctaH='';
 
-  // View Store only for relevant roles
-  if(inG(role,'admin')||inG(role,'store')){
-    ctaH+=`<button class="cta-btn" onclick="window.open('https://tabsports.in','_blank')"><i class="ti ti-world"></i>View Store</button>`;
-  }
-
-  // Role-specific CTAs (skip View Store since added above)
-  ctas.filter(c=>!c.ext).forEach(c=>{
+  // ── Department-level CTAs ──
+  ctx.ctas.forEach(c=>{
     ctaH+=`<button class="cta-btn${c.p?' primary':''}"><i class="ti ${c.ic}"></i>${c.l}</button>`;
   });
 
-  // ── Store global dropdown ──
-  ctaH+=`<div class="gb-dd" id="gbStoreDD">
-    <button class="gb-btn" onclick="gbToggle('store',event)">
-      <i class="ti ti-building-store gbi"></i>
-      <span id="gbStoreTxt">${storeVal}</span>
-      <i class="ti ti-chevron-down gbcv"></i>
+  // ── Store dropdown — only when section needs it ──
+  if(ctx.showStore){
+    ctaH+=`<div class="gb-dd" id="gbStoreDD">
+      <button class="gb-btn" onclick="gbToggle('store',event)">
+        <i class="ti ti-building-store gbi"></i>
+        <span id="gbStoreTxt">${storeVal}</span>
+        <i class="ti ti-chevron-down gbcv"></i>
+      </button>
+      <div class="gb-panel" id="gbStorePanel">
+        <div class="gbpt">Select Store</div>
+        ${STORES.map((s,i)=>(i>0?'<div class="gbdiv"></div>':'')+`<div class="gbpi${s===storeVal?' sel':''}" onclick="gbSetStore('${s.replace(/'/g,"\\'")}')"><i class="ti ti-building-store"></i>${s}</div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  // ── Language — icon only, always visible ──
+  ctaH+=`<div class="gb-dd" id="gbLangDD" style="position:relative">
+    <button class="tb-icon-btn" onclick="gbToggle('lang',event)" title="Language: ${langVal}">
+      <i class="ti ti-language"></i>
     </button>
-    <div class="gb-panel" id="gbStorePanel">
-      <div class="gbpt">Select Store</div>
-      ${STORES.map((s,i)=>(i>0?'<div class="gbdiv"></div>':'')+`<div class="gbpi${s===storeVal?' sel':''}" onclick="gbSetStore('${s.replace(/'/g,"\\'")}')" ><i class="ti ti-building-store"></i>${s}</div>`).join('')}
-    </div>
-  </div>`;
-  // ── Language global dropdown ──
-  ctaH+=`<div class="gb-dd" id="gbLangDD">
-    <button class="gb-btn" onclick="gbToggle('lang',event)">
-      <i class="ti ti-language gbi"></i>
-      <span id="gbLangTxt">${langVal}</span>
-      <i class="ti ti-chevron-down gbcv"></i>
-    </button>
-    <div class="gb-panel rgt" id="gbLangPanel">
+    <div class="gb-panel rgt" id="gbLangPanel" style="min-width:160px">
       <div class="gbpt">Language</div>
       ${LANGS.map(l=>`<div class="gbpi${l===langVal?' sel':''}" onclick="gbSetLang('${l}')"><i class="ti ti-${l===langVal?'check':'circle'}"></i>${l}</div>`).join('')}
     </div>
   </div>`;
+
   ctaH+=`<div class="tbvsep"></div>`;
   ctaH+=`<div class="tb-icon-btn" title="Notifications"><i class="ti ti-bell"></i><span class="tb-notif-badge"></span></div>`;
 
   document.getElementById('tbRight').innerHTML=ctaH;
-  // profile click is on sidebar user row
 }
 
 // ── CHART HELPERS ──────────────────────────────────────────────────
@@ -996,7 +1079,7 @@ function renderOverview(scroll){
       </div>
     </div>
     <div class="ai-input-row">
-      <input class="ai-input" id="aiInput" placeholder="Ask anything… e.g. Why did orders drop yesterday?" onkeydown="if(event.key==='Enter') askAI()">
+      <input class="ai-input" id="aiInput" placeholder="Ask anything… e.g. Why did orders drop yesterday?" onkeydown="if(event.key==='Enter') askAI()" onclick="openAIChat()">
       <button class="ai-ask-btn" onclick="askAI()"><i class="ti ti-send"></i>Ask</button>
     </div>
     <div class="ai-chips">
@@ -1179,38 +1262,115 @@ function renderMyAccount(scroll){
   </div>`;
 }
 
-// ── AI BAR FUNCTIONS ─────────────────────────────────────────────────
+// ── AI CHAT SYSTEM ────────────────────────────────────────────────────
 const AI_ANSWERS={
-  'Why did orders drop yesterday?':'<strong>Orders dropped 12% yesterday</strong> compared to the day before. Key reasons:<br>• Corniche Road had 2 slots blocked due to a vehicle issue (–18 orders)<br>• Fill rate at Ajlan dipped to 78% — 4 orders cancelled due to OOS items<br>• Evening slot (6–8 PM) had 0 capacity — 9 orders were turned away.<br><span style="color:#16a34a;font-size:11px;font-weight:600">Recommended action: Open emergency capacity for tomorrow\'s 6 PM slot →</span>',
-  'Which store has lowest fill rate this week?':'<strong>Ajlan (V168) has the lowest fill rate at 84.2%</strong> this week.<br>Main culprits: Full Cream Milk 1L (OOS since Mon), Greek Yogurt 200g (3 left).<br>• Al Hamra: 91.8% | Khozam: 88.4% | Corniche Rd: 96.2%<br><span style="color:#16a34a;font-size:11px;font-weight:600">Restock Ajlan now to recover ~18 orders/day →</span>',
-  'What are my top 5 selling products?':'<strong>Top 5 products today</strong> by order count:<br>1. Fresh Whole Milk 1L — 28 orders (⚠️ low stock)<br>2. Basmati Rice 5kg — 21 orders<br>3. Greek Yogurt 200g — 18 orders (⚠️ 3 units left)<br>4. Organic Eggs (12) — 14 orders<br>5. Sourdough Bread — 11 orders<br><span style="color:#16a34a;font-size:11px;font-weight:600">Items #1 and #3 need immediate restocking →</span>',
-  'Show slot utilisation for today':'<strong>Slot utilisation for today:</strong><br>• 10:30–11:30 AM — 17/20 (85%) 🟠<br>• 12:30–01:30 PM — 14/25 (56%) 🟢<br>• 12:30–03:30 PM — 28/30 (93%) 🔴 Near full<br>• 03:30–05:00 PM — 31/35 (89%) 🟠<br>• 06:00–08:00 PM — 18/40 (45%) 🟢<br><span style="color:#16a34a;font-size:11px;font-weight:600">12:30–03:30 PM is at risk — consider blocking new orders →</span>',
-  'How many abandoned carts can be recovered?':'<strong>3 abandoned carts totalling ₹6,830</strong> are recoverable right now.<br>• Rahul M. — ₹3,850 (28 min ago, 3 items) — high recovery chance<br>• Priya S. — ₹2,100 (45 min ago, 5 items) — medium chance<br>• Anjali K. — ₹880 (12 min ago) — high recovery chance<br>Historical recovery rate with coupon: <strong>68%</strong> → Expected recovery: <strong>₹4,644</strong><br><span style="color:#16a34a;font-size:11px;font-weight:600">Send SAVE10 coupon to all 3 now →</span>',
+  'Why did orders drop yesterday?':'<strong>Orders dropped 12% yesterday.</strong><br><br>Key reasons identified:<br>• <strong>Corniche Road</strong> — 2 delivery slots blocked (vehicle issue) → lost ~18 orders<br>• <strong>Ajlan</strong> — fill rate dipped to 78% → 4 orders cancelled due to OOS items<br>• <strong>6–8 PM slot</strong> was at 0 capacity → 9 orders turned away<br><br>💡 <em>Recommended:</em> Open emergency capacity for tomorrow\'s 6 PM slot and restock Ajlan\'s critical SKUs.',
+  'Which store has lowest fill rate this week?':'<strong>Ajlan (V168)</strong> has the lowest fill rate this week at <strong>84.2%.</strong><br><br>Root cause:<br>• Full Cream Milk 1L — Out of stock since Monday<br>• Greek Yogurt 200g — Only 3 units remaining<br><br>Store comparison:<br>• Corniche Rd: 96.2% ✅ | Al Hamra: 91.8% ✅<br>• Khozam: 88.4% ⚠️ | Ajlan: 84.2% 🔴<br><br>💡 Restocking Ajlan now could recover ~18 additional orders/day.',
+  'What are my top 5 selling products?':'<strong>Top 5 products today by order count:</strong><br><br>1. 🥛 Fresh Whole Milk 1L — 28 orders ⚠️ <em>Low stock</em><br>2. 🍚 Basmati Rice 5kg — 21 orders ✅<br>3. 🥛 Greek Yogurt 200g — 18 orders ⚠️ <em>3 units left</em><br>4. 🥚 Organic Eggs (12) — 14 orders ✅<br>5. 🍞 Sourdough Bread — 11 orders ✅<br><br>💡 Items 1 and 3 need immediate restocking to avoid lost sales.',
+  'Show slot utilisation for today':'<strong>Slot utilisation for today:</strong><br><br>• 10:30–11:30 AM → 17/20 (85%) 🟠<br>• 12:30–01:30 PM → 14/25 (56%) 🟢<br>• 12:30–03:30 PM → 28/30 (93%) 🔴 Near full<br>• 01:30–02:30 PM → 12/20 (60%) 🟢<br>• 03:30–05:00 PM → 31/35 (89%) 🟠<br>• 06:00–08:00 PM → 18/40 (45%) 🟢<br><br>💡 The 12:30–03:30 PM slot is critical — consider blocking new bookings or adding capacity.',
+  'How many abandoned carts can be recovered?':'<strong>3 abandoned carts worth ₹6,830</strong> are recoverable right now.<br><br>• <strong>Rahul M.</strong> — ₹3,850 | 3 items | 28 min ago → High chance<br>• <strong>Priya S.</strong> — ₹2,100 | 5 items | 45 min ago → Medium chance<br>• <strong>Anjali K.</strong> — ₹880 | 2 items | 12 min ago → High chance<br><br>Historical recovery rate with coupon: <strong>68%</strong><br>Expected recovery: <strong>₹4,644</strong><br><br>💡 Send a SAVE10 coupon to all 3 now for the best results.',
 };
-function askAI(){
-  const input=document.getElementById('aiInput');
-  const q=input?.value?.trim();
+
+const QUICK_CHIPS=[
+  'Why did orders drop yesterday?',
+  'Which store has lowest fill rate this week?',
+  'What are my top 5 selling products?',
+  'Show slot utilisation for today',
+  'How many abandoned carts can be recovered?',
+];
+
+let aiHistory=[];
+
+function openAIChat(prefilledQ){
+  document.getElementById('aiModal').classList.add('open');
+  renderAIChat();
+  if(prefilledQ){
+    setTimeout(()=>{ appendUserMsg(prefilledQ); showAITyping(prefilledQ); },200);
+  } else if(aiHistory.length===0){
+    // Welcome message
+    aiHistory=[{role:'bot',text:'Hi! I\'m Zopping AI. I can help you understand your store performance, identify issues, and surface insights. What would you like to know?'}];
+    renderAIChat();
+  }
+}
+function closeAIChat(){ document.getElementById('aiModal').classList.remove('open'); }
+function clearAIChat(){ aiHistory=[]; renderAIChat(); }
+
+function renderAIChat(){
+  const msgsEl=document.getElementById('aiChatMsgs');
+  const chipsEl=document.getElementById('aiQuickChips');
+  if(!msgsEl) return;
+  if(aiHistory.length===0){
+    msgsEl.innerHTML=`<div style="text-align:center;padding:24px 16px;color:#9ca3af"><div style="font-size:32px;margin-bottom:8px">✨</div><div style="font-size:13px;font-weight:600;color:#374151;margin-bottom:4px">Ask me anything</div><div style="font-size:12px">I know your orders, inventory, customers,<br>deliveries and more.</div></div>`;
+  } else {
+    msgsEl.innerHTML=aiHistory.map(m=>{
+      if(m.role==='bot') return `<div class="ai-msg bot"><div class="ai-msg-av bot"><i class="ti ti-sparkles"></i></div><div><div class="ai-msg-bubble">${m.text}</div></div></div>`;
+      return `<div class="ai-msg user"><div class="ai-msg-av" style="background:#e5e7eb;font-size:11px;font-weight:700;color:#374151">${RM[role].init}</div><div><div class="ai-msg-bubble">${m.text}</div></div></div>`;
+    }).join('');
+  }
+  // Show quick chips only if no history
+  if(chipsEl) chipsEl.innerHTML=aiHistory.length===0?QUICK_CHIPS.map(q=>`<div class="ai-qchip" onclick="sendAIChip('${q.replace(/'/g,"\\'")}')">${q}</div>`).join(''):'';
+  msgsEl.scrollTop=msgsEl.scrollHeight;
+}
+
+function sendAIMsg(){
+  const inp=document.getElementById('aiChatInput');
+  const q=inp?.value?.trim();
   if(!q) return;
-  showAIResponse(q);
-  if(input) input.value='';
+  inp.value=''; inp.style.height='auto';
+  appendUserMsg(q);
+  showAITyping(q);
 }
-function askChip(q){
-  const input=document.getElementById('aiInput');
-  if(input) input.value=q;
-  showAIResponse(q);
+function sendAIChip(q){ appendUserMsg(q); showAITyping(q); }
+
+function appendUserMsg(q){
+  aiHistory.push({role:'user',text:q});
+  renderAIChat();
 }
-function showAIResponse(q){
-  const resp=document.getElementById('aiResponse');
-  const txt=document.getElementById('aiResponseText');
-  if(!resp||!txt) return;
-  const answer=AI_ANSWERS[q]||`<strong>Analysing your query…</strong><br>Based on your store data for ${new Date().toLocaleDateString('en-US',{weekday:'long'})}: orders are tracking <strong>+18% vs yesterday</strong>, revenue at <strong>₹68,420</strong>, and fill rate across all 8 stores is <strong>93.2%</strong>. What specific metric would you like to drill into?`;
-  txt.innerHTML=answer;
-  resp.classList.add('show');
+function showAITyping(q){
+  const msgsEl=document.getElementById('aiChatMsgs');
+  if(!msgsEl) return;
+  // Add typing indicator
+  const typ=document.createElement('div');
+  typ.className='ai-msg bot';
+  typ.id='aiTyping';
+  typ.innerHTML=`<div class="ai-msg-av bot"><i class="ti ti-sparkles"></i></div><div class="ai-typing"><span></span><span></span><span></span></div>`;
+  msgsEl.appendChild(typ);
+  msgsEl.scrollTop=msgsEl.scrollHeight;
+  // Simulate response delay
+  setTimeout(()=>{
+    const typEl=document.getElementById('aiTyping');
+    if(typEl) typEl.remove();
+    const answer=AI_ANSWERS[q]||`Based on your store data: orders are tracking <strong>+18% vs yesterday</strong>, revenue at <strong>₹68,420</strong>, and fill rate is <strong>93.2%</strong> across all 8 stores.<br><br>Could you be more specific? Try asking about a particular store, product, slot, or time period.`;
+    aiHistory.push({role:'bot',text:answer});
+    renderAIChat();
+  }, 900+Math.random()*600);
 }
+
+// Legacy wrappers for the overview bar chips
+function askAI(){ const inp=document.getElementById('aiInput'); const q=inp?.value?.trim(); if(q) openAIChat(q); else openAIChat(); }
+function askChip(q){ openAIChat(q); }
 
 // ── ANALYTICS PAGE ────────────────────────────────────────────────────
 let anWidgets=['an_revenue','an_orders','an_customers','an_conv','an_aov','an_chart','an_funnel','an_top_products','an_by_store','an_by_hour','an_campaigns','an_cohort'];
 let anPanelOpen=false;
+let ovPinnedWidgets=[]; // analytics widgets pinned to overview
+
+function toggleOvPin(id){
+  if(ovPinnedWidgets.includes(id)){
+    ovPinnedWidgets=ovPinnedWidgets.filter(w=>w!==id);
+    showToast('Removed from Overview');
+  } else {
+    ovPinnedWidgets.push(id);
+    showToast('Added to Overview ✓');
+  }
+  renderAnalytics(document.getElementById('mainScroll'));
+}
+function showToast(msg){
+  let t=document.getElementById('toastEl');
+  if(!t){t=document.createElement('div');t.id='toastEl';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;font-size:12.5px;font-weight:600;padding:9px 18px;border-radius:10px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);transition:opacity .3s';document.body.appendChild(t);}
+  t.textContent=msg; t.style.opacity='1';
+  clearTimeout(t._timer); t._timer=setTimeout(()=>t.style.opacity='0',2000);
+}
 
 const AN_DEFS={
   an_revenue:   {title:'Total Revenue',    ic:'ti-currency-rupee', bg:'#dcfce7', ic_c:'#16a34a', span:1, desc:'Gross revenue for selected period'},
@@ -1265,11 +1425,16 @@ function renderAnalytics(scroll){
       <div style="overflow-x:auto"><table class="an-table" style="min-width:420px"><tr><th>Cohort</th><th>Month 0</th><th>Month 1</th><th>Month 2</th><th>Month 3</th></tr>
       ${[{m:'Apr 2026',vals:[100,42,28,18]},{m:'Mar 2026',vals:[100,38,24,15]},{m:'Feb 2026',vals:[100,45,31,21]},{m:'Jan 2026',vals:[100,40,26,17]}].map(r=>`<tr><td style="font-weight:600;color:#374151">${r.m}</td>${r.vals.map((v,i)=>`<td><span style="padding:2px 7px;border-radius:8px;font-weight:700;font-size:11px;background:${v===100?'#dcfce7':v>35?'#dbeafe':v>25?'#fef9c3':'#fee2e2'};color:${v===100?'#15803d':v>35?'#1d4ed8':v>25?'#ca8a04':'#b91c1c'}">${v}%</span></td>`).join('')}</tr>`).join('')}
       </table></div>`;
-    return `<div class="an-card${wd.span>1?' style="grid-column:span '+wd.span+'"':''}" id="anw_${id}">
+    const inOv=ovPinnedWidgets.includes(id);
+    return `<div class="an-card${wd.span>1?' style="grid-column:span '+wd.span+'"':''}" id="anw_${id}" style="${wd.span>1?'grid-column:span '+wd.span:''}">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
         <div style="width:28px;height:28px;border-radius:7px;background:${wd.bg};display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0"><i class="ti ${wd.ic}" style="color:${wd.ic_c}"></i></div>
         <div style="font-size:12.5px;font-weight:700;color:#111827;flex:1">${wd.title}</div>
-        <button onclick="removeAnWidget('${id}')" style="border:none;background:transparent;cursor:pointer;color:#d1d5db;font-size:14px;padding:2px" title="Remove"><i class="ti ti-x"></i></button>
+        <button onclick="toggleOvPin('${id}')" title="${inOv?'Remove from Overview':'Add to Overview'}"
+          style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:7px;border:1.5px solid ${inOv?'#16a34a':'#e2d9ce'};background:${inOv?'#f0fdf4':'#fff'};color:${inOv?'#16a34a':'#9ca3af'};cursor:pointer">
+          <i class="ti ti-${inOv?'check':'layout-grid-add'}" style="font-size:12px"></i>${inOv?'In Overview':'+ Overview'}
+        </button>
+        <button onclick="removeAnWidget('${id}')" style="border:none;background:transparent;cursor:pointer;color:#d1d5db;font-size:14px;padding:2px 3px" title="Remove from analytics"><i class="ti ti-x"></i></button>
       </div>
       ${inner}
     </div>`;
