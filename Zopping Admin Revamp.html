@@ -429,15 +429,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
       </div>
     </div>
 
-    <!-- User -->
+    <!-- User — click goes directly to Personal Information -->
     <div class="sb-user">
-      <div class="user-row" onclick="toggleProfile()">
+      <div class="user-row" onclick="gotoPage('myaccount')" title="My Account & Settings" style="cursor:pointer">
         <div class="user-av" id="sbAv">SM</div>
         <div class="user-info">
           <div class="user-name" id="sbName">Lingraj</div>
           <div class="user-role" id="sbRole">Store Manager</div>
         </div>
-        <i class="ti ti-dots-vertical user-cog"></i>
+        <i class="ti ti-chevron-right" style="font-size:13px;color:rgba(255,255,255,.25)"></i>
       </div>
     </div>
   </div>
@@ -876,11 +876,7 @@ function renderNav(){
       </div>`;
     });
   });
-  // My Account link
-  h+=`<div class="nav-sec">Account</div>
-    <div class="nav-item${activePage==='myaccount'?' active':''}" onclick="gotoPage('myaccount')">
-      <i class="ti ti-user-circle"></i>My Account
-    </div>`;
+  // My Account is accessible via sidebar user card — no nav item needed
   document.getElementById('sbNav').innerHTML=h;
   // Update sidebar user
   document.getElementById('sbAv').textContent=rm.init;
@@ -922,8 +918,9 @@ function renderTopbar(){
   // Breadcrumb
   let bc='';
   if(pg==='overview') bc=`<span class="cur">Overview</span>`;
-  else if(['myaccount','billing','notifications','changepassword'].includes(pg)){
-    bc=`<span onclick="gotoPage('overview')">Overview</span><span class="sep">›</span><span class="cur">My Account</span>`;
+  else if(['myaccount','billing','notifications','changepassword','balance','deleteaccount'].includes(pg)){
+    const tabLabel={myaccount:'Personal Information',billing:'Billing',notifications:'Notifications',changepassword:'Change Password',balance:'Account Balance',deleteaccount:'Delete Account'};
+    bc=`<span onclick="gotoPage('overview')">Overview</span><span class="sep">›</span><span style="color:#9ca3af">My Account</span><span class="sep">›</span><span class="cur">${tabLabel[pg]||pg}</span>`;
   } else {
     const item=NAV.flatMap(g=>g.items).find(x=>x.id===pg);
     const sec=NAV.find(s=>s.items.some(i=>i.id===pg));
@@ -1024,7 +1021,7 @@ function renderMain(){
   const scroll=document.getElementById('mainScroll');
   if(activePage==='overview') renderOverview(scroll);
   else if(activePage==='analytics') renderAnalytics(scroll);
-  else if(['myaccount','billing','notifications','changepassword'].includes(activePage)) renderMyAccount(scroll);
+  else if(['myaccount','billing','notifications','changepassword','balance','deleteaccount'].includes(activePage)) renderMyAccount(scroll);
   else renderGeneric(scroll);
 }
 
