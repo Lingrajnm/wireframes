@@ -9,7 +9,7 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-  background: #f4f5f7;
+  background: linear-gradient(160deg, #edf7ed 0%, #f4f5f7 50%);
   color: #1a1a2e;
   font-size: 13px;
   line-height: 1.5;
@@ -26,9 +26,9 @@ body {
 
 /* ── HEADER ── */
 .hdr {
-  background: #fff;
+  background: linear-gradient(135deg, #ffffff 0%, #f2fbf2 100%);
   border-radius: 10px;
-  border: 1px solid #e8eaed;
+  border: 1px solid #d4edda;
   padding: 20px 24px;
   margin-bottom: 10px;
   display: flex;
@@ -48,7 +48,7 @@ body {
 
 /* ── ALERT ── */
 .alert {
-  background: #fffbeb;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef9ec 100%);
   border: 1px solid #fde68a;
   border-left: 3px solid #d97706;
   border-radius: 8px;
@@ -67,11 +67,14 @@ body {
   margin-bottom: 10px;
 }
 .kpi {
-  background: #fff;
+  background: linear-gradient(160deg, #ffffff 0%, #f8f9fb 100%);
   border: 1px solid #e8eaed;
   border-radius: 10px;
   padding: 16px 14px;
 }
+.kpi.kpi-good { background: linear-gradient(160deg, #ffffff 0%, #f0fdf4 100%); border-color: #d1fae5; }
+.kpi.kpi-bad  { background: linear-gradient(160deg, #ffffff 0%, #fff5f5 100%); border-color: #fecaca; }
+.kpi.kpi-warn { background: linear-gradient(160deg, #ffffff 0%, #fffbeb 100%); border-color: #fde68a; }
 .kpi-label {
   font-size: 10px;
   font-weight: 600;
@@ -102,14 +105,16 @@ body {
 /* ── CARD ── */
 .card {
   background: #fff;
-  border: 1px solid #e8eaed;
+  border: 1px solid #e2e8e2;
   border-radius: 10px;
   margin-bottom: 10px;
   overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 .card-head {
   padding: 13px 20px;
-  border-bottom: 1px solid #f0f0f0;
+  background: linear-gradient(to right, #f8fbf8, #ffffff);
+  border-bottom: 1px solid #edf0ed;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -122,16 +127,18 @@ body {
 .inline-stats {
   display: flex;
   gap: 0;
-  border: 1px solid #e8eaed;
+  border: 1px solid #e2e8e2;
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 16px;
+  background: linear-gradient(to bottom, #fafcfa, #f4f6f4);
 }
 .is-item {
   flex: 1;
   padding: 10px 12px;
   text-align: center;
-  border-right: 1px solid #e8eaed;
+  border-right: 1px solid #e2e8e2;
+  background: transparent;
 }
 .is-item:last-child { border-right: none; }
 .is-val { font-size: 18px; font-weight: 800; color: #1a1a2e; }
@@ -143,8 +150,8 @@ body {
 
 /* ── TIMELINE ── */
 .timeline-wrap {
-  background: #f8f9fb;
-  border: 1px solid #e8eaed;
+  background: linear-gradient(135deg, #f8fbf8 0%, #f4f7f4 100%);
+  border: 1px solid #e2e8e2;
   border-radius: 8px;
   padding: 12px 14px;
   margin-bottom: 16px;
@@ -217,7 +224,7 @@ tr:hover td { background: #fafbfc; }
 .fb-val   { font-size: 11px; font-weight: 700; min-width: 36px; text-align: right; }
 
 /* total row */
-.row-total td { background: #f4f5f7; font-weight: 700; border-top: 1px solid #e8eaed; color: #1a1a2e; }
+.row-total td { background: linear-gradient(to right, #edf7ed, #f4f5f7); font-weight: 700; border-top: 1px solid #d1fae5; color: #1a1a2e; }
 
 /* ── RETURNS REASON STRIP ── */
 .reason-strip { display: flex; gap: 8px; margin-bottom: 14px; }
@@ -228,7 +235,7 @@ tr:hover td { background: #fafbfc; }
   padding: 10px 12px;
   text-align: center;
 }
-.reason-item.active { border-color: #fde68a; background: #fffbeb; }
+.reason-item.active { border-color: #fde68a; background: linear-gradient(135deg, #fffbeb 0%, #fef9e7 100%); }
 .ri-val { font-size: 20px; font-weight: 800; color: #1a1a2e; }
 .ri-val.warn { color: #d97706; }
 .ri-lbl { font-size: 10px; color: #8f95a3; text-transform: uppercase; letter-spacing: .4px; margin-top: 3px; }
@@ -244,7 +251,7 @@ tr:hover td { background: #fafbfc; }
 .empty { text-align: center; padding: 24px 16px; color: #8f95a3; font-size: 12px; }
 
 /* ── FOOTER ── */
-.footer { text-align: center; padding: 14px; font-size: 10px; color: #c0c4ce; }
+.footer { text-align: center; padding: 14px; font-size: 10px; color: #a0a8b0; background: linear-gradient(to right, transparent, #edf7ed22, transparent); }
 </style>
 </head>
 <body>
@@ -279,17 +286,17 @@ tr:hover td { background: #fafbfc; }
       <div class="kpi-value kv-neutral">15</div>
       <div class="kpi-context ctx-warn">4 unprocessed</div>
     </div>
-    <div class="kpi">
+    <div class="kpi kpi-bad">
       <div class="kpi-label">On Time %</div>
       <div class="kpi-value kv-bad">20%</div>
       <div class="kpi-context ctx-bad">3 of 15 orders</div>
     </div>
-    <div class="kpi">
+    <div class="kpi kpi-good">
       <div class="kpi-label">Fill Rate %</div>
       <div class="kpi-value kv-good">91.0%</div>
       <div class="kpi-context ctx-good">174 of 182 items</div>
     </div>
-    <div class="kpi">
+    <div class="kpi kpi-warn">
       <div class="kpi-label">Returns</div>
       <div class="kpi-value kv-warn">3</div>
       <div class="kpi-context ctx-warn">Payment not captured</div>
