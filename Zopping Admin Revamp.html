@@ -4160,6 +4160,124 @@ function renderFilled(scroll){
 
       scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
     },
+    actlogs: ()=>{
+      const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
+      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
+      const dropS=inpS+'cursor:pointer;appearance:auto';
+
+      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:16px 20px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;margin-bottom:14px">
+          <div>
+            <div style="${lblS}">ENTITY</div>
+            <select style="${dropS}">
+              <option value="">All Entities</option>
+              <option>Store</option><option>Order</option><option>Product</option>
+              <option>Customer</option><option>Coupon</option><option>User</option>
+              <option>Trip</option><option>Vehicle</option>
+            </select>
+          </div>
+          <div>
+            <div style="${lblS}">STORE</div>
+            <select style="${dropS}">
+              <option value="">All Stores</option>
+              <option>Sodhis Supermarket</option><option>Al Hamra Branch</option><option>Corniche Outlet</option>
+            </select>
+          </div>
+          <div>
+            <div style="${lblS}">USER</div>
+            <select style="${dropS}">
+              <option value="">All Users</option>
+              <option>Lingraj</option><option>Manaj Shetty</option><option>Sunil Kumar</option>
+              <option>Priya R.</option><option>Arun V.</option>
+            </select>
+          </div>
+          <div>
+            <div style="${lblS}">DATE RANGE</div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <div style="flex:1;display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff">
+                <i class="ti ti-calendar" style="padding:0 8px 0 10px;font-size:14px;color:#16a34a;flex-shrink:0"></i>
+                <input type="date" value="2026-06-22" style="flex:1;border:none;outline:none;padding:8px 6px 8px 0;font-size:12px;font-family:inherit;color:#374151;background:transparent;min-width:0">
+              </div>
+              <span style="font-size:11px;color:#9ca3af;flex-shrink:0">→</span>
+              <div style="flex:1;display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff">
+                <i class="ti ti-calendar" style="padding:0 8px 0 10px;font-size:14px;color:#16a34a;flex-shrink:0"></i>
+                <input type="date" value="2026-06-29" style="flex:1;border:none;outline:none;padding:8px 6px 8px 0;font-size:12px;font-family:inherit;color:#374151;background:transparent;min-width:0">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button style="padding:7px 20px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Apply</button>
+          <button style="padding:7px 16px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear</button>
+        </div>
+      </div>`;
+
+      const entityStyle={
+        'Store':    ['#1d4ed8','#dbeafe'],
+        'Order':    ['#16a34a','#dcfce7'],
+        'Product':  ['#7c3aed','#f5f3ff'],
+        'Customer': ['#0891b2','#ecfeff'],
+        'Coupon':   ['#ca8a04','#fef9c3'],
+        'User':     ['#ea580c','#fff7ed'],
+        'Trip':     ['#b91c1c','#fee2e2'],
+        'Vehicle':  ['#374151','#f3f4f6'],
+      };
+
+      const LOGS=[
+        {entity:'Order',    store:'Sodhis Supermarket',  user:'Lingraj',        date:'29 Jun 2026, 10:42 AM', action:'Order <strong>#ORD-2026-0841</strong> status updated to <strong>Dispatched</strong>'},
+        {entity:'Product',  store:'All Stores',          user:'Manaj Shetty',   date:'29 Jun 2026, 10:31 AM', action:'<strong>Harpic Toilet Cleaner 1 Lt</strong> stock updated from 45 → 82'},
+        {entity:'Customer', store:'Sodhis Supermarket',  user:'Sunil Kumar',    date:'29 Jun 2026, 09:58 AM', action:'Customer <strong>Riya Sharma</strong> wallet credited ₹100'},
+        {entity:'Coupon',   store:'All Stores',          user:'Lingraj',        date:'29 Jun 2026, 09:44 AM', action:'Coupon <strong>SUMMER20</strong> activated — valid until 31 Jul 2026'},
+        {entity:'Store',    store:'Al Hamra Branch',     user:'Priya R.',       date:'29 Jun 2026, 09:15 AM', action:'Store operating hours updated for <strong>Al Hamra Branch</strong>'},
+        {entity:'User',     store:'All Stores',          user:'Lingraj',        date:'28 Jun 2026, 11:50 PM', action:'Staff member <strong>Arun V.</strong> role changed to Store Manager'},
+        {entity:'Order',    store:'Corniche Outlet',     user:'Arun V.',        date:'28 Jun 2026, 11:23 PM', action:'Order <strong>#ORD-2026-0837</strong> marked as <strong>Delivered</strong>'},
+        {entity:'Vehicle',  store:'Sodhis Supermarket',  user:'Manaj Shetty',   date:'28 Jun 2026, 10:48 PM', action:'Vehicle <strong>UK 07 XZ 0879</strong> assigned to Shift 1'},
+        {entity:'Trip',     store:'Sodhis Supermarket',  user:'Arun V.',        date:'28 Jun 2026, 08:30 PM', action:'Trip <strong>TRP-2026-0063</strong> created — Corniche Route, 6 orders'},
+        {entity:'Product',  store:'Al Hamra Branch',     user:'Sunil Kumar',    date:'28 Jun 2026, 06:15 PM', action:'<strong>AMUL Butter 100g</strong> price updated from ₹54 → ₹58'},
+        {entity:'Coupon',   store:'All Stores',          user:'Priya R.',       date:'28 Jun 2026, 04:30 PM', action:'Coupon <strong>FLAT50</strong> deactivated — usage limit reached'},
+        {entity:'Customer', store:'Sodhis Supermarket',  user:'Lingraj',        date:'28 Jun 2026, 03:55 PM', action:'Customer <strong>Arjun Mehta</strong> account suspended — 3 chargebacks'},
+        {entity:'Store',    store:'Corniche Outlet',     user:'Manaj Shetty',   date:'28 Jun 2026, 02:10 PM', action:'Slot capacity updated for <strong>Corniche Outlet</strong> — Sat/Sun +20%'},
+        {entity:'Order',    store:'Al Hamra Branch',     user:'Arun V.',        date:'28 Jun 2026, 12:44 PM', action:'Order <strong>#ORD-2026-0821</strong> refund processed — ₹349'},
+        {entity:'User',     store:'All Stores',          user:'Lingraj',        date:'28 Jun 2026, 11:00 AM', action:'New staff member <strong>Dilpreet K.</strong> added with Picker role'},
+        {entity:'Vehicle',  store:'Sodhis Supermarket',  user:'Sunil Kumar',    date:'28 Jun 2026, 10:20 AM', action:'Vehicle <strong>KA 05 AB 1234</strong> status set to Maintenance'},
+        {entity:'Product',  store:'All Stores',          user:'Priya R.',       date:'27 Jun 2026, 09:05 PM', action:'16 products marked as <strong>Out of Stock</strong> via bulk update'},
+        {entity:'Trip',     store:'Corniche Outlet',     user:'Arun V.',        date:'27 Jun 2026, 07:30 PM', action:'Trip <strong>TRP-2026-0059</strong> completed — 8 orders delivered'},
+        {entity:'Coupon',   store:'All Stores',          user:'Manaj Shetty',   date:'27 Jun 2026, 05:15 PM', action:'New coupon <strong>WELCOME10</strong> created — 10% off first order'},
+        {entity:'Store',    store:'Sodhis Supermarket',  user:'Lingraj',        date:'27 Jun 2026, 03:00 PM', action:'Announcement "<strong>Weekend Freshness Deals</strong>" published'},
+      ];
+
+      const thS='text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4;white-space:nowrap';
+      const tdS='padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle';
+
+      const rows=LOGS.map(l=>{
+        const [ec,eb]=entityStyle[l.entity]||['#374151','#f3f4f6'];
+        return `<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+          <td style="${tdS}">
+            <span style="display:inline-flex;padding:2px 9px;border-radius:5px;background:${eb};color:${ec};font-size:11px;font-weight:700;white-space:nowrap">${l.entity}</span>
+          </td>
+          <td style="${tdS}"><span style="font-size:12.5px;color:#374151">${l.store}</span></td>
+          <td style="${tdS}"><span style="font-size:12.5px;color:#374151">${l.user}</span></td>
+          <td style="${tdS};white-space:nowrap"><span style="font-size:11.5px;color:#9ca3af">${l.date}</span></td>
+          <td style="${tdS}"><span style="font-size:12.5px;color:#374151;line-height:1.5">${l.action}</span></td>
+        </tr>`;
+      }).join('');
+
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr>
+            <th style="${thS}">Entity</th>
+            <th style="${thS}">Store</th>
+            <th style="${thS}">User</th>
+            <th style="${thS}">Date & Time</th>
+            <th style="${thS}">Action</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <div style="padding:10px 14px;border-top:1px solid #f5f2ee"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 20 logs</span></div>
+      </div>`;
+
+      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
+    },
   };
 
   const renderer=pages[pg];
