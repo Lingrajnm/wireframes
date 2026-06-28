@@ -2381,55 +2381,27 @@ function renderFilled(scroll){
         if(x==='email')return '<i class="ti ti-mail" style="font-size:14px;color:#9ca3af;cursor:pointer"></i>';
         return '';
       }).join(' ');
-      // Slot type badge with micro-interactions
+      // Slot badge — same pill style as status badges, one sub-line below
+      const pill=(icon,label,c,bg)=>`<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:10px;background:${bg};font-size:11px;font-weight:700;color:${c}">${icon}<span>${label}</span></span>`;
       const slotBadge=o=>{
-        // ── ASAP ──────────────────────────────────────────────────────────
-        if(o.stype==='asap') return `
-          <div style="display:flex;align-items:center;gap:8px">
-            <div style="position:relative;width:10px;height:10px;flex-shrink:0">
-              <span style="position:absolute;inset:0;border-radius:50%;background:#ef4444;animation:asapDot 1.4s ease-in-out infinite"></span>
-              <span style="position:absolute;inset:0;border-radius:50%;background:#ef4444;animation:asapRing 1.4s ease-out infinite"></span>
-            </div>
-            <div>
-              <div style="font-size:11.5px;font-weight:800;color:#dc2626;letter-spacing:.04em;line-height:1.2">ASAP</div>
-              <div style="font-size:10px;color:#9ca3af;font-weight:500">Within 60 min</div>
-            </div>
-          </div>`;
-        // ── Hyperlocal (same-day window) ───────────────────────────────────
-        if(o.stype==='hyperlocal') return `
-          <div style="display:inline-flex;flex-direction:column;gap:2px">
-            <div style="display:inline-flex;align-items:center;gap:5px">
-              <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:5px;background:#fff7ed;flex-shrink:0">
-                <i class="ti ti-clock" style="font-size:11px;color:#ea580c"></i>
-              </span>
-              <span style="font-size:11.5px;font-weight:700;color:#c2410c">Today</span>
-            </div>
-            <div style="font-size:10px;color:#9ca3af;padding-left:23px">${o.slotSub}</div>
-          </div>`;
-        // ── NDD (next-day delivery) ────────────────────────────────────────
-        if(o.stype==='ndd') return `
-          <div style="display:inline-flex;flex-direction:column;gap:2px">
-            <div style="display:inline-flex;align-items:center;gap:5px">
-              <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:5px;background:#eff6ff;flex-shrink:0">
-                <i class="ti ti-calendar-event" style="font-size:11px;color:#2563eb"></i>
-              </span>
-              <span style="font-size:11.5px;font-weight:700;color:#1d4ed8">NDD &middot; ${o.slot}</span>
-            </div>
-            <div style="font-size:10px;color:#9ca3af;padding-left:23px">${o.slotSub}</div>
-          </div>`;
-        // ── Scheduled (3+ days out) ────────────────────────────────────────
-        if(o.stype==='scheduled') return `
-          <div style="display:inline-flex;flex-direction:column;gap:2px">
-            <div style="display:inline-flex;align-items:center;gap:5px">
-              <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:5px;background:#f5f3ff;flex-shrink:0">
-                <i class="ti ti-calendar-check" style="font-size:11px;color:#7c3aed"></i>
-              </span>
-              <span style="font-size:11.5px;font-weight:700;color:#6d28d9">Pre-order &middot; ${o.slot}</span>
-            </div>
-            <div style="font-size:10px;color:#9ca3af;padding-left:23px">${o.slotSub}</div>
-          </div>`;
-        // ── Fallback ───────────────────────────────────────────────────────
-        return `<div style="font-size:12px;color:#374151">${o.slot}<br><span style="font-size:10.5px;color:#9ca3af">${o.slotSub}</span></div>`;
+        const sub=`<div style="font-size:10.5px;color:#9ca3af;margin-top:3px">${o.slotSub}</div>`;
+        if(o.stype==='asap') return `<div>
+          ${pill(`<span style="width:6px;height:6px;border-radius:50%;background:#dc2626;flex-shrink:0;animation:asapDot 1.4s ease-in-out infinite"></span>`,'ASAP','#dc2626','#fee2e2')}
+          <div style="font-size:10.5px;color:#9ca3af;margin-top:3px">Within 60 min</div>
+        </div>`;
+        if(o.stype==='hyperlocal') return `<div>
+          ${pill(`<i class="ti ti-clock" style="font-size:11px"></i>`,'Today','#ca8a04','#fef9c3')}
+          ${sub}
+        </div>`;
+        if(o.stype==='ndd') return `<div>
+          ${pill(`<i class="ti ti-truck-delivery" style="font-size:11px"></i>`,`NDD \xb7 ${o.slot}`,'#1d4ed8','#dbeafe')}
+          ${sub}
+        </div>`;
+        if(o.stype==='scheduled') return `<div>
+          ${pill(`<i class="ti ti-calendar-check" style="font-size:11px"></i>`,`${o.slot}`,'#7c3aed','#f5f3ff')}
+          ${sub}
+        </div>`;
+        return `<div><span style="font-size:12px;color:#374151">${o.slot}</span>${sub}</div>`;
       };
       const colPicker=`<div id="ocPickList">`+colDefs.map(c=>`
         <div class="ocPickRow" data-id="${c.id}" data-locked="${c.locked?'1':'0'}"
