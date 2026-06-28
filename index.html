@@ -465,23 +465,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
   <!-- SIDEBAR -->
   <div class="sidebar">
     <!-- Brand -->
-    <div class="sb-brand">
+    <div class="sb-brand" style="display:flex;align-items:center;gap:8px">
       <img src="https://zopping.com/assets/images/Zopping.svg" alt="Zopping" class="sb-logo-img"
            onerror="this.style.display='none';document.getElementById('logoFallback').style.display='block'">
       <span class="sb-logo-fallback" id="logoFallback" style="display:none">Zopping</span>
+      <span id="planBadge" style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:.04em;background:rgba(255,255,255,.15);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.2);flex-shrink:0">Business</span>
     </div>
 
     <!-- Nav -->
     <div class="sb-nav" id="sbNav"></div>
 
-    <!-- Enterprise badge -->
-    <div class="ent-badge" id="entBadge" style="display:none" onclick="gotoPage('billing')">
-      <i class="ti ti-crown"></i>
-      <div>
-        <div class="ent-text">Enterprise Plan</div>
-        <div class="ent-sub">Contact sales to scale</div>
-      </div>
-    </div>
 
     <!-- User — click goes directly to Personal Information -->
     <div class="sb-user">
@@ -926,9 +919,24 @@ function toggleEnt(){
   isEnterprise=!isEnterprise;
   document.getElementById('entToggle').classList.toggle('on',isEnterprise);
   document.getElementById('entLbl').textContent=isEnterprise?'Enterprise ✓':'isEnterprise';
-  document.getElementById('entBadge').style.display=isEnterprise?'flex':'none';
+  updatePlanBadge();
   renderNav();
   if(activePage==='overview') renderMain();
+}
+function updatePlanBadge(){
+  const b=document.getElementById('planBadge');
+  if(!b) return;
+  if(isEnterprise){
+    b.textContent='Enterprise';
+    b.style.background='rgba(234,179,8,.18)';
+    b.style.color='#fbbf24';
+    b.style.borderColor='rgba(234,179,8,.35)';
+  } else {
+    b.textContent='Business';
+    b.style.background='rgba(255,255,255,.15)';
+    b.style.color='rgba(255,255,255,.7)';
+    b.style.borderColor='rgba(255,255,255,.2)';
+  }
 }
 
 // ── MOBILE TOGGLE ──────────────────────────────────────────────────
