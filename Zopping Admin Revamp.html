@@ -3038,7 +3038,7 @@ function renderFilled(scroll){
         </table>
         <div style="padding:10px 14px;border-top:1px solid #f5f2ee"><span style="font-size:12px;color:#9ca3af">12 tags · ${TAGS.reduce((a,t)=>a+t.customers,0).toLocaleString()} total tagged customers</span></div>
       </div>`;
-      scroll.innerHTML=pw+searchBar+tableHtml+'</div>';
+      scroll.innerHTML=pw+tableHtml+'</div>';
     },
     vehicles: ()=>{
       const rows=[
