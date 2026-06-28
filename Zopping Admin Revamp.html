@@ -2977,21 +2977,13 @@ function renderFilled(scroll){
       const thL='padding:12px 16px;font-size:11.5px;font-weight:600;color:#6b7280;text-align:left;border-bottom:1px solid #f0ece4;background:#fff';
       const thR='padding:12px 16px;font-size:11.5px;font-weight:600;color:#6b7280;text-align:right;border-bottom:1px solid #f0ece4;background:#fff;white-space:nowrap';
       const rows=SEGS.map(s=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
-        <td style="padding:14px 16px;border-bottom:1px solid #f5f2ee;vertical-align:middle;width:36px"><input type="checkbox" style="width:14px;height:14px;accent-color:#16a34a;cursor:pointer"></td>
         <td style="padding:14px 16px;border-bottom:1px solid #f5f2ee;vertical-align:middle"><span style="font-size:13px;font-weight:600;color:#111827;cursor:pointer" onmouseover="this.style.color='#16a34a'" onmouseout="this.style.color='#111827'">${s.name}</span></td>
         <td style="padding:14px 16px;border-bottom:1px solid #f5f2ee;vertical-align:middle;text-align:right"><span style="font-size:13px;color:#374151">${s.pct}%</span></td>
         <td style="padding:14px 16px;border-bottom:1px solid #f5f2ee;vertical-align:middle;text-align:right;white-space:nowrap"><span style="font-size:13px;color:#6b7280">Created on ${s.created}</span></td>
       </tr>`).join('');
       const tableHtml=`<div style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-        <div style="padding:12px 14px;border-bottom:1px solid #f0ece4">
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f9f9f9;border:1px solid #e5e7eb;border-radius:8px">
-            <i class="ti ti-search" style="font-size:14px;color:#9ca3af;flex-shrink:0"></i>
-            <input style="flex:1;border:none;outline:none;font-size:13px;font-family:inherit;color:#374151;background:transparent" placeholder="Search segments">
-          </div>
-        </div>
         <table style="width:100%;border-collapse:collapse">
           <thead><tr>
-            <th style="${thL};width:36px"><input type="checkbox" style="width:14px;height:14px;accent-color:#16a34a;cursor:pointer"></th>
             <th style="${thL}">Name</th>
             <th style="${thR}">% of customers</th>
             <th style="${thR};display:flex;align-items:center;justify-content:flex-end;gap:4px">Last activity <i class="ti ti-selector" style="font-size:12px"></i></th>
