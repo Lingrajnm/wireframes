@@ -2734,38 +2734,38 @@ function renderFilled(scroll){
       scroll.innerHTML=pw+searchBar+tableHtml+'</div>';
     },
     'cs-orders': ()=>{
-      // Customer Support > Orders — same order data as Ops but NO Live Order Pipeline
-      const statusMap={'Picking':['#ca8a04','#fef9c3'],'Packing':['#0369a1','#e0f2fe'],'Packed':['#7c3aed','#f5f3ff'],'Dispatched':['#1d4ed8','#dbeafe'],'Completed':['#15803d','#dcfce7'],'Cancelled':['#b91c1c','#fee2e2'],'Returned':['#ea580c','#fff7ed'],'Draft':['#6b7280','#f3f4f6'],'Pending':['#b45309','#fff7ed']};
+      // Customer Support > Orders — cross-store view, CS cannot take ops decisions (no Accept/Reject/Move)
+      const statusMap={'Picking':['#ca8a04','#fef9c3'],'Packing':['#0369a1','#e0f2fe'],'Packed':['#7c3aed','#f5f3ff'],'Dispatched':['#0891b2','#ecfeff'],'Delivered':['#16a34a','#dcfce7'],'Cancelled':['#b91c1c','#fee2e2'],'Pending':['#ea580c','#fff7ed'],'Draft':['#9ca3af','#f3f4f6']};
       const otypeMap={
         'Delivery':     {ic:'ti-truck-delivery',  c:'#1d4ed8',bg:'#dbeafe', tip:'Home Delivery'},
         'Pickup':       {ic:'ti-building-store',  c:'#15803d',bg:'#dcfce7', tip:'Click & Collect'},
         'Offline':      {ic:'ti-receipt',         c:'#ca8a04',bg:'#fef9c3', tip:'Offline / POS Order'},
         'Self Checkout':{ic:'ti-scan',            c:'#7c3aed',bg:'#f5f3ff', tip:'Self Checkout'},
       };
-      const otypeIc=t=>{const m=otypeMap[t]||{ic:'ti-truck-delivery',c:'#9ca3af',bg:'#f3f4f6',tip:t};return `<div title="${m.tip}" style="width:32px;height:32px;border-radius:8px;background:${m.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${m.ic}" style="font-size:16px;color:${m.c}"></i></div>`;};
+      const otypeIc=t=>{const m=otypeMap[t]||{ic:'ti-truck-delivery',c:'#9ca3af',bg:'#f3f4f6',tip:t};return `<div title="${m.tip}" style="width:28px;height:28px;border-radius:6px;background:${m.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${m.ic}" style="font-size:13px;color:${m.c}"></i></div>`;};
       const ORDERS=[
-        {id:'Z198011',cust:'SANJAY',       icons:'err,phone',placed:'28 Jun, 06:50 PM',slot:'28 Jun',slotSub:'Within 60 min',     amt:'₹2,400.00',items:'1 Item',   status:'Packed',    courier:'—',otype:'Delivery',     comp:'—',          stype:'asap'},
-        {id:'Z197996',cust:'Priyanka',     icons:'loc,phone',placed:'28 Jun, 06:36 PM',slot:'28 Jun',slotSub:'Within 60 min',     amt:'₹1,620.00',items:'16 Items', status:'Picking',   courier:'—',otype:'Pickup',       comp:'—',          stype:'asap'},
-        {id:'Z197982',cust:'GAURAV',       icons:'loc,phone',placed:'28 Jun, 06:29 PM',slot:'28 Jun',slotSub:'Within 60 min',     amt:'₹2,750.00',items:'1 Item',   status:'Dispatched',courier:'—',otype:'Delivery',     comp:'—',          stype:'asap'},
-        {id:'Z197973',cust:'Parmod Kumar', icons:'loc,phone',placed:'28 Jun, 06:14 PM',slot:'28 Jun',slotSub:'8:00 – 9:00 PM',   amt:'₹1,407.00',items:'3 Items',  status:'Packed',    courier:'—',otype:'Self Checkout',comp:'—',          stype:'hyperlocal'},
-        {id:'Z197965',cust:'Pranav Puri',  icons:'loc,phone',placed:'28 Jun, 06:03 PM',slot:'28 Jun',slotSub:'8:00 – 9:00 PM',   amt:'₹2,529.00',items:'29 Items', status:'Packed',    courier:'—',otype:'Delivery',     comp:'—',          stype:'hyperlocal'},
-        {id:'Z197952',cust:'Amol Rawlley', icons:'phone',    placed:'28 Jun, 06:00 PM',slot:'28 Jun',slotSub:'Within 60 min',     amt:'₹920.00', items:'6 Items',  status:'Packing',   courier:'—',otype:'Offline',       comp:'—',          stype:'asap'},
-        {id:'Z197944',cust:'Sachin Kumar', icons:'loc,phone',placed:'28 Jun, 05:57 PM',slot:'28 Jun',slotSub:'Within 60 min',     amt:'₹92.00',  items:'1 Item',   status:'Completed', courier:'—',otype:'Pickup',       comp:'28 Jun, 06:02 PM',stype:'asap'},
-        {id:'Z197931',cust:'Shakul Aggarwal',icons:'loc,phone',placed:'28 Jun, 05:54 PM',slot:'28 Jun',slotSub:'Within 60 min', amt:'₹3,917.00',items:'12 Items', status:'Completed', courier:'—',otype:'Delivery',     comp:'28 Jun, 06:39 PM',stype:'asap'},
-        {id:'Z197926',cust:'Neha Diwan',   icons:'loc,phone',placed:'28 Jun, 05:48 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹1,683.00',items:'8 Items',  status:'Completed', courier:'—',otype:'Self Checkout',comp:'28 Jun, 06:10 PM',stype:'hyperlocal'},
-        {id:'Z197912',cust:'Ravi Kapoor',  icons:'loc,phone',placed:'28 Jun, 05:32 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹4,280.00',items:'22 Items', status:'Cancelled', courier:'—',otype:'Delivery',     comp:'—',          stype:'hyperlocal'},
-        {id:'Z197899',cust:'Meera Sharma', icons:'loc,phone',placed:'28 Jun, 05:20 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹840.00', items:'5 Items',  status:'Returned',  courier:'ShipRocket ₹45',otype:'Offline',comp:'28 Jun, 07:12 PM',stype:'hyperlocal'},
-        {id:'Z197875',cust:'Arjun Nair',   icons:'loc,phone',placed:'28 Jun, 05:05 PM',slot:'29 Jun',slotSub:'10:00 – 12:00 PM', amt:'₹1,150.00',items:'7 Items',  status:'Draft',     courier:'—',otype:'Pickup',       comp:'—',          stype:'ndd'},
-        {id:'Z197861',cust:'Kavya Reddy',  icons:'loc,phone',placed:'28 Jun, 04:52 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹2,310.00',items:'11 Items', status:'Completed', courier:'—',otype:'Delivery',     comp:'28 Jun, 06:55 PM',stype:'hyperlocal'},
-        {id:'Z197848',cust:'Deepak Verma', icons:'err,phone',placed:'28 Jun, 04:38 PM',slot:'29 Jun',slotSub:'2:00 – 4:00 PM',   amt:'₹780.00', items:'4 Items',  status:'Cancelled', courier:'—',otype:'Self Checkout',comp:'—',          stype:'ndd'},
-        {id:'Z197834',cust:'Sunita Patel', icons:'loc,phone',placed:'28 Jun, 04:21 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹3,480.00',items:'18 Items', status:'Completed', courier:'—',otype:'Delivery',     comp:'28 Jun, 06:48 PM',stype:'hyperlocal'},
-        {id:'Z197820',cust:'Mohit Jain',   icons:'loc,phone',placed:'28 Jun, 04:10 PM',slot:'28 Jun',slotSub:'4:00 – 6:00 PM',   amt:'₹560.00', items:'3 Items',  status:'Completed', courier:'—',otype:'Offline',      comp:'28 Jun, 06:30 PM',stype:'hyperlocal'},
-        {id:'Z197806',cust:'Anita Gupta',  icons:'loc,phone',placed:'28 Jun, 03:58 PM',slot:'28 Jun',slotSub:'4:00 – 6:00 PM',   amt:'₹1,940.00',items:'9 Items',  status:'Completed', courier:'—',otype:'Pickup',       comp:'28 Jun, 06:22 PM',stype:'hyperlocal'},
-        {id:'Z197791',cust:'Rohit Malhotra',icons:'loc,phone',placed:'28 Jun, 03:44 PM',slot:'29 Jun',slotSub:'4:00 – 6:00 PM',  amt:'₹4,750.00',items:'25 Items', status:'Completed', courier:'ShipRocket ₹60',otype:'Delivery',comp:'28 Jun, 05:50 PM',stype:'ndd'},
-        {id:'Z197778',cust:'Pooja Singh',  icons:'loc,phone',placed:'28 Jun, 03:30 PM',slot:'28 Jun',slotSub:'4:00 – 6:00 PM',   amt:'₹2,080.00',items:'13 Items', status:'Returned',  courier:'—',otype:'Self Checkout',comp:'28 Jun, 05:42 PM',stype:'hyperlocal'},
-        {id:'Z197762',cust:'Vikram Choudhary',icons:'loc,phone',placed:'28 Jun, 03:15 PM',slot:'01 Jul',slotSub:'11:00 AM – 1:00 PM',amt:'₹640.00',items:'4 Items',status:'Completed',courier:'—',otype:'Delivery',comp:'28 Jun, 05:28 PM',stype:'scheduled'},
+        {id:'Z198011',store:"SODHI'S | SEC-23 | GURUGRAM",   cust:'SANJAY',       icons:'err,phone',placed:'28 Jun, 06:50 PM',slot:'28 Jun',slotSub:'Within 60 min',     amt:'₹2,400.00',items:'1 Item',   status:'Packed',    otype:'Delivery',     comp:'—',       stype:'asap'},
+        {id:'Z197996',store:"SODHI'S | SEC-57 | GURUGRAM",   cust:'Priyanka',     icons:'loc,phone',placed:'28 Jun, 06:36 PM',slot:'28 Jun',slotSub:'Within 60 min',     amt:'₹1,620.00',items:'16 Items', status:'Picking',   otype:'Pickup',       comp:'—',       stype:'asap'},
+        {id:'Z197982',store:"SODHI'S | SEC-23 | GURUGRAM",   cust:'GAURAV',       icons:'loc,phone',placed:'28 Jun, 06:29 PM',slot:'28 Jun',slotSub:'Within 60 min',     amt:'₹3,107.75',items:'7 Items',  status:'Pending',   otype:'Delivery',     comp:'—',       stype:'asap'},
+        {id:'Z197973',store:"SODHI'S | SEC-82 | GURUGRAM",   cust:'Parmod Kumar', icons:'loc,phone',placed:'28 Jun, 06:14 PM',slot:'28 Jun',slotSub:'8:00 – 9:00 PM',   amt:'₹512.50',  items:'1 Item',   status:'Dispatched',otype:'Delivery',     comp:'28 min',  stype:'hyperlocal'},
+        {id:'Z197965',store:"SODHI'S | SEC-82 | GURUGRAM",   cust:'Pranav Puri',  icons:'loc,phone',placed:'28 Jun, 06:03 PM',slot:'28 Jun',slotSub:'8:00 – 9:00 PM',   amt:'₹490.00',  items:'2 Items',  status:'Packing',   otype:'Delivery',     comp:'—',       stype:'hyperlocal'},
+        {id:'Z197952',store:"SODHI'S | PUNJABI BAGH",        cust:'Amol Rawlley', icons:'phone',    placed:'28 Jun, 06:00 PM',slot:'28 Jun',slotSub:'Within 60 min',     amt:'₹370.00',  items:'1 Item',   status:'Delivered', otype:'Delivery',     comp:'34 min',  stype:'asap'},
+        {id:'Z197944',store:"SODHI'S | SEC-57 | GURUGRAM",   cust:'Sachin Kumar', icons:'loc,phone',placed:'28 Jun, 05:57 PM',slot:'28 Jun',slotSub:'Within 60 min',     amt:'₹820.00',  items:'3 Items',  status:'Delivered', otype:'Delivery',     comp:'41 min',  stype:'asap'},
+        {id:'Z197931',store:"SODHI'S | SEC-23 | GURUGRAM",   cust:'Shakul Aggarwal',icons:'loc,phone',placed:'28 Jun, 05:54 PM',slot:'28 Jun',slotSub:'Within 60 min', amt:'₹640.50',  items:'2 Items',  status:'Delivered', otype:'Pickup',       comp:'22 min',  stype:'asap'},
+        {id:'Z197926',store:"SODHI'S | SEC-82 | GURUGRAM",   cust:'Neha Diwan',   icons:'loc,phone',placed:'28 Jun, 05:48 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹1,280.00',items:'4 Items',  status:'Picking',   otype:'Delivery',     comp:'—',       stype:'ndd'},
+        {id:'Z197912',store:"SODHI'S | PUNJABI BAGH",        cust:'Ravi Kapoor',  icons:'loc,phone',placed:'28 Jun, 05:32 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹455.00',  items:'2 Items',  status:'Cancelled', otype:'Delivery',     comp:'—',       stype:'ndd'},
+        {id:'Z197899',store:"SODHI'S | SEC-57 | GURUGRAM",   cust:'Meera Sharma', icons:'loc,phone',placed:'28 Jun, 05:20 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹980.25',  items:'3 Items',  status:'Dispatched',otype:'Delivery',     comp:'29 min',  stype:'ndd'},
+        {id:'Z197875',store:"SODHI'S | SEC-23 | GURUGRAM",   cust:'Arjun Nair',   icons:'loc,phone',placed:'28 Jun, 05:05 PM',slot:'29 Jun',slotSub:'10:00 – 12:00 PM', amt:'₹375.00',  items:'1 Item',   status:'Pending',   otype:'Delivery',     comp:'—',       stype:'ndd'},
+        {id:'Z197861',store:"SODHI'S | SEC-82 | GURUGRAM",   cust:'Kavya Reddy',  icons:'loc,phone',placed:'28 Jun, 04:52 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹1,650.00',items:'6 Items',  status:'Delivered', otype:'Pickup',       comp:'18 min',  stype:'ndd'},
+        {id:'Z197848',store:"SODHI'S | PUNJABI BAGH",        cust:'Deepak Verma', icons:'err,phone',placed:'28 Jun, 04:38 PM',slot:'29 Jun',slotSub:'2:00 – 4:00 PM',   amt:'₹520.50',  items:'2 Items',  status:'Pending',   otype:'Delivery',     comp:'—',       stype:'ndd'},
+        {id:'Z197834',store:"SODHI'S | SEC-57 | GURUGRAM",   cust:'Sunita Patel', icons:'loc,phone',placed:'28 Jun, 04:21 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹2,100.75',items:'5 Items',  status:'Delivered', otype:'Delivery',     comp:'31 min',  stype:'ndd'},
+        {id:'Z197820',store:"SODHI'S | SEC-23 | GURUGRAM",   cust:'Mohit Jain',   icons:'loc,phone',placed:'28 Jun, 04:10 PM',slot:'28 Jun',slotSub:'4:00 – 6:00 PM',   amt:'₹749.03',  items:'9 Items',  status:'Delivered', otype:'Delivery',     comp:'26 min',  stype:'ndd'},
+        {id:'Z197806',store:"SODHI'S | SEC-82 | GURUGRAM",   cust:'Anita Gupta',  icons:'loc,phone',placed:'28 Jun, 03:58 PM',slot:'28 Jun',slotSub:'4:00 – 6:00 PM',   amt:'₹350.00',  items:'1 Item',   status:'Delivered', otype:'Offline',      comp:'—',       stype:'ndd'},
+        {id:'Z197791',store:"SODHI'S | PUNJABI BAGH",        cust:'Rohit Malhotra',icons:'loc,phone',placed:'28 Jun, 03:44 PM',slot:'29 Jun',slotSub:'4:00 – 6:00 PM',  amt:'₹1,120.00',items:'4 Items',  status:'Pending',   otype:'Delivery',     comp:'—',       stype:'ndd'},
+        {id:'Z197778',store:"SODHI'S | SEC-57 | GURUGRAM",   cust:'Pooja Singh',  icons:'loc,phone',placed:'28 Jun, 03:30 PM',slot:'28 Jun',slotSub:'4:00 – 6:00 PM',   amt:'₹474.75',  items:'2 Items',  status:'Delivered', otype:'Pickup',       comp:'19 min',  stype:'ndd'},
+        {id:'Z197762',store:"SODHI'S | SEC-23 | GURUGRAM",   cust:'Vikram Choudhary',icons:'loc,phone',placed:'28 Jun, 03:15 PM',slot:'01 Jul',slotSub:'11:00 AM – 1:00 PM',amt:'₹299.00',items:'1 Item',status:'Pending',otype:'Delivery',comp:'—',stype:'ndd'},
       ];
-      const thS='text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4;white-space:nowrap';
+      const thS='text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;border-bottom:1px solid #f0ece4;white-space:nowrap';
       const tdS='padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle';
       const iconHtml=ic=>ic.split(',').map(x=>{
         if(x==='err')  return '<i class="ti ti-map-pin-filled" title="Address issue" style="font-size:14px;color:#ef4444;cursor:pointer"></i>';
@@ -2773,46 +2773,46 @@ function renderFilled(scroll){
         if(x==='phone')return '<i class="ti ti-phone-call" style="font-size:14px;color:#0e7490;cursor:pointer"></i>';
         return '';
       }).join(' ');
-      const slotMeta={asap:{ic:'ti-bolt',c:'#ef4444'},hyperlocal:{ic:'ti-clock',c:'#d97706'},ndd:{ic:'ti-truck-delivery',c:'#2563eb'},scheduled:{ic:'ti-calendar-event',c:'#7c3aed'}};
-      const slotBadge=o=>{const m=slotMeta[o.stype]||{ic:'ti-clock',c:'#9ca3af'};const blink=o.stype==='asap'?'animation:slotBlink 1s ease-in-out infinite':'';return `<div style="display:flex;align-items:flex-start;gap:5px"><i class="ti ${m.ic}" style="font-size:13px;color:${m.c};flex-shrink:0;margin-top:1px;${blink}"></i><div><div style="font-size:12px;color:#374151">${o.slot}</div><div style="font-size:10.5px;color:#9ca3af">${o.slotSub}</div></div></div>`;};
-      const csDots=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
-      const csPendingCell=`<div style="display:flex;align-items:center;gap:5px">
-        <button title="Accept order" style="display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11.5px;font-weight:600;background:#dcfce7;color:#15803d;border:none;border-radius:5px;cursor:pointer"><i class="ti ti-check" style="font-size:12px"></i>Accept</button>
-        <button title="Reject order" style="display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11.5px;font-weight:600;background:#fee2e2;color:#b91c1c;border:none;border-radius:5px;cursor:pointer"><i class="ti ti-x" style="font-size:12px"></i>Reject</button>
-      </div>`;
-      const csMoveBtn=`<button title="Transfer to another store" style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'"><i class="ti ti-arrows-transfer-down" style="font-size:14px;color:#15803d"></i></button>`;
-      const orderActions=o=>{
-        if(o.status==='Picking'||o.status==='Packing'||o.status==='Packed') return `<div style="display:flex;align-items:center;gap:6px">${csMoveBtn}${csDots}</div>`;
-        return csDots;
-      };
+      const slotMeta={asap:{ic:'ti-bolt',c:'#ef4444'},hyperlocal:{ic:'ti-clock',c:'#d97706'},ndd:{ic:'ti-truck-delivery',c:'#2563eb'}};
+      const slotBadge=o=>{const m=slotMeta[o.stype]||{ic:'ti-clock',c:'#9ca3af'};return `<div style="display:flex;align-items:center;gap:4px"><div style="font-size:12px;color:#374151">${o.slot}</div><div style="font-size:10px;color:#9ca3af">${o.slotSub}</div></div>`;};
+      const dots=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      // CS agents see completion time only — no Accept/Reject, no Move Store
       const csCompCell=o=>{
-        if(o.status==='Pending'||o.status==='Draft') return csPendingCell;
+        if(o.status==='Pending'||o.status==='Draft')
+          return `<span style="font-size:11px;padding:2px 8px;background:#fff7ed;color:#ea580c;border-radius:20px;font-weight:700">Awaiting ops</span>`;
         return `<span style="font-size:12px;color:${o.comp==='—'?'#9ca3af':'#374151'}">${o.comp}</span>`;
       };
       const tbody=ORDERS.map(o=>{
         const [sc,sb]=statusMap[o.status]||['#9ca3af','#f3f4f6'];
         return `<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
-          <td style="${tdS}"><div style="display:flex;align-items:center;gap:8px">${otypeIc(o.otype)}<div><div style="font-size:12.5px;font-weight:600;color:#111827">${o.id}</div><div style="font-size:11px;color:#9ca3af">${o.items}</div></div></div></td>
-          <td style="${tdS}"><div style="font-size:12.5px;font-weight:500;color:#111827">${o.cust}</div><div style="display:flex;gap:4px;margin-top:3px">${iconHtml(o.icons)}</div></td>
+          <td style="${tdS}">
+            <div style="display:flex;align-items:center;gap:8px">${otypeIc(o.otype)}
+              <div>
+                <div style="font-size:12.5px;font-weight:700;color:#111827">${o.id}</div>
+                <div style="font-size:10.5px;color:#9ca3af;margin-top:1px">${o.store}</div>
+              </div>
+            </div>
+          </td>
+          <td style="${tdS}"><div style="font-size:12.5px;font-weight:500;color:#111827">${o.cust}</div><div style="display:flex;gap:6px;margin-top:3px">${iconHtml(o.icons)}</div></td>
           <td style="${tdS}"><div style="font-size:12px;color:#374151">${o.placed}</div></td>
           <td style="${tdS}">${slotBadge(o)}</td>
-          <td style="${tdS}"><div style="font-size:13px;font-weight:600;color:#111827">${o.amt}</div></td>
-          <td style="${tdS}"><span style="display:inline-flex;align-items:center;padding:3px 9px;border-radius:5px;font-size:11.5px;font-weight:600;background:${sb};color:${sc}">${o.status}</span></td>
+          <td style="${tdS}"><div style="font-size:13px;font-weight:600;color:#111827">${o.amt}</div><div style="font-size:10.5px;color:#9ca3af">${o.items}</div></td>
+          <td style="${tdS}"><span style="display:inline-flex;align-items:center;padding:3px 9px;border-radius:5px;font-size:11.5px;font-weight:700;background:${sb};color:${sc}">${o.status}</span></td>
           <td style="${tdS}">${csCompCell(o)}</td>
-          <td style="${tdS}">${orderActions(o)}</td>
+          <td style="${tdS}">${dots}</td>
         </tr>`;
       }).join('');
-      const thead=`<thead><tr><th style="${thS}">Order No.</th><th style="${thS}">Customer</th><th style="${thS}">Placed Time</th><th style="${thS}">Order Slot</th><th style="${thS}">Amount</th><th style="${thS}">Status</th><th style="${thS}">Completion</th><th style="${thS}">Actions</th></tr></thead>`;
-      const tabsHtml=['All Orders','Pending','In Progress','Completed','Cancelled','Returned'].map((t,i)=>{const cnt=[142,12,84,38,7,1][i];const act=i===0;return `<div style="padding:10px 16px;font-size:12.5px;font-weight:${act?700:500};color:${act?'#16a34a':'#6b7280'};cursor:pointer;border-bottom:${act?'2px solid #16a34a':'2px solid transparent'};margin-bottom:-2px;white-space:nowrap;display:flex;align-items:center;gap:5px">${t}<span style="font-size:10px;background:${act?'#dcfce7':'#f3f4f6'};color:${act?'#15803d':'#9ca3af'};padding:1px 6px;border-radius:10px">${cnt}</span></div>`;}).join('');
+      const thead=`<thead><tr><th style="${thS}">Order No.</th><th style="${thS}">Customer</th><th style="${thS}">Placed Time</th><th style="${thS}">Order Slot</th><th style="${thS}">Amount</th><th style="${thS}">Status</th><th style="${thS}">Completion</th><th style="${thS}"></th></tr></thead>`;
+      const tabsHtml=['All Orders','Pending','In Progress','Completed','Cancelled','Returned'].map((t,i)=>{const cnt=[142,12,84,38,7,1][i];const act=i===0;return `<div style="padding:10px 16px;font-size:12.5px;font-weight:${act?700:500};color:${act?'#111827':'#6b7280'};border-bottom:${act?'2px solid #16a34a':'2px solid transparent'};cursor:pointer;white-space:nowrap">${t}<span style="margin-left:6px;font-size:10.5px;padding:1px 7px;border-radius:20px;background:${act?'#dcfce7':'#f3f4f6'};color:${act?'#15803d':'#9ca3af'};font-weight:700">${cnt}</span></div>`;}).join('');
       scroll.innerHTML=`<div style="padding:8px 20px 24px">
         <div style="border-radius:10px;overflow:visible;border:1px solid #ede8e0;box-shadow:0 1px 3px rgba(0,0,0,.04)">
           <div style="display:flex;border-bottom:2px solid #ede8e0;background:#fff;border-radius:10px 10px 0 0;overflow-x:auto">${tabsHtml}</div>
           <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12.5px;background:#fff">${thead}<tbody>${tbody}</tbody></table></div>
           <div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;border-radius:0 0 10px 10px;display:flex;align-items:center;justify-content:space-between">
             <span style="font-size:12px;color:#9ca3af">Showing 20 of 142 orders</span>
-            <div style="display:flex;gap:4px">${['‹','1','2','3','…','8','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div>
+            <div style="display:flex;gap:4px">${['‹','1','2','3','…','8','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;font-size:12px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#374151'};cursor:pointer">${p}</button>`).join('')}</div>
           </div>
-        </div></div>`;
+        </div></div>`
     },
     customers: ()=>{
       const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
