@@ -1174,7 +1174,7 @@ function renderTopbar(){
 function renderHeaderSearch(){
   const bar=document.getElementById('hdrSearchBar');
   if(!bar) return;
-  const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount','abandoned','rack','capacity','slotblock','web-blog'];
+  const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount','abandoned','rack','capacity','slotblock','web-blog','web-sched'];
   if(noSearch.includes(activePage)){bar.style.display='none';bar.innerHTML='';return;}
   if(!hasData){bar.style.display='none';bar.innerHTML='';return;}
   const ps=window._pageSearch||{};
@@ -3758,6 +3758,87 @@ function renderFilled(scroll){
           <tbody>${rows}</tbody>
         </table>
         <div style="padding:12px 16px;border-top:1px solid #f5f2ee"><span style="font-size:12px;color:#9ca3af">Showing 1 – 10 of 10</span></div>
+      </div>`;
+      scroll.innerHTML=pw+tableHtml+'</div>';
+    },
+    'web-sched': ()=>{
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const statusMap={
+        'Active':    ['#15803d','#dcfce7'],
+        'Scheduled': ['#1d4ed8','#dbeafe'],
+        'Completed': ['#6b7280','#f3f4f6'],
+        'Draft':     ['#ca8a04','#fef9c3'],
+      };
+      const SCHEDS=[
+        {id:'SCH-001',name:'Eid Al-Adha Sale Homepage',    page:'Home',     event:'Eid Al-Adha Sale',    start:'04 Jun 2026, 12:00 AM', end:'07 Jun 2026, 11:59 PM', status:'Completed', store:'All Stores'},
+        {id:'SCH-002',name:'Weekend Freshness — Banner',   page:'Home',     event:'Weekend Deal',         start:'27 Jun 2026, 06:00 AM', end:'29 Jun 2026, 11:59 PM', status:'Completed', store:'All Stores'},
+        {id:'SCH-003',name:'Summer Sale Home — Hero',      page:'Home',     event:'Summer Sale 2026',     start:'01 Jul 2026, 12:00 AM', end:'31 Jul 2026, 11:59 PM', status:'Scheduled', store:'All Stores'},
+        {id:'SCH-004',name:'AMUL Featured Brand Page',     page:'Brand',    event:'Brand Spotlight',      start:'01 Jul 2026, 09:00 AM', end:'07 Jul 2026, 09:00 AM', status:'Scheduled', store:'Sodhis Supermarket'},
+        {id:'SCH-005',name:'Beverages Category Sale',      page:'Category', event:'Summer Sale 2026',     start:'01 Jul 2026, 12:00 AM', end:'15 Jul 2026, 11:59 PM', status:'Scheduled', store:'All Stores'},
+        {id:'SCH-006',name:'Organic Products Collection',  page:'Category', event:'Health Week',          start:'07 Jul 2026, 10:00 AM', end:'13 Jul 2026, 10:00 AM', status:'Scheduled', store:'All Stores'},
+        {id:'SCH-007',name:'CARE 4 HOMES Flash Deal',      page:'Brand',    event:'Flash Sale',           start:'05 Jul 2026, 12:00 PM', end:'05 Jul 2026, 06:00 PM', status:'Scheduled', store:'All Stores'},
+        {id:'SCH-008',name:'Back to School — Home Banner', page:'Home',     event:'Back to School',       start:'15 Jul 2026, 12:00 AM', end:'31 Jul 2026, 11:59 PM', status:'Draft',     store:'All Stores'},
+        {id:'SCH-009',name:'Snacks & Beverages Mega Sale', page:'Category', event:'Summer Sale 2026',     start:'20 Jul 2026, 12:00 AM', end:'27 Jul 2026, 11:59 PM', status:'Draft',     store:'All Stores'},
+        {id:'SCH-010',name:'NESTLE Brand Week',            page:'Brand',    event:'Brand Spotlight',      start:'21 Jul 2026, 12:00 AM', end:'27 Jul 2026, 11:59 PM', status:'Draft',     store:'All Stores'},
+        {id:'SCH-011',name:'Independence Day Homepage',    page:'Home',     event:'Independence Day Sale',start:'13 Aug 2026, 12:00 AM', end:'15 Aug 2026, 11:59 PM', status:'Draft',     store:'All Stores'},
+        {id:'SCH-012',name:'Diwali Sale — Hero Landing',  page:'Home',     event:'Diwali Sale 2026',     start:'20 Oct 2026, 12:00 AM', end:'30 Oct 2026, 11:59 PM', status:'Draft',     store:'All Stores'},
+        {id:'SCH-013',name:'Diwali Gifting Category',     page:'Category', event:'Diwali Sale 2026',     start:'20 Oct 2026, 12:00 AM', end:'30 Oct 2026, 11:59 PM', status:'Draft',     store:'All Stores'},
+        {id:'SCH-014',name:'Diwali HALDIRAMS Spotlight',  page:'Brand',    event:'Diwali Sale 2026',     start:'22 Oct 2026, 12:00 AM', end:'28 Oct 2026, 11:59 PM', status:'Draft',     store:'All Stores'},
+      ];
+      const pageIc={Home:'ti-home',Brand:'ti-award',Category:'ti-layout-grid',Product:'ti-package',Collection:'ti-star'};
+      const pageColor={Home:'#7c3aed',Brand:'#0891b2',Category:'#b45309',Product:'#15803d',Collection:'#ea580c'};
+      const pageBg={Home:'#f5f3ff',Brand:'#ecfeff',Category:'#fff7ed',Product:'#dcfce7',Collection:'#fff7ed'};
+      const thS='text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4;white-space:nowrap';
+      const tdS='padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle';
+      const rows=SCHEDS.map(s=>{
+        const [sc,sb]=statusMap[s.status];
+        const ic=pageIc[s.page]||'ti-file';
+        const pc=pageColor[s.page]||'#374151';
+        const pbg=pageBg[s.page]||'#f3f4f6';
+        return `<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+          <td style="${tdS}"><span style="font-size:11.5px;color:#9ca3af;font-family:monospace">${s.id}</span></td>
+          <td style="${tdS}">
+            <div style="font-size:13px;font-weight:600;color:#111827">${s.name}</div>
+            <div style="font-size:11px;color:#9ca3af;margin-top:2px">${s.event} · ${s.store}</div>
+          </td>
+          <td style="${tdS}">
+            <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;background:${pbg};color:${pc};font-size:11.5px;font-weight:600">
+              <i class="ti ${ic}" style="font-size:11px"></i>${s.page}
+            </span>
+          </td>
+          <td style="${tdS}">
+            <div style="font-size:12px;color:#374151">${s.start}</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:3px">
+              <i class="ti ti-arrow-right" style="font-size:11px;color:#9ca3af"></i>
+              <span style="font-size:12px;color:#9ca3af">${s.end}</span>
+            </div>
+          </td>
+          <td style="${tdS}"><span style="display:inline-flex;padding:3px 9px;border-radius:5px;background:${sb};color:${sc};font-size:11.5px;font-weight:700">${s.status}</span></td>
+          <td style="${tdS}">${act}</td>
+        </tr>`;
+      }).join('');
+
+      const tabs=['All','Active','Scheduled','Draft','Completed'].map((t,i)=>{
+        const cnts=[14,2,7,4,2];
+        const active=i===0;
+        return `<div style="padding:10px 16px;font-size:12.5px;font-weight:${active?700:500};color:${active?'#111827':'#6b7280'};border-bottom:${active?'2px solid #16a34a':'2px solid transparent'};cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px">${t}<span style="font-size:10.5px;padding:1px 7px;border-radius:20px;background:${active?'#dcfce7':'#f3f4f6'};color:${active?'#15803d':'#9ca3af'};font-weight:700">${cnts[i]}</span></div>`;
+      }).join('');
+
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 14 of 14 schedules</span></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:flex;border-bottom:1px solid #f0ece4;overflow-x:auto">${tabs}</div>
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr>
+            <th style="${thS}">ID</th>
+            <th style="${thS}">Schedule Name</th>
+            <th style="${thS}">Page Type</th>
+            <th style="${thS}">Duration</th>
+            <th style="${thS}">Status</th>
+            <th style="${thS}"></th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+        ${pgn}
       </div>`;
       scroll.innerHTML=pw+tableHtml+'</div>';
     },
