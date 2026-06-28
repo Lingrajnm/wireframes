@@ -1000,7 +1000,7 @@ const PAGE_CTX={
   checking:     {btns:[{icon:true,ic:'ti-search'}],                                                               showStore:true,  showLang:false},
   rack:         {btns:[{icon:true,ic:'ti-search'},{l:'Add Rack',ic:'ti-plus',p:true}],                            showStore:true,  showLang:false},
   slotblock:    {btns:[{l:'Block Slot',ic:'ti-calendar-off',p:true}],                                             showStore:true,  showLang:false},
-  capacity:     {btns:[{l:'Configure Capacity',ic:'ti-settings-2',p:true}],                                       showStore:true,  showLang:false},
+  capacity:     {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-calendar'},{l:'Today',p:false},{l:'+ Add Rule',ic:'ti-plus',p:true}], showStore:true, showLang:false},
   clickcollect: {btns:[{icon:true,ic:'ti-search'},{l:'New C&C Order',ic:'ti-plus',p:true}],                       showStore:true,  showLang:false},
 
   // ── Customer Support (ORG-LEVEL — customers span all stores) ──────
@@ -1151,88 +1151,14 @@ function renderHeaderSearch(){
   // Pages that never get a search bar regardless of hasData
   const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount'];
   if(noSearch.includes(activePage)){bar.style.display='none';bar.innerHTML='';return;}
-  // Contextual placeholders for every module
-  const searchPages={
-    // Orders
-    'orders':'Search by order no., customer name or phone…',
-    'cs-orders':'Search CS orders by order no. or customer…',
-    'abandoned':'Search abandoned carts by customer or product…',
-    // Operations
-    'picking':'Search picking queue by order no. or store…',
-    'packing':'Search packing queue by order no. or store…',
-    'checking':'Search checking queue by order no.…',
-    'rack':'Search rack locations by ID or zone…',
-    'slotblock':'Search slot blocks by date or store…',
-    'capacity':'Search capacity plans by store or date…',
-    'clickcollect':'Search click & collect configurations…',
-    // Customers
-    'customers':'Search by name, email or phone number…',
-    // Catalogue
-    'products':'Search by product name, SKU or barcode…',
-    'categories':'Search categories by name or parent…',
-    'brands':'Search brands by name…',
-    'tags':'Search tags by name…',
-    'variants':'Search product variants by name or attribute…',
-    'subs':'Search substitution groups by product…',
-    'inventory':'Search inventory by product name or SKU…',
-    'bulkupload':'Search bulk upload jobs by filename or date…',
-    'cat-dash':'Search catalogue dashboard…',
-    // Marketing
-    'coupons':'Search coupons by code or title…',
-    'offers':'Search offers by name or product…',
-    'campaigns':'Search campaigns by name or channel…',
-    'banners':'Search banners by name or placement…',
-    'segments':'Search customer segments by name…',
-    // Website
-    'web-layout':'Search layouts and themes…',
-    'web-nav':'Search navigation menus by title…',
-    'web-pages':'Search static pages by title or slug…',
-    'web-blog':'Search blog posts by title or tag…',
-    'web-sched':'Search scheduled pages by title or date…',
-    'web-ann':'Search announcements by title…',
-    // Logistics
-    'vehicles':'Search vehicles by ID or type…',
-    'vplanning':'Search vehicle plans by date or route…',
-    'trips':'Search trips by ID or delivery agent…',
-    'tripplan':'Search trip plans by date or area…',
-    'runners':'Search delivery agents by name or zone…',
-    'area':'Search delivery areas by pincode or name…',
-    'shipping':'Search couriers and shipping rules…',
-    // Reports & Logs
-    'analytics':'Search analytics by metric or date range…',
-    'reports':'Search reports by name or category…',
-    'actlogs':'Search activity logs by user or action…',
-    // HR
-    'employees':'Search staff by name, role or store…',
-    'designations':'Search designations by title…',
-    'attendance':'Search attendance by staff name or date…',
-    'leave':'Search leave requests by staff or date…',
-    'roles':'Search roles and permissions by name…',
-    // Settings
-    'stores-cfg':'Search stores by name or location…',
-    'orderconf':'Search order configuration settings…',
-    'slotsetup':'Search slot configurations by store…',
-    'payments':'Search payment methods and gateways…',
-    'comms':'Search communication templates by name…',
-    'mobile':'Search mobile app settings…',
-    'api':'Search API keys and webhooks…',
-    'ext':'Search extensions by name or category…',
-  };
-  const placeholder=searchPages[activePage]||'Search…';
   if(!hasData){bar.style.display='none';bar.innerHTML='';return;}
   const ps=window._pageSearch||{};
-  const showCols=activePage==='orders'&&ps.colPicker;
-  const showFilters=activePage==='orders'&&!!ps.advPanel;
+  const showCols=activePage==='orders'&&!!ps.colPicker;
+  const showFilters=(activePage==='orders'||activePage==='products'||activePage==='categories')&&!!ps.advPanel;
+  if(!showFilters&&!showCols){bar.style.display='none';bar.innerHTML='';return;}
   // Colours
   const btnS='padding:7px 14px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;font-family:inherit;flex-shrink:0';
   bar.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:8px 20px">
-    <div style="position:relative;flex:1">
-      <i class="ti ti-search" style="position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af;pointer-events:none"></i>
-      <input id="hdrSearchInp" placeholder="${placeholder}"
-        style="width:100%;box-sizing:border-box;padding:8px 12px 8px 34px;border:1.5px solid #e2d9ce;border-radius:8px;font-size:13px;outline:none;font-family:inherit;color:#374151;background:#fff;transition:border-color .2s,box-shadow .2s"
-        onfocus="this.style.borderColor='#16a34a';this.style.boxShadow='0 0 0 3px rgba(22,163,74,.12)'"
-        onblur="this.style.borderColor='#e2d9ce';this.style.boxShadow=''">
-    </div>
     ${showFilters?`<button id="hdrFiltersBtn" onclick="(function(b){var p=document.getElementById('hdrAdvPnl');var open=p.style.display!=='none';p.style.display=open?'none':'block';b.style.background=open?'#fff':'#f0fdf4';b.style.borderColor=open?'#e2d9ce':'#16a34a';b.style.color=open?'#374151':'#15803d';})(this)" style="${btnS}"><i class="ti ti-adjustments-horizontal" style="font-size:13px"></i>Filters</button>`:''}
     ${showCols?`<div style="position:relative">
       <button onclick="var p=document.getElementById('hdrColPnl');p.style.display=p.style.display==='none'?'block':'none'" style="${btnS}"><i class="ti ti-columns" style="font-size:13px;color:#6b7280"></i>Columns</button>
@@ -1244,7 +1170,7 @@ function renderHeaderSearch(){
       </div>
     </div>`:''}
   </div>
-  ${showFilters?ps.advPanel.replace('id="ordAdvPnl"','id="hdrAdvPnl"'):''}`;
+  ${showFilters?ps.advPanel.replace(/id="[^"]*Pnl"/,'id="hdrAdvPnl"'):''}`;
   bar.style.display='block';
 }
 
@@ -2398,6 +2324,21 @@ function renderFilled(scroll){
           </div>
         </div>`;
       };
+      const orderActions=o=>{
+        const dots=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+        if(o.status==='Pending'||o.status==='Draft'){
+          return `<div style="display:flex;align-items:center;gap:6px">
+            <button style="padding:4px 12px;font-size:11.5px;font-weight:600;background:#dcfce7;color:#15803d;border:none;border-radius:5px;cursor:pointer">Accept</button>
+            <button style="padding:4px 12px;font-size:11.5px;font-weight:600;background:#fee2e2;color:#b91c1c;border:none;border-radius:5px;cursor:pointer">Reject</button>
+            ${dots}</div>`;
+        }
+        if(o.status==='Picking'||o.status==='Packing'||o.status==='Packed'){
+          return `<div style="display:flex;align-items:center;gap:6px">
+            <button style="padding:4px 10px;font-size:11px;font-weight:600;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;border-radius:5px;cursor:pointer;white-space:nowrap"><i class="ti ti-building-store" style="font-size:11px"></i> Move store</button>
+            ${dots}</div>`;
+        }
+        return dots;
+      };
       const colPicker=`<div id="ocPickList">`+colDefs.map(c=>`
         <div class="ocPickRow" data-id="${c.id}" data-locked="${c.locked?'1':'0'}"
           draggable="${!c.locked}"
@@ -2441,7 +2382,7 @@ function renderFilled(scroll){
           <td class="oc-kmcode" style="${tdS};${hs('kmcode')}font-size:12px;color:#374151">${o.km}</td>
           <td class="oc-ordertype" style="${tdS};${hs('ordertype')}"><div style="display:inline-flex;align-items:center;gap:5px;padding:2px 8px 2px 6px;border-radius:6px;background:${(otypeMap[o.otype]||{bg:'#f3f4f6'}).bg}"><i class="ti ${(otypeMap[o.otype]||{ic:'ti-truck-delivery'}).ic}" style="font-size:12px;color:${(otypeMap[o.otype]||{c:'#9ca3af'}).c}"></i><span style="font-size:11.5px;color:${(otypeMap[o.otype]||{c:'#9ca3af'}).c};font-weight:600">${(otypeMap[o.otype]||{tip:o.otype}).tip}</span></div></td>
           <td class="oc-completion" style="${tdS};${hs('completion')}font-size:12px;color:${o.comp==='—'?'#9ca3af':'#374151'}">${o.comp}</td>
-          <td class="oc-actions" style="${tdS}"><i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i></td>
+          <td class="oc-actions" style="${tdS}">${orderActions(o)}</td>
         </tr>`;
       }).join('');
       const tabsHtml=['All Orders','Pending','In Progress','Completed','Cancelled','Returned'].map((t,i)=>{
@@ -2547,12 +2488,12 @@ function renderFilled(scroll){
       ];
       const rows=PRODS.map(([brand,name,category,enabled])=>[img,`<span style="font-size:12.5px"><strong>${brand}</strong> ${name}</span>`,cat(category),en(enabled),act]);
       const radioRow=['All','Enabled','Disabled'].map((s,i)=>`<label style="flex:0 0 180px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="prodStatus" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
-      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-        <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-bottom:18px">
+      const advPanel=`<div id="prodAdvPnl" style="display:none;padding:14px 16px;border-bottom:1px solid #f5f2ee;background:#fafaf8">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-bottom:14px">
           <span style="font-size:12.5px;color:#374151">Display Brand + Product Name in Search</span>
           <div style="width:36px;height:20px;border-radius:10px;background:#16a34a;cursor:pointer;position:relative;flex-shrink:0"><span style="position:absolute;right:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;display:block"></span></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 20px">
           <div><div style="${lblS}">NAME</div><input style="${inpS}" placeholder="Search by Name"></div>
           <div><div style="${lblS}">CATEGORY</div><div style="position:relative"><input style="${inpS}padding-right:36px" placeholder="Search by Category"><i class="ti ti-search" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af"></i></div></div>
           <div><div style="${lblS}">BRAND</div><div style="position:relative"><input style="${inpS}padding-right:36px" placeholder="Search by Brand"><i class="ti ti-search" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af"></i></div></div>
@@ -2560,20 +2501,19 @@ function renderFilled(scroll){
           <div><div style="${lblS}">BARCODE</div><input style="${inpS}" placeholder="Enter Barcode"></div>
           <div><div style="${lblS}">CLIENT ID</div><input style="${inpS}" placeholder="Search by Id"></div>
         </div>
-        <div style="margin-bottom:16px"><div style="${lblS}">STATUS</div><div style="display:flex">${radioRow}</div></div>
-        <div style="display:flex;gap:8px">
-          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
-          <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
+        <div style="margin-top:12px;margin-bottom:12px"><div style="${lblS}">STATUS</div><div style="display:flex">${radioRow}</div></div>
+        <div style="display:flex;gap:8px;padding-top:12px;border-top:1px solid #ede8e0">
+          <button style="padding:7px 20px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-search" style="font-size:13px"></i>Search</button>
+          <button style="padding:7px 16px;background:#fff;color:#6b7280;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;cursor:pointer">Clear All</button>
         </div>
       </div>`;
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 142 products</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','8','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
       const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Image','Name','Primary Category','Status','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
-      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
+      window._pageSearch={advPanel:advPanel};
+      scroll.innerHTML=pw+tableHtml+'</div>';
     },
     'cs-customers': ()=>{
-      // Customer Support > Customers — simple CS lookup (order no / email / phone / customer ID)
-      const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
-      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
+      // Customer Support > Customers — simple CS lookup
       const grayAv=`<div style="width:36px;height:36px;border-radius:50%;background:#e5e7eb;flex-shrink:0"></div>`;
       const namedAv=(ini,c)=>`<div style="width:36px;height:36px;border-radius:50%;background:${c};display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-size:12px;font-weight:700;color:#fff">${ini}</span></div>`;
       const CUSTS=[
@@ -2610,21 +2550,13 @@ function renderFilled(scroll){
           `<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`,
         ];
       });
-      // CS filter — simple lookup fields for support agents
-      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px">
-          <div><div style="${lblS}">ORDER NUMBER</div><input style="${inpS}" placeholder="Search by order number"></div>
-          <div><div style="${lblS}">CUSTOMER EMAIL</div><input style="${inpS}" placeholder="Search by email"></div>
-          <div><div style="${lblS}">CUSTOMER PHONE</div><div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff"><span style="padding:0 10px;font-size:16px;flex-shrink:0">🇮🇳</span><input style="border:none;outline:none;padding:9px 12px 9px 4px;font-size:12.5px;font-family:inherit;width:100%;color:#374151" placeholder="Search by phone"></div></div>
-        </div>
-        <div style="display:flex;gap:8px">
-          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
-          <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
-        </div>
+      const searchBar=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:12px 16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04);display:flex;align-items:center;gap:10px">
+        <i class="ti ti-search" style="font-size:16px;color:#9ca3af;flex-shrink:0"></i>
+        <input style="flex:1;border:none;outline:none;font-size:13px;font-family:inherit;color:#374151;background:transparent" placeholder="Search by name, email, phone or customer ID…">
       </div>`;
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 15341 – 15360 of 15,355 customers</span><div style="display:flex;gap:4px">${['‹','1','…','767','768','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===4?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===4?'#16a34a':'#fff'};color:${i===4?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
       const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Image','Name','Contact','Join Date','Status','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
-      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
+      scroll.innerHTML=pw+searchBar+tableHtml+'</div>';
     },
     'cs-orders': ()=>{
       // Customer Support > Orders — same order data as Ops but NO Live Order Pipeline
@@ -2668,6 +2600,21 @@ function renderFilled(scroll){
       }).join(' ');
       const slotMeta={asap:{ic:'ti-bolt',c:'#ef4444'},hyperlocal:{ic:'ti-clock',c:'#d97706'},ndd:{ic:'ti-truck-delivery',c:'#2563eb'},scheduled:{ic:'ti-calendar-event',c:'#7c3aed'}};
       const slotBadge=o=>{const m=slotMeta[o.stype]||{ic:'ti-clock',c:'#9ca3af'};const blink=o.stype==='asap'?'animation:slotBlink 1s ease-in-out infinite':'';return `<div style="display:flex;align-items:flex-start;gap:5px"><i class="ti ${m.ic}" style="font-size:13px;color:${m.c};flex-shrink:0;margin-top:1px;${blink}"></i><div><div style="font-size:12px;color:#374151">${o.slot}</div><div style="font-size:10.5px;color:#9ca3af">${o.slotSub}</div></div></div>`;};
+      const orderActions=o=>{
+        const dots=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+        if(o.status==='Pending'||o.status==='Draft'){
+          return `<div style="display:flex;align-items:center;gap:6px">
+            <button style="padding:4px 12px;font-size:11.5px;font-weight:600;background:#dcfce7;color:#15803d;border:none;border-radius:5px;cursor:pointer">Accept</button>
+            <button style="padding:4px 12px;font-size:11.5px;font-weight:600;background:#fee2e2;color:#b91c1c;border:none;border-radius:5px;cursor:pointer">Reject</button>
+            ${dots}</div>`;
+        }
+        if(o.status==='Picking'||o.status==='Packing'||o.status==='Packed'){
+          return `<div style="display:flex;align-items:center;gap:6px">
+            <button style="padding:4px 10px;font-size:11px;font-weight:600;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;border-radius:5px;cursor:pointer;white-space:nowrap"><i class="ti ti-building-store" style="font-size:11px"></i> Move store</button>
+            ${dots}</div>`;
+        }
+        return dots;
+      };
       const tbody=ORDERS.map(o=>{
         const [sc,sb]=statusMap[o.status]||['#9ca3af','#f3f4f6'];
         return `<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
@@ -2678,23 +2625,12 @@ function renderFilled(scroll){
           <td style="${tdS}"><div style="font-size:13px;font-weight:600;color:#111827">${o.amt}</div></td>
           <td style="${tdS}"><span style="display:inline-flex;align-items:center;padding:3px 9px;border-radius:5px;font-size:11.5px;font-weight:600;background:${sb};color:${sc}">${o.status}</span></td>
           <td style="${tdS}"><div style="font-size:12px;color:${o.comp==='—'?'#9ca3af':'#374151'}">${o.comp}</div></td>
-          <td style="${tdS}"><i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i></td>
+          <td style="${tdS}">${orderActions(o)}</td>
         </tr>`;
       }).join('');
       const thead=`<thead><tr><th style="${thS}">Order No.</th><th style="${thS}">Customer</th><th style="${thS}">Placed Time</th><th style="${thS}">Order Slot</th><th style="${thS}">Amount</th><th style="${thS}">Status</th><th style="${thS}">Completion</th><th style="${thS}">Actions</th></tr></thead>`;
       const tabsHtml=['All Orders','Pending','In Progress','Completed','Cancelled','Returned'].map((t,i)=>{const cnt=[142,12,84,38,7,1][i];const act=i===0;return `<div style="padding:10px 16px;font-size:12.5px;font-weight:${act?700:500};color:${act?'#16a34a':'#6b7280'};cursor:pointer;border-bottom:${act?'2px solid #16a34a':'2px solid transparent'};margin-bottom:-2px;white-space:nowrap;display:flex;align-items:center;gap:5px">${t}<span style="font-size:10px;background:${act?'#dcfce7':'#f3f4f6'};color:${act?'#15803d':'#9ca3af'};padding:1px 6px;border-radius:10px">${cnt}</span></div>`;}).join('');
-      // CS filter — lookup by order no / email / phone
-      const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
-      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
-      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;align-items:end">
-          <div><div style="${lblS}">ORDER NUMBER</div><input style="${inpS}" placeholder="e.g. Z198011"></div>
-          <div><div style="${lblS}">CUSTOMER EMAIL</div><input style="${inpS}" placeholder="Search by email"></div>
-          <div><div style="${lblS}">CUSTOMER PHONE</div><input style="${inpS}" placeholder="Search by phone"></div>
-          <div style="display:flex;gap:8px;padding-bottom:1px"><button style="padding:8px 20px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button><button style="padding:8px 16px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear</button></div>
-        </div>
-      </div>`;
-      scroll.innerHTML=`<div style="padding:8px 20px 24px">${filterPanel}
+      scroll.innerHTML=`<div style="padding:8px 20px 24px">
         <div style="border-radius:10px;overflow:visible;border:1px solid #ede8e0;box-shadow:0 1px 3px rgba(0,0,0,.04)">
           <div style="display:flex;border-bottom:2px solid #ede8e0;background:#fff;border-radius:10px 10px 0 0;overflow-x:auto">${tabsHtml}</div>
           <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12.5px;background:#fff">${thead}<tbody>${tbody}</tbody></table></div>
@@ -2829,7 +2765,7 @@ function renderFilled(scroll){
         [570,'Onam Special','Onam Festival Offers – Grab Them Now!','CustomersMappedToTag','Completed','05 Sep 2025 08:00 AM','Sep 05, 2025'],
         [541,'Independence Day','Celebrate 78th Independence Day with Savings','AllCustomers','Completed','15 Aug 2025 07:00 AM','Aug 15, 2025'],
       ];
-      const campStatus=s=>s==='Running'?badge('Running','#15803d','#dcfce7'):badge('Completed','#6b7280','#f3f4f6');
+      const campStatus=s=>s==='Running'?badge('Running','#1d4ed8','#dbeafe'):badge('Completed','#15803d','#dcfce7');
       const rows=CAMPS.map(([id,name,title,segment,status,scheduledAt,createdOn])=>[
         `<span style="font-size:12px;color:#9ca3af">${id}</span>`,
         `<span style="font-size:12.5px;color:#111827">${name}</span>`,
@@ -3086,12 +3022,9 @@ function renderFilled(scroll){
       scroll.innerHTML=pw+tableHtml+'</div>';
     },
     rack: ()=>{
-      const racks=['16-cosmetics_16','15-cosmetics_15','11-cosmetics_15','18-cosmetics_18','22-cosmetics_16','14-cosmetics_16','17-cosmetics_18','5-cosmetics_16','17-cosmetics_17','14-cosmetics_14','1-dairy _dairy','21-kitchen shop_21','19-non food_19','12-non food_12','14-non food_14','1-grocery_1','2-grocery_2','bakery-non food_19','10-dairy _10','dairy-dairy _dairy','10-produce_produce','12-bakery_bakery','2-bakery_bakery','22-healthy living_22','3-grocery_3','4-bakery_bakery','4-grocery_4','5-grocery_5','6-bakery_bakery','6-grocery_6','7-bakery_bakery','7-grocery_7','8-grocery_8','9-bakery_bakery','9-grocery_9','bakery-bakery_bakery','dairy-bakery_bakery','deli-grocery_7','deli-deli _deli','meat-dairy _10','produce-dairy _10','produce-produce_produce','seafood-frozen _11','8-frozen _11','11-frozen _11','19-frozen _11','0-0','1-100109','1-103142','1-144130','1-280642','1-l','1-r','10-159711','10-l','10-r','11-l','11-r','12-l','12-r','14-310772','14-r','15-294371','15-294384','15-301634','15-302153','15-330157','15-330158','15-330159','15-330244','15-l','15-r','16-l','17-311852','17-l','18-r','19-r','2-284633','2-l','2-r','20-l','20-r','21-l','22-0','22-292398','22-298475','3-111337','3-200003','3-345618','3-l','3-r','4-106035','4-206750','4-212983','4-280815','4-285429','4-322269','4-332568','4-335291','4-l','4-r','5-l','5-r','6-105050','6-189566','6-261023','6-342304','6-l','6-r','7-253929','7-l','7-r','8-l','8-r','9-173791','9-224719','9-277611','9-277613','9-317511','9-319397','9-322604','9-l','9-r','a-b','bakery-0','bakery-291393','bakery-296788','bakery-296789','bakery-296793','bakery-298020','bakery-315175','bakery-316132','bakery-316133','bakery-316138','bakery-316141','bakery-329732','dairy-0','dairy-105457','dairy-264805','dairy-328358','dairy-328363','dairy-328364','dairy-328368','dairy-328373','dairy-328374','dairy-328376','deli-0','frozen-0','meat-l/','meat-0','produce-271182','produce-319532','produce-r','produce-0','produce-218039','produce-218423','produce-323766','seafood-0','p-p'];
+      const racks=['0-0','1-l','1-r','10-l','10-r','11-l','11-r','12-l','12-r','14-r','15-l','16-l','2-l','3-l','3-r','4-l','4-r','5-l','5-r','6-l','6-r','7-l','7-r','8-l','8-r','9-l','9-r','dairy-0','deli-0','meat-l/','produce-0','seafood-0'];
       const chips=racks.map(r=>`<span style="display:inline-block;padding:6px 14px;border:1.5px solid #e2d9ce;border-radius:6px;font-size:12px;color:#374151;background:#fff;cursor:pointer;margin:4px" onmouseover="this.style.borderColor='#16a34a';this.style.background='#f0fdf4'" onmouseout="this.style.borderColor='#e2d9ce';this.style.background='#fff'">${r}</span>`).join('');
       const content=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-        <div style="padding:12px 16px;border-bottom:1px solid #f5f2ee;display:flex;align-items:center;gap:10px">
-          <select style="padding:7px 28px 7px 12px;border:1.5px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;cursor:pointer;background:#fff;color:#374151;font-weight:600;appearance:auto"><option>Default zone</option><option>Zone A</option><option>Zone B</option></select>
-        </div>
         <div style="padding:16px 20px;line-height:2.2">${chips}</div>
         <div style="padding:14px 16px;border-top:1px solid #f5f2ee;display:flex;gap:8px">
           <button style="padding:8px 24px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Save</button>
@@ -3150,6 +3083,40 @@ function renderFilled(scroll){
       const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Type','Area','Slot','Cutoff time','Date','Capacity','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:12px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
       scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
     },
+    capacity: ()=>{
+      const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
+      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const dropS=`${inpS}cursor:pointer;appearance:auto`;
+      const PICKUP_ROWS=Array.from({length:10},()=>['Pickup','','','0.5 h','All Days',8]);
+      const DELIVERY_ROWS=Array.from({length:10},()=>['Delivery','','','0.5 h','All Days',8]);
+      const allRows=[...PICKUP_ROWS,...DELIVERY_ROWS];
+      const rows=allRows.map(([type,area,slot,cut,day,cap])=>[
+        `<span style="font-size:13px;color:#374151">${type}</span>`,
+        `<span style="font-size:13px;color:#374151">${area}</span>`,
+        `<span style="font-size:13px;color:#374151">${slot}</span>`,
+        `<span style="font-size:13px;color:#374151">${cut}</span>`,
+        `<span style="font-size:13px;color:#374151">${day}</span>`,
+        `<span style="font-size:13px;color:#374151">${cap}</span>`,
+        act,
+      ]);
+      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr auto;gap:14px;align-items:end">
+          <div><div style="${lblS}">TYPE</div><select style="${dropS}"><option value="">Delivery</option><option>Pickup</option></select></div>
+          <div><div style="${lblS}">DATE</div><div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff"><i class="ti ti-calendar" style="padding:0 10px;font-size:16px;color:#16a34a;flex-shrink:0"></i><input type="date" style="border:none;outline:none;padding:9px 12px 9px 0;font-size:12.5px;font-family:inherit;width:100%;color:#374151"></div></div>
+          <div><div style="${lblS}">DAY</div><select style="${dropS}"><option value="">Select day</option><option>Sunday</option><option>Monday</option><option>All Days</option></select></div>
+          <div><div style="${lblS}">ZONE</div><select style="${dropS}"><option value="">Select zone</option><option>Default zone</option></select></div>
+          <div><div style="${lblS}">SLOT</div><select style="${dropS}"><option value="">Select Slot</option><option>09:00 PM - 09:15 PM</option><option>06:30 PM - 07:00 PM</option></select></div>
+          <div style="display:flex;gap:8px;padding-bottom:1px">
+            <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Submit</button>
+            <button style="padding:8px 16px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear</button>
+          </div>
+        </div>
+      </div>`;
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 20 rules</span><div style="display:flex;gap:4px">${['‹','1','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Type','Area','Slot','Cutoff time','Date','Capacity','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:12px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
+    },
     categories: ()=>{
       const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
       const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
@@ -3186,19 +3153,20 @@ function renderFilled(scroll){
         act,
       ]);
       const statusR=['All','Enabled','Disabled'].map((s,i)=>`<label style="flex:0 0 180px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="catStatus" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
-      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;align-items:end">
+      const advPanel=`<div id="catAdvPnl" style="display:none;padding:14px 16px;border-bottom:1px solid #f5f2ee;background:#fafaf8">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;align-items:end">
           <div><div style="${lblS}">NAME</div><div style="position:relative"><input style="${inpS}padding-right:36px" placeholder="Search by Name"><i class="ti ti-search" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af"></i></div></div>
           <div><div style="${lblS}">STATUS</div><div style="display:flex">${statusR}</div></div>
         </div>
-        <div style="display:flex;gap:8px">
-          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
-          <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
+        <div style="display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid #ede8e0">
+          <button style="padding:7px 20px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-search" style="font-size:13px"></i>Search</button>
+          <button style="padding:7px 16px;background:#fff;color:#6b7280;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;cursor:pointer">Clear All</button>
         </div>
       </div>`;
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 300 categories</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','15','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
       const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Image','Name','Parent Category','Product Count','Status','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
-      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
+      window._pageSearch={advPanel:advPanel};
+      scroll.innerHTML=pw+tableHtml+'</div>';
     },
     brands: ()=>{
       const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
