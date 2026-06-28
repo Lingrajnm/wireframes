@@ -1294,10 +1294,13 @@ function renderDonut(el,slices,size){
 // ── RENDER MAIN ────────────────────────────────────────────────────
 function renderMain(){
   const scroll=document.getElementById('mainScroll');
-  if(activePage==='overview') renderOverview(scroll);
-  else if(activePage==='analytics' && hasData) renderAnalytics(scroll); // only show charts when hasData
-  else if(['myaccount','billing','notifications','changepassword','balance','deleteaccount'].includes(activePage)) renderMyAccount(scroll);
-  else renderGeneric(scroll);
+  console.log('[DBG] renderMain page='+activePage+' hasData='+hasData+' scroll='+!!scroll+' scrollH='+scroll?.offsetHeight);
+  try {
+    if(activePage==='overview') renderOverview(scroll);
+    else if(activePage==='analytics' && hasData) renderAnalytics(scroll);
+    else if(['myaccount','billing','notifications','changepassword','balance','deleteaccount'].includes(activePage)) renderMyAccount(scroll);
+    else renderGeneric(scroll);
+  } catch(e){ console.error('[DBG] renderMain error:',e); }
   renderHeaderSearch();
 }
 
