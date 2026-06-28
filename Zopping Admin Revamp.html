@@ -2778,10 +2778,13 @@ function renderFilled(scroll){
       const slotMeta={asap:{ic:'ti-bolt',c:'#ef4444'},hyperlocal:{ic:'ti-clock',c:'#d97706'},ndd:{ic:'ti-truck-delivery',c:'#2563eb'}};
       const slotBadge=o=>{const m=slotMeta[o.stype]||{ic:'ti-clock',c:'#9ca3af'};return `<div style="display:flex;align-items:center;gap:4px"><div style="font-size:12px;color:#374151">${o.slot}</div><div style="font-size:10px;color:#9ca3af">${o.slotSub}</div></div>`;};
       const dots=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
-      // CS agents see completion time only — no Accept/Reject, no Move Store
+      // CS agents see completion time; Accept/Reject shown but disabled for Pending/Draft
       const csCompCell=o=>{
         if(o.status==='Pending'||o.status==='Draft')
-          return `<span style="font-size:11px;padding:2px 8px;background:#fff7ed;color:#ea580c;border-radius:20px;font-weight:700">Awaiting ops</span>`;
+          return `<div style="display:flex;align-items:center;gap:5px">
+            <button disabled title="Only ops can accept" style="display:flex;align-items:center;gap:3px;padding:4px 9px;font-size:11.5px;font-weight:600;background:#f3f4f6;color:#9ca3af;border:1px solid #e5e7eb;border-radius:5px;cursor:not-allowed;opacity:0.6"><i class="ti ti-check" style="font-size:12px"></i>Accept</button>
+            <button disabled title="Only ops can reject" style="display:flex;align-items:center;gap:3px;padding:4px 9px;font-size:11.5px;font-weight:600;background:#f3f4f6;color:#9ca3af;border:1px solid #e5e7eb;border-radius:5px;cursor:not-allowed;opacity:0.6"><i class="ti ti-x" style="font-size:12px"></i>Reject</button>
+          </div>`;
         return `<span style="font-size:12px;color:${o.comp==='—'?'#9ca3af':'#374151'}">${o.comp}</span>`;
       };
       const tbody=ORDERS.map(o=>{
