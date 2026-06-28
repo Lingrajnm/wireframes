@@ -107,6 +107,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .tb-breadcrumb .sep{color:#d1d5db}
 .tb-breadcrumb .cur{color:#374151;font-weight:600}
 .tb-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+#hdrSearchBar{background:#fff;border-bottom:1px solid #ede8e0;flex-shrink:0;transition:all .15s}
 .cta-btn{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:8px;border:1.5px solid #e2d9ce;background:#fff;color:#374151;cursor:pointer;transition:all .1s;white-space:nowrap}
 .cta-btn:hover{border-color:#16a34a;color:#16a34a;background:#f0fdf4}
 .cta-btn.primary{background:#16a34a;color:#fff;border-color:#16a34a;box-shadow:0 1px 4px rgba(22,163,74,.3)}
@@ -512,6 +513,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
       </div>
       <div class="tb-right" id="tbRight"></div>
     </div>
+    <!-- Header search bar — populated by renderHeaderSearch() on search-enabled pages -->
+    <div id="hdrSearchBar" style="display:none"></div>
 
     <!-- Profile dropdown -->
     <div class="profile-dd" id="profileDD" style="display:none">
@@ -1098,7 +1101,7 @@ function renderTopbar(){
     if(b.icon){
       // Icon-only square button — search icon gets a focus-in-page handler
       const searchClick=b.ic==='ti-search'
-        ?`onclick="(function(){var s=document.getElementById('mainScroll');var inp=s?s.querySelector('input[type=text],input:not([type]),input[type=search]'):null;if(inp){inp.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){inp.focus();inp.style.transition='box-shadow .25s,border-color .25s';inp.style.boxShadow='0 0 0 3px rgba(22,163,74,.25)';inp.style.borderColor='#16a34a';setTimeout(function(){inp.style.boxShadow='';inp.style.borderColor='';},1800);},200);}})()"`
+        ?`onclick="(function(){var inp=document.getElementById('hdrSearchInp');if(inp){inp.focus();inp.select();}else{var s=document.getElementById('mainScroll');var fi=s?s.querySelector('input[type=text],input:not([type]),input[type=search]'):null;if(fi){fi.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){fi.focus();},200);}}})()"`
         :'';
       ctaH+=`<button class="tb-icon-btn" title="${b.ic.replace('ti-','')}" ${searchClick}><i class="ti ${b.ic}"></i></button>`;
     } else {
@@ -1137,6 +1140,42 @@ function renderTopbar(){
   ctaH+=`<div class="tb-icon-btn" id="notifBtn" title="Notifications" onclick="toggleNotifPanel()"><i class="ti ti-bell"></i><span class="tb-notif-badge" id="notifDot"></span></div>`;
 
   document.getElementById('tbRight').innerHTML=ctaH;
+}
+
+// ── HEADER SEARCH BAR ──────────────────────────────────────────────
+function renderHeaderSearch(){
+  const bar=document.getElementById('hdrSearchBar');
+  if(!bar) return;
+  // Pages that get the expanded header search
+  const searchPages={'orders':'Search by order no., customer name or phone…','cs-orders':'Search CS orders by order no. or customer…','abandoned':'Search abandoned carts by customer or product…'};
+  const placeholder=searchPages[activePage];
+  if(!placeholder || !hasData){bar.style.display='none';bar.innerHTML='';return;}
+  const ps=window._pageSearch||{};
+  const showCols=activePage==='orders'&&ps.colPicker;
+  const showFilters=!!ps.advPanel;
+  // Colours
+  const btnS='padding:7px 14px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;font-family:inherit;flex-shrink:0';
+  bar.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:8px 20px">
+    <div style="position:relative;flex:1">
+      <i class="ti ti-search" style="position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af;pointer-events:none"></i>
+      <input id="hdrSearchInp" placeholder="${placeholder}"
+        style="width:100%;box-sizing:border-box;padding:8px 12px 8px 34px;border:1.5px solid #e2d9ce;border-radius:8px;font-size:13px;outline:none;font-family:inherit;color:#374151;background:#fff;transition:border-color .2s,box-shadow .2s"
+        onfocus="this.style.borderColor='#16a34a';this.style.boxShadow='0 0 0 3px rgba(22,163,74,.12)'"
+        onblur="this.style.borderColor='#e2d9ce';this.style.boxShadow=''">
+    </div>
+    ${showFilters?`<button id="hdrFiltersBtn" onclick="(function(b){var p=document.getElementById('hdrAdvPnl');var open=p.style.display!=='none';p.style.display=open?'none':'block';b.style.background=open?'#fff':'#f0fdf4';b.style.borderColor=open?'#e2d9ce':'#16a34a';b.style.color=open?'#374151':'#15803d';})(this)" style="${btnS}"><i class="ti ti-adjustments-horizontal" style="font-size:13px"></i>Filters</button>`:''}
+    ${showCols?`<div style="position:relative">
+      <button onclick="var p=document.getElementById('hdrColPnl');p.style.display=p.style.display==='none'?'block':'none'" style="${btnS}"><i class="ti ti-columns" style="font-size:13px;color:#6b7280"></i>Columns</button>
+      <div id="hdrColPnl" style="display:none;position:absolute;right:0;top:calc(100% + 6px);width:230px;background:#fff;border:1.5px solid #ede8e0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:10px 14px;z-index:400">
+        <div style="font-size:10.5px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;padding-bottom:8px;border-bottom:1px solid #f3f4f6">Manage Columns</div>
+        <div style="font-size:10.5px;color:#9ca3af;margin-bottom:8px;display:flex;align-items:center;gap:4px"><i class="ti ti-grip-vertical" style="font-size:12px"></i>Drag to reorder &nbsp;\xb7&nbsp; <i class="ti ti-eye" style="font-size:12px"></i>Check to show</div>
+        ${ps.colPicker}
+        <div style="margin-top:8px;padding-top:8px;border-top:1px solid #f3f4f6;font-size:10.5px;color:#9ca3af"><i class="ti ti-lock" style="font-size:11px"></i> Locked columns always visible</div>
+      </div>
+    </div>`:''}
+  </div>
+  ${showFilters?ps.advPanel.replace('id="ordAdvPnl"','id="hdrAdvPnl"'):''}`;
+  bar.style.display='block';
 }
 
 // ── CHART HELPERS ──────────────────────────────────────────────────
@@ -1194,6 +1233,7 @@ function renderMain(){
   else if(activePage==='analytics' && hasData) renderAnalytics(scroll); // only show charts when hasData
   else if(['myaccount','billing','notifications','changepassword','balance','deleteaccount'].includes(activePage)) renderMyAccount(scroll);
   else renderGeneric(scroll);
+  renderHeaderSearch();
 }
 
 function renderOverview(scroll){
@@ -2373,28 +2413,14 @@ function renderFilled(scroll){
         <div style="display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid #ede8e0">
           <button style="padding:7px 20px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-search" style="font-size:13px"></i>Search</button>
           <button style="padding:7px 16px;background:#fff;color:#6b7280;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;cursor:pointer">Clear All</button>
-          <span style="font-size:11px;color:#9ca3af;align-self:center;margin-left:4px">Tip: Use quick search above for instant results</span>
+          <span style="font-size:11px;color:#9ca3af;align-self:center;margin-left:4px">Tip: Use the search bar above for quick lookup</span>
         </div>
       </div>`;
+      // Store search panel content for the header search bar
+      window._pageSearch={advPanel:advPanel,colPicker:colPicker};
       scroll.innerHTML=`<div style="padding:8px 20px 24px">${statsHtml}
         <div style="border-radius:10px;overflow:visible;border:1px solid #ede8e0;box-shadow:0 1px 3px rgba(0,0,0,.04)">
           <div style="display:flex;border-bottom:2px solid #ede8e0;background:#fff;border-radius:10px 10px 0 0;overflow-x:auto">${tabsHtml}</div>
-          <div style="padding:8px 14px;border-bottom:1px solid #f5f2ee;display:flex;gap:7px;align-items:center;background:#fff;position:relative">
-            <i class="ti ti-search" style="position:absolute;left:27px;font-size:13px;color:#9ca3af;pointer-events:none"></i>
-            <input style="padding:6px 11px 6px 32px;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;outline:none;font-family:inherit;flex:1;min-width:0" placeholder="Quick search: order no., customer name, phone…">
-            <button onclick="var p=document.getElementById('ordAdvPnl');var open=p.style.display!=='none';p.style.display=open?'none':'block';this.style.background=open?'#fff':'#f0fdf4';this.style.borderColor=open?'#e2d9ce':'#16a34a';this.style.color=open?'#374151':'#15803d'" style="padding:6px 12px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0"><i class="ti ti-adjustments-horizontal" style="font-size:13px"></i>Filters</button>
-            <button style="padding:6px 12px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px;flex-shrink:0"><i class="ti ti-calendar" style="font-size:13px;color:#6b7280"></i>28 Jun 2026</button>
-            <div style="display:flex;gap:5px;flex-shrink:0;position:relative">
-              <button onclick="var p=document.getElementById('ordColPnl');p.style.display=p.style.display==='none'?'block':'none'" style="padding:6px 12px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap"><i class="ti ti-columns" style="font-size:13px;color:#6b7280"></i>Columns</button>
-              <div id="ordColPnl" style="display:none;position:absolute;right:0;top:calc(100% + 6px);width:230px;background:#fff;border:1.5px solid #ede8e0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:10px 14px;z-index:300">
-                <div style="font-size:10.5px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;padding-bottom:8px;border-bottom:1px solid #f3f4f6">Manage Columns</div>
-                <div style="font-size:10.5px;color:#9ca3af;margin-bottom:8px;display:flex;align-items:center;gap:4px"><i class="ti ti-grip-vertical" style="font-size:12px"></i>Drag to reorder &nbsp;·&nbsp; <i class="ti ti-eye" style="font-size:12px"></i>Check to show</div>
-                ${colPicker}
-                <div style="margin-top:8px;padding-top:8px;border-top:1px solid #f3f4f6;font-size:10.5px;color:#9ca3af"><i class="ti ti-lock" style="font-size:11px"></i> Locked columns always visible</div>
-              </div>
-            </div>
-          </div>
-          ${advPanel}
           <div style="overflow-x:auto"><table id="ordTbl" style="width:100%;border-collapse:collapse;font-size:12.5px;background:#fff">${thead}<tbody>${tbody}</tbody></table></div>
           <div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;border-radius:0 0 10px 10px;display:flex;align-items:center;justify-content:space-between">
             <span style="font-size:12px;color:#9ca3af">Showing 20 of 142 orders</span>
