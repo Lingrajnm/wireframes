@@ -1542,9 +1542,8 @@ function renderOverview(scroll){
 
     // Operational stats (zeroed)
     const opStats=`<div style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;margin-bottom:16px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05)">
-      <div style="padding:14px 20px;border-bottom:1px solid #f0f0f0;font-size:14px;font-weight:700;color:#111827;display:flex;align-items:center;gap:8px">
+      <div style="padding:14px 20px;border-bottom:1px solid #f0f0f0;font-size:14px;font-weight:700;color:#111827">
         Operational Stats
-        <span style="display:flex;align-items:center;gap:5px;font-size:12px;color:#16a34a;font-weight:600"><span style="width:8px;height:8px;border-radius:50%;background:#16a34a;display:inline-block"></span>Placed for Today</span>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid #f0f0f0">
         ${[['Orders','0','#3b82f6'],['Sales','₹ 0.00','#16a34a'],['Avg Order Value','₹ 0.00','#7c3aed']].map(([l,v,c])=>`
