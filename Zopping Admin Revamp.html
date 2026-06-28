@@ -1734,6 +1734,105 @@ function renderAnalytics(scroll){
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">${widH}</div>
   </div>`;
 
+
+  // ── Cart Recovery Pipeline (detail) ──────────────────────────────
+  const bar_r=(pct,c)=>`<div style="height:5px;border-radius:3px;background:#f0ece4;margin-top:5px;overflow:hidden"><div style="height:100%;border-radius:3px;background:${c};width:${pct}%"></div></div>`;
+  const funnelSteps=[
+    {ic:'ti-shopping-cart-off',lbl:'Abandoned',val:'234',sub:'₹2,12,500 total value',c:'#ea580c',pct:100},
+    {ic:'ti-device-mobile-message',lbl:'Nudges Sent',val:'158',sub:'67.5% · WhatsApp/SMS/Email',c:'#7c3aed',pct:68},
+    {ic:'ti-phone-call',lbl:'Agent Calls',val:'86',sub:'36.8% of carts assigned',c:'#1d4ed8',pct:37},
+    {ic:'ti-eye',lbl:'Cart Viewed',val:'112',sub:'47.9% re-engaged',c:'#0891b2',pct:48},
+    {ic:'ti-check',lbl:'Converted',val:'52',sub:'22.2% overall conversion',c:'#16a34a',pct:22},
+  ];
+  const funnelHtml=funnelSteps.map((s,i)=>`
+    <div style="flex:1;padding:14px 18px">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <div style="width:26px;height:26px;border-radius:6px;background:${s.c}18;display:flex;align-items:center;justify-content:center">
+          <i class="ti ${s.ic}" style="font-size:13px;color:${s.c}"></i>
+        </div>
+        <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af">${s.lbl}</span>
+      </div>
+      <div style="font-size:22px;font-weight:800;color:#111827;line-height:1">${s.val}</div>
+      <div style="font-size:11px;color:#6b7280;margin-top:3px">${s.sub}</div>
+      ${bar_r(s.pct,s.c)}
+    </div>
+    ${i<funnelSteps.length-1?'<div style="width:1px;background:#f0ece4;margin:10px 0"></div>':''}`
+  ).join('');
+
+  const chCard=(ic,lbl,v1,l1,v2,l2,c)=>`<div style="padding:12px 14px;border-radius:8px;border:1px solid #f0ece4;flex:1">
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+      <i class="ti ${ic}" style="font-size:13px;color:${c}"></i>
+      <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:${c}">${lbl}</span>
+    </div>
+    <div style="font-size:17px;font-weight:800;color:#111827">${v1}</div><div style="font-size:10.5px;color:#9ca3af">${l1}</div>
+    <div style="font-size:12px;font-weight:700;color:#16a34a;margin-top:4px">${v2}</div><div style="font-size:10.5px;color:#9ca3af">${l2}</div>
+  </div>`;
+
+  const AGENTS=[
+    {name:'Priya Sharma',av:'PS',calls:24,conn:19,conv:7,val:'₹9,200',rate:'37%'},
+    {name:'Rahul Mehta',av:'RM',calls:22,conn:15,conv:5,val:'₹6,800',rate:'33%'},
+    {name:'Anita Verma',av:'AV',calls:20,conn:18,conv:8,val:'₹11,400',rate:'44%'},
+    {name:'Suresh Kumar',av:'SK',calls:12,conn:8,conv:2,val:'₹2,600',rate:'25%'},
+    {name:'Deepa Nair',av:'DN',calls:8,conn:6,conv:3,val:'₹4,100',rate:'50%'},
+  ];
+  const callBar=(n,tot,c)=>`<div style="height:4px;border-radius:2px;background:#f3f4f6;overflow:hidden"><div style="height:100%;width:${Math.round(n/tot*100)}%;background:${c};border-radius:2px"></div></div>`;
+  const agentRows=AGENTS.map(a=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+    <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:28px;height:28px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#1d4ed8">${a.av}</div>
+        <span style="font-size:12.5px;font-weight:500;color:#111827">${a.name}</span>
+      </div>
+    </td>
+    <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;text-align:center"><div style="font-size:13px;font-weight:600;color:#374151">${a.calls}</div>${callBar(a.calls,24,'#6b7280')}</td>
+    <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;text-align:center"><div style="font-size:13px;font-weight:600;color:#1d4ed8">${a.conn}</div>${callBar(a.conn,24,'#93c5fd')}</td>
+    <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;text-align:center"><div style="font-size:13px;font-weight:700;color:#16a34a">${a.conv}</div>${callBar(a.conv,8,'#4ade80')}</td>
+    <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;text-align:right"><span style="font-size:12.5px;font-weight:600;color:#374151">${a.val}</span></td>
+    <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;text-align:center"><span style="padding:2px 9px;background:${parseFloat(a.rate)>=40?'#dcfce7':parseFloat(a.rate)>=30?'#fef9c3':'#fee2e2'};color:${parseFloat(a.rate)>=40?'#15803d':parseFloat(a.rate)>=30?'#ca8a04':'#b91c1c'};border-radius:20px;font-size:11px;font-weight:700">${a.rate}</span></td>
+  </tr>`).join('');
+
+  scroll.innerHTML+=`<div style="padding:0 20px 24px;display:flex;flex-direction:column;gap:12px">
+    <div style="background:#fff;border-radius:12px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #f5f2ee">
+        <div style="display:flex;align-items:center;gap:8px">
+          <i class="ti ti-shopping-cart-off" style="font-size:15px;color:#ea580c"></i>
+          <span style="font-size:13px;font-weight:700;color:#111827">Cart Recovery Pipeline</span>
+          <span style="font-size:10.5px;padding:2px 9px;background:#fff7ed;color:#ea580c;border-radius:20px;font-weight:700">Last 30 days</span>
+        </div>
+        <select style="font-size:11.5px;padding:5px 10px;border:1px solid #e2d9ce;border-radius:6px;color:#374151;background:#fff">
+          <option>Last 30 days</option><option>Last 7 days</option><option>Today</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:stretch;background:#fafaf8">${funnelHtml}</div>
+      <div style="display:flex;gap:10px;padding:14px 18px;border-top:1px solid #f5f2ee">
+        ${chCard('ti-brand-whatsapp','WhatsApp','28 carts','recovered','₹36,400','revenue','#16a34a')}
+        ${chCard('ti-message','SMS / RCS','9 carts','recovered','₹11,200','revenue','#1d4ed8')}
+        ${chCard('ti-mail','Email','5 carts','recovered','₹6,800','revenue','#7c3aed')}
+        ${chCard('ti-phone-call','Agent Calls','10 carts','recovered','₹23,400','revenue','#0891b2')}
+        <div style="padding:12px 14px;border-radius:8px;border:1.5px solid #bbf7d0;background:#f0fdf4;flex:1">
+          <div style="font-size:10px;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">Total Recovered</div>
+          <div style="font-size:22px;font-weight:800;color:#15803d">₹77,800</div>
+          <div style="font-size:11px;color:#16a34a;margin-top:2px">36.6% of abandoned value</div>
+        </div>
+      </div>
+    </div>
+    <div style="background:#fff;border-radius:12px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #f5f2ee">
+        <div style="display:flex;align-items:center;gap:8px">
+          <i class="ti ti-phone-call" style="font-size:15px;color:#1d4ed8"></i>
+          <span style="font-size:13px;font-weight:700;color:#111827">Agent Call Performance</span>
+        </div>
+        <div style="display:flex;gap:16px">
+          ${[['86','Total Calls','#374151'],['66','Connected','#1d4ed8'],['20','Not Answered','#9ca3af'],['10','Converted','#16a34a']].map(([v,l,c])=>`<div><div style="font-size:14px;font-weight:700;color:${c}">${v}</div><div style="font-size:10.5px;color:#9ca3af">${l}</div></div>`).join('')}
+        </div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+        <thead><tr style="background:#fafaf8">
+          ${['Agent','Calls Made','Connected','Converted','Revenue','Rate'].map(h=>`<th style="padding:8px 12px;text-align:${h==='Revenue'?'right':h==='Agent'?'left':'center'};font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #f0ece4">${h}</th>`).join('')}
+        </tr></thead>
+        <tbody>${agentRows}</tbody>
+      </table>
+    </div>
+  </div>`;
   requestAnimationFrame(()=>{
     const el=document.getElementById('anChartEl');
     if(el){
@@ -3184,140 +3283,27 @@ function renderFilled(scroll){
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 200+ abandoned carts</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
       const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Order Type & Store','Cart ID','Customer','No. of Items','Total Cart Value','Created date & time','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
 
-      // ── Cart Recovery Pipeline ────────────────────────────────────
-      const bar=(pct,c)=>`<div style="height:5px;border-radius:3px;background:#f0ece4;margin-top:5px;overflow:hidden"><div style="width:${pct}%;height:100%;border-radius:3px;background:${c}"></div></div>`;
-      const divider=`<div style="width:1px;background:#f0ece4;align-self:stretch;margin:12px 0"></div>`;
-
-      // ── Row 1: funnel steps
-      const funnelSteps=[
-        {ic:'ti-shopping-cart-off',lbl:'Abandoned',val:'234',sub:'₹2,12,500 total value',c:'#ea580c',pct:100},
-        {ic:'ti-device-mobile-message',lbl:'Nudges Sent',val:'158',sub:'67.5% of carts · WhatsApp/SMS/Email',c:'#7c3aed',pct:68},
-        {ic:'ti-phone-call',lbl:'Agent Calls',val:'86',sub:'36.8% of carts assigned',c:'#1d4ed8',pct:37},
-        {ic:'ti-eye',lbl:'Cart Viewed',val:'112',sub:'47.9% re-engaged',c:'#0891b2',pct:48},
-        {ic:'ti-check',lbl:'Converted',val:'52',sub:'22.2% overall conversion',c:'#16a34a',pct:22},
+      // ── Cart Recovery Stats (simple) ─────────────────────────────
+      const recovStats=[
+        {ic:'ti-shopping-cart-off', bg:'#fff7ed', ic_c:'#ea580c', val:'234',     lbl:'Abandoned Carts',   sub:'₹2,12,500 total value'},
+        {ic:'ti-device-mobile-message',bg:'#f5f3ff',ic_c:'#7c3aed',val:'158',   lbl:'Nudges Sent',       sub:'67.5% of carts'},
+        {ic:'ti-phone-call',        bg:'#eff6ff', ic_c:'#1d4ed8', val:'86',      lbl:'Agent Calls',       sub:'36.8% assigned'},
+        {ic:'ti-check-circle',      bg:'#f0fdf4', ic_c:'#16a34a', val:'52',      lbl:'Converted',         sub:'22.2% conversion'},
+        {ic:'ti-currency-rupee',    bg:'#dcfce7', ic_c:'#15803d', val:'₹77,800', lbl:'Revenue Recovered',  sub:'36.6% of value'},
+        {ic:'ti-trending-up',       bg:'#fce7f3', ic_c:'#be185d', val:'₹1,496',  lbl:'Avg Recovered Cart', sub:'per conversion'},
       ];
-      const funnelHtml=funnelSteps.map((s,i)=>`
-        <div style="flex:1;padding:14px 18px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
-            <div style="width:28px;height:28px;border-radius:7px;background:${s.c}18;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${s.ic}" style="font-size:13px;color:${s.c}"></i></div>
-            <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af">${s.lbl}</span>
+      const recovRow=`<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px">
+        ${recovStats.map(s=>`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+          <div style="width:32px;height:32px;border-radius:8px;background:${s.bg};display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+            <i class="ti ${s.ic}" style="font-size:16px;color:${s.ic_c}"></i>
           </div>
-          <div style="font-size:24px;font-weight:800;color:#111827;line-height:1">${s.val}</div>
-          <div style="font-size:11px;color:#6b7280;margin-top:3px;line-height:1.4">${s.sub}</div>
-          ${bar(s.pct,s.c)}
-        </div>
-        ${i<funnelSteps.length-1?`<div style="width:1px;background:#f0ece4;margin:10px 0"></div><div style="display:flex;align-items:center;padding:0 2px"><i class="ti ti-chevron-right" style="font-size:14px;color:#d1d5db"></i></div><div style="width:1px;background:#f0ece4;margin:10px 0"></div>`:''}
-      `).join('');
-
-      // ── Row 2: channel cards
-      const chCard=(ic,lbl,v1,l1,v2,l2,c,bg)=>`<div style="padding:12px 14px;border-radius:8px;border:1px solid #f0ece4;background:${bg}">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
-          <i class="ti ${ic}" style="font-size:14px;color:${c}"></i>
-          <span style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:${c}">${lbl}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:flex-end">
-          <div><div style="font-size:18px;font-weight:800;color:#111827">${v1}</div><div style="font-size:10.5px;color:#6b7280;margin-top:1px">${l1}</div></div>
-          <div style="text-align:right"><div style="font-size:13px;font-weight:700;color:#16a34a">${v2}</div><div style="font-size:10.5px;color:#9ca3af">${l2}</div></div>
-        </div>
+          <div style="font-size:20px;font-weight:800;color:#111827;line-height:1">${s.val}</div>
+          <div style="font-size:11.5px;font-weight:600;color:#374151;margin-top:4px">${s.lbl}</div>
+          <div style="font-size:10.5px;color:#9ca3af;margin-top:2px">${s.sub}</div>
+        </div>`).join('')}
       </div>`;
 
-      // ── Row 3: agent call breakdown
-      const AGENTS=[
-        {name:'Priya Sharma',  av:'PS',calls:24,conn:19,conv:7, val:'₹9,200', rate:'37%'},
-        {name:'Rahul Mehta',   av:'RM',calls:22,conn:15,conv:5, val:'₹6,800', rate:'33%'},
-        {name:'Anita Verma',   av:'AV',calls:20,conn:18,conv:8, val:'₹11,400',rate:'44%'},
-        {name:'Suresh Kumar',  av:'SK',calls:12,conn:8, conv:2, val:'₹2,600', rate:'25%'},
-        {name:'Deepa Nair',    av:'DN',calls:8, conn:6, conv:3, val:'₹4,100', rate:'50%'},
-      ];
-      const callBar=(n,tot,c)=>`<div style="height:4px;border-radius:2px;background:#f3f4f6;overflow:hidden"><div style="width:${Math.round(n/tot*100)}%;height:100%;background:${c};border-radius:2px"></div></div>`;
-      const agentRows=AGENTS.map(a=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
-        <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle">
-          <div style="display:flex;align-items:center;gap:8px">
-            <div style="width:28px;height:28px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#1d4ed8;flex-shrink:0">${a.av}</div>
-            <span style="font-size:12.5px;font-weight:500;color:#111827">${a.name}</span>
-          </div>
-        </td>
-        <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:center">
-          <div style="font-size:13px;font-weight:600;color:#374151">${a.calls}</div>
-          ${callBar(a.calls,24,'#6b7280')}
-        </td>
-        <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:center">
-          <div style="font-size:13px;font-weight:600;color:#1d4ed8">${a.conn}</div>
-          ${callBar(a.conn,19,'#93c5fd')}
-        </td>
-        <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:center">
-          <div style="font-size:13px;font-weight:700;color:#16a34a">${a.conv}</div>
-          ${callBar(a.conv,8,'#4ade80')}
-        </td>
-        <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:right"><span style="font-size:13px;font-weight:600;color:#111827">${a.val}</span></td>
-        <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:center">
-          <span style="padding:2px 9px;background:${parseFloat(a.rate)>=40?'#dcfce7':parseFloat(a.rate)>=30?'#fef9c3':'#f3f4f6'};color:${parseFloat(a.rate)>=40?'#15803d':parseFloat(a.rate)>=30?'#a16207':'#6b7280'};border-radius:20px;font-size:11.5px;font-weight:700">${a.rate}</span>
-        </td>
-      </tr>`).join('');
-
-      const pipeline=`<div style="display:flex;flex-direction:column;gap:12px;margin-bottom:14px">
-
-        <!-- Panel header -->
-        <div style="background:#fff;border-radius:12px;border:1px solid #ede8e0;padding:0;box-shadow:0 1px 3px rgba(0,0,0,.04);overflow:hidden">
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #f5f2ee">
-            <div style="display:flex;align-items:center;gap:8px">
-              <i class="ti ti-shopping-cart-off" style="font-size:15px;color:#ea580c"></i>
-              <span style="font-size:13px;font-weight:700;color:#111827">Cart Recovery Pipeline</span>
-              <span style="font-size:10.5px;padding:2px 9px;background:#fff7ed;color:#ea580c;border-radius:20px;font-weight:600;border:1px solid #fed7aa">Last 30 days</span>
-            </div>
-            <select style="font-size:11.5px;padding:5px 10px;border:1px solid #e2d9ce;border-radius:6px;color:#374151;background:#fff;cursor:pointer;outline:none;font-family:inherit">
-              <option>Last 30 days</option><option>Last 7 days</option><option>Today</option><option>Custom range</option>
-            </select>
-          </div>
-
-          <!-- Funnel row -->
-          <div style="display:flex;align-items:stretch;background:#fafaf8">
-            ${funnelHtml}
-          </div>
-
-          <!-- Channel breakdown row -->
-          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:14px 18px;border-top:1px solid #f5f2ee">
-            ${chCard('ti-brand-whatsapp','WhatsApp','28','carts recovered','₹36,400','revenue','#16a34a','#f0fdf4')}
-            ${chCard('ti-message','SMS / RCS','9','carts recovered','₹11,200','revenue','#1d4ed8','#eff6ff')}
-            ${chCard('ti-mail','Email','5','carts recovered','₹6,800','revenue','#7c3aed','#f5f3ff')}
-            ${chCard('ti-phone-call','Agent Calls','10','carts recovered','₹23,400','revenue','#0891b2','#ecfeff')}
-            <div style="padding:12px 14px;border-radius:8px;border:1.5px solid #bbf7d0;background:#f0fdf4">
-              <div style="font-size:10.5px;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">Total Recovered</div>
-              <div style="font-size:22px;font-weight:800;color:#15803d">₹77,800</div>
-              <div style="font-size:11px;color:#16a34a;margin-top:2px">36.6% of abandoned value</div>
-              <div style="margin-top:6px;height:5px;border-radius:3px;background:#bbf7d0;overflow:hidden"><div style="width:36.6%;height:100%;background:#16a34a;border-radius:3px"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Agent Call Performance -->
-        <div style="background:#fff;border-radius:12px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #f5f2ee">
-            <div style="display:flex;align-items:center;gap:8px">
-              <i class="ti ti-phone-call" style="font-size:15px;color:#1d4ed8"></i>
-              <span style="font-size:13px;font-weight:700;color:#111827">Agent Call Performance</span>
-            </div>
-            <div style="display:flex;gap:8px;align-items:center">
-              <div style="display:flex;gap:16px">
-                ${[['86','Total Calls','#374151'],['66','Connected','#1d4ed8'],['20','Not Answered','#9ca3af'],['10','Converted','#16a34a'],['₹23,400','via Calls','#16a34a']].map(([v,l,c])=>`<div style="text-align:center"><div style="font-size:15px;font-weight:800;color:${c}">${v}</div><div style="font-size:10px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.04em">${l}</div></div>`).join('')}
-              </div>
-              <div style="width:1px;height:32px;background:#f0ece4;margin:0 4px"></div>
-              <span style="font-size:11px;padding:3px 9px;background:#eff6ff;color:#1d4ed8;border-radius:20px;font-weight:700;border:1px solid #bfdbfe">15.2% call conversion</span>
-            </div>
-          </div>
-          <table style="width:100%;border-collapse:collapse;font-size:12.5px">
-            <thead><tr style="background:#fafaf8">
-              ${['Agent','Calls Made','Connected','Converted','Revenue','Rate'].map((h,i)=>`<th style="padding:8px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;border-bottom:1px solid #f0ece4;${i>0?'text-align:center':''}">${h}</th>`).join('')}
-            </tr></thead>
-            <tbody>${agentRows}</tbody>
-          </table>
-        </div>
-
-      </div>`;
-
-      scroll.innerHTML=pw+pipeline+tableHtml+'</div>';
-
-      scroll.innerHTML=pw+pipeline+tableHtml+'</div>';
+      scroll.innerHTML=pw+recovRow+tableHtml+'</div>';
     },
     rack: ()=>{
       const racks=['0-0','1-l','1-r','10-l','10-r','11-l','11-r','12-l','12-r','14-r','15-l','16-l','2-l','3-l','3-r','4-l','4-r','5-l','5-r','6-l','6-r','7-l','7-r','8-l','8-r','9-l','9-r','dairy-0','deli-0','meat-l/','produce-0','seafood-0'];
