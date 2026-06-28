@@ -3562,174 +3562,77 @@ function renderFilled(scroll){
     },
     inventory: ()=>{
   const PRODUCTS=[
-    {id:'p1',name:'Harpic Toilet Cleaner',brand:'HARPIC',ic:'ti-droplet',open:true,variants:[
-      {v:'1 Lt',   sku:'HRP-1000',unav:0,comm:2,avail:43,oh:45,inc:0,mrp:85,  price:72,  disc:15},
-      {v:'500 ml', sku:'HRP-500', unav:0,comm:5,avail:115,oh:120,inc:50,mrp:49, price:42, disc:14},
-      {v:'200 ml', sku:'HRP-200', unav:0,comm:3,avail:77,oh:80,inc:0,mrp:25,   price:22, disc:12},
-    ]},
-    {id:'p2',name:'Dettol Original Handwash',brand:'DETTOL',ic:'ti-wash',open:true,variants:[
-      {v:'200 ml',       sku:'DTL-200', unav:0,comm:4,avail:196,oh:200,inc:100,mrp:65, price:55,disc:15},
-      {v:'500 ml Refill',sku:'DTL-500R',unav:0,comm:2,avail:88, oh:90, inc:0,  mrp:120,price:102,disc:15},
-      {v:'1 Lt Pump',    sku:'DTL-1000',unav:1,comm:3,avail:56, oh:60, inc:0,  mrp:210,price:178,disc:15},
-    ]},
-    {id:'p3',name:'Surf Excel Easy Wash',brand:'SURF EXCEL',ic:'ti-shirt',open:false,variants:[
-      {v:'500g',sku:'SRF-500',unav:0,comm:8,avail:92,oh:100,inc:200,mrp:99, price:89,disc:10},
-      {v:'1 kg', sku:'SRF-1K', unav:0,comm:5,avail:45,oh:50, inc:0,  mrp:185,price:165,disc:11},
-      {v:'2 kg', sku:'SRF-2K', unav:0,comm:2,avail:28,oh:30, inc:0,  mrp:349,price:310,disc:11},
-    ]},
-    {id:'p4',name:'Maggi Masala Noodles',brand:'NESTLE',ic:'ti-noodles',open:false,variants:[
-      {v:'70g (Single)',   sku:'MGI-70',  unav:0,comm:20,avail:480,oh:500,inc:1000,mrp:14, price:14,disc:0},
-      {v:'280g (4-pack)',  sku:'MGI-280', unav:0,comm:10,avail:190,oh:200,inc:0,   mrp:54, price:52,disc:4},
-      {v:'560g (8-pack)',  sku:'MGI-560', unav:0,comm:5, avail:95, oh:100,inc:0,   mrp:105,price:100,disc:5},
-    ]},
-    {id:'p5',name:'Amul Butter',brand:'AMUL',ic:'ti-cheese',open:false,variants:[
-      {v:'100g',sku:'AML-100',unav:0,comm:15,avail:135,oh:150,inc:200,mrp:55, price:55,disc:0},
-      {v:'500g',sku:'AML-500',unav:0,comm:6, avail:44, oh:50, inc:0,  mrp:260,price:260,disc:0},
-    ]},
-    {id:'p6',name:'Britannia Good Day Butter Cookies',brand:'BRITANNIA',ic:'ti-cookie',open:false,variants:[
-      {v:'87g', sku:'BRT-87', unav:0,comm:30,avail:270,oh:300,inc:500,mrp:30, price:28,disc:7},
-      {v:'216g',sku:'BRT-216',unav:0,comm:12,avail:88, oh:100,inc:0,  mrp:70, price:65,disc:7},
-      {v:'600g',sku:'BRT-600',unav:0,comm:4, avail:46, oh:50, inc:0,  mrp:190,price:175,disc:8},
-    ]},
-    {id:'p7',name:'Parle-G Original Glucose Biscuits',brand:'PARLE',ic:'ti-cookie',open:false,variants:[
-      {v:'60g',  sku:'PLG-60',  unav:0,comm:50,avail:450,oh:500,inc:1000,mrp:10,price:10,disc:0},
-      {v:'250g', sku:'PLG-250', unav:0,comm:20,avail:180,oh:200,inc:0,   mrp:38,price:38,disc:0},
-      {v:'1 kg', sku:'PLG-1K',  unav:0,comm:8, avail:92, oh:100,inc:0,   mrp:140,price:135,disc:4},
-    ]},
-    {id:'p8',name:'Lay\'s Classic Salted Chips',brand:'LAY\'S',ic:'ti-bow',open:false,variants:[
-      {v:'26g', sku:'LYS-26', unav:0,comm:40,avail:260,oh:300,inc:500,mrp:20,price:20,disc:0},
-      {v:'52g', sku:'LYS-52', unav:0,comm:15,avail:185,oh:200,inc:0,  mrp:40,price:38,disc:5},
-      {v:'98g', sku:'LYS-98', unav:0,comm:8, avail:92, oh:100,inc:0,  mrp:74,price:70,disc:5},
-    ]},
-    {id:'p9',name:'Tropicana 100% Orange Juice',brand:'TROPICANA',ic:'ti-glass',open:false,variants:[
-      {v:'200 ml',sku:'TRP-200',unav:0,comm:25,avail:175,oh:200,inc:300,mrp:35, price:32,disc:9},
-      {v:'500 ml',sku:'TRP-500',unav:0,comm:10,avail:90, oh:100,inc:0,  mrp:80, price:72,disc:10},
-      {v:'1 Lt',  sku:'TRP-1L', unav:0,comm:5, avail:45, oh:50, inc:0,  mrp:145,price:130,disc:10},
-    ]},
-    {id:'p10',name:'Colgate MaxFresh Toothpaste',brand:'COLGATE',ic:'ti-heart',open:false,variants:[
-      {v:'75g', sku:'CLG-75', unav:0,comm:20,avail:180,oh:200,inc:200,mrp:55, price:50,disc:9},
-      {v:'150g',sku:'CLG-150',unav:0,comm:10,avail:90, oh:100,inc:0,  mrp:100,price:90,disc:10},
-      {v:'300g',sku:'CLG-300',unav:0,comm:4, avail:46, oh:50, inc:0,  mrp:190,price:170,disc:11},
-    ]},
+    {id:'P-001',name:'Harpic Toilet Cleaner',brand:'HARPIC',ic:'ti-droplet',sku:'HRP-1000',price:72,disc:15,stock:45},
+    {id:'P-002',name:'Dettol Original Handwash',brand:'DETTOL',ic:'ti-wash',sku:'DTL-200',price:55,disc:15,stock:200},
+    {id:'P-003',name:'Surf Excel Easy Wash',brand:'SURF EXCEL',ic:'ti-shirt',sku:'SRF-500',price:89,disc:10,stock:100},
+    {id:'P-004',name:'Maggi Masala Noodles',brand:'NESTLE',ic:'ti-noodles',sku:'MGI-70',price:14,disc:0,stock:500},
+    {id:'P-005',name:'Amul Butter',brand:'AMUL',ic:'ti-cheese',sku:'AML-100',price:55,disc:0,stock:150},
+    {id:'P-006',name:'Britannia Good Day Butter Cookies',brand:'BRITANNIA',ic:'ti-cookie',sku:'BRT-87',price:28,disc:7,stock:300},
+    {id:'P-007',name:'Parle-G Original Glucose Biscuits',brand:'PARLE',ic:'ti-cookie',sku:'PLG-60',price:10,disc:0,stock:500},
+    {id:'P-008',name:"Lay's Classic Salted Chips",brand:"LAY'S",ic:'ti-bow',sku:'LYS-26',price:20,disc:0,stock:300},
+    {id:'P-009',name:'Tropicana 100% Orange Juice',brand:'TROPICANA',ic:'ti-glass',sku:'TRP-200',price:32,disc:9,stock:200},
+    {id:'P-010',name:'Colgate MaxFresh Toothpaste',brand:'COLGATE',ic:'ti-heart',sku:'CLG-75',price:50,disc:9,stock:200},
+    {id:'P-011',name:'Vim Dishwash Liquid',brand:'VIM',ic:'ti-droplet',sku:'VIM-500',price:92,disc:8,stock:180},
+    {id:'P-012',name:'Tata Salt',brand:'TATA',ic:'ti-salt',sku:'TST-1K',price:24,disc:0,stock:650},
+    {id:'P-013',name:'Fortune Sunflower Oil',brand:'FORTUNE',ic:'ti-bottle',sku:'FSO-1L',price:145,disc:5,stock:120},
+    {id:'P-014',name:'Aashirvaad Whole Wheat Atta',brand:'AASHIRVAAD',ic:'ti-grain',sku:'AWA-5K',price:280,disc:4,stock:90},
+    {id:'P-015',name:'Nescafé Classic Coffee',brand:'NESTLE',ic:'ti-coffee',sku:'NFC-100',price:229,disc:6,stock:75},
+    {id:'P-016',name:'Lifebuoy Total Hand Wash',brand:'LIFEBUOY',ic:'ti-droplet',sku:'LBY-200',price:38,disc:5,stock:310},
+    {id:'P-017',name:'Dove Moisturising Body Wash',brand:'DOVE',ic:'ti-droplet',sku:'DVE-250',price:185,disc:10,stock:60},
+    {id:'P-018',name:'Head & Shoulders Anti-Dandruff Shampoo',brand:'HEAD & SHOULDERS',ic:'ti-bottle',sku:'HAS-180',price:199,disc:8,stock:140},
+    {id:'P-019',name:"KitKat 4 Finger Chocolate",brand:'NESTLÉ',ic:'ti-cookie',sku:'KKT-41',price:30,disc:0,stock:480},
+    {id:'P-020',name:'Haldirams Aloo Bhujia',brand:'HALDIRAMS',ic:'ti-bowl',sku:'HAB-200',price:65,disc:0,stock:220},
   ];
 
-  const state={};
-  PRODUCTS.forEach(p=>state[p.id]=p.open);
+  const thS='font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4;white-space:nowrap;text-align:left';
+  const tdS='padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle';
+  const imgPl=(ic)=>`<div style="width:38px;height:38px;border-radius:7px;border:1.5px solid #e5e7eb;background:#f9fafb;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${ic}" style="font-size:16px;color:#d1d5db"></i></div>`;
 
-  const inpN=`width:60px;padding:4px 6px;border:1.5px solid #e2d9ce;border-radius:5px;font-size:12px;text-align:right;outline:none;font-family:inherit;color:#374151;background:#fff`;
-  const inpS=`width:90px;padding:4px 6px;border:1.5px solid #e2d9ce;border-radius:5px;font-size:12px;outline:none;font-family:inherit;color:#374151;background:#fff`;
-  const inpP=`width:70px;padding:4px 6px;border:1.5px solid #e2d9ce;border-radius:5px;font-size:12px;text-align:right;outline:none;font-family:inherit;color:#374151;background:#fff`;
-  const thS='text-align:right;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#9ca3af;padding:10px 12px;background:#fafaf8;border-bottom:1px solid #f0ece4;white-space:nowrap';
-  const thSL='text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#9ca3af;padding:10px 12px;background:#fafaf8;border-bottom:1px solid #f0ece4;white-space:nowrap';
-  const tdS='padding:10px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:right';
-  const tdSL='padding:10px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:left';
+  const editIcon=`<button style="padding:4px 6px;border:1px solid #e5e7eb;border-radius:5px;background:#fff;cursor:pointer;display:flex;align-items:center;color:#6b7280" title="Edit"><i class="ti ti-pencil" style="font-size:13px"></i></button>`;
 
-  const imgPl=(ic)=>`<div style="width:38px;height:38px;border-radius:6px;border:1.5px solid #e5e7eb;background:#f9fafb;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${ic}" style="font-size:17px;color:#d1d5db"></i></div>`;
-
-  function buildTable(){
-    const rows=PRODUCTS.map(p=>{
-      const isOpen=state[p.id];
-      const totOh=p.variants.reduce((a,v)=>a+v.oh,0);
-      const totAvail=p.variants.reduce((a,v)=>a+v.avail,0);
-      const totComm=p.variants.reduce((a,v)=>a+v.comm,0);
-      const totUnav=p.variants.reduce((a,v)=>a+v.unav,0);
-      const totInc=p.variants.reduce((a,v)=>a+v.inc,0);
-
-      const chevron=`<i class="ti ${isOpen?'ti-chevron-down':'ti-chevron-right'}" style="font-size:13px;color:#9ca3af;cursor:pointer;flex-shrink:0" onclick="window._invToggle('${p.id}')"></i>`;
-
-      // Parent row
-      let html=`<tr style="background:${isOpen?'#fafaf8':'#fff'}" onmouseover="this.style.background='#f9f7f4'" onmouseout="this.style.background='${isOpen?'#fafaf8':'#fff'}'">
-        <td style="${tdSL};width:32px"><input type="checkbox" style="width:14px;height:14px;accent-color:#16a34a;cursor:pointer"></td>
-        <td style="${tdSL}">${imgPl(p.ic)}</td>
-        <td style="${tdSL};max-width:220px">
-          <div style="display:flex;align-items:center;gap:8px">
-            ${chevron}
-            <div>
-              <div style="font-size:12.5px;font-weight:600;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px">${p.name}</div>
-              <div style="font-size:10.5px;color:#9ca3af">${p.brand} &middot; ${p.variants.length} variants</div>
-            </div>
-          </div>
-        </td>
-        <td style="${tdSL}"><span style="font-size:11.5px;color:#9ca3af">No SKU</span></td>
-        <td style="${tdS}"><span style="font-size:13px;color:#374151">${totUnav}</span></td>
-        <td style="${tdS}"><span style="font-size:13px;color:#374151">${totComm}</span></td>
-        <td style="${tdS}"><span style="font-size:13px;font-weight:600;color:${totAvail<10?'#b91c1c':totAvail<30?'#ea580c':'#111827'}">${totAvail}</span></td>
-        <td style="${tdS}"><span style="font-size:13px;font-weight:600;color:#111827">${totOh}</span></td>
-        <td style="${tdS}"><span style="font-size:13px;color:${totInc>0?'#1d4ed8':'#374151'}">${totInc}</span></td>
-        <td style="${tdS}"><span style="font-size:10.5px;color:#9ca3af">—</span></td>
-        <td style="${tdS}"><span style="font-size:10.5px;color:#9ca3af">—</span></td>
-        <td style="${tdS}"><span style="font-size:10.5px;color:#9ca3af">—</span></td>
-      </tr>`;
-
-      // Variant sub-rows
-      if(isOpen){
-        p.variants.forEach((vr,vi)=>{
-          html+=`<tr style="background:#f8fdf8" onmouseover="this.style.background='#f0fdf4'" onmouseout="this.style.background='#f8fdf8'">
-            <td style="${tdSL};width:32px"><input type="checkbox" style="width:13px;height:13px;accent-color:#16a34a;cursor:pointer"></td>
-            <td style="${tdSL}"><div style="width:38px"></div></td>
-            <td style="${tdSL}">
-              <div style="display:flex;align-items:center;gap:6px;padding-left:24px">
-                <i class="ti ti-corner-down-right" style="font-size:11px;color:#d1d5db;flex-shrink:0"></i>
-                <span style="font-size:12.5px;color:#374151;font-weight:500">${vr.v}</span>
-              </div>
-            </td>
-            <td style="${tdSL}"><input style="${inpS}" value="${vr.sku}" placeholder="Enter SKU"></td>
-            <td style="${tdS}"><span style="font-size:13px;color:#374151">${vr.unav}</span></td>
-            <td style="${tdS}"><span style="font-size:13px;color:#374151">${vr.comm}</span></td>
-            <td style="${tdS}"><span style="font-size:13px;font-weight:600;color:${vr.avail<10?'#b91c1c':vr.avail<30?'#ea580c':'#111827'}">${vr.avail}</span></td>
-            <td style="${tdS}"><input style="${inpN}" type="number" value="${vr.oh}" min="0"></td>
-            <td style="${tdS}"><input style="${inpN}" type="number" value="${vr.inc}" min="0"></td>
-            <td style="${tdS}"><div style="display:flex;align-items:center;justify-content:flex-end;gap:2px"><span style="font-size:11px;color:#9ca3af">₹</span><input style="${inpP}" type="number" value="${vr.mrp}" min="0"></div></td>
-            <td style="${tdS}"><div style="display:flex;align-items:center;justify-content:flex-end;gap:2px"><span style="font-size:11px;color:#9ca3af">₹</span><input style="${inpP}" type="number" value="${vr.price}" min="0"></div></td>
-            <td style="${tdS}"><div style="display:flex;align-items:center;justify-content:flex-end;gap:2px"><input style="${inpP};width:50px" type="number" value="${vr.disc}" min="0" max="100"><span style="font-size:11px;color:#9ca3af">%</span></div></td>
-          </tr>`;
-        });
-      }
-      return html;
-    }).join('');
-
-    const thead=`<thead><tr>
-      <th style="${thSL};width:32px"><input type="checkbox" style="width:14px;height:14px;accent-color:#16a34a;cursor:pointer"></th>
-      <th style="${thSL};width:48px"></th>
-      <th style="${thSL}">Product</th>
-      <th style="${thSL}">SKU</th>
-      <th style="${thS}">Unavailable</th>
-      <th style="${thS}">Committed</th>
-      <th style="${thS}">Available</th>
-      <th style="${thS}">On hand</th>
-      <th style="${thS}">Incoming</th>
-      <th style="${thS}">MRP (₹)</th>
-      <th style="${thS}">Sell Price</th>
-      <th style="${thS}">Disc %</th>
-    </tr></thead>`;
-
-    const searchBar=`<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #f5f2ee">
-      <span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:5px;background:#16a34a;color:#fff;cursor:pointer">All</span>
-      <i class="ti ti-search" style="font-size:14px;color:#9ca3af;flex-shrink:0"></i>
-      <input style="flex:1;border:none;outline:none;font-size:13px;font-family:inherit;color:#374151;background:transparent" placeholder="Search and filter">
-      <i class="ti ti-layout-columns" style="font-size:16px;color:#9ca3af;cursor:pointer" title="Manage columns"></i>
-    </div>`;
-
-    return `<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-      ${searchBar}
-      <div style="overflow-x:auto">
-        <table style="width:100%;border-collapse:collapse;font-size:12.5px">${thead}<tbody>${rows}</tbody></table>
+  const rows=PRODUCTS.map(p=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+    <td style="${tdS}"><span style="font-size:11.5px;color:#9ca3af;font-family:monospace">${p.id}</span></td>
+    <td style="${tdS}">${imgPl(p.ic)}</td>
+    <td style="${tdS}">
+      <div style="font-size:13px;font-weight:600;color:#111827">${p.name}</div>
+      <div style="font-size:11px;color:#9ca3af;margin-top:2px">${p.brand}</div>
+    </td>
+    <td style="${tdS}"><span style="font-size:12.5px;color:#374151;font-family:monospace">${p.sku}</span></td>
+    <td style="${tdS}">
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:13px;color:#111827;font-weight:500">₹${p.price}</span>
+        ${editIcon}
       </div>
-      <div style="padding:10px 14px;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between">
-        <span style="font-size:12px;color:#9ca3af">Showing ${PRODUCTS.length} products · ${PRODUCTS.reduce((a,p)=>a+p.variants.length,0)} variants total</span>
-        <button onclick="(function(){PRODUCTS.filter(function(p){return window._invState&&window._invState[p.id];}).forEach(function(p){alert('Saved: '+p.name);});})()" style="padding:6px 18px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Save Changes</button>
+    </td>
+    <td style="${tdS}">
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:13px;color:#374151">${p.disc}%</span>
+        ${editIcon}
       </div>
-    </div>`;
-  }
+    </td>
+    <td style="${tdS}">
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:13px;font-weight:600;color:${p.stock<20?'#b91c1c':p.stock<50?'#ea580c':'#111827'}">${p.stock}</span>
+        ${editIcon}
+      </div>
+    </td>
+  </tr>`).join('');
 
-  window._invState=state;
-  window._invToggle=(id)=>{
-    state[id]=!state[id];
-    window._invState=state;
-    pages.inventory();
-  };
+  const thead=`<thead><tr>
+    <th style="${thS}">ID</th>
+    <th style="${thS}">Image</th>
+    <th style="${thS}">Product Name</th>
+    <th style="${thS}">SKU</th>
+    <th style="${thS}">Price</th>
+    <th style="${thS}">Discount</th>
+    <th style="${thS}">Stock</th>
+  </tr></thead>`;
 
-  scroll.innerHTML=pw+buildTable()+'</div>';
+  const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 3,240 products</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','162','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
+
+  const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px">${thead}<tbody>${rows}</tbody></table>${pgn}</div>`;
+
+  scroll.innerHTML=pw+tableHtml+'</div>';
 },
   };
 
