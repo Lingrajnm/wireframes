@@ -1146,10 +1146,78 @@ function renderTopbar(){
 function renderHeaderSearch(){
   const bar=document.getElementById('hdrSearchBar');
   if(!bar) return;
-  // Pages that get the expanded header search
-  const searchPages={'orders':'Search by order no., customer name or phone…','cs-orders':'Search CS orders by order no. or customer…','abandoned':'Search abandoned carts by customer or product…'};
-  const placeholder=searchPages[activePage];
-  if(!placeholder || !hasData){bar.style.display='none';bar.innerHTML='';return;}
+  // Pages that never get a search bar regardless of hasData
+  const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount'];
+  if(noSearch.includes(activePage)){bar.style.display='none';bar.innerHTML='';return;}
+  // Contextual placeholders for every module
+  const searchPages={
+    // Orders
+    'orders':'Search by order no., customer name or phone…',
+    'cs-orders':'Search CS orders by order no. or customer…',
+    'abandoned':'Search abandoned carts by customer or product…',
+    // Operations
+    'picking':'Search picking queue by order no. or store…',
+    'packing':'Search packing queue by order no. or store…',
+    'checking':'Search checking queue by order no.…',
+    'rack':'Search rack locations by ID or zone…',
+    'slotblock':'Search slot blocks by date or store…',
+    'capacity':'Search capacity plans by store or date…',
+    'clickcollect':'Search click & collect configurations…',
+    // Customers
+    'customers':'Search by name, email or phone number…',
+    // Catalogue
+    'products':'Search by product name, SKU or barcode…',
+    'categories':'Search categories by name or parent…',
+    'brands':'Search brands by name…',
+    'tags':'Search tags by name…',
+    'variants':'Search product variants by name or attribute…',
+    'subs':'Search substitution groups by product…',
+    'inventory':'Search inventory by product name or SKU…',
+    'bulkupload':'Search bulk upload jobs by filename or date…',
+    'cat-dash':'Search catalogue dashboard…',
+    // Marketing
+    'coupons':'Search coupons by code or title…',
+    'offers':'Search offers by name or product…',
+    'campaigns':'Search campaigns by name or channel…',
+    'banners':'Search banners by name or placement…',
+    'segments':'Search customer segments by name…',
+    // Website
+    'web-layout':'Search layouts and themes…',
+    'web-nav':'Search navigation menus by title…',
+    'web-pages':'Search static pages by title or slug…',
+    'web-blog':'Search blog posts by title or tag…',
+    'web-sched':'Search scheduled pages by title or date…',
+    'web-ann':'Search announcements by title…',
+    // Logistics
+    'vehicles':'Search vehicles by ID or type…',
+    'vplanning':'Search vehicle plans by date or route…',
+    'trips':'Search trips by ID or delivery agent…',
+    'tripplan':'Search trip plans by date or area…',
+    'runners':'Search delivery agents by name or zone…',
+    'area':'Search delivery areas by pincode or name…',
+    'shipping':'Search couriers and shipping rules…',
+    // Reports & Logs
+    'analytics':'Search analytics by metric or date range…',
+    'reports':'Search reports by name or category…',
+    'actlogs':'Search activity logs by user or action…',
+    // HR
+    'employees':'Search staff by name, role or store…',
+    'designations':'Search designations by title…',
+    'attendance':'Search attendance by staff name or date…',
+    'leave':'Search leave requests by staff or date…',
+    'roles':'Search roles and permissions by name…',
+    // Settings
+    'stores-cfg':'Search stores by name or location…',
+    'orderconf':'Search order configuration settings…',
+    'slotsetup':'Search slot configurations by store…',
+    'payments':'Search payment methods and gateways…',
+    'comms':'Search communication templates by name…',
+    'mobile':'Search mobile app settings…',
+    'api':'Search API keys and webhooks…',
+    'ext':'Search extensions by name or category…',
+  };
+  const placeholder=searchPages[activePage]||'Search…';
+  if(!hasData){bar.style.display='none';bar.innerHTML='';return;}
   const ps=window._pageSearch||{};
   const showCols=activePage==='orders'&&ps.colPicker;
   const showFilters=!!ps.advPanel;
