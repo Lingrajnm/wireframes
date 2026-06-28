@@ -1174,7 +1174,7 @@ function renderTopbar(){
 function renderHeaderSearch(){
   const bar=document.getElementById('hdrSearchBar');
   if(!bar) return;
-  const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount','abandoned','rack','capacity','slotblock'];
+  const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount','abandoned','rack','capacity','slotblock','web-blog'];
   if(noSearch.includes(activePage)){bar.style.display='none';bar.innerHTML='';return;}
   if(!hasData){bar.style.display='none';bar.innerHTML='';return;}
   const ps=window._pageSearch||{};
@@ -3154,36 +3154,37 @@ function renderFilled(scroll){
       const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
       const imgPl=`<div style="width:44px;height:44px;border-radius:6px;border:1.5px solid #e5e7eb;background:#f9fafb;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-tag" style="font-size:18px;color:#d1d5db"></i></div>`;
       const OFFERS=[
-        ['BUY 1, Get 45% Off | BUY 2, Get 50% Off | BUY 3, Get 66% Off','16 Jun 2026 – 31 Jul 2026','Buy n or more of X(or X, Y) and get discount on MRP',true],
-        ['Buy any (1, 2, 3) or more from product : CARE 4 HOMES HAND WASH POUCH LAVENDER 750 ML. and Get Items (@ 45% Off, @ 50% Off, @ 66% Off) respectively','16 Jun 2026 – 31 Jul 2026','Buy n or more of X(or X, Y) and get discount on MRP',false],
-        ['Buy any (1, 2) or more from product : CARE 4 HOMES AIR FRESHNER LEMON 225 ML and Get Items (@ 40% Off, @ 50% Off) each respectively','10 Jun 2026 – 11 Jun 2026','Buy n or more of X(or X, Y) and get discount on MRP',false],
-        ['Buy More, Save More: 1+ Get 40% Off, 2+ Get 50% Off, 3+ Get 66% Off','05 Jun 2026 – 05 Jun 2026','Buy n or more of X(or X, Y) and get discount on MRP',false],
-        ['Buy 2 CARE 4 HOMES AIR FRESHNER GOLDEN FLOWER 225 ML @ 50% Off','04 Jun 2026 – 02 Jun 2027','Buy X Product At Price (Z)',false],
-        ['Buy 2 CARE 4 HOMES AIR FRESHNER LAVENDER 225 ML @ 50% Off','04 Jun 2026 – 02 Jun 2027','Buy X Product At Price (Z)',false],
-        ['Buy 2 CARE 4 HOMES AIR FRESHNER SANDAL 225 ML @ 50% Off','04 Jun 2026 – 02 Jun 2027','Buy X Product At Price (Z)',false],
-        ['Buy 2 SUPER MOM SCISSOR 10" and Get 1 Free','01 Jun 2026 – 30 Jun 2026','Buy X Get Y Free',true],
-        ['Flat 30% Off on APEX WASH N STORAGE BASKET','25 May 2026 – 25 Jul 2026','Flat Discount on Product',true],
-        ['Buy any 3 REGAL products and get 20% off on all','01 May 2026 – 31 Jul 2026','Buy n or more of X(or X, Y) and get discount on MRP',true],
-        ['SUMMER SAVER: Buy ₹500 worth and get 10% Off','15 May 2026 – 15 Aug 2026','Cart Discount on Min Order Value',true],
-        ['Buy 2 TEA STRAINER STEEL, Get 1 at 50% Off','10 Apr 2026 – 10 Jul 2026','Buy X Get Y Free',false],
-        ['Combo Offer: SUPER MOM COCONUT OPENER + PEELER SET at ₹299','01 Apr 2026 – 30 Jun 2026','Bundle Price',true],
-        ['CARE 4 HOMES: Buy 3 Get 1 Free on all Air Fresheners','01 Mar 2026 – 30 Sep 2026','Buy n Get m Free',true],
-        ['Flat ₹50 Off on REGAL KNIFE SHARPENER','01 Jun 2026 – 31 Dec 2026','Flat Discount on Product',false],
-        ['APEX COLANDER BASKET @ Special Price ₹149','15 May 2026 – 15 Aug 2026','Buy X Product At Price (Z)',true],
-        ['SUPER MOM 5 IN 1 GRATER: Buy 2 Get 25% Off','01 Jun 2026 – 31 Aug 2026','Buy n or more of X(or X, Y) and get discount on MRP',true],
-        ['Clearance Sale: 40% Off on selected FANCY LIGHTER','20 Jun 2026 – 20 Jul 2026','Flat Discount on Product',false],
-        ['FRIZZY ICE TRAY Combo Pack: Buy 2 @ ₹99','05 Jun 2026 – 05 Sep 2026','Buy X Product At Price (Z)',true],
-        ['Weekend Deal: 15% Off on all Cutlery & Kitchenware','01 Jun 2026 – 28 Jun 2026','Category Discount',false],
+        ['OFR-001','BUY 1, Get 45% Off | BUY 2, Get 50% Off | BUY 3, Get 66% Off','16 Jun 2026 – 31 Jul 2026','Buy n or more of X(or X, Y) and get discount on MRP',true],
+        ['OFR-002','Buy any (1, 2, 3) or more from product : CARE 4 HOMES HAND WASH POUCH LAVENDER 750 ML. and Get Items (@ 45% Off, @ 50% Off, @ 66% Off) respectively','16 Jun 2026 – 31 Jul 2026','Buy n or more of X(or X, Y) and get discount on MRP',false],
+        ['OFR-003','Buy any (1, 2) or more from product : CARE 4 HOMES AIR FRESHNER LEMON 225 ML and Get Items (@ 40% Off, @ 50% Off) each respectively','10 Jun 2026 – 11 Jun 2026','Buy n or more of X(or X, Y) and get discount on MRP',false],
+        ['OFR-004','Buy More, Save More: 1+ Get 40% Off, 2+ Get 50% Off, 3+ Get 66% Off','05 Jun 2026 – 05 Jun 2026','Buy n or more of X(or X, Y) and get discount on MRP',false],
+        ['OFR-005','Buy 2 CARE 4 HOMES AIR FRESHNER GOLDEN FLOWER 225 ML @ 50% Off','04 Jun 2026 – 02 Jun 2027','Buy X Product At Price (Z)',false],
+        ['OFR-006','Buy 2 CARE 4 HOMES AIR FRESHNER LAVENDER 225 ML @ 50% Off','04 Jun 2026 – 02 Jun 2027','Buy X Product At Price (Z)',false],
+        ['OFR-007','Buy 2 CARE 4 HOMES AIR FRESHNER SANDAL 225 ML @ 50% Off','04 Jun 2026 – 02 Jun 2027','Buy X Product At Price (Z)',false],
+        ['OFR-008','Buy 2 SUPER MOM SCISSOR 10" and Get 1 Free','01 Jun 2026 – 30 Jun 2026','Buy X Get Y Free',true],
+        ['OFR-009','Flat 30% Off on APEX WASH N STORAGE BASKET','25 May 2026 – 25 Jul 2026','Flat Discount on Product',true],
+        ['OFR-010','Buy any 3 REGAL products and get 20% off on all','01 May 2026 – 31 Jul 2026','Buy n or more of X(or X, Y) and get discount on MRP',true],
+        ['OFR-011','SUMMER SAVER: Buy ₹500 worth and get 10% Off','15 May 2026 – 15 Aug 2026','Cart Discount on Min Order Value',true],
+        ['OFR-012','Buy 2 TEA STRAINER STEEL, Get 1 at 50% Off','10 Apr 2026 – 10 Jul 2026','Buy X Get Y Free',false],
+        ['OFR-013','Combo Offer: SUPER MOM COCONUT OPENER + PEELER SET at ₹299','01 Apr 2026 – 30 Jun 2026','Bundle Price',true],
+        ['OFR-014','CARE 4 HOMES: Buy 3 Get 1 Free on all Air Fresheners','01 Mar 2026 – 30 Sep 2026','Buy n Get m Free',true],
+        ['OFR-015','Flat ₹50 Off on REGAL KNIFE SHARPENER','01 Jun 2026 – 31 Dec 2026','Flat Discount on Product',false],
+        ['OFR-016','APEX COLANDER BASKET @ Special Price ₹149','15 May 2026 – 15 Aug 2026','Buy X Product At Price (Z)',true],
+        ['OFR-017','SUPER MOM 5 IN 1 GRATER: Buy 2 Get 25% Off','01 Jun 2026 – 31 Aug 2026','Buy n or more of X(or X, Y) and get discount on MRP',true],
+        ['OFR-018','Clearance Sale: 40% Off on selected FANCY LIGHTER','20 Jun 2026 – 20 Jul 2026','Flat Discount on Product',false],
+        ['OFR-019','FRIZZY ICE TRAY Combo Pack: Buy 2 @ ₹99','05 Jun 2026 – 05 Sep 2026','Buy X Product At Price (Z)',true],
+        ['OFR-020','Weekend Deal: 15% Off on all Cutlery & Kitchenware','01 Jun 2026 – 28 Jun 2026','Category Discount',false],
       ];
-      const rows=OFFERS.map(([desc,dates,type,on])=>[
+      const rows=OFFERS.map(([id,desc,dates,type,on])=>[
+        `<span style="font-size:11.5px;color:#9ca3af;font-family:monospace">${id}</span>`,
         imgPl,
-        `<div><div style="font-size:12.5px;font-weight:500;color:#111827;max-width:500px;line-height:1.4">${desc}</div><div style="font-size:11px;color:#9ca3af;margin-top:3px">${dates}</div></div>`,
+        `<div><div style="font-size:12.5px;font-weight:500;color:#111827;max-width:460px;line-height:1.4">${desc}</div><div style="font-size:11px;color:#9ca3af;margin-top:3px">${dates}</div></div>`,
         `<span style="font-size:12px;color:#374151">${type}</span>`,
         badge(on?'Enabled':'Disabled',on?'#15803d':'#6b7280',on?'#dcfce7':'#f3f4f6'),
         act,
       ]);
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 20 offers</span><div style="display:flex;gap:4px">${['‹','1','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
-      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Image','Description','Type','Status','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['ID','Image','Description','Type','Status','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
       scroll.innerHTML=pw+tableHtml+'</div>';
     },
     'web-pages': ()=>{
@@ -3564,36 +3565,40 @@ function renderFilled(scroll){
       scroll.innerHTML=pw+tableHtml+'</div>';
     },
     inventory: ()=>{
-  const PRODUCTS=[
-    {id:'P-001',name:'Harpic Toilet Cleaner',brand:'HARPIC',ic:'ti-droplet',sku:'HRP-1000',price:72,disc:15,stock:45},
-    {id:'P-002',name:'Dettol Original Handwash',brand:'DETTOL',ic:'ti-wash',sku:'DTL-200',price:55,disc:15,stock:200},
-    {id:'P-003',name:'Surf Excel Easy Wash',brand:'SURF EXCEL',ic:'ti-shirt',sku:'SRF-500',price:89,disc:10,stock:100},
-    {id:'P-004',name:'Maggi Masala Noodles',brand:'NESTLE',ic:'ti-noodles',sku:'MGI-70',price:14,disc:0,stock:500},
-    {id:'P-005',name:'Amul Butter',brand:'AMUL',ic:'ti-cheese',sku:'AML-100',price:55,disc:0,stock:150},
-    {id:'P-006',name:'Britannia Good Day Butter Cookies',brand:'BRITANNIA',ic:'ti-cookie',sku:'BRT-87',price:28,disc:7,stock:300},
-    {id:'P-007',name:'Parle-G Original Glucose Biscuits',brand:'PARLE',ic:'ti-cookie',sku:'PLG-60',price:10,disc:0,stock:500},
-    {id:'P-008',name:"Lay's Classic Salted Chips",brand:"LAY'S",ic:'ti-bow',sku:'LYS-26',price:20,disc:0,stock:300},
-    {id:'P-009',name:'Tropicana 100% Orange Juice',brand:'TROPICANA',ic:'ti-glass',sku:'TRP-200',price:32,disc:9,stock:200},
-    {id:'P-010',name:'Colgate MaxFresh Toothpaste',brand:'COLGATE',ic:'ti-heart',sku:'CLG-75',price:50,disc:9,stock:200},
-    {id:'P-011',name:'Vim Dishwash Liquid',brand:'VIM',ic:'ti-droplet',sku:'VIM-500',price:92,disc:8,stock:180},
-    {id:'P-012',name:'Tata Salt',brand:'TATA',ic:'ti-salt',sku:'TST-1K',price:24,disc:0,stock:650},
-    {id:'P-013',name:'Fortune Sunflower Oil',brand:'FORTUNE',ic:'ti-bottle',sku:'FSO-1L',price:145,disc:5,stock:120},
-    {id:'P-014',name:'Aashirvaad Whole Wheat Atta',brand:'AASHIRVAAD',ic:'ti-grain',sku:'AWA-5K',price:280,disc:4,stock:90},
-    {id:'P-015',name:'Nescafé Classic Coffee',brand:'NESTLE',ic:'ti-coffee',sku:'NFC-100',price:229,disc:6,stock:75},
-    {id:'P-016',name:'Lifebuoy Total Hand Wash',brand:'LIFEBUOY',ic:'ti-droplet',sku:'LBY-200',price:38,disc:5,stock:310},
-    {id:'P-017',name:'Dove Moisturising Body Wash',brand:'DOVE',ic:'ti-droplet',sku:'DVE-250',price:185,disc:10,stock:60},
-    {id:'P-018',name:'Head & Shoulders Anti-Dandruff Shampoo',brand:'HEAD & SHOULDERS',ic:'ti-bottle',sku:'HAS-180',price:199,disc:8,stock:140},
-    {id:'P-019',name:"KitKat 4 Finger Chocolate",brand:'NESTLÉ',ic:'ti-cookie',sku:'KKT-41',price:30,disc:0,stock:480},
-    {id:'P-020',name:'Haldirams Aloo Bhujia',brand:'HALDIRAMS',ic:'ti-bowl',sku:'HAB-200',price:65,disc:0,stock:220},
+    const PRODUCTS=[
+    {id:'P-001',name:'Harpic Toilet Cleaner 1 Lt',    brand:'HARPIC',     ic:'ti-droplet',   sku:'HRP-1000',price:72, disc:15,stock:45},
+    {id:'P-002',name:'Harpic Toilet Cleaner 500 ml',  brand:'HARPIC',     ic:'ti-droplet',   sku:'HRP-500', price:42, disc:14,stock:120},
+    {id:'P-003',name:'Harpic Toilet Cleaner 200 ml',  brand:'HARPIC',     ic:'ti-droplet',   sku:'HRP-200', price:22, disc:12,stock:80},
+    {id:'P-004',name:'Dettol Original Handwash 200 ml',brand:'DETTOL',    ic:'ti-wash',      sku:'DTL-200', price:55, disc:15,stock:200},
+    {id:'P-005',name:'Dettol Original Handwash 500 ml Refill',brand:'DETTOL',ic:'ti-wash',   sku:'DTL-500R',price:102,disc:15,stock:90},
+    {id:'P-006',name:'Dettol Original Handwash 1 Lt Pump',brand:'DETTOL', ic:'ti-wash',      sku:'DTL-1000',price:178,disc:15,stock:60},
+    {id:'P-007',name:'Surf Excel Easy Wash 500g',     brand:'SURF EXCEL', ic:'ti-shirt',     sku:'SRF-500', price:89, disc:10,stock:100},
+    {id:'P-008',name:'Surf Excel Easy Wash 1 Kg',     brand:'SURF EXCEL', ic:'ti-shirt',     sku:'SRF-1K',  price:165,disc:11,stock:50},
+    {id:'P-009',name:'Surf Excel Easy Wash 2 Kg',     brand:'SURF EXCEL', ic:'ti-shirt',     sku:'SRF-2K',  price:310,disc:11,stock:30},
+    {id:'P-010',name:'Maggi Masala Noodles 70g',      brand:'NESTLE',     ic:'ti-cookie',    sku:'MGI-70',  price:14, disc:0, stock:500},
+    {id:'P-011',name:'Maggi Masala Noodles 280g 4-Pack',brand:'NESTLE',   ic:'ti-cookie',    sku:'MGI-280', price:52, disc:4, stock:200},
+    {id:'P-012',name:'Maggi Masala Noodles 560g 8-Pack',brand:'NESTLE',   ic:'ti-cookie',    sku:'MGI-560', price:100,disc:5, stock:100},
+    {id:'P-013',name:'Amul Butter 100g',              brand:'AMUL',       ic:'ti-cheese',    sku:'AML-100', price:55, disc:0, stock:150},
+    {id:'P-014',name:'Amul Butter 500g',              brand:'AMUL',       ic:'ti-cheese',    sku:'AML-500', price:260,disc:0, stock:50},
+    {id:'P-015',name:'Britannia Good Day Butter Cookies 87g',brand:'BRITANNIA',ic:'ti-cookie',sku:'BRT-87', price:28, disc:7, stock:300},
+    {id:'P-016',name:'Britannia Good Day Butter Cookies 216g',brand:'BRITANNIA',ic:'ti-cookie',sku:'BRT-216',price:65,disc:7, stock:100},
+    {id:'P-017',name:'Parle-G Original Glucose Biscuits 60g',brand:'PARLE',ic:'ti-cookie',   sku:'PLG-60',  price:10, disc:0, stock:500},
+    {id:'P-018',name:'Parle-G Original Glucose Biscuits 250g',brand:'PARLE',ic:'ti-cookie',  sku:'PLG-250', price:38, disc:0, stock:200},
+    {id:'P-019',name:"Lay's Classic Salted Chips 26g",brand:"LAY'S",      ic:'ti-bowl',      sku:'LYS-26',  price:20, disc:0, stock:300},
+    {id:'P-020',name:"Lay's Classic Salted Chips 52g",brand:"LAY'S",      ic:'ti-bowl',      sku:'LYS-52',  price:38, disc:5, stock:200},
+    {id:'P-021',name:'Colgate MaxFresh Toothpaste 75g',brand:'COLGATE',   ic:'ti-heart',     sku:'CLG-75',  price:50, disc:9, stock:200},
+    {id:'P-022',name:'Colgate MaxFresh Toothpaste 150g',brand:'COLGATE',  ic:'ti-heart',     sku:'CLG-150', price:90, disc:10,stock:100},
+    {id:'P-023',name:'Tata Salt 1 Kg',                brand:'TATA',       ic:'ti-droplet',   sku:'TST-1K',  price:24, disc:0, stock:650},
+    {id:'P-024',name:'Fortune Sunflower Oil 1 Lt',    brand:'FORTUNE',    ic:'ti-bottle',    sku:'FSO-1L',  price:145,disc:5, stock:120},
+    {id:'P-025',name:'Nescafé Classic Coffee 100g',   brand:'NESTLE',     ic:'ti-coffee',    sku:'NFC-100', price:229,disc:6, stock:75},
   ];
 
-  const thS='font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4;white-space:nowrap;text-align:left';
-  const tdS='padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle';
-  const imgPl=(ic)=>`<div style="width:38px;height:38px;border-radius:7px;border:1.5px solid #e5e7eb;background:#f9fafb;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${ic}" style="font-size:16px;color:#d1d5db"></i></div>`;
+    const thS='font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4;white-space:nowrap;text-align:left';
+    const tdS='padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle';
+    const imgPl=(ic)=>`<div style="width:36px;height:36px;border-radius:7px;border:1.5px solid #e5e7eb;background:#f9fafb;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${ic}" style="font-size:15px;color:#d1d5db"></i></div>`;
+    const editIcon=`<button style="padding:4px 6px;border:1px solid #e5e7eb;border-radius:5px;background:#fff;cursor:pointer;display:flex;align-items:center;color:#6b7280" title="Edit"><i class="ti ti-pencil" style="font-size:13px"></i></button>`;
 
-  const editIcon=`<button style="padding:4px 6px;border:1px solid #e5e7eb;border-radius:5px;background:#fff;cursor:pointer;display:flex;align-items:center;color:#6b7280" title="Edit"><i class="ti ti-pencil" style="font-size:13px"></i></button>`;
-
-  const rows=PRODUCTS.map(p=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+    const rows=PRODUCTS.map(p=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
     <td style="${tdS}"><span style="font-size:11.5px;color:#9ca3af;font-family:monospace">${p.id}</span></td>
     <td style="${tdS}">${imgPl(p.ic)}</td>
     <td style="${tdS}">
@@ -3621,7 +3626,7 @@ function renderFilled(scroll){
     </td>
   </tr>`).join('');
 
-  const thead=`<thead><tr>
+    const thead=`<thead><tr>
     <th style="${thS}">ID</th>
     <th style="${thS}">Image</th>
     <th style="${thS}">Product Name</th>
@@ -3631,82 +3636,13 @@ function renderFilled(scroll){
     <th style="${thS}">Stock</th>
   </tr></thead>`;
 
-  const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 3,240 products</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','162','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
+    const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 25 of 9,720 variants</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','389','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
 
-  const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px">${thead}<tbody>${rows}</tbody></table>${pgn}</div>`;
+    const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px">${thead}<tbody>${rows}</tbody></table>${pgn}</div>`;
 
   scroll.innerHTML=pw+tableHtml+'</div>';
 },
-    actlogs: ()=>{
-      const selS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:13px;outline:none;font-family:inherit;color:#374151;background:#fff;cursor:pointer;appearance:auto';
-      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
-      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-          <div><div style="${lblS}">Select Entity</div>
-            <select style="${selS}"><option>Store</option><option>Order</option><option>Product</option><option>Customer</option><option>Coupon</option><option>User</option><option>Trip</option><option>Vehicle</option></select>
-          </div>
-          <div><div style="${lblS}">Select Store</div>
-            <select style="${selS}"><option value="">Choose store</option><option>Sodhis Supermarket</option><option>Al Hamra Branch</option><option>Corniche Branch</option><option>Ajlan Branch</option></select>
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-          <div><div style="${lblS}">Select User</div>
-            <select style="${selS}"><option value="">Choose user name</option><option>Sodhis Supermarket</option><option>Lingraj</option><option>Sunil Kumar</option><option>Ankit</option><option>Praveen Kumar</option></select>
-          </div>
-          <div><div style="${lblS}">Select Date Range</div>
-            <div style="display:flex;align-items:center;gap:8px;border:1px solid #e2d9ce;border-radius:6px;padding:8px 12px;background:#fff">
-              <i class="ti ti-calendar" style="font-size:16px;color:#6b7280;flex-shrink:0"></i>
-              <input type="date" style="border:none;outline:none;font-size:13px;font-family:inherit;color:#9ca3af;background:transparent;flex:1">
-              <span style="color:#6b7280;font-size:14px">→</span>
-              <input type="date" style="border:none;outline:none;font-size:13px;font-family:inherit;color:#9ca3af;background:transparent;flex:1">
-            </div>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px">
-          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
-          <button style="padding:8px 22px;background:#f3f4f6;color:#374151;border:none;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
-        </div>
-      </div>`;
-      const EC={Store:['#1d4ed8','#dbeafe'],Order:['#7c3aed','#f5f3ff'],Product:['#15803d','#dcfce7'],Customer:['#0891b2','#ecfeff'],Coupon:['#b45309','#fff7ed'],User:['#ea580c','#fff7ed'],Trip:['#374151','#f3f4f6'],Vehicle:['#374151','#f3f4f6']};
-      const LOGS=[
-        {e:'Store', store:"SODHI'S | Khanna Market | New Delhi", user:'Sodhis Supermarket', date:'25 Jun 2026, 07:01 PM', action:`Store <strong>"SODHI'S | Khanna Market | New Delhi"</strong> Modified (ID: 32459)`},
-        {e:'Store', store:"SODHI'S | Khanna Market | New Delhi", user:'Sodhis Supermarket', date:'25 Jun 2026, 06:57 PM', action:`Store <strong>"SODHI'S | Khanna Market | New Delhi"</strong> Modified (ID: 32459)`},
-        {e:'Store', store:"SODHI'S | Khanna Market | New Delhi", user:'Sodhis Supermarket', date:'25 Jun 2026, 06:56 PM', action:`Store <strong>"SODHI'S | Khanna Market | New Delhi"</strong> address Modified (ID: 32459)`},
-        {e:'Store', store:"SODHI'S | Khanna Market | New Delhi", user:'Sodhis Supermarket', date:'25 Jun 2026, 06:56 PM', action:`Store <strong>"SODHI'S | Khanna Market | New Delhi"</strong> Status changed from Disabled to Enabled (ID: 32459)`},
-        {e:'Store', store:"SODHI'S | Khanna Market | New Delhi", user:'Sodhis Supermarket', date:'25 Jun 2026, 06:55 PM', action:`Store <strong>"SODHI'S | Khanna Market | New Delhi"</strong> Status changed from Enabled to Disabled (ID: 32459)`},
-        {e:'Order', store:'Al Hamra Branch', user:'Lingraj', date:'25 Jun 2026, 06:42 PM', action:`Order <strong>#ORD-20260625-1234</strong> status changed from Pending to Confirmed (ID: 1234)`},
-        {e:'Product', store:'Sodhis Supermarket', user:'Sunil Kumar', date:'25 Jun 2026, 05:09 PM', action:`Product <strong>"Amul Butter 500g"</strong> price updated from ₹260 to ₹249 (ID: 8821)`},
-        {e:'Store', store:"SODHI'S | Khanna Market | New Delhi", user:'Sodhis Supermarket', date:'25 Jun 2026, 05:09 PM', action:`Store <strong>"SODHI'S | Khanna Market | New Delhi"</strong> Status changed from Disabled to Enabled (ID: 32459)`},
-        {e:'Coupon', store:'Sodhis Supermarket', user:'Sodhis Supermarket', date:'25 Jun 2026, 05:08 PM', action:`Coupon <strong>"SAVE20"</strong> status changed from Enabled to Disabled (ID: 442)`},
-        {e:'Store', store:"SODHI'S | Khanna Market | New Delhi", user:'Sodhis Supermarket', date:'25 Jun 2026, 05:08 PM', action:`Store <strong>"SODHI'S | Khanna Market | New Delhi"</strong> address countryCode Modified (ID: 32459)`},
-        {e:'Customer', store:'Corniche Branch', user:'Ankit', date:'25 Jun 2026, 04:30 PM', action:`Customer account <strong>"sumairrajvansha.jarang@gmail.com"</strong> disabled (ID: 196162)`},
-        {e:'Store', store:'Al Hamra Branch', user:'Lingraj', date:'25 Jun 2026, 03:15 PM', action:`Store <strong>"Al Hamra Branch"</strong> slot blocked for 25 Jun 06:00 PM – 08:00 PM (ID: 32460)`},
-        {e:'Order', store:'Sodhis Supermarket', user:'Sunil Kumar', date:'25 Jun 2026, 02:44 PM', action:`Order <strong>#ORD-20260625-0998</strong> assigned to Trip TRP-2026-0063 (ID: 998)`},
-        {e:'Product', store:'Sodhis Supermarket', user:'Sodhis Supermarket', date:'25 Jun 2026, 01:30 PM', action:`Product <strong>"Harpic 500ml"</strong> inventory updated — stock set to 120 (ID: 7741)`},
-        {e:'User', store:'—', user:'Lingraj', date:'25 Jun 2026, 11:05 AM', action:`User <strong>"sunil.kumar@zopsmart.com"</strong> role updated to Store Manager (ID: 301)`},
-        {e:'Store', store:'Corniche Branch', user:'Ankit', date:'25 Jun 2026, 10:30 AM', action:`Store <strong>"Corniche Branch"</strong> operating hours updated (ID: 32461)`},
-        {e:'Trip', store:'Sodhis Supermarket', user:'Sodhis Supermarket', date:'25 Jun 2026, 09:15 AM', action:`Trip <strong>TRP-2026-0062</strong> created — Shola Route, Shola Bike 2 (ID: 62)`},
-        {e:'Order', store:'Al Hamra Branch', user:'Sodhis Supermarket', date:'25 Jun 2026, 08:15 AM', action:`Order <strong>#ORD-20260625-0112</strong> cancelled by admin (ID: 112)`},
-        {e:'Coupon', store:'Sodhis Supermarket', user:'Lingraj', date:'25 Jun 2026, 07:50 AM', action:`Coupon <strong>"WELCOME10"</strong> created — 10% off, valid 25 Jun – 31 Jul 2026 (ID: 443)`},
-        {e:'Vehicle', store:'Al Hamra Branch', user:'Sunil Kumar', date:'25 Jun 2026, 07:10 AM', action:`Vehicle <strong>"Al Hamra Van 1"</strong> status changed to Maintenance (ID: 7)`},
-      ];
-      const thS='text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4;white-space:nowrap';
-      const tdS='padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:top';
-      const rows=LOGS.map(l=>{
-        const [c,bg]=EC[l.e]||['#374151','#f3f4f6'];
-        return `<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
-          <td style="${tdS}"><span style="display:inline-flex;padding:3px 9px;border-radius:5px;background:${bg};color:${c};font-size:11.5px;font-weight:700;white-space:nowrap">${l.e}</span></td>
-          <td style="${tdS};max-width:180px"><span style="font-size:12.5px;color:#374151;line-height:1.4">${l.store}</span></td>
-          <td style="${tdS};white-space:nowrap"><span style="font-size:12.5px;color:#374151">${l.user}</span></td>
-          <td style="${tdS};white-space:nowrap"><span style="font-size:12.5px;color:#6b7280">${l.date}</span></td>
-          <td style="${tdS}"><span style="font-size:12.5px;color:#374151;line-height:1.5">${l.action}</span></td>
-        </tr>`;
-      }).join('');
-      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 2,847 logs</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','143','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
-      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse"><thead><tr><th style="${thS}">Entity</th><th style="${thS}">Store Name</th><th style="${thS}">User</th><th style="${thS}">Date</th><th style="${thS}">Action</th></tr></thead><tbody>${rows}</tbody></table>${pgn}</div>`;
-      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
-    },
-      reports: ()=>{
+    reports: ()=>{
       const REPORTS=[
         {name:'Order Sales Reports',       ic:'ti-receipt',         recent:true},
         {name:'Individual Picker Performance', ic:'ti-user-check',  recent:true},
@@ -3781,6 +3717,49 @@ function renderFilled(scroll){
         ${recentGrid}
         ${allGrid}
       </div>`;
+    },
+    'web-blog': ()=>{
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const POSTS=[
+        ['Summer Shoe Care & Health Tips: Simple Steps for Everyday Comfort','21 May 2026','01:05 PM','Manaj Shetty'],
+        ['Baseball – Precision Meets Passion','25 Aug 2025','02:48 PM','Manaj Shetty'],
+        ['Football – The Game Beyond the Lights','25 Aug 2025','02:48 PM','Manaj Shetty'],
+        ['Powering Every Sprint: The Drive Behind Performance','25 Aug 2025','02:48 PM','Manaj Shetty'],
+        ['Top 10 Kitchen Essentials You Never Knew You Needed','12 Jul 2025','11:30 AM','Lingraj'],
+        ['The Rise of Organic Grocery Shopping in India','05 Jun 2025','09:15 AM','Sunil Kumar'],
+        ['How We Deliver Freshness in Under 60 Minutes','18 May 2025','03:00 PM','Manaj Shetty'],
+        ['5 Reasons to Switch to a Zero-Waste Kitchen','02 Apr 2025','10:45 AM','Lingraj'],
+        ['Understanding Product Labels: A Shopper\'s Guide','20 Mar 2025','02:20 PM','Sunil Kumar'],
+        ['Seasonal Produce: What to Buy and When','10 Feb 2025','08:00 AM','Manaj Shetty'],
+      ];
+      const thS='text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:12px 16px;background:#fff;border-bottom:1px solid #f0ece4';
+      const thR='text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:12px 16px;background:#fff;border-bottom:1px solid #f0ece4;white-space:nowrap';
+      const rows=POSTS.map(([title,date,time,author])=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+        <td style="padding:18px 16px;border-bottom:1px solid #f5f2ee;vertical-align:middle">
+          <span style="font-size:13.5px;color:#111827;font-weight:400">${title}</span>
+        </td>
+        <td style="padding:18px 16px;border-bottom:1px solid #f5f2ee;vertical-align:middle;white-space:nowrap">
+          <div style="font-size:13px;color:#374151">${date}</div>
+          <div style="font-size:12px;color:#9ca3af">${time}</div>
+        </td>
+        <td style="padding:18px 16px;border-bottom:1px solid #f5f2ee;vertical-align:middle;white-space:nowrap">
+          <span style="font-size:13px;color:#374151">${author}</span>
+        </td>
+        <td style="padding:18px 16px;border-bottom:1px solid #f5f2ee;vertical-align:middle;text-align:right">${act}</td>
+      </tr>`).join('');
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr>
+            <th style="${thS}">Title</th>
+            <th style="${thR}">Published at</th>
+            <th style="${thR}">Written by</th>
+            <th style="${thR}">Actions</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <div style="padding:12px 16px;border-top:1px solid #f5f2ee"><span style="font-size:12px;color:#9ca3af">Showing 1 – 10 of 10</span></div>
+      </div>`;
+      scroll.innerHTML=pw+tableHtml+'</div>';
     },
   };
 
