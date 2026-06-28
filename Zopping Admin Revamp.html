@@ -1490,6 +1490,111 @@ function renderOverview(scroll){
   const h=new Date().getHours();
   const greeting=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
 
+  // ── EMPTY STATE ────────────────────────────────────────────────────
+  if(!hasData){
+    const SETUP=[
+      {n:1,label:'Basic Information',      emoji:'🗂️', est:'3 min',  desc:'Set your store name, link your online domain, and upload your store logo to begin shaping your brand identity.',              cta:'Add Details',    done:false},
+      {n:2,label:'Store Information',      emoji:'📞', est:'5 min',  desc:'Update your store\'s contact details and add social media links to stay connected with customers easily.',                    cta:'Add Details',    done:false},
+      {n:3,label:'Catalogue Upload',       emoji:'📊', est:'15 min', desc:'Add products and categories using single or bulk upload to get your storefront ready for selling.',                           cta:'Add Products',   done:false},
+      {n:4,label:'Communication Config',   emoji:'⚙️', est:'5 min',  desc:'Set up SMS and Email to send order updates. You\'ll need an SMS account and SMTP details.',                                   cta:'Configure',      done:false},
+      {n:5,label:'Payment Set Up',         emoji:'💳', est:'5 min',  desc:'Set up your payment gateway to accept transactions. Keep your API keys or token IDs available.',                               cta:'Setup now',      done:false},
+      {n:6,label:'Logistics',              emoji:'🚚', est:'',       desc:'Add your Google Maps API key to enable delivery zone setup and logistics partner configuration.',                               cta:'',               done:true},
+    ];
+    const done=SETUP.filter(s=>s.done).length;
+    const pct=Math.round(done/SETUP.length*100);
+    const barW=Math.max(pct,4);
+
+    const checklistRows=SETUP.map(s=>`
+      <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid #f5f5f5;${s.done?'background:#f0fdf4;':''}" onmouseover="if(!${s.done})this.style.background='#fafaf9'" onmouseout="if(!${s.done})this.style.background=''">
+        ${s.done
+          ? `<div style="width:40px;height:40px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-check" style="font-size:18px;color:#fff"></i></div>`
+          : `<div style="width:40px;height:40px;border-radius:50%;background:#f3f4f6;border:2px solid #e5e7eb;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;font-weight:700;color:#6b7280">${s.n}</div>`
+        }
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span style="font-size:14px;font-weight:600;color:${s.done?'#16a34a':'#111827'}">${s.label}</span>
+            <span style="font-size:11px">${s.emoji}</span>
+            ${s.est?`<span style="font-size:11px;padding:2px 8px;border-radius:20px;background:#f3f4f6;color:#6b7280;font-weight:600">Estimate: ${s.est}</span>`:''}
+          </div>
+          <div style="font-size:12.5px;color:#6b7280;line-height:1.5">${s.desc}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;margin-top:4px">
+          ${!s.done?`<span style="font-size:12px;color:#16a34a;cursor:pointer;font-weight:500">Learn more</span>`:''}
+          ${s.cta?`<button style="padding:6px 16px;border:1.5px solid #d1d5db;border-radius:7px;background:#fff;color:#374151;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap" onmouseover="this.style.borderColor='#16a34a';this.style.color='#16a34a'" onmouseout="this.style.borderColor='#d1d5db';this.style.color='#374151'">${s.cta}</button>`:''}
+        </div>
+      </div>`).join('');
+
+    const setupCard=`<div style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
+      <div style="padding:18px 20px 14px;border-bottom:1px solid #f0f0f0">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div>
+            <div style="font-size:15px;font-weight:700;color:#111827">Full Store Setup — To-Do List</div>
+            <div style="font-size:12px;color:#9ca3af;margin-top:2px">${done} of ${SETUP.length} steps completed</div>
+          </div>
+          <span style="font-size:14px;font-weight:700;color:#374151">${pct}%</span>
+        </div>
+        <div style="height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden">
+          <div style="height:100%;width:${barW}%;background:linear-gradient(90deg,#16a34a,#4ade80);border-radius:4px;transition:width .4s"></div>
+        </div>
+      </div>
+      ${checklistRows}
+    </div>`;
+
+    // Operational stats (zeroed)
+    const opStats=`<div style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;margin-bottom:16px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05)">
+      <div style="padding:14px 20px;border-bottom:1px solid #f0f0f0;font-size:14px;font-weight:700;color:#111827;display:flex;align-items:center;gap:8px">
+        Operational Stats
+        <span style="display:flex;align-items:center;gap:5px;font-size:12px;color:#16a34a;font-weight:600"><span style="width:8px;height:8px;border-radius:50%;background:#16a34a;display:inline-block"></span>Placed for Today</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid #f0f0f0">
+        ${[['Orders','0','#3b82f6'],['Sales','₹ 0.00','#16a34a'],['Avg Order Value','₹ 0.00','#7c3aed']].map(([l,v,c])=>`
+          <div style="padding:16px 20px;text-align:center;border-right:1px solid #f0f0f0">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${c};margin-bottom:6px">${l}</div>
+            <div style="font-size:22px;font-weight:800;color:#111827">${v}</div>
+          </div>`).join('')}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr">
+        ${[['Customers','0','#be185d'],['Fill Rate','—','#ca8a04'],['Deliveries','0','#059669']].map(([l,v,c])=>`
+          <div style="padding:16px 20px;text-align:center;border-right:1px solid #f0f0f0">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${c};margin-bottom:6px">${l}</div>
+            <div style="font-size:22px;font-weight:800;color:#111827">${v}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+
+    // Grow your store tips
+    const TIPS=[
+      {ic:'ti-speakerphone',bg:'#ede9fe',ic_c:'#7c3aed',title:'Launch your first campaign',desc:'Send an SMS or email to your contacts to announce the store launch and drive first orders.',cta:"gotoPage('campaigns')",btn:'Create Campaign'},
+      {ic:'ti-users',bg:'#dbeafe',ic_c:'#1d4ed8',title:'Add customer segments',desc:'Group your customers by behaviour so you can target them with personalised offers.',cta:"gotoPage('segments')",btn:'Add Segment'},
+      {ic:'ti-discount',bg:'#dcfce7',ic_c:'#16a34a',title:'Create your first offer',desc:'Give new shoppers a welcome discount to encourage their first order on your store.',cta:"gotoPage('offers')",btn:'Create Offer'},
+      {ic:'ti-truck',bg:'#fff7ed',ic_c:'#ea580c',title:'Set up delivery zones',desc:'Define which areas you deliver to and set zone-wise fees before going live.',cta:"gotoPage('vplanning')",btn:'Setup Delivery'},
+      {ic:'ti-users-group',bg:'#fce7f3',ic_c:'#be185d',title:'Invite your team',desc:'Add staff members and assign roles so your operations team can get started.',cta:"gotoPage('staff')",btn:'Add Staff'},
+      {ic:'ti-chart-line',bg:'#f0fdf4',ic_c:'#16a34a',title:'Enable Analytics',desc:'Connect your analytics to track orders, revenue and customer behaviour from day one.',cta:"gotoPage('analytics')",btn:'Enable Now'},
+    ];
+    const tipsHtml=`<div style="margin-bottom:16px">
+      <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="ti ti-rocket" style="font-size:18px;color:#16a34a"></i>Grow your store faster</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+        ${TIPS.map(t=>`<div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:16px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.04);transition:box-shadow .15s" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.09)'" onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,.04)'">
+          <div style="width:38px;height:38px;border-radius:9px;background:${t.bg};display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+            <i class="ti ${t.ic}" style="font-size:18px;color:${t.ic_c}"></i>
+          </div>
+          <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:5px">${t.title}</div>
+          <div style="font-size:12px;color:#6b7280;line-height:1.5;margin-bottom:12px">${t.desc}</div>
+          <button onclick="${t.cta}" style="font-size:12px;font-weight:600;color:#16a34a;background:transparent;border:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:4px">${t.btn} <i class="ti ti-arrow-right" style="font-size:12px"></i></button>
+        </div>`).join('')}
+      </div>
+    </div>`;
+
+    const greetHtml=`<div class="ov-greeting" style="margin-bottom:16px">
+      <h1>${greeting}, ${rm.n} 👋</h1>
+      <p>Let's get your store ready. Complete the steps below to go live.</p>
+    </div>`;
+
+    scroll.innerHTML=`<div style="padding:${isMobile?'10px 10px 20px':'16px 20px 24px'}">${greetHtml}${setupCard}${tipsHtml}${opStats}</div>`;
+    return;
+  }
+  // ── END EMPTY STATE ────────────────────────────────────────────────
+
   // Role-specific stats override for non-owner roles
   let stats=ind.stats;
   if(!isOwner){
