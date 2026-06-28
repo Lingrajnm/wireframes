@@ -2392,20 +2392,27 @@ function renderFilled(scroll){
           </div>
         </div>`;
       };
+      const dots=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const pendingCell=`<div style="display:flex;align-items:center;gap:5px">
+        <button title="Accept order" style="display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11.5px;font-weight:600;background:#dcfce7;color:#15803d;border:none;border-radius:5px;cursor:pointer">
+          <i class="ti ti-check" style="font-size:12px"></i>Accept
+        </button>
+        <button title="Reject order" style="display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11.5px;font-weight:600;background:#fee2e2;color:#b91c1c;border:none;border-radius:5px;cursor:pointer">
+          <i class="ti ti-x" style="font-size:12px"></i>Reject
+        </button>
+      </div>`;
+      const moveStoreBtn=`<button title="Transfer to another store" style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">
+        <i class="ti ti-arrows-transfer-down" style="font-size:14px;color:#15803d"></i>
+      </button>`;
       const orderActions=o=>{
-        const dots=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
-        if(o.status==='Pending'||o.status==='Draft'){
-          return `<div style="display:flex;align-items:center;gap:6px">
-            <button style="padding:4px 12px;font-size:11.5px;font-weight:600;background:#dcfce7;color:#15803d;border:none;border-radius:5px;cursor:pointer">Accept</button>
-            <button style="padding:4px 12px;font-size:11.5px;font-weight:600;background:#fee2e2;color:#b91c1c;border:none;border-radius:5px;cursor:pointer">Reject</button>
-            ${dots}</div>`;
-        }
         if(o.status==='Picking'||o.status==='Packing'||o.status==='Packed'){
-          return `<div style="display:flex;align-items:center;gap:6px">
-            <button style="padding:4px 10px;font-size:11px;font-weight:600;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;border-radius:5px;cursor:pointer;white-space:nowrap"><i class="ti ti-building-store" style="font-size:11px"></i> Move store</button>
-            ${dots}</div>`;
+          return `<div style="display:flex;align-items:center;gap:6px">${moveStoreBtn}${dots}</div>`;
         }
         return dots;
+      };
+      const compCell=o=>{
+        if(o.status==='Pending'||o.status==='Draft') return pendingCell;
+        return `<span style="font-size:12px;color:${o.comp==='—'?'#9ca3af':'#374151'}">${o.comp}</span>`;
       };
       const colPicker=`<div id="ocPickList">`+colDefs.map(c=>`
         <div class="ocPickRow" data-id="${c.id}" data-locked="${c.locked?'1':'0'}"
@@ -2449,7 +2456,7 @@ function renderFilled(scroll){
           <td class="oc-courier" style="${tdS};${hs('courier')}font-size:12px;color:#9ca3af">${o.courier}</td>
           <td class="oc-kmcode" style="${tdS};${hs('kmcode')}font-size:12px;color:#374151">${o.km}</td>
           <td class="oc-ordertype" style="${tdS};${hs('ordertype')}"><div style="display:inline-flex;align-items:center;gap:5px;padding:2px 8px 2px 6px;border-radius:6px;background:${(otypeMap[o.otype]||{bg:'#f3f4f6'}).bg}"><i class="ti ${(otypeMap[o.otype]||{ic:'ti-truck-delivery'}).ic}" style="font-size:12px;color:${(otypeMap[o.otype]||{c:'#9ca3af'}).c}"></i><span style="font-size:11.5px;color:${(otypeMap[o.otype]||{c:'#9ca3af'}).c};font-weight:600">${(otypeMap[o.otype]||{tip:o.otype}).tip}</span></div></td>
-          <td class="oc-completion" style="${tdS};${hs('completion')}font-size:12px;color:${o.comp==='—'?'#9ca3af':'#374151'}">${o.comp}</td>
+          <td class="oc-completion" style="${tdS};${hs('completion')}">${compCell(o)}</td>
           <td class="oc-actions" style="${tdS}">${orderActions(o)}</td>
         </tr>`;
       }).join('');
@@ -2668,20 +2675,19 @@ function renderFilled(scroll){
       }).join(' ');
       const slotMeta={asap:{ic:'ti-bolt',c:'#ef4444'},hyperlocal:{ic:'ti-clock',c:'#d97706'},ndd:{ic:'ti-truck-delivery',c:'#2563eb'},scheduled:{ic:'ti-calendar-event',c:'#7c3aed'}};
       const slotBadge=o=>{const m=slotMeta[o.stype]||{ic:'ti-clock',c:'#9ca3af'};const blink=o.stype==='asap'?'animation:slotBlink 1s ease-in-out infinite':'';return `<div style="display:flex;align-items:flex-start;gap:5px"><i class="ti ${m.ic}" style="font-size:13px;color:${m.c};flex-shrink:0;margin-top:1px;${blink}"></i><div><div style="font-size:12px;color:#374151">${o.slot}</div><div style="font-size:10.5px;color:#9ca3af">${o.slotSub}</div></div></div>`;};
+      const csDots=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const csPendingCell=`<div style="display:flex;align-items:center;gap:5px">
+        <button title="Accept order" style="display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11.5px;font-weight:600;background:#dcfce7;color:#15803d;border:none;border-radius:5px;cursor:pointer"><i class="ti ti-check" style="font-size:12px"></i>Accept</button>
+        <button title="Reject order" style="display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11.5px;font-weight:600;background:#fee2e2;color:#b91c1c;border:none;border-radius:5px;cursor:pointer"><i class="ti ti-x" style="font-size:12px"></i>Reject</button>
+      </div>`;
+      const csMoveBtn=`<button title="Transfer to another store" style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'"><i class="ti ti-arrows-transfer-down" style="font-size:14px;color:#15803d"></i></button>`;
       const orderActions=o=>{
-        const dots=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
-        if(o.status==='Pending'||o.status==='Draft'){
-          return `<div style="display:flex;align-items:center;gap:6px">
-            <button style="padding:4px 12px;font-size:11.5px;font-weight:600;background:#dcfce7;color:#15803d;border:none;border-radius:5px;cursor:pointer">Accept</button>
-            <button style="padding:4px 12px;font-size:11.5px;font-weight:600;background:#fee2e2;color:#b91c1c;border:none;border-radius:5px;cursor:pointer">Reject</button>
-            ${dots}</div>`;
-        }
-        if(o.status==='Picking'||o.status==='Packing'||o.status==='Packed'){
-          return `<div style="display:flex;align-items:center;gap:6px">
-            <button style="padding:4px 10px;font-size:11px;font-weight:600;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;border-radius:5px;cursor:pointer;white-space:nowrap"><i class="ti ti-building-store" style="font-size:11px"></i> Move store</button>
-            ${dots}</div>`;
-        }
-        return dots;
+        if(o.status==='Picking'||o.status==='Packing'||o.status==='Packed') return `<div style="display:flex;align-items:center;gap:6px">${csMoveBtn}${csDots}</div>`;
+        return csDots;
+      };
+      const csCompCell=o=>{
+        if(o.status==='Pending'||o.status==='Draft') return csPendingCell;
+        return `<span style="font-size:12px;color:${o.comp==='—'?'#9ca3af':'#374151'}">${o.comp}</span>`;
       };
       const tbody=ORDERS.map(o=>{
         const [sc,sb]=statusMap[o.status]||['#9ca3af','#f3f4f6'];
@@ -2692,7 +2698,7 @@ function renderFilled(scroll){
           <td style="${tdS}">${slotBadge(o)}</td>
           <td style="${tdS}"><div style="font-size:13px;font-weight:600;color:#111827">${o.amt}</div></td>
           <td style="${tdS}"><span style="display:inline-flex;align-items:center;padding:3px 9px;border-radius:5px;font-size:11.5px;font-weight:600;background:${sb};color:${sc}">${o.status}</span></td>
-          <td style="${tdS}"><div style="font-size:12px;color:${o.comp==='—'?'#9ca3af':'#374151'}">${o.comp}</div></td>
+          <td style="${tdS}">${csCompCell(o)}</td>
           <td style="${tdS}">${orderActions(o)}</td>
         </tr>`;
       }).join('');
