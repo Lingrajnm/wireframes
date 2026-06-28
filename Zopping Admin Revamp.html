@@ -3716,79 +3716,90 @@ function renderFilled(scroll){
   scroll.innerHTML=pw+tableHtml+'</div>';
 },
     reports: ()=>{
-      const REPORTS=[
-        {name:'Order Sales Reports',       ic:'ti-receipt',         recent:true},
-        {name:'Individual Picker Performance', ic:'ti-user-check',  recent:true},
-        {name:'Product Sales Report',      ic:'ti-shopping-cart',   recent:true},
-        {name:'Customers Report',          ic:'ti-users',           recent:true},
-        {name:'Edited Items Report',       ic:'ti-edit',            recent:true},
-        {name:'Out Of Stock Products Report',ic:'ti-package-off',   recent:true},
-        {name:'Coupon Report',             ic:'ti-discount',        recent:true},
-        {name:'Product Returns Report',    ic:'ti-arrow-back-up',   recent:true},
-        {name:'Delivery Agent Report',     ic:'ti-bike',            recent:true},
-        {name:'Wallet Transaction Report', ic:'ti-wallet',          recent:true},
-        {name:'Notifications Report',      ic:'ti-bell',            recent:true},
-      ];
       const ALL_REPORTS=[
-        {name:'Order Sales Reports',       ic:'ti-receipt'},
-        {name:'Product Sales Report',      ic:'ti-shopping-cart'},
-        {name:'Customers Report',          ic:'ti-users'},
-        {name:'Individual Picker Performance',ic:'ti-user-check'},
-        {name:'Edited Items Report',       ic:'ti-edit'},
-        {name:'Out Of Stock Products Report',ic:'ti-package-off'},
-        {name:'Coupon Report',             ic:'ti-discount'},
-        {name:'Product Returns Report',    ic:'ti-arrow-back-up'},
-        {name:'Delivery Agent Report',     ic:'ti-bike'},
-        {name:'Wallet Transaction Report', ic:'ti-wallet'},
-        {name:'Notifications Report',      ic:'ti-bell'},
-        {name:'Inventory Snapshot Report', ic:'ti-archive'},
-        {name:'Revenue by Store Report',   ic:'ti-building-store'},
-        {name:'Slot Utilisation Report',   ic:'ti-clock'},
-        {name:'Trip Performance Report',   ic:'ti-route'},
-        {name:'Customer Lifetime Value',   ic:'ti-chart-line'},
-        {name:'Abandoned Checkout Report', ic:'ti-shopping-cart-off'},
-        {name:'Staff Attendance Report',   ic:'ti-calendar-check'},
-        {name:'Tax & Invoice Report',      ic:'ti-file-invoice'},
-        {name:'Refunds & Returns Report',  ic:'ti-receipt-refund'},
-        {name:'Campaign Performance',      ic:'ti-speakerphone'},
-        {name:'Segment Analytics',         ic:'ti-chart-pie-2'},
+        {name:'Order Sales Report',         ic:'ti-receipt',           bg:'#dbeafe',ic_c:'#1d4ed8', desc:'Daily and period-wise order summary with revenue, AOV and fulfilment breakdown.',   lastRun:'Today, 09:14 AM'},
+        {name:'Product Sales Report',       ic:'ti-shopping-cart',     bg:'#dcfce7',ic_c:'#16a34a', desc:'Units sold, revenue and return rate per product and category.',                     lastRun:'Today, 09:14 AM'},
+        {name:'Customers Report',           ic:'ti-users',             bg:'#f5f3ff',ic_c:'#7c3aed', desc:'New vs returning customers, LTV, cohort retention and churn metrics.',              lastRun:'28 Jun, 11:00 PM'},
+        {name:'Individual Picker Performance',ic:'ti-user-check',      bg:'#fff7ed',ic_c:'#ea580c', desc:'Pick rate, accuracy and SLA adherence per warehouse picker.',                       lastRun:'28 Jun, 11:00 PM'},
+        {name:'Edited Items Report',        ic:'ti-edit',              bg:'#fef9c3',ic_c:'#ca8a04', desc:'Items substituted or removed post-order confirmation with reason codes.',            lastRun:'28 Jun, 11:00 PM'},
+        {name:'Out Of Stock Products Report',ic:'ti-package-off',      bg:'#fee2e2',ic_c:'#dc2626', desc:'Products that went out of stock during order fulfilment with frequency count.',      lastRun:'27 Jun, 08:30 AM'},
+        {name:'Coupon Report',              ic:'ti-discount',          bg:'#ede9fe',ic_c:'#7c3aed', desc:'Coupon redemption count, discount value and revenue impact per coupon code.',        lastRun:'27 Jun, 08:30 AM'},
+        {name:'Product Returns Report',     ic:'ti-arrow-back-up',     bg:'#fce7f3',ic_c:'#be185d', desc:'Return requests by product, reason and resolution with refund totals.',              lastRun:'26 Jun, 06:00 PM'},
+        {name:'Delivery Agent Report',      ic:'ti-bike',              bg:'#d1fae5',ic_c:'#059669', desc:'On-time delivery rate, trips completed and average delivery time per agent.',        lastRun:'26 Jun, 06:00 PM'},
+        {name:'Wallet Transaction Report',  ic:'ti-wallet',            bg:'#e0f2fe',ic_c:'#0284c7', desc:'Credits issued, debits, cashback and closing balance per customer wallet.',         lastRun:'25 Jun, 10:00 AM'},
+        {name:'Notifications Report',       ic:'ti-bell',              bg:'#fef3c7',ic_c:'#d97706', desc:'Push, SMS and email notification delivery rates and open/click rates.',              lastRun:'25 Jun, 10:00 AM'},
+        {name:'Inventory Snapshot Report',  ic:'ti-archive',           bg:'#f0fdf4',ic_c:'#16a34a', desc:'Current stock levels, low-stock alerts and days-of-stock for all SKUs.',            lastRun:'24 Jun, 07:00 AM'},
+        {name:'Revenue by Store Report',    ic:'ti-building-store',    bg:'#eff6ff',ic_c:'#3b82f6', desc:'Store-wise revenue, order count and AOV for multi-store comparisons.',              lastRun:'24 Jun, 07:00 AM'},
+        {name:'Slot Utilisation Report',    ic:'ti-clock',             bg:'#faf5ff',ic_c:'#9333ea', desc:'Delivery slot fill rate, capacity utilisation and peak slot trends.',                lastRun:'23 Jun, 09:00 AM'},
+        {name:'Trip Performance Report',    ic:'ti-route',             bg:'#ecfdf5',ic_c:'#10b981', desc:'Trip completion rate, delays, distance and cost per delivery trip.',                 lastRun:'23 Jun, 09:00 AM'},
+        {name:'Customer Lifetime Value',    ic:'ti-chart-line',        bg:'#fdf4ff',ic_c:'#a855f7', desc:'LTV segmentation, purchase frequency and predicted churn probability per customer.',lastRun:'22 Jun, 11:00 PM'},
+        {name:'Abandoned Checkout Report',  ic:'ti-shopping-cart-off', bg:'#fff1f2',ic_c:'#e11d48', desc:'Abandoned carts with value, items and recovery status via reminder campaigns.',      lastRun:'22 Jun, 11:00 PM'},
+        {name:'Staff Attendance Report',    ic:'ti-calendar-check',    bg:'#f0fdfa',ic_c:'#0d9488', desc:'Clock-in/out logs, attendance rate and leave balance per staff member.',             lastRun:'21 Jun, 08:00 AM'},
+        {name:'Tax & Invoice Report',       ic:'ti-file-invoice',      bg:'#fefce8',ic_c:'#ca8a04', desc:'GST summary, invoice listing and tax collected per store and period.',               lastRun:'20 Jun, 06:00 AM'},
+        {name:'Refunds & Returns Report',   ic:'ti-receipt-refund',    bg:'#fff0f6',ic_c:'#db2777', desc:'Refund volume, turnaround time and method breakdown for the selected period.',       lastRun:'20 Jun, 06:00 AM'},
+        {name:'Campaign Performance',       ic:'ti-speakerphone',      bg:'#fefce8',ic_c:'#b45309', desc:'Impressions, clicks, conversions and ROI for each marketing campaign.',              lastRun:'19 Jun, 10:00 AM'},
+        {name:'Segment Analytics',          ic:'ti-chart-pie-2',       bg:'#f5f3ff',ic_c:'#6d28d9', desc:'Behaviour, spend patterns and conversion metrics for each customer segment.',        lastRun:'19 Jun, 10:00 AM'},
       ];
-      const card=(r,active)=>`<div style="background:#fff;border-radius:12px;border:${active?'2px solid #16a34a':'1px solid #e5e7eb'};padding:24px 16px;display:flex;flex-direction:column;align-items:center;gap:12px;cursor:pointer;box-shadow:${active?'0 0 0 3px #dcfce7':'0 1px 3px rgba(0,0,0,.04)'};transition:box-shadow .12s" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='${active?'0 0 0 3px #dcfce7':'0 1px 3px rgba(0,0,0,.04)'}'">
-        <div style="width:56px;height:56px;border-radius:50%;border:2px solid ${active?'#16a34a':'#4ade80'};display:flex;align-items:center;justify-content:center;background:${active?'#16a34a':'transparent'}">
-          <i class="ti ${r.ic}" style="font-size:22px;color:${active?'#fff':'#16a34a'}"></i>
+
+      const RECENT=ALL_REPORTS.slice(0,5);
+
+      const tabs=['Reports','Reports V2','Order Analytics','Previous Downloads'].map((t,i)=>`<div style="padding:10px 18px;font-size:12.5px;font-weight:${i===0?700:500};color:${i===0?'#111827':'#6b7280'};border-bottom:${i===0?'2px solid #16a34a':'2px solid transparent'};cursor:pointer;white-space:nowrap">${t}</div>`).join('');
+
+      // Recent — horizontal compact chips row
+      const recentHtml=`<div style="margin-bottom:22px">
+        <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:10px">Recent Reports</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          ${RECENT.map((r,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:8px 14px;background:#fff;border:${i===0?'1.5px solid #16a34a':'1px solid #e5e7eb'};border-radius:8px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.04)" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,.04)'">
+            <span style="width:28px;height:28px;border-radius:6px;background:${r.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ti ${r.ic}" style="font-size:14px;color:${r.ic_c}"></i>
+            </span>
+            <span style="font-size:12.5px;font-weight:${i===0?700:500};color:#111827;white-space:nowrap">${r.name}</span>
+            <i class="ti ti-download" style="font-size:13px;color:#9ca3af;margin-left:4px"></i>
+          </div>`).join('')}
         </div>
-        <div style="font-size:13px;font-weight:${active?700:500};color:#111827;text-align:center;line-height:1.4">${r.name}</div>
       </div>`;
 
-      const tabs=['Reports','Reports V2','Order Analytics','Previous Downloads'].map((t,i)=>`<div style="padding:12px 20px;font-size:13px;font-weight:${i===0?700:500};color:${i===0?'#111827':'#6b7280'};border-bottom:${i===0?'2px solid #16a34a':'2px solid transparent'};cursor:pointer;white-space:nowrap">${t}</div>`).join('');
+      // All Reports — clean list
+      const thS='text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 16px;background:#fafaf8;border-bottom:1px solid #f0ece4;white-space:nowrap';
+      const tdS='padding:13px 16px;border-bottom:1px solid #f9f7f4;vertical-align:middle';
+      const rows=ALL_REPORTS.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+        <td style="${tdS}">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="width:36px;height:36px;border-radius:8px;background:${r.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ti ${r.ic}" style="font-size:17px;color:${r.ic_c}"></i>
+            </span>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#111827">${r.name}</div>
+              <div style="font-size:11.5px;color:#9ca3af;margin-top:2px;max-width:420px">${r.desc}</div>
+            </div>
+          </div>
+        </td>
+        <td style="${tdS};white-space:nowrap"><span style="font-size:12px;color:#6b7280">${r.lastRun}</span></td>
+        <td style="${tdS};white-space:nowrap">
+          <button style="display:inline-flex;align-items:center;gap:5px;padding:5px 14px;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">
+            <i class="ti ti-download" style="font-size:12px"></i>Download
+          </button>
+        </td>
+      </tr>`).join('');
 
-      const recentGrid=`<div style="margin-bottom:28px">
-        <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:14px">Recent Reports</div>
-        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px">
-          ${REPORTS.slice(0,6).map((r,i)=>card(r,i===0)).join('')}
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:12px">
-          ${REPORTS.slice(6).map(r=>card(r,false)).join('')}
-        </div>
-      </div>`;
-
-      const allGrid=`<div>
-        <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:14px">All Reports</div>
-        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px">
-          ${ALL_REPORTS.slice(0,6).map(r=>card(r,false)).join('')}
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:12px">
-          ${ALL_REPORTS.slice(6,12).map(r=>card(r,false)).join('')}
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:12px">
-          ${ALL_REPORTS.slice(12).map(r=>card(r,false)).join('')}
+      const allHtml=`<div>
+        <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:10px">All Reports</div>
+        <div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+          <table style="width:100%;border-collapse:collapse">
+            <thead><tr>
+              <th style="${thS}">Report</th>
+              <th style="${thS}">Last Generated</th>
+              <th style="${thS}"></th>
+            </tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
         </div>
       </div>`;
 
       scroll.innerHTML=`<div style="padding:8px 20px 24px">
-        <div style="display:flex;border-bottom:1px solid #e5e7eb;margin-bottom:20px">${tabs}</div>
-        ${recentGrid}
-        ${allGrid}
+        <div style="display:flex;border-bottom:1px solid #e5e7eb;margin-bottom:20px;overflow-x:auto">${tabs}</div>
+        ${recentHtml}
+        ${allHtml}
       </div>`;
     },
     'web-blog': ()=>{
