@@ -3908,6 +3908,75 @@ function renderFilled(scroll){
       </div>`;
       scroll.innerHTML=pw+tableHtml+'</div>';
     },
+    'web-ann': ()=>{
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const statusMap={
+        'Active':    ['#15803d','#dcfce7'],
+        'Scheduled': ['#1d4ed8','#dbeafe'],
+        'Expired':   ['#6b7280','#f3f4f6'],
+        'Draft':     ['#ca8a04','#fef9c3'],
+      };
+      const ANNS=[
+        {id:'ANN-001', title:'Summer Sale — Up to 50% Off!',           msg:'Enjoy massive discounts on fresh fruits, beverages & daily essentials this summer. Shop now!',     start:'01 Jul 2026, 12:00 AM', end:'31 Jul 2026, 11:59 PM', status:'Scheduled', lang:'EN, AR'},
+        {id:'ANN-002', title:'Eid Al-Adha Greetings',                  msg:'Wishing you and your family a blessed Eid Al-Adha. Enjoy special offers across all categories.',    start:'04 Jun 2026, 12:00 AM', end:'07 Jun 2026, 11:59 PM', status:'Expired',   lang:'EN, AR'},
+        {id:'ANN-003', title:'Free Delivery on Orders Above ₹499',     msg:'Get free delivery on all orders above ₹499. Valid on selected stores. Limited period offer!',       start:'20 Jun 2026, 12:00 AM', end:'30 Jun 2026, 11:59 PM', status:'Active',    lang:'EN'},
+        {id:'ANN-004', title:'New Store Now Open — Whitefield',         msg:'We are now live in Whitefield! Shop your favourite groceries and get them delivered in 2 hours.',    start:'25 Jun 2026, 09:00 AM', end:'10 Jul 2026, 11:59 PM', status:'Active',    lang:'EN'},
+        {id:'ANN-005', title:'App Update: Track Orders in Real Time',   msg:'Download the latest app update to track your order in real time, right down to your doorstep.',     start:'15 Jun 2026, 10:00 AM', end:'15 Jul 2026, 10:00 AM', status:'Active',    lang:'EN, AR'},
+        {id:'ANN-006', title:'Weekend Freshness Deals',                 msg:'Every weekend, get up to 30% off on fresh produce, dairy, and bakery. Because fresh matters!',       start:'27 Jun 2026, 06:00 AM', end:'29 Jun 2026, 11:59 PM', status:'Expired',   lang:'EN'},
+        {id:'ANN-007', title:'Refer a Friend — Earn ₹100 Credit',       msg:'Invite your friends to shop with us. Both of you get ₹100 store credit on their first order.',       start:'01 Jun 2026, 12:00 AM', end:'31 Aug 2026, 11:59 PM', status:'Active',    lang:'EN'},
+        {id:'ANN-008', title:'Independence Day Sale',                    msg:'Celebrate Independence Day with exclusive discounts! Up to 40% off on household essentials.',        start:'13 Aug 2026, 12:00 AM', end:'15 Aug 2026, 11:59 PM', status:'Scheduled', lang:'EN, AR'},
+        {id:'ANN-009', title:'Diwali Festive Offers Coming Soon',        msg:'Our biggest sale of the year is just around the corner. Stay tuned for Diwali deals like never before!', start:'01 Oct 2026, 12:00 AM', end:'30 Oct 2026, 11:59 PM', status:'Draft',     lang:'EN, AR'},
+        {id:'ANN-010', title:'Scheduled Maintenance — 2 AM to 4 AM',    msg:'The app and website will be briefly unavailable on 28 Jun between 2:00 AM – 4:00 AM for maintenance.', start:'28 Jun 2026, 02:00 AM', end:'28 Jun 2026, 04:00 AM', status:'Expired',   lang:'EN'},
+        {id:'ANN-011', title:'AMUL Loyalty Week — Extra 10% Off',        msg:'Shop any AMUL product this week and get an extra 10% off at checkout. No minimum order required.',   start:'07 Jul 2026, 12:00 AM', end:'13 Jul 2026, 11:59 PM', status:'Scheduled', lang:'EN'},
+        {id:'ANN-012', title:'Back to School Essentials',                msg:'Stock up on stationery, snacks & tiffin accessories for the new school term. Exclusive deals inside!', start:'15 Jul 2026, 12:00 AM', end:'31 Jul 2026, 11:59 PM', status:'Draft',     lang:'EN, AR'},
+      ];
+      const thS='text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4;white-space:nowrap';
+      const tdS='padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle';
+      const rows=ANNS.map(a=>{
+        const [sc,sb]=statusMap[a.status];
+        return `<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+          <td style="${tdS}"><span style="font-size:11.5px;color:#9ca3af;font-family:monospace">${a.id}</span></td>
+          <td style="${tdS};max-width:320px">
+            <div style="font-size:13px;font-weight:600;color:#111827">${a.title}</div>
+            <div style="font-size:11.5px;color:#9ca3af;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:300px">${a.msg}</div>
+          </td>
+          <td style="${tdS}">
+            <div style="font-size:12px;color:#374151">${a.start}</div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
+              <i class="ti ti-arrow-right" style="font-size:11px;color:#9ca3af"></i>
+              <span style="font-size:12px;color:#9ca3af">${a.end}</span>
+            </div>
+          </td>
+          <td style="${tdS}"><span style="display:inline-flex;align-items:center;gap:4px;font-size:11.5px;color:#6b7280"><i class="ti ti-language" style="font-size:12px"></i>${a.lang}</span></td>
+          <td style="${tdS}"><span style="display:inline-flex;padding:3px 9px;border-radius:5px;background:${sb};color:${sc};font-size:11.5px;font-weight:700">${a.status}</span></td>
+          <td style="${tdS}">${act}</td>
+        </tr>`;
+      }).join('');
+
+      const tabs=['All','Active','Scheduled','Draft','Expired'].map((t,i)=>{
+        const cnts=[12,4,3,2,3];
+        const active=i===0;
+        return `<div style="padding:10px 16px;font-size:12.5px;font-weight:${active?700:500};color:${active?'#111827':'#6b7280'};border-bottom:${active?'2px solid #16a34a':'2px solid transparent'};cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px">${t}<span style="font-size:10.5px;padding:1px 7px;border-radius:20px;background:${active?'#dcfce7':'#f3f4f6'};color:${active?'#15803d':'#9ca3af'};font-weight:700">${cnts[i]}</span></div>`;
+      }).join('');
+
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 12 of 12 announcements</span></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:flex;border-bottom:1px solid #f0ece4;overflow-x:auto">${tabs}</div>
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr>
+            <th style="${thS}">ID</th>
+            <th style="${thS}">Announcement</th>
+            <th style="${thS}">Duration</th>
+            <th style="${thS}">Language</th>
+            <th style="${thS}">Status</th>
+            <th style="${thS}"></th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+        ${pgn}
+      </div>`;
+      scroll.innerHTML=pw+tableHtml+'</div>';
+    },
   };
 
   const renderer=pages[pg];
