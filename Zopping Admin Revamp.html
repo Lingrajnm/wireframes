@@ -400,6 +400,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .pp-icon{font-size:56px;color:#e2d9ce;margin-bottom:12px}
 .pp-title{font-size:16px;font-weight:700;color:#374151;margin-bottom:6px}
 .pp-sub{font-size:13px}
+
+/* ── MOBILE MODE ───────────────────────────────────────────────── */
+.mob-ham{width:36px;height:36px;border:none;background:transparent;cursor:pointer;display:none;align-items:center;justify-content:center;color:#374151;flex-shrink:0;border-radius:8px;padding:0}
+.mob-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:198;display:none;cursor:pointer}
+.mob-bot-nav{display:none;position:fixed;bottom:0;left:50%;transform:translateX(-50%);background:#fff;border-top:1px solid #e5e7eb;z-index:200;height:58px;align-items:stretch}
+.mbn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;border:none;background:transparent;color:#9ca3af;font-size:9.5px;font-weight:600;padding:6px 0;transition:color .1s;white-space:nowrap;min-width:60px}
+.mbn-item.active{color:#16a34a}
+.mbn-item i{font-size:20px;line-height:1.2}
+
+body.mobile .app{grid-template-columns:1fr}
+body.mobile .sidebar{position:fixed;left:-240px;top:0;bottom:0;width:240px;z-index:199;transition:left .25s ease;box-shadow:none}
+body.mobile .sidebar.mob-open{left:0;box-shadow:8px 0 32px rgba(0,0,0,.35)}
+body.mobile .mob-overlay{display:none}
+body.mobile .mob-overlay.mob-open{display:block}
+body.mobile .mob-ham{display:flex}
+body.mobile .mob-bot-nav{display:flex;width:390px}
+body.mobile .main-scroll{padding:10px 10px 72px}
+body.mobile .topbar{padding:0 10px;gap:8px}
+body.mobile #gbStoreDD,body.mobile #gbLangDD,body.mobile .tbvsep{display:none!important}
+body.mobile .stat-row{grid-template-columns:repeat(2,1fr)!important}
+body.mobile .charts-row{grid-template-columns:1fr!important}
+body.mobile .main-scroll [style*="grid-template-columns"]{grid-template-columns:1fr!important}
+body.mobile .main-scroll table{min-width:560px}
+body.mobile .main-scroll > div > div{overflow-x:auto!important}
+body.mobile .tb-breadcrumb > span[style*="9ca3af"]{display:none}
+body.mobile .tb-breadcrumb .sep{display:none}
+body.mobile #hdrSearchBar{overflow-x:auto}
+
 </style>
 </head>
 <body>
@@ -494,6 +522,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
   <div class="main">
     <!-- Topbar -->
     <div class="topbar">
+      <button class="mob-ham" id="mobHam" onclick="toggleMobSidebar()"><i class="ti ti-menu-2" style="font-size:20px"></i></button>
       <div class="tb-breadcrumb" id="tbBreadcrumb">
         <span onclick="gotoPage('overview')">Overview</span>
       </div>
@@ -501,6 +530,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
     </div>
     <!-- Header search bar — populated by renderHeaderSearch() on search-enabled pages -->
     <div id="hdrSearchBar" style="display:none"></div>
+
+    <!-- Mobile overlay (closes sidebar when tapped) -->
+    <div class="mob-overlay" id="mobOverlay" onclick="closeMobSidebar()"></div>
+
+    <!-- Mobile bottom navigation -->
+    <div class="mob-bot-nav" id="mobBotNav">
+      <button class="mbn-item" id="mbn0" onclick="mbnGo('overview')"><i class="ti ti-layout-dashboard"></i>Home</button>
+      <button class="mbn-item" id="mbn1" onclick="mbnGo('orders')"><i class="ti ti-shopping-bag"></i>Orders</button>
+      <button class="mbn-item" id="mbn2" onclick="mbnGo('inventory')"><i class="ti ti-package"></i>Catalogue</button>
+      <button class="mbn-item" id="mbn3" onclick="mbnGo('picking')"><i class="ti ti-truck"></i>Ops</button>
+      <button class="mbn-item" id="mbn4" onclick="toggleMobSidebar()"><i class="ti ti-menu-2"></i>More</button>
+    </div>
 
     <!-- Profile dropdown -->
     <div class="profile-dd" id="profileDD" style="display:none">
@@ -946,6 +987,7 @@ function toggleMobile(){
   isMobile=!isMobile;
   document.getElementById('mobileToggle').classList.toggle('on',isMobile);
   document.getElementById('mobileLbl').textContent=isMobile?'Mobile View ✓':'Desktop View';
+  document.body.classList.toggle('mobile',isMobile);
   const app=document.querySelector('.app');
   if(isMobile){
     app.style.maxWidth='390px';
@@ -953,13 +995,40 @@ function toggleMobile(){
     app.style.boxShadow='0 0 0 1px #e5e7eb, 0 8px 32px rgba(0,0,0,.15)';
     app.style.borderRadius='12px';
     app.style.overflow='hidden';
+    updateMbn();
   } else {
     app.style.maxWidth='';
     app.style.margin='';
     app.style.boxShadow='';
     app.style.borderRadius='';
     app.style.overflow='';
+    closeMobSidebar();
   }
+  renderTopbar();
+  renderMain(document.querySelector('.main-scroll'));
+}
+
+function toggleMobSidebar(){
+  const sb=document.querySelector('.sidebar');
+  const ov=document.getElementById('mobOverlay');
+  const open=sb.classList.contains('mob-open');
+  sb.classList.toggle('mob-open',!open);
+  ov.classList.toggle('mob-open',!open);
+}
+function closeMobSidebar(){
+  document.querySelector('.sidebar').classList.remove('mob-open');
+  const ov=document.getElementById('mobOverlay'); if(ov) ov.classList.remove('mob-open');
+}
+function mbnGo(pg){
+  closeMobSidebar();
+  gotoPage(pg);
+}
+function updateMbn(){
+  const map=['overview','orders','inventory','picking'];
+  document.querySelectorAll('.mbn-item').forEach((btn,i)=>{
+    const isActive = i<4 ? map[i]===activePage : (!map.includes(activePage));
+    btn.classList.toggle('active', isActive);
+  });
 }
 
 // ── RENDER NAV ─────────────────────────────────────────────────────
@@ -2409,7 +2478,7 @@ function getIllo(type){
 // ── DATA-FILLED PAGE RENDERS ─────────────────────────────────────────
 function renderFilled(scroll){
   const pg=activePage;
-  const pw=`<div style="padding:16px 20px 24px">`;
+  const pw=`<div style="padding:${isMobile?'10px 10px 20px':'16px 20px 24px'}">`;
   const tbl=(cols,rows,opts={})=>`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
     ${opts.filters?`<div style="padding:12px 16px;border-bottom:1px solid #f5f2ee;display:flex;gap:8px;flex-wrap:wrap">${opts.filters}</div>`:''}
     <table style="width:100%;border-collapse:collapse;font-size:12.5px">
@@ -4345,7 +4414,9 @@ function gotoPage(id){
   if(id==='__logout') return;
   activePage=id; profileOpen=false;
   document.getElementById('profileDD').style.display='none';
+  if(isMobile) closeMobSidebar();
   renderNav(); renderTopbar(); renderMain();
+  if(isMobile) updateMbn();
   window.scrollTo(0,0);
 }
 
