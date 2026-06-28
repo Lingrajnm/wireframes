@@ -1826,6 +1826,22 @@ const ES={
       {ic:'ti-gift',bg:'#dcfce7',c:'#15803d',title:'Welcome offer converts',desc:'A first-order discount (WELCOME15) is the single most effective way to turn visitors into customers.'},
       {ic:'ti-users-group',bg:'#dbeafe',c:'#1d4ed8',title:'Referral programme',desc:'Enable the referral extension so existing customers bring in new ones for you — zero ad spend.'},
     ]},
+  'cs-orders':{tag:{l:'Customer Support',c:'#0e7490',bg:'#e0f7fa'},illo:'order',headline:'No customer orders yet',
+    desc:'Orders placed by your customers will appear here. As a support agent you can view order details, update status, initiate refunds, and resolve delivery issues — all from one place.',
+    ctas:[{l:'Create Order',ic:'ti-plus',p:true},{l:'View All Customers',ic:'ti-users',p:false,action:"gotoPage('customers')"}],
+    cards:[
+      {ic:'ti-search',bg:'#e0f7fa',c:'#0e7490',title:'Search any order',desc:'Look up orders by customer name, phone number, email, or order ID. Full order history is one search away.'},
+      {ic:'ti-refresh',bg:'#dbeafe',c:'#1d4ed8',title:'Update order status',desc:'Move orders through stages — mark as picked, packed, dispatched, or delivered. Trigger customer notifications instantly.'},
+      {ic:'ti-receipt-refund',bg:'#dcfce7',c:'#15803d',title:'Refunds & cancellations',desc:'Issue full or partial refunds, process cancellations, and credit the customer wallet — without leaving this page.'},
+    ]},
+  abandoned:{tag:{l:'Operations',c:'#ea580c',bg:'#fff7ed'},illo:'cart',headline:'No abandoned carts yet',
+    desc:'When a customer adds items to their cart but doesn\'t complete checkout, it appears here. Recover lost revenue by reaching out with a reminder or a targeted discount.',
+    ctas:[{l:'Create Recovery Coupon',ic:'ti-discount',p:true,action:"gotoPage('coupons')"},{l:'Set Up Reminder Campaign',ic:'ti-speakerphone',p:false,action:"gotoPage('campaigns')"}],
+    cards:[
+      {ic:'ti-shopping-cart-off',bg:'#fff7ed',c:'#ea580c',title:'Why carts get abandoned',desc:'Top reasons: unexpected delivery fees, forced sign-up, slow checkout. Fix these first before running recovery campaigns.'},
+      {ic:'ti-message',bg:'#dbeafe',c:'#1d4ed8',title:'Automated recovery messages',desc:'Send a WhatsApp or push notification 1 hour after abandonment — stores recover 15–25% of abandoned carts this way.'},
+      {ic:'ti-discount',bg:'#dcfce7',c:'#15803d',title:'Sweeten with a discount',desc:'A 10% off coupon sent to abandoners recovers 2× more carts than a plain reminder — the nudge that closes the gap.'},
+    ]},
   // ── MARKETING ──
   coupons:{tag:{l:'Marketing',c:'#15803d',bg:'#dcfce7'},illo:'coupon',headline:'No coupons created yet',
     desc:'Create discount coupons to attract first-time buyers, reward loyal customers, or recover abandoned carts. Coupons are redeemable at checkout.',
@@ -2173,6 +2189,7 @@ function getIllo(type){
     segment:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#dcfce7" opacity=".4"/><circle cx="78" cy="78" r="28" fill="#bbf7d0" stroke="#86efac" stroke-width="1.5"/><circle cx="122" cy="78" r="28" fill="#bfdbfe" stroke="#93c5fd" stroke-width="1.5"/><ellipse cx="100" cy="78" rx="10" ry="28" fill="#a7f3d0" opacity=".7"/><text x="65" y="82" text-anchor="middle" font-size="8" fill="#15803d" font-family="sans-serif">VIP</text><text x="135" y="82" text-anchor="middle" font-size="8" fill="#1d4ed8" font-family="sans-serif">New</text><text x="100" y="82" text-anchor="middle" font-size="7" fill="#374151" font-family="sans-serif">Both</text></svg>`,
     offer:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#dcfce7" opacity=".4"/><rect x="35" y="55" width="130" height="75" rx="8" fill="#fff" stroke="#bbf7d0" stroke-width="1.5"/><text x="100" y="90" text-anchor="middle" font-size="28" font-weight="800" fill="#16a34a" font-family="sans-serif">BUY 2</text><text x="100" y="108" text-anchor="middle" font-size="13" fill="#6b7280" font-family="sans-serif">GET 1 FREE</text><rect x="35" y="55" width="130" height="20" rx="8" fill="#16a34a" opacity=".12"/></svg>`,
     banner:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="88" rx="75" ry="50" fill="#f5f3ff" opacity=".4"/><rect x="30" y="60" width="140" height="75" rx="6" fill="#e0e7ff" stroke="#c7d2fe" stroke-width="1.5"/><rect x="30" y="60" width="80" height="75" rx="6" fill="#c7d2fe"/><circle cx="65" cy="88" r="18" fill="#a5b4fc"/><text x="65" y="93" text-anchor="middle" font-size="11" fill="white" font-family="sans-serif">SALE</text><rect x="120" y="72" width="38" height="6" rx="2" fill="#e0e7ff"/><rect x="120" y="84" width="28" height="5" rx="2" fill="#e0e7ff"/><rect x="120" y="96" width="32" height="5" rx="2" fill="#e0e7ff"/><rect x="120" y="110" width="30" height="14" rx="3" fill="#818cf8"/></svg>`,
+    cart:`<svg viewBox="0 0 200 165" width="180"><ellipse cx="100" cy="90" rx="75" ry="50" fill="#fff7ed" opacity=".5"/><path d="M38 55 l12 0 22 52 72 0" stroke="#fdba74" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="62" y="70" width="72" height="38" rx="5" fill="#fff" stroke="#fed7aa" stroke-width="1.5"/><rect x="70" y="78" width="22" height="22" rx="3" fill="#fde68a"/><rect x="97" y="82" width="28" height="5" rx="2" fill="#e5e7eb"/><rect x="97" y="91" width="20" height="5" rx="2" fill="#f3f4f6"/><circle cx="80" cy="122" r="9" fill="#fb923c"/><circle cx="120" cy="122" r="9" fill="#fb923c"/><circle cx="80" cy="122" r="4" fill="#fff"/><circle cx="120" cy="122" r="4" fill="#fff"/><line x1="115" y1="55" x2="145" y2="55" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/><line x1="130" y1="40" x2="130" y2="70" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/><circle cx="130" cy="55" r="16" fill="#fee2e2" stroke="#fca5a5" stroke-width="1.5" opacity=".7"/></svg>`,
   };
   return illos[type]||`<div style="width:80px;height:80px;border-radius:20px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:36px">📄</div>`;
 }
