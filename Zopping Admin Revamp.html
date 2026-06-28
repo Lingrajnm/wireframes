@@ -3984,6 +3984,96 @@ function renderFilled(scroll){
       </div>`;
       scroll.innerHTML=pw+tableHtml+'</div>';
     },
+    analytics: ()=>{
+      const wipBanner=`<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fef9c3;border:1.5px solid #fde68a;border-radius:10px;margin-bottom:16px">
+        <i class="ti ti-tools" style="font-size:20px;color:#ca8a04;flex-shrink:0"></i>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#92400e">Work in Progress</div>
+          <div style="font-size:12px;color:#a16207;margin-top:1px">Partial work is done. Data for Analytics will be completed by Lingraj — maximum 30th EOD.</div>
+        </div>
+      </div>`;
+
+      // Date range bar
+      const dateBar=`<div style="background:#fff;border:1px solid #ede8e0;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <i class="ti ti-calendar" style="font-size:16px;color:#16a34a"></i>
+        <span style="font-size:13px;color:#374151;font-weight:500">01 Jun 2026</span>
+        <i class="ti ti-arrow-right" style="font-size:13px;color:#9ca3af"></i>
+        <span style="font-size:13px;color:#374151;font-weight:500">29 Jun 2026</span>
+        <div style="margin-left:auto;display:flex;gap:6px">
+          ${['Today','7D','30D','Custom'].map((l,i)=>`<button style="padding:5px 12px;border-radius:6px;font-size:12px;font-weight:${i===2?700:500};background:${i===2?'#16a34a':'#f9f7f4'};color:${i===2?'#fff':'#6b7280'};border:1.5px solid ${i===2?'#16a34a':'#e5e7eb'};cursor:pointer">${l}</button>`).join('')}
+        </div>
+      </div>`;
+
+      // KPI cards
+      const kpis=[
+        {l:'Total Orders',      v:'3,847', sub:'Jun 2026',   ic:'ti-shopping-bag',   bg:'#dbeafe', ic_c:'#1d4ed8', delta:'+12.4%', up:true},
+        {l:'Total Revenue',     v:'₹9.2L',  sub:'Jun 2026',   ic:'ti-currency-rupee', bg:'#dcfce7', ic_c:'#16a34a', delta:'+8.1%',  up:true},
+        {l:'Avg Order Value',   v:'₹238',   sub:'per order',  ic:'ti-receipt',        bg:'#f5f3ff', ic_c:'#7c3aed', delta:'-2.3%',  up:false},
+        {l:'Active Customers',  v:'1,204',  sub:'this month', ic:'ti-users',          bg:'#fff7ed', ic_c:'#ea580c', delta:'+5.7%',  up:true},
+      ];
+      const kpiHtml=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">${kpis.map(k=>`
+        <div style="background:#fff;border:1px solid #ede8e0;border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
+            <span style="font-size:12px;color:#6b7280;font-weight:600">${k.l}</span>
+            <span style="width:32px;height:32px;border-radius:8px;background:${k.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ti ${k.ic}" style="font-size:16px;color:${k.ic_c}"></i>
+            </span>
+          </div>
+          <div style="font-size:22px;font-weight:800;color:#111827;margin-bottom:4px">${k.v}</div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:11.5px;color:${k.up?'#16a34a':'#dc2626'};font-weight:700;display:flex;align-items:center;gap:2px">
+              <i class="ti ${k.up?'ti-trending-up':'ti-trending-down'}" style="font-size:12px"></i>${k.delta}
+            </span>
+            <span style="font-size:11px;color:#9ca3af">${k.sub}</span>
+          </div>
+        </div>`).join('')}</div>`;
+
+      // Chart placeholder row
+      const chartRow=`<div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:16px">
+        <div style="background:#fff;border:1px solid #ede8e0;border-radius:10px;padding:18px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+          <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:4px">Orders Over Time</div>
+          <div style="font-size:11.5px;color:#9ca3af;margin-bottom:16px">Daily order count — Jun 2026</div>
+          <div style="height:160px;background:linear-gradient(180deg,#f0fdf4 0%,#fff 100%);border-radius:8px;border:1.5px dashed #d1fae5;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px">
+            <i class="ti ti-chart-line" style="font-size:32px;color:#86efac"></i>
+            <span style="font-size:12px;color:#9ca3af">Chart rendering in progress</span>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid #ede8e0;border-radius:10px;padding:18px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+          <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:4px">Orders by Type</div>
+          <div style="font-size:11.5px;color:#9ca3af;margin-bottom:16px">Delivery vs Pickup</div>
+          <div style="height:160px;background:linear-gradient(180deg,#eff6ff 0%,#fff 100%);border-radius:8px;border:1.5px dashed #bfdbfe;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px">
+            <i class="ti ti-chart-donut" style="font-size:32px;color:#93c5fd"></i>
+            <span style="font-size:12px;color:#9ca3af">Chart rendering in progress</span>
+          </div>
+        </div>
+      </div>`;
+
+      // Top products table
+      const TOP_PRODS=[
+        ['Harpic Toilet Cleaner 1 Lt','HRP-1000',214,'₹15,408'],
+        ['AMUL Butter 100g','AML-BUT-100',198,'₹9,702'],
+        ['Nestle KitKat 4F 37.8g','NES-KK-4F',187,'₹8,415'],
+        ['Haldirams Aloo Bhujia 200g','HLD-AB-200',176,'₹7,040'],
+        ['CARE 4 HOMES Floor Cleaner','C4H-FC-500',163,'₹6,520'],
+      ];
+      const topProdsHtml=`<div style="background:#fff;border:1px solid #ede8e0;border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="padding:14px 16px;border-bottom:1px solid #f0ece4">
+          <div style="font-size:13px;font-weight:700;color:#111827">Top Selling Products</div>
+          <div style="font-size:11.5px;color:#9ca3af;margin-top:2px">Jun 2026 · by units sold</div>
+        </div>
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr>${['Product','SKU','Units Sold','Revenue'].map(h=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:9px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${h}</th>`).join('')}</tr></thead>
+          <tbody>${TOP_PRODS.map(([n,sku,u,r],i)=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+            <td style="padding:11px 14px;border-bottom:1px solid #f9f7f4;font-size:13px;color:#111827;font-weight:500">${n}</td>
+            <td style="padding:11px 14px;border-bottom:1px solid #f9f7f4;font-size:11.5px;color:#9ca3af;font-family:monospace">${sku}</td>
+            <td style="padding:11px 14px;border-bottom:1px solid #f9f7f4;font-size:13px;color:#374151">${u}</td>
+            <td style="padding:11px 14px;border-bottom:1px solid #f9f7f4;font-size:13px;color:#16a34a;font-weight:600">${r}</td>
+          </tr>`).join('')}</tbody>
+        </table>
+      </div>`;
+
+      scroll.innerHTML=pw+wipBanner+dateBar+kpiHtml+chartRow+topProdsHtml+'</div>';
+    },
   };
 
   const renderer=pages[pg];
