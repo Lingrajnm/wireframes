@@ -994,7 +994,7 @@ function renderNav(){
   document.getElementById('sbAv').style.color=rm.c;
   document.getElementById('sbName').textContent=rm.n;
   document.getElementById('sbRole').textContent=rm.l;
-  document.getElementById('entBadge').style.display=isEnterprise?'flex':'none';
+  updatePlanBadge();
 }
 
 // ── PAGE-LEVEL CTA MAP ─────────────────────────────────────────────
@@ -1294,13 +1294,10 @@ function renderDonut(el,slices,size){
 // ── RENDER MAIN ────────────────────────────────────────────────────
 function renderMain(){
   const scroll=document.getElementById('mainScroll');
-  console.log('[DBG] renderMain page='+activePage+' hasData='+hasData+' scroll='+!!scroll+' scrollH='+scroll?.offsetHeight);
-  try {
-    if(activePage==='overview') renderOverview(scroll);
-    else if(activePage==='analytics' && hasData) renderAnalytics(scroll);
-    else if(['myaccount','billing','notifications','changepassword','balance','deleteaccount'].includes(activePage)) renderMyAccount(scroll);
-    else renderGeneric(scroll);
-  } catch(e){ console.error('[DBG] renderMain error:',e); }
+  if(activePage==='overview') renderOverview(scroll);
+  else if(activePage==='analytics' && hasData) renderAnalytics(scroll);
+  else if(['myaccount','billing','notifications','changepassword','balance','deleteaccount'].includes(activePage)) renderMyAccount(scroll);
+  else renderGeneric(scroll);
   renderHeaderSearch();
 }
 
