@@ -2517,83 +2517,206 @@ function renderFilled(scroll){
         </div></div>`;
     },
     products: ()=>{
-      const rows=[
-        ['<strong>Fresh Whole Milk 1L</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-4421 · Dairy & Eggs</span>','₹58','₹65',badge('In Stock','#15803d','#dcfce7'),'28 orders today',badge('Published','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Basmati Rice 5kg</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-8812 · Grains</span>','₹320','₹380',badge('In Stock','#15803d','#dcfce7'),'21 orders today',badge('Published','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Greek Yogurt 200g</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-8872 · Dairy & Eggs</span>','₹82','₹95',badge('3 left','#ea580c','#fff7ed'),'18 orders today',badge('Published','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Organic Eggs (12)</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-3310 · Dairy & Eggs</span>','₹110','₹135',badge('In Stock','#15803d','#dcfce7'),'14 orders today',badge('Published','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Sourdough Bread</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-2241 · Bakery</span>','₹85','₹110',badge('In Stock','#15803d','#dcfce7'),'11 orders today',badge('Published','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Olive Oil 500ml</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-5521 · Pantry</span>','₹280','₹350',badge('In Stock','#15803d','#dcfce7'),'9 orders today',badge('Published','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Full Cream Milk 1L</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-4422 · Dairy & Eggs</span>','₹56','₹62',badge('Out of Stock','#b91c1c','#fee2e2'),'0 orders today',badge('Published','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
+      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
+      const img=`<div style="width:40px;height:40px;border-radius:6px;border:1.5px solid #e5e7eb;background:#f9fafb;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-shopping-bag" style="font-size:18px;color:#d1d5db"></i></div>`;
+      const en=(on=true)=>`<span style="font-size:12px;font-weight:600;color:${on?'#15803d':'#9ca3af'}">${on?'Enabled':'Disabled'}</span>`;
+      const cat=t=>`<span style="font-size:12px;color:#16a34a;cursor:pointer">${t}</span>`;
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const PRODS=[
+        ['SUPER MOM','SCISSOR 10"','Scissors',true],
+        ['TEA','STAIRER NA','Cutlery & Kitchenware',true],
+        ['SUPER MOM','COCONUT OPENER','Cutlery & Kitchenware',true],
+        ['SUPER MOM','SCISSOR 9','Scissors',true],
+        ['SUPER MOM','5 IN 1 GRATER & SLICER','Peeler & Knife',true],
+        ['SUPER MOM','FRIZZY ICE TRAY','Plastic Storages',true],
+        ['SUPER MOM','3 IN 1 PEELAR','Peeler & Knife',true],
+        ['REGAL','BLACK KITCHEN LIGHTER','Cutlery & Kitchenware',true],
+        ['FANCY','LIGHTER','Cutlery & Kitchenware',true],
+        ['APEX','WASH N STORAGE BASKET','Plastic Storages',true],
+        ['SUPER MOM','CAN OPENER','Cutlery & Kitchenware',true],
+        ['APEX','STEEL WIRE BASKET','Plastic Storages',true],
+        ['SUPER MOM','PEELER SET 3PC','Peeler & Knife',true],
+        ['REGAL','STAINLESS SPOON SET 6PC','Cutlery & Kitchenware',true],
+        ['TEA','STRAINER STEEL','Cutlery & Kitchenware',true],
+        ['SUPER MOM','MULTI CHOPPER','Cutlery & Kitchenware',true],
+        ['APEX','COLANDER BASKET','Plastic Storages',true],
+        ['SUPER MOM','BOTTLE OPENER','Cutlery & Kitchenware',false],
+        ['FANCY','STEEL LIGHTER','Cutlery & Kitchenware',true],
+        ['REGAL','KNIFE SHARPENER','Peeler & Knife',false],
       ];
-      const catStats=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">${[['54,334','Total Products','ti-package','#fff7ed','#b45309','+12',true],['300','Categories','ti-category','#dbeafe','#1d4ed8','+2',true],['3,375','Brands','ti-registered','#f5f3ff','#7c3aed','+5',true]].map(s=>stat(...s)).join('')}</div>`;
-      const fp=`<input style="padding:7px 12px;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;outline:none;font-family:inherit;width:200px" placeholder="Search products…">
-        <div style="display:flex;gap:5px">${['All','Published','Draft','Out of Stock'].map((s,i)=>`<span style="font-size:11px;padding:4px 10px;border-radius:20px;border:1.5px solid ${i===0?'#16a34a':'#e2d9ce'};background:${i===0?'#16a34a':'#fff'};color:${i===0?'#fff':'#6b7280'};cursor:pointer;font-weight:500">${s}</span>`).join('')}</div>`;
-      scroll.innerHTML=pw+catStats+tbl(['Product','Cost','MRP','Stock','Sales','Status',''],rows,{filters:fp})+'</div>';
-    },
-    categories: ()=>{
-      const rows=[
-        ['<strong>Dairy & Eggs</strong>','12,840 products','3 sub-categories',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Fresh Produce</strong>','8,220 products','5 sub-categories',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Bakery</strong>','3,410 products','2 sub-categories',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Beverages</strong>','6,100 products','4 sub-categories',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Snacks & Confectionery</strong>','9,840 products','6 sub-categories',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Pantry Staples</strong>','7,200 products','4 sub-categories',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Personal Care</strong>','2,980 products','3 sub-categories',badge('Draft','#ca8a04','#fef9c3'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-      ];
-      scroll.innerHTML=pw+tbl(['Category Name','Products','Sub-categories','Status',''],rows,{filters:filterBar})+'</div>';
-    },
-    brands: ()=>{
-      const rows=[
-        [av('AM','#15803d')+'<strong style="margin-left:8px">Amul</strong>','840 products','Dairy & Eggs, Bakery',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('NE','#1d4ed8')+'<strong style="margin-left:8px">Nestle</strong>','420 products','Dairy, Beverages, Snacks',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('BD','#7c3aed')+'<strong style="margin-left:8px">Britannia</strong>','210 products','Bakery, Dairy',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('ITC','#b45309')+'<strong style="margin-left:8px">ITC</strong>','380 products','Snacks, Pantry',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('MO','#ea580c')+'<strong style="margin-left:8px">Mother Dairy</strong>','120 products','Dairy & Eggs',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('TR','#be185d')+'<strong style="margin-left:8px">Tata Consumer</strong>','290 products','Beverages, Pantry',badge('Active','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-      ];
-      scroll.innerHTML=pw+tbl(['Brand','Products','Categories','Status',''],rows,{filters:filterBar})+'</div>';
-    },
-    tags: ()=>{
-      const tagData=[{t:'New Arrivals',n:248,c:'#1d4ed8',bg:'#dbeafe'},{t:'Bestsellers',n:182,c:'#15803d',bg:'#dcfce7'},{t:'Organic',n:420,c:'#65a30d',bg:'#ecfccb'},{t:'Gluten Free',n:96,c:'#7c3aed',bg:'#f5f3ff'},{t:'Vegan',n:74,c:'#0e7490',bg:'#e0f7fa'},{t:'Sugar Free',n:58,c:'#b45309',bg:'#fff7ed'},{t:'Low Fat',n:112,c:'#be185d',bg:'#fce7f3'},{t:'Imported',n:340,c:'#475569',bg:'#f3f4f6'},{t:'On Sale',n:88,c:'#dc2626',bg:'#fee2e2'},{t:'Staff Picks',n:64,c:'#ca8a04',bg:'#fef9c3'}];
-      scroll.innerHTML=pw+`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><input style="padding:7px 12px;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;outline:none;font-family:inherit;flex:1" placeholder="Search tags…"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:10px">${tagData.map(t=>`<div style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;cursor:pointer" onmouseover="this.style.borderColor='${t.c}'" onmouseout="this.style.borderColor='#e5e7eb'"><span style="font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:20px;background:${t.bg};color:${t.c}">${t.t}</span><span style="font-size:11px;color:#9ca3af">${t.n} products</span><i class="ti ti-dots-vertical" style="font-size:14px;color:#d1d5db;cursor:pointer"></i></div>`).join('')}
-        </div></div>`+'</div>';
+      const rows=PRODS.map(([brand,name,category,enabled])=>[img,`<span style="font-size:12.5px"><strong>${brand}</strong> ${name}</span>`,cat(category),en(enabled),act]);
+      const radioRow=['All','Enabled','Disabled'].map((s,i)=>`<label style="flex:0 0 180px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="prodStatus" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
+      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-bottom:18px">
+          <span style="font-size:12.5px;color:#374151">Display Brand + Product Name in Search</span>
+          <div style="width:36px;height:20px;border-radius:10px;background:#16a34a;cursor:pointer;position:relative;flex-shrink:0"><span style="position:absolute;right:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;display:block"></span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+          <div><div style="${lblS}">NAME</div><input style="${inpS}" placeholder="Search by Name"></div>
+          <div><div style="${lblS}">CATEGORY</div><div style="position:relative"><input style="${inpS}padding-right:36px" placeholder="Search by Category"><i class="ti ti-search" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af"></i></div></div>
+          <div><div style="${lblS}">BRAND</div><div style="position:relative"><input style="${inpS}padding-right:36px" placeholder="Search by Brand"><i class="ti ti-search" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af"></i></div></div>
+          <div><div style="${lblS}">TAG</div><div style="position:relative"><input style="${inpS}padding-right:36px" placeholder="Search by Tag"><i class="ti ti-search" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af"></i></div></div>
+          <div><div style="${lblS}">BARCODE</div><input style="${inpS}" placeholder="Enter Barcode"></div>
+          <div><div style="${lblS}">CLIENT ID</div><input style="${inpS}" placeholder="Search by Id"></div>
+        </div>
+        <div style="margin-bottom:16px"><div style="${lblS}">STATUS</div><div style="display:flex">${radioRow}</div></div>
+        <div style="display:flex;gap:8px">
+          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
+          <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
+        </div>
+      </div>`;
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 142 products</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','8','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Image','Name','Primary Category','Status','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
     },
     customers: ()=>{
-      const rows=[
-        [av('RM','#534AB7')+' <strong>Rahul Mehta</strong><br><span style="font-size:10.5px;color:#9ca3af">rahul@email.com · +91 98101 00001</span>','18 orders','₹42,400',badge('VIP','#7c3aed','#f5f3ff'),'2 days ago','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('PS','#be185d')+' <strong>Priya Sharma</strong><br><span style="font-size:10.5px;color:#9ca3af">priya@email.com · +91 98101 00002</span>','14 orders','₹28,600',badge('VIP','#7c3aed','#f5f3ff'),'Today','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('AK','#0e7490')+' <strong>Anjali Kumar</strong><br><span style="font-size:10.5px;color:#9ca3af">anjali@email.com · +91 98101 00003</span>','11 orders','₹19,800',badge('Active','#15803d','#dcfce7'),'Today','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('SR','#7c3aed')+' <strong>Suresh R.</strong><br><span style="font-size:10.5px;color:#9ca3af">suresh@email.com · +91 98101 00004</span>','9 orders','₹14,200',badge('Active','#15803d','#dcfce7'),'3 days ago','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('ML','#ca8a04')+' <strong>Meera Lal</strong><br><span style="font-size:10.5px;color:#9ca3af">meera@email.com · +91 98101 00005</span>','7 orders','₹9,600',badge('New','#1d4ed8','#dbeafe'),'Today','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('KN','#b45309')+' <strong>Karan Nair</strong><br><span style="font-size:10.5px;color:#9ca3af">karan@email.com · +91 98101 00006</span>','4 orders','₹6,200',badge('New','#1d4ed8','#dbeafe'),'1 week ago','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('DS','#ea580c')+' <strong>Divya Shah</strong><br><span style="font-size:10.5px;color:#9ca3af">divya@email.com · +91 98101 00007</span>','2 orders','₹2,100',badge('At Risk','#ca8a04','#fef9c3'),'3 weeks ago','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
+      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
+      const grayAv=`<div style="width:36px;height:36px;border-radius:50%;background:#e5e7eb;flex-shrink:0"></div>`;
+      const namedAv=(ini,c)=>`<div style="width:36px;height:36px;border-radius:50%;background:${c};display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-size:12px;font-weight:700;color:#fff">${ini}</span></div>`;
+      const CUSTS=[
+        {id:'196162',phone:'+919964295244',email:null,date:'21 Nov 2024',time:'08:38 PM'},
+        {id:'196160',phone:null,email:'sumairrajvansha.jarang+10111@zopsmart.com',date:'21 Nov 2024',time:'08:27 PM'},
+        {id:'196157',phone:null,email:'sumairrajvansha.jarang+10201@zopsmart.com',date:'21 Nov 2024',time:'08:25 PM'},
+        {id:'196154',phone:null,email:'sumairrajvansha.jarang+1003@zopsmart.com',date:'21 Nov 2024',time:'08:12 PM'},
+        {id:'196153',phone:null,email:'sumairrajvansha.jarang+1001@zopsmart.com',date:'21 Nov 2024',time:'08:12 PM'},
+        {id:'196119',phone:null,email:'sumairrajvansha.jarang+2@zopsmart.com',date:'21 Nov 2024',time:'06:42 PM'},
+        {id:'196118',phone:null,email:'sumairrajvansha.jarang+1@zopsmart.com',date:'21 Nov 2024',time:'04:39 PM'},
+        {id:'196117',phone:null,email:'sumairrajvansha.jarang@zopsmart.com',date:'21 Nov 2024',time:'04:38 PM'},
+        {name:'Ankit',ini:'AN',color:'#6366f1',id:'194973',phone:null,email:'ankit.kr@zopsmart.com',date:'13 Nov 2024',time:'06:34 PM'},
+        {name:'Test Account',ini:'TA',color:'#0e7490',id:'190948',phone:null,email:'sharaj.sharma@zopsmart.com',date:'14 Oct 2024',time:'12:44 PM'},
+        {name:'Divyanshi Jain',ini:'DJ',color:'#be185d',id:'188876',phone:null,email:'e.divyanshi@gmail.com',date:'25 Sep 2024',time:'10:39 AM'},
+        {name:'Vishal',ini:'VI',color:'#7c3aed',id:'188684',phone:'+917033850051',email:'anandvishal444@gmail.com',date:'23 Sep 2024',time:'11:44 AM'},
+        {name:'Sunil',ini:'SU',color:'#15803d',id:'187248',phone:'+919028077333',email:'sunil.kumar@zopsmart.com',date:'12 Sep 2024',time:'10:23 AM'},
+        {name:'Lingraj',ini:'LI',color:'#1d4ed8',id:'187058',phone:'+919060899997',email:'lingraj@zopsmart.com',date:'11 Sep 2024',time:'11:00 AM'},
+        {name:'Praveen Kumar',ini:'PK',color:'#ea580c',id:'187034',phone:'+919741233415',email:'apnerve@gmail.com',date:'11 Sep 2024',time:'02:18 AM'},
+        {id:'186921',phone:null,email:'test.user@gmail.com',date:'08 Sep 2024',time:'09:15 AM'},
+        {name:'Rajesh Kumar',ini:'RK',color:'#ca8a04',id:'186440',phone:null,email:'rajesh.k@gmail.com',date:'02 Sep 2024',time:'03:22 PM'},
+        {id:'185992',phone:'+919876543210',email:null,date:'28 Aug 2024',time:'07:45 AM'},
+        {name:'Meera Gupta',ini:'MG',color:'#b45309',id:'185201',phone:null,email:'meera.gupta@yahoo.com',date:'19 Aug 2024',time:'11:30 AM'},
+        {name:'Amit Shah',ini:'AS',color:'#7c3aed',id:'184770',phone:null,email:'amit.shah@zopsmart.com',date:'12 Aug 2024',time:'04:00 PM'},
       ];
-      const cf=`<input style="padding:7px 12px;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;outline:none;font-family:inherit;width:200px" placeholder="Search customers…">
-        <div style="display:flex;gap:5px">${['All','VIP','Active','New','At Risk','Lost'].map((s,i)=>`<span style="font-size:11px;padding:4px 10px;border-radius:20px;border:1.5px solid ${i===0?'#16a34a':'#e2d9ce'};background:${i===0?'#16a34a':'#fff'};color:${i===0?'#fff':'#6b7280'};cursor:pointer;font-weight:500">${s}</span>`).join('')}</div>`;
-      scroll.innerHTML=pw+tbl(['Customer','Orders','Lifetime Value','Segment','Last Order',''],rows,{filters:cf})+'</div>';
+      const rows=CUSTS.map(c=>{
+        const avi=c.name?namedAv(c.ini,c.color):grayAv;
+        const nameEl=c.name?`<div style="font-size:12.5px;font-weight:500;color:#111827">${c.name}</div><div style="font-size:11px;color:#9ca3af">Customer ID – ${c.id}</div>`:`<div style="font-size:12px;color:#6b7280">Customer ID – ${c.id}</div>`;
+        const contact=`${c.phone?`<div style="font-size:12px;color:#374151">${c.phone}</div>`:''}${c.email?`<div style="font-size:11.5px;color:#6b7280">${c.email}</div>`:''}`;
+        return [
+          `<div style="display:flex;align-items:center">${avi}</div>`,
+          nameEl,contact,
+          `<div style="font-size:12px;color:#374151">${c.date}</div><div style="font-size:11px;color:#9ca3af">${c.time}</div>`,
+          `<span style="font-size:11.5px;font-weight:600;color:#9ca3af;letter-spacing:.03em">ENABLED</span>`,
+          `<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`,
+        ];
+      });
+      const statusR=['All','Enabled','Disabled'].map((s,i)=>`<label style="flex:0 0 200px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="custStatus" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
+      const verifyR=['All','Verified','Not Verified'].map((s,i)=>`<label style="flex:0 0 200px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="custVerify" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
+      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+          <div><div style="${lblS}">ENTER CUSTOMER'S EMAIL</div><input style="${inpS}" placeholder="Search By Email"></div>
+          <div><div style="${lblS}">ENTER CUSTOMER'S PHONE</div><div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff"><span style="padding:0 10px;font-size:16px;flex-shrink:0">🇮🇳</span><input style="border:none;outline:none;padding:9px 12px 9px 4px;font-size:12.5px;font-family:inherit;width:100%;color:#374151" placeholder="Search By Phone"></div></div>
+          <div><div style="${lblS}">ENTER CLIENT'S ID</div><input style="${inpS}" placeholder="Search by Id"></div>
+          <div><div style="${lblS}">JOINED ON</div><div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff"><i class="ti ti-calendar" style="padding:0 10px;font-size:16px;color:#16a34a;flex-shrink:0"></i><input style="border:none;outline:none;padding:9px 12px 9px 0;font-size:12.5px;font-family:inherit;width:100%;color:#374151" placeholder="Date"></div></div>
+          <div><div style="${lblS}">UPDATED ON</div><div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff"><i class="ti ti-calendar" style="padding:0 10px;font-size:16px;color:#16a34a;flex-shrink:0"></i><input style="border:none;outline:none;padding:9px 12px 9px 0;font-size:12.5px;font-family:inherit;width:100%;color:#374151" placeholder="Date"></div></div>
+          <div><div style="${lblS}">STATUS</div><div style="display:flex">${statusR}</div></div>
+        </div>
+        <div style="margin-bottom:16px"><div style="${lblS}">VERIFICATION STATUS</div><div style="display:flex">${verifyR}</div></div>
+        <div style="display:flex;gap:8px">
+          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
+          <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
+        </div>
+      </div>`;
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 15341 – 15360 of 15,355 customers</span><div style="display:flex;gap:4px">${['‹','1','…','767','768','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===4?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===4?'#16a34a':'#fff'};color:${i===4?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Image','Name','Contact','Join Date','Status','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
     },
     coupons: ()=>{
-      const rows=[
-        ['<strong style="font-family:monospace;color:#15803d">WELCOME10</strong><br><span style="font-size:10.5px;color:#9ca3af">10% off first order</span>','42 used / unlimited','All products',badge('Active','#15803d','#dcfce7'),'No expiry','₹4,200 revenue','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong style="font-family:monospace;color:#1d4ed8">SAVE20</strong><br><span style="font-size:10.5px;color:#9ca3af">₹20 flat off min ₹200</span>','128 used / 500','All products',badge('Active','#15803d','#dcfce7'),'31 Jul 2026','₹2,560 revenue','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong style="font-family:monospace;color:#7c3aed">VIP50</strong><br><span style="font-size:10.5px;color:#9ca3af">₹50 off for VIP customers</span>','18 used / 100','VIP segment',badge('Active','#15803d','#dcfce7'),'30 Jun 2026','₹900 revenue','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong style="font-family:monospace;color:#ca8a04">FLASH30</strong><br><span style="font-size:10.5px;color:#9ca3af">30% off — flash sale</span>','84 used / 100','Selected items',badge('Expired','#9ca3af','#f3f4f6'),'25 Jun 2026','₹6,300 revenue','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong style="font-family:monospace;color:#b91c1c">CART15</strong><br><span style="font-size:10.5px;color:#9ca3af">15% off abandoned cart</span>','12 used / unlimited','Auto — abandoned carts',badge('Active','#15803d','#dcfce7'),'No expiry','₹1,440 revenue','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
+      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const COUPONS=[
+        ['LINLTKP2EQ2DSOD','100%','Cart Discount','₹ 200','1 per user','19 Feb 2025, 12:00 AM','22 Feb 2025, 10:00 PM',true],
+        ['LIN9KZ6SMTB9SOD','100%','Cart Discount','₹ 200','1 per user','19 Feb 2025, 12:00 AM','22 Feb 2025, 10:00 PM',true],
+        ['LINCE1CHMJ0BSOD','100%','Cart Discount','₹ 200','1 per user','19 Feb 2025, 12:00 AM','22 Feb 2025, 10:00 PM',true],
+        ['LINE4NLC08VXSOD','100%','Cart Discount','₹ 200','1 per user','19 Feb 2025, 12:00 AM','22 Feb 2025, 10:00 PM',true],
+        ['LINUN2W3OR49SOD','100%','Cart Discount','₹ 200','1 per user','19 Feb 2025, 12:00 AM','22 Feb 2025, 10:00 PM',true],
+        ['LINA948XSS2CSOD','100%','Cart Discount','₹ 200','1 per user','19 Feb 2025, 12:00 AM','22 Feb 2025, 10:00 PM',true],
+        ['LINRFP1YZ2NLSOD','100%','Cart Discount','₹ 200','1 per user','19 Feb 2025, 12:00 AM','22 Feb 2025, 10:00 PM',true],
+        ['LINO7FLWKQ7USOD','100%','Cart Discount','₹ 200','1 per user','19 Feb 2025, 12:00 AM','22 Feb 2025, 10:00 PM',true],
+        ['LINLS2W88QB9SOD','100%','Cart Discount','₹ 200','1 per user','19 Feb 2025, 12:00 AM','22 Feb 2025, 10:00 PM',true],
+        ['LINEJGHK0KEYSOD','100%','Cart Discount','₹ 200','1 per user','19 Feb 2025, 12:00 AM','22 Feb 2025, 10:00 PM',true],
+        ['Test','50%','Cart Discount','₹ 100','5 per user','01 Jan 2025, 12:30 AM','08 Feb 2025, 01:00 AM',true],
+        ['WELCOME10','10%','Cart Discount','₹ 500','1 per user','01 Jan 2025, 12:00 AM','31 Dec 2025, 11:59 PM',true],
+        ['SAVE20','₹20','Cart Discount','₹ 200','1 per user','01 Jun 2026, 12:00 AM','31 Jul 2026, 11:59 PM',true],
+        ['VIP50','₹50','Cart Discount','₹ 300','1 per user','01 Jun 2026, 12:00 AM','30 Jun 2026, 11:59 PM',true],
+        ['FLASH30','30%','Cart Discount','Unlimited','Unlimited','20 Jun 2026, 12:00 AM','25 Jun 2026, 11:59 PM',false],
+        ['CART15','15%','Cart Discount','₹ 100','1 per user','01 Jan 2026, 12:00 AM','31 Dec 2026, 11:59 PM',true],
+        ['SUMMER25','25%','Cart Discount','₹ 400','1 per user','01 Jun 2026, 12:00 AM','30 Jun 2026, 11:59 PM',true],
+        ['NEWUSER','₹100','Cart Discount','₹ 200','1 per user','01 Jan 2026, 12:00 AM','31 Dec 2026, 11:59 PM',true],
+        ['BULK10','10%','Item Discount','₹ 1,000','3 per user','01 Apr 2026, 12:00 AM','30 Jun 2026, 11:59 PM',false],
+        ['FREESHIP','₹0','Delivery Discount','Unlimited','1 per order','01 Jun 2026, 12:00 AM','31 Aug 2026, 11:59 PM',true],
       ];
-      scroll.innerHTML=pw+tbl(['Coupon','Usage','Applicable On','Status','Expiry','Revenue',''],rows,{filters:filterBar})+'</div>';
+      const rows=COUPONS.map(([code,pct,type,amt,per,start,end,on])=>[
+        `<span style="font-size:12.5px;font-family:monospace;color:#111827">${code}</span>`,
+        `<div style="font-size:13px;font-weight:600;color:#111827">${pct}</div><div style="font-size:11px;color:#9ca3af">${type}</div>`,
+        `<div style="font-size:13px;color:#111827">${amt}</div><div style="font-size:11px;color:#9ca3af">${per}</div>`,
+        `<div style="font-size:12px;color:#374151">${start}</div><div style="font-size:11px;color:#9ca3af">${end}</div>`,
+        `<span style="font-size:11.5px;font-weight:600;color:#9ca3af;letter-spacing:.03em">${on?'ENABLED':'DISABLED'}</span>`,
+        act,
+      ]);
+      const statusR=['All','Enabled','Disabled'].map((s,i)=>`<label style="flex:0 0 180px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="cpnStatus" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
+      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:16px;margin-bottom:16px;align-items:end">
+          <div><div style="${lblS}">COUPON</div><input style="${inpS}" placeholder="Search by Coupon Code"></div>
+          <div><div style="${lblS}">STATUS</div><div style="display:flex">${statusR}</div></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
+          <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
+        </div>
+      </div>`;
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 20 coupons</span><div style="display:flex;gap:4px">${['‹','1','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Coupon','Discount','Limit','Validity','Status','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
     },
     campaigns: ()=>{
-      const rows=[
-        ['<strong>Summer Sale Announcement</strong><br><span style="font-size:10.5px;color:#9ca3af">SMS · 4,200 recipients</span>',badge('Active','#15803d','#dcfce7'),'24 Jun 2026','4,200','98.1%','4.2%','₹18,240','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Loyalty Reward — June</strong><br><span style="font-size:10.5px;color:#9ca3af">Email · VIP segment</span>',badge('Active','#15803d','#dcfce7'),'20 Jun 2026','842','24.6%','3.8%','₹12,800','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>New User Welcome Series</strong><br><span style="font-size:10.5px;color:#9ca3af">Push · New customers</span>',badge('Active','#15803d','#dcfce7'),'Ongoing','284','8.4%','5.1%','₹6,400','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Weekend Flash Sale</strong><br><span style="font-size:10.5px;color:#9ca3af">SMS · All subscribers</span>',badge('Completed','#6b7280','#f3f4f6'),'21 Jun 2026','8,400','97.2%','2.9%','₹3,960','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Abandoned Cart Recovery</strong><br><span style="font-size:10.5px;color:#9ca3af">Email · Auto-triggered</span>',badge('Active','#15803d','#dcfce7'),'Ongoing','142','31.2%','68%','₹4,200','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const CAMPS=[
+        [922,'Chun Ke Ekdum Best La Rahe Hai – Mango Fest!','Test','CustomersMappedToTag','Completed','26 Jun 2026 07:30 PM','Jun 26, 2026'],
+        [921,'Chun Ke Ekdum Best La Rahe Hai – Mango Fest!','test','CustomersMappedToTag','Completed','26 Jun 2026 07:00 PM','Jun 26, 2026'],
+        [920,'Chun Ke Ekdum Best La Rahe Hai – Mango Fest!','Test','CustomersMappedToTag','Completed','26 Jun 2026 06:30 PM','Jun 26, 2026'],
+        [880,'Chun Ke Ekdum Best La Rahe Hai – Mango Fest!','Chun Ke Ekdum Best La Rahe Hai – Mango Fest!','CustomersMappedToTag','Completed','06 Jun 2026 09:00 AM','Jun 06, 2026'],
+        [879,'Chun Ke Ekdum Best La Rahe Hai – Mango Fest!','Chun Ke Ekdum Best La Rahe Hai – Mango Fest! ✨🥭','AllCustomers','Completed','06 Jun 2026 08:30 AM','Jun 06, 2026'],
+        [877,'Test Notification from Lingraj','Test Notification from Lingraj','CustomersMappedToTag','Completed','05 Jun 2026 05:00 AM','Jun 05, 2026'],
+        [716,'Test 4','Test 4','CustomersMappedToTag','Completed','07 Apr 2026 04:30 PM','Apr 07, 2026'],
+        [715,'Test 3','Test 3','CustomersMappedToTag','Running','07 Apr 2026 02:00 PM','Apr 07, 2026'],
+        [714,'Test 2','Test 2','CustomersMappedToTag','Completed','07 Apr 2026 01:30 PM','Apr 07, 2026'],
+        [713,'Test 1','Test 1','CustomersMappedToTag','Completed','07 Apr 2026 01:00 PM','Apr 07, 2026'],
+        [698,'Summer Flash Sale','Get Up to 50% Off This Weekend!','AllCustomers','Completed','15 Mar 2026 10:00 AM','Mar 15, 2026'],
+        [697,'Loyalty Reward – March','Exclusive Offer for Our VIP Members','CustomersMappedToTag','Completed','10 Mar 2026 09:00 AM','Mar 10, 2026'],
+        [682,'Weekend Special','Weekend Deals – Don\'t Miss Out!','AllCustomers','Completed','28 Feb 2026 08:00 AM','Feb 28, 2026'],
+        [670,'New User Welcome','Welcome to Zopsmart – Here\'s a Gift for You','CustomersMappedToTag','Completed','14 Feb 2026 12:00 PM','Feb 14, 2026'],
+        [651,'Republic Day Sale','Big Sale – 26 Jan Special Offers!','AllCustomers','Completed','26 Jan 2026 07:00 AM','Jan 26, 2026'],
+        [630,'End of Year Deals','Year-End Clearance – Shop & Save','AllCustomers','Completed','28 Dec 2025 06:00 AM','Dec 28, 2025'],
+        [614,'Christmas Offer','Merry Christmas! Here\'s a Special Treat','CustomersMappedToTag','Completed','24 Dec 2025 09:00 AM','Dec 24, 2025'],
+        [592,'Diwali Blast','Happy Diwali – Big Discounts Inside!','AllCustomers','Completed','20 Oct 2025 06:30 AM','Oct 20, 2025'],
+        [570,'Onam Special','Onam Festival Offers – Grab Them Now!','CustomersMappedToTag','Completed','05 Sep 2025 08:00 AM','Sep 05, 2025'],
+        [541,'Independence Day','Celebrate 78th Independence Day with Savings','AllCustomers','Completed','15 Aug 2025 07:00 AM','Aug 15, 2025'],
       ];
-      scroll.innerHTML=pw+tbl(['Campaign','Status','Date','Sent','Delivery','CTR / Recovery','Revenue',''],rows,{filters:filterBar})+'</div>';
+      const sc={'Completed':'#6b7280','Running':'#16a34a'};
+      const rows=CAMPS.map(([id,name,title,segment,status,scheduledAt,createdOn])=>[
+        `<span style="font-size:12px;color:#9ca3af">${id}</span>`,
+        `<span style="font-size:12.5px;color:#111827">${name}</span>`,
+        `<span style="font-size:12.5px;color:#374151">${title}</span>`,
+        `<span style="font-size:12px;color:#374151">${segment}</span>`,
+        `<span style="font-size:12.5px;font-weight:500;color:${sc[status]||'#6b7280'}">${status}</span>`,
+        `<div style="font-size:12px;color:#374151">${scheduledAt}</div>`,
+        `<div style="font-size:12px;color:#374151">${createdOn}</div>`,
+        act,
+      ]);
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 922 campaigns</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','47','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['ID','Name','Title','Segment','Status','Scheduled At','Created On','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+tableHtml+'</div>';
     },
     vehicles: ()=>{
       const rows=[
@@ -2618,25 +2741,437 @@ function renderFilled(scroll){
       scroll.innerHTML=pw+tbl(['Trip ID','Vehicle','Runner','Status','Orders','Slot','Route',''],rows,{filters:filterBar})+'</div>';
     },
     runners: ()=>{
-      const rows=[
-        [av('BK','#7c3aed')+' <strong>Babu K.</strong>','Delivery Agent','Corniche Rd',badge('On Trip','#7c3aed','#f5f3ff'),'28 delivered today','96.4%','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('RS','#15803d')+' <strong>Ramu S.</strong>','Delivery Agent','Shola',badge('On Trip','#7c3aed','#f5f3ff'),'24 delivered today','91.2%','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('VM','#1d4ed8')+' <strong>Vijay M.</strong>','Delivery Agent','Khozam',badge('Available','#15803d','#dcfce7'),'22 delivered today','97.8%','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('AP','#ea580c')+' <strong>Arjun P.</strong>','Delivery Agent','Ajlan',badge('Delayed','#b91c1c','#fee2e2'),'19 delivered today','82.1%','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('KR','#ca8a04')+' <strong>Kumar R.</strong>','Delivery Agent','Al Hamra',badge('Available','#15803d','#dcfce7'),'16 delivered today','94.5%','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const phAv=`<div style="width:40px;height:40px;border-radius:50%;background:#f0ece4;border:1.5px solid #e5e7eb;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-user-circle" style="font-size:22px;color:#d1d5db"></i></div>`;
+      const RUNNERS=[
+        ['Vivek','+91 98711 18688','Sun',null,true],
+        ['Minakshi Tripathi','+91 95609 49939',null,null,false],
+        ['Mansi','+91 97115 52801','Thu',null,false],
+        ['Dilpreet','+91 98114 77983','Wed',null,false],
+        ['Harish Bora','+91 93158 04610','Mon',null,false],
+        ['azhar vv','+91 87007 82256','Sun',null,false],
+        ['Support','+91 77770 33033',null,null,false],
+        ['Rohan','+91 95555 55760','Sun','19 Dec 2025, 09:07 PM',true],
+        ['Ramu Sharma','+91 99887 76655','Tue','27 Jun 2026, 06:35 PM',true],
+        ['Karthik S','+91 91234 56789','Fri','27 Jun 2026, 04:20 PM',true],
+        ['Amit Verma','+91 98765 43210','Wed',null,false],
+        ['Suresh L','+91 90000 11223','Mon','27 Jun 2026, 10:15 AM',true],
+        ['Rajiv B','+91 87654 32100',null,'27 Jun 2026, 08:50 AM',true],
+        ['Deepak N','+91 93322 11400','Sun',null,false],
+        ['Manoj P','+91 99001 23456','Sat','27 Jun 2026, 07:30 PM',true],
+        ['Vinod G','+91 81234 56789','Thu',null,false],
+        ['Sanjay M','+91 92345 67890','Tue','28 Jun 2026, 09:00 AM',true],
+        ['Rahul K','+91 93456 78901','Fri','28 Jun 2026, 10:00 AM',true],
+        ['Pradeep T','+91 94567 89012','Wed',null,false],
+        ['Arjun D','+91 95678 90123','Mon',null,false],
       ];
-      scroll.innerHTML=pw+tbl(['Agent','Role','Assigned Store','Status','Today','On-time Rate',''],rows,{filters:filterBar})+'</div>';
+      const rows=RUNNERS.map(([name,phone,offDay,lastIn,co])=>[
+        `<div style="display:flex;align-items:center;gap:10px">${phAv}<div><div style="font-size:13px;font-weight:500;color:#111827">${name}</div><div style="font-size:11.5px;color:#9ca3af">${phone}</div></div></div>`,
+        offDay?`<div style="display:flex;align-items:center;gap:6px"><i class="ti ti-calendar-week" style="font-size:14px;color:#9ca3af"></i><span style="font-size:12.5px;color:#374151">${offDay}</span></div>`:`<span style="font-size:12px;color:#d1d5db">—</span>`,
+        lastIn?`<div style="display:flex;align-items:center;gap:6px"><i class="ti ti-login" style="font-size:14px;color:#9ca3af"></i><span style="font-size:12px;color:#374151">${lastIn}</span></div>`:``,
+        co?`<button style="font-size:11.5px;background:#fff;border:1.5px solid #e2d9ce;border-radius:6px;padding:5px 16px;cursor:pointer;font-weight:500;color:#374151;font-family:inherit;white-space:nowrap">Check Out</button>`:`<button style="font-size:11.5px;background:#16a34a;border:none;border-radius:6px;padding:5px 16px;cursor:pointer;font-weight:600;color:#fff;font-family:inherit;white-space:nowrap">Check In</button>`,
+        act,
+      ]);
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 8 of 8</span></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Name','Off days','Timings / Attendance','Attendance','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+tableHtml+'</div>';
     },
     employees: ()=>{
-      const rows=[
-        [av('AS','#7c3aed')+' <strong>Al Shrouqq 4</strong><br><span style="font-size:10.5px;color:#9ca3af">Delivery Agent</span>','Corniche Rd','12:30 PM – 12:30 AM','<button style="font-size:11px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:3px 10px;cursor:pointer;font-weight:500;color:#374151">Check-Out</button>',badge('Present','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('AS','#1d4ed8')+' <strong>Al Shrouqq 3</strong><br><span style="font-size:10.5px;color:#9ca3af">Delivery Agent</span>','Corniche Rd','12:30 PM – 12:30 AM','<button style="font-size:11px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:3px 10px;cursor:pointer;font-weight:500;color:#374151">Check-Out</button>',badge('Present','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('PM','#be123c')+' <strong>Arjun P.</strong><br><span style="font-size:10.5px;color:#9ca3af">Picking Manager</span>','Corniche Rd','09:00 AM – 06:00 PM','<button style="font-size:11px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:3px 10px;cursor:pointer;font-weight:500;color:#374151">Check-Out</button>',badge('Present','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('BK','#ca8a04')+' <strong>Babu K.</strong><br><span style="font-size:10.5px;color:#9ca3af">Picker</span>','Corniche Rd','09:00 AM – 06:00 PM','—',badge('Absent','#b91c1c','#fee2e2'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        [av('RK','#7c3aed')+' <strong>Ramu S.</strong><br><span style="font-size:10.5px;color:#9ca3af">Packer</span>','Al Hamra','09:00 AM – 05:00 PM','—',badge('On Leave','#ca8a04','#fef9c3'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+      const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
+      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const grayAv=`<div style="width:36px;height:36px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-user" style="font-size:16px;color:#9ca3af"></i></div>`;
+      const STAFF=[
+        ['ANKUR ANEJA','Admin','Tue',15,'10:00 AM - 10:00 PM','27 Jun 2026, 06:35 PM','Sandeep Sodhi',true],
+        ['LOKENDRA','Rider','-/-',1,'10:00 AM - 10:00 PM','27 Jun 2026, 06:35 PM','-/-',true],
+        ['PRASANT','Rider','-/-',1,'10:00 AM - 10:00 PM','Not Checked In','-/-',false],
+        ['NAVEEN','Rider','-/-',1,'10:00 AM - 10:00 PM','27 Jun 2026, 06:35 PM','-/-',true],
+        ['ABU','Rider','-/-',1,'10:00 AM - 10:00 PM','27 Jun 2026, 06:35 PM','-/-',true],
+        ['DHEERAJ SHARMA','Rider','-/-',1,'10:00 AM - 10:00 PM','27 Jun 2026, 06:35 PM','-/-',true],
+        ['SONU','Rider','-/-',1,'10:00 AM - 10:00 PM','27 Jun 2026, 06:35 PM','-/-',true],
+        ['SHANI','Rider','-/-',1,'10:00 AM - 10:00 PM','27 Jun 2026, 06:35 PM','-/-',true],
+        ['SACHIN DAYMA','Rider','-/-',1,'10:00 AM - 10:00 PM','27 Jun 2026, 06:35 PM','-/-',true],
+        ['TABREZ ALAM','Rider','-/-',1,'10:00 AM - 10:00 PM','Not Checked In','-/-',false],
+        ['IBRAN','Rider','-/-',1,'10:00 AM - 10:00 PM','27 Jun 2026, 06:35 PM','-/-',true],
+        ['GOURAV','Rider','-/-',1,'10:00 AM - 10:00 PM','28 Jun 2026, 05:52 PM','-/-',true],
+        ['MAHADEV','Rider','-/-',1,'10:00 AM - 10:00 PM','27 Jun 2026, 06:35 PM','-/-',true],
+        ['ABHAY','Rider','-/-',1,'10:00 AM - 10:00 PM','28 Jun 2026, 05:50 PM','-/-',true],
+        ['AMIT KUMAR','Rider','-/-',1,'03:30 PM - 03:30 PM','Not Checked In','-/-',false],
+        ['SAHABUDHIN','Rider','-/-',1,'10:00 AM - 10:00 PM','27 Jun 2026, 09:55 PM','-/-',true],
+        ['SAGAR','Rider','-/-',1,'10:00 AM - 10:00 PM','27 Jun 2026, 06:35 PM','-/-',true],
+        ['RAVI','Rider','Mon',1,'09:00 AM - 06:00 PM','28 Jun 2026, 09:02 AM','-/-',true],
+        ['PRIYA','Picker','Sun',2,'09:00 AM - 05:00 PM','28 Jun 2026, 08:55 AM','Ankur Aneja',true],
+        ['ARJUN','Packer','Sat',1,'10:00 AM - 07:00 PM','Not Checked In','Ankur Aneja',false],
       ];
-      const es=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">${[['47','Total Staff','ti-users','#dbeafe','#1d4ed8','total',true],['39','Present Today','ti-check','#dcfce7','#15803d','of 47',true],['5','Absent','ti-x','#fee2e2','#b91c1c','today',false],['3','On Leave','ti-beach','#fef9c3','#ca8a04','approved',true]].map(s=>stat(...s)).join('')}</div>`;
-      scroll.innerHTML=pw+es+tbl(['Staff Member','Store','Timings','Check-in/out','Status',''],rows,{filters:filterBar})+'</div>';
+      const rows=STAFF.map(([name,role,day,stores,timeRange,lastIn,manager,co])=>[
+        `<div style="display:flex;align-items:center;gap:10px">${grayAv}<div><div style="font-size:12.5px;font-weight:700;color:#111827;text-transform:uppercase">${name}</div><div style="font-size:11px;color:#9ca3af">${role}</div></div></div>`,
+        `<div style="display:flex;flex-direction:column;gap:3px"><div style="display:flex;align-items:center;gap:5px"><i class="ti ti-calendar-week" style="font-size:12px;color:#9ca3af"></i><span style="font-size:12px;color:#374151">${day}</span></div><div style="display:flex;align-items:center;gap:5px"><i class="ti ti-building-store" style="font-size:12px;color:#9ca3af"></i><span style="font-size:12px;color:#374151">${stores}</span></div></div>`,
+        `<div style="display:flex;flex-direction:column;gap:3px"><div style="display:flex;align-items:center;gap:5px"><i class="ti ti-clock" style="font-size:12px;color:#9ca3af"></i><span style="font-size:12px;color:#374151">${timeRange}</span></div><div style="display:flex;align-items:center;gap:5px"><i class="ti ti-login" style="font-size:12px;color:#9ca3af"></i><span style="font-size:12px;color:${lastIn==='Not Checked In'?'#9ca3af':'#374151'}">${lastIn}</span></div></div>`,
+        `<span style="font-size:12px;color:#374151">${manager}</span>`,
+        co?`<button style="font-size:11.5px;background:#fff;border:1.5px solid #e2d9ce;border-radius:6px;padding:5px 16px;cursor:pointer;font-weight:500;color:#374151;font-family:inherit;white-space:nowrap">Check Out</button>`:`<button style="font-size:11.5px;background:#16a34a;border:none;border-radius:6px;padding:5px 16px;cursor:pointer;font-weight:600;color:#fff;font-family:inherit;white-space:nowrap">Check In</button>`,
+        act,
+      ]);
+      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+          <div><div style="${lblS}">DESIGNATION</div><div style="position:relative"><input style="${inpS}padding-right:36px" placeholder="Enter designation"><i class="ti ti-search" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af"></i></div></div>
+          <div><div style="${lblS}">EMPLOYEE</div><div style="position:relative"><input style="${inpS}padding-right:36px" placeholder="Enter Name"><i class="ti ti-search" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af"></i></div></div>
+        </div>
+        <div style="margin-bottom:16px"><div style="${lblS}">STORE</div><select style="${inpS}cursor:pointer"><option value="">SELECT STORE</option><option>Corniche Rd</option><option>Al Hamra</option><option>Khozam</option></select></div>
+        <div style="display:flex;gap:8px">
+          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Submit</button>
+          <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
+        </div>
+      </div>`;
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 47 staff</span><div style="display:flex;gap:4px">${['‹','1','2','3','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Name','Weekly off / Stores','Timings / Attendance','Reporting Manager','','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
+    },
+    offers: ()=>{
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const imgPl=`<div style="width:44px;height:44px;border-radius:6px;border:1.5px solid #e5e7eb;background:#f9fafb;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-tag" style="font-size:18px;color:#d1d5db"></i></div>`;
+      const OFFERS=[
+        ['BUY 1, Get 45% Off | BUY 2, Get 50% Off | BUY 3, Get 66% Off','16 Jun 2026 – 31 Jul 2026','Buy n or more of X(or X, Y) and get discount on MRP',true],
+        ['Buy any (1, 2, 3) or more from product : CARE 4 HOMES HAND WASH POUCH LAVENDER 750 ML. and Get Items (@ 45% Off, @ 50% Off, @ 66% Off) respectively','16 Jun 2026 – 31 Jul 2026','Buy n or more of X(or X, Y) and get discount on MRP',false],
+        ['Buy any (1, 2) or more from product : CARE 4 HOMES AIR FRESHNER LEMON 225 ML and Get Items (@ 40% Off, @ 50% Off) each respectively','10 Jun 2026 – 11 Jun 2026','Buy n or more of X(or X, Y) and get discount on MRP',false],
+        ['Buy More, Save More: 1+ Get 40% Off, 2+ Get 50% Off, 3+ Get 66% Off','05 Jun 2026 – 05 Jun 2026','Buy n or more of X(or X, Y) and get discount on MRP',false],
+        ['Buy 2 CARE 4 HOMES AIR FRESHNER GOLDEN FLOWER 225 ML @ 50% Off','04 Jun 2026 – 02 Jun 2027','Buy X Product At Price (Z)',false],
+        ['Buy 2 CARE 4 HOMES AIR FRESHNER LAVENDER 225 ML @ 50% Off','04 Jun 2026 – 02 Jun 2027','Buy X Product At Price (Z)',false],
+        ['Buy 2 CARE 4 HOMES AIR FRESHNER SANDAL 225 ML @ 50% Off','04 Jun 2026 – 02 Jun 2027','Buy X Product At Price (Z)',false],
+        ['Buy 2 SUPER MOM SCISSOR 10" and Get 1 Free','01 Jun 2026 – 30 Jun 2026','Buy X Get Y Free',true],
+        ['Flat 30% Off on APEX WASH N STORAGE BASKET','25 May 2026 – 25 Jul 2026','Flat Discount on Product',true],
+        ['Buy any 3 REGAL products and get 20% off on all','01 May 2026 – 31 Jul 2026','Buy n or more of X(or X, Y) and get discount on MRP',true],
+        ['SUMMER SAVER: Buy ₹500 worth and get 10% Off','15 May 2026 – 15 Aug 2026','Cart Discount on Min Order Value',true],
+        ['Buy 2 TEA STRAINER STEEL, Get 1 at 50% Off','10 Apr 2026 – 10 Jul 2026','Buy X Get Y Free',false],
+        ['Combo Offer: SUPER MOM COCONUT OPENER + PEELER SET at ₹299','01 Apr 2026 – 30 Jun 2026','Bundle Price',true],
+        ['CARE 4 HOMES: Buy 3 Get 1 Free on all Air Fresheners','01 Mar 2026 – 30 Sep 2026','Buy n Get m Free',true],
+        ['Flat ₹50 Off on REGAL KNIFE SHARPENER','01 Jun 2026 – 31 Dec 2026','Flat Discount on Product',false],
+        ['APEX COLANDER BASKET @ Special Price ₹149','15 May 2026 – 15 Aug 2026','Buy X Product At Price (Z)',true],
+        ['SUPER MOM 5 IN 1 GRATER: Buy 2 Get 25% Off','01 Jun 2026 – 31 Aug 2026','Buy n or more of X(or X, Y) and get discount on MRP',true],
+        ['Clearance Sale: 40% Off on selected FANCY LIGHTER','20 Jun 2026 – 20 Jul 2026','Flat Discount on Product',false],
+        ['FRIZZY ICE TRAY Combo Pack: Buy 2 @ ₹99','05 Jun 2026 – 05 Sep 2026','Buy X Product At Price (Z)',true],
+        ['Weekend Deal: 15% Off on all Cutlery & Kitchenware','01 Jun 2026 – 28 Jun 2026','Category Discount',false],
+      ];
+      const rows=OFFERS.map(([desc,dates,type,on])=>[
+        imgPl,
+        `<div><div style="font-size:12.5px;font-weight:500;color:#111827;max-width:500px;line-height:1.4">${desc}</div><div style="font-size:11px;color:#9ca3af;margin-top:3px">${dates}</div></div>`,
+        `<span style="font-size:12px;color:#374151">${type}</span>`,
+        `<span style="font-size:11.5px;font-weight:600;letter-spacing:.03em;color:${on?'#15803d':'#9ca3af'}">${on?'ENABLED':'DISABLED'}</span>`,
+        act,
+      ]);
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 20 offers</span><div style="display:flex;gap:4px">${['‹','1','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Image','Description','Type','Status','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+tableHtml+'</div>';
+    },
+    'web-pages': ()=>{
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const PAGES=[
+        ['Offers','/offers',true],['Contact Us','/contact-us',true],['Privacy Policy','/privacy',true],
+        ['Shipping Policy','/shipping-policy',true],['Cancellation and Refund Policy','/cancellation-and-refund-policy',true],
+        ['Terms and Conditions','/terms',true],['About Us','/about-us',true],
+        ['Blog','/blog',true],['FAQ','/faq',true],['Careers','/careers',false],
+        ['Store Locator','/stores',true],['Track Order','/track-order',true],
+        ['Gift Cards','/gift-cards',false],['Refer a Friend','/refer',true],
+        ['Sustainability','/sustainability',true],['Press & Media','/press',false],
+        ['Partner With Us','/partner',true],['Accessibility','/accessibility',true],
+        ['Cookie Policy','/cookie-policy',true],['Loyalty Programme','/loyalty',true],
+      ];
+      const rows=PAGES.map(([title,url,on])=>[
+        `<span style="font-size:13px;color:#111827">${title}</span>`,
+        `<span style="font-size:12.5px;color:#6b7280;font-family:monospace">${url}</span>`,
+        `<span style="font-size:12.5px;color:${on?'#15803d':'#9ca3af'}">${on?'Enabled':'Disabled'}</span>`,
+        act,
+      ]);
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 20 pages</span></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Title','URL','Status','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:12px 16px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:14px 16px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+tableHtml+'</div>';
+    },
+    slotblock: ()=>{
+      const days=['Today','Tomorrow','Tue, Jun 30th','Wed, Jul 1st','Thu, Jul 2nd','Fri, Jul 3rd'];
+      const SLOTS=['Within 60 minutes','10:00 AM - 11:00 AM','11:00 AM - 12:00 PM','12:00 PM - 01:00 PM','01:00 PM - 02:00 PM','02:00 PM - 03:00 PM','03:00 PM - 04:00 PM','04:00 PM - 05:00 PM','05:00 PM - 06:00 PM','06:00 PM - 07:00 PM','07:00 PM - 08:00 PM','08:00 PM - 09:00 PM','09:00 PM - 10:00 PM'];
+      const tog=`<div style="width:40px;height:22px;border-radius:11px;background:#16a34a;cursor:pointer;position:relative;flex-shrink:0"><span style="position:absolute;right:2px;top:2px;width:18px;height:18px;border-radius:50%;background:#fff;display:block"></span></div>`;
+      const cb=`<div style="width:26px;height:26px;border-radius:5px;background:#16a34a;display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="ti ti-check" style="font-size:14px;color:#fff;font-weight:700"></i></div>`;
+      const slotRows=SLOTS.map(s=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+        <td style="padding:12px 14px;border-bottom:1px solid #f5f2ee;vertical-align:middle">${tog}</td>
+        <td style="padding:12px 14px;border-bottom:1px solid #f5f2ee;vertical-align:middle;font-size:13px;color:#111827;font-weight:${s==='Within 60 minutes'?'600':'400'}">${s}</td>
+        <td style="padding:12px 14px;border-bottom:1px solid #f5f2ee;vertical-align:middle"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:13px;color:#374151">1</span><i class="ti ti-pencil" style="font-size:12px;color:#9ca3af;cursor:pointer"></i></div></td>
+        ${days.map(()=>`<td style="padding:12px 14px;border-bottom:1px solid #f5f2ee;vertical-align:middle;text-align:center">${cb}</td>`).join('')}
+      </tr>`).join('');
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);margin-bottom:16px">
+        <div style="padding:12px 16px;border-bottom:1px solid #f5f2ee">
+          <select style="padding:7px 32px 7px 12px;border:1.5px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;cursor:pointer;background:#fff;color:#374151;appearance:auto;font-weight:600">
+            <option>DELIVERY</option><option>PICKUP</option><option>SELF CHECKOUT</option>
+          </select>
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+          <thead><tr>
+            <th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">Status</th>
+            <th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">Slots</th>
+            <th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">Zones</th>
+            ${days.map(d=>`<th style="text-align:center;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4;white-space:nowrap">${d}</th>`).join('')}
+          </tr></thead>
+          <tbody>${slotRows}</tbody>
+        </table>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button style="padding:9px 28px;background:#16a34a;color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer">Save</button>
+        <button style="padding:9px 20px;background:#fff;color:#374151;border:1.5px solid #e2d9ce;border-radius:7px;font-size:13px;cursor:pointer">Cancel</button>
+      </div>`;
+      scroll.innerHTML=pw+tableHtml+'</div>';
+    },
+    abandoned: ()=>{
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const delIco=`<div style="width:32px;height:32px;border-radius:6px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-truck-delivery" style="font-size:15px;color:#6b7280"></i></div>`;
+      const contactIco=`<div style="display:flex;gap:8px;margin-top:4px"><i class="ti ti-map-pin" style="font-size:13px;color:#d1d5db;cursor:pointer"></i><i class="ti ti-mail" style="font-size:13px;color:#d1d5db;cursor:pointer"></i><i class="ti ti-phone" style="font-size:13px;color:#d1d5db;cursor:pointer"></i></div>`;
+      const CARTS=[
+        ['Mandeep Singh','Modernbazaar - East Of Kailash','NQCQMN',2,'₹ 1550.00','27 Jun 2026','10:08 PM',true,true,true],
+        ['Sonali Chaturvedi','Modernbazaar - Noida Sector 16B','1XDV227',1,'₹ 300.00','27 Jun 2026','09:54 PM',true,true,true],
+        ['Maitreyi','Modernbazaar - Defence Colony','1M07PKC',7,'₹ 3107.75','27 Jun 2026','09:52 PM',true,false,true],
+        ['Isha Bhalla','Modernbazaar - DWARKA','XVI27L',1,'₹ 512.50','27 Jun 2026','09:48 PM',true,false,true],
+        ['Priyanka Mahajan','Modernbazaar - Cyber Hub Gurgaon','10GFWCH',2,'₹ 490.00','27 Jun 2026','09:34 PM',true,true,true],
+        ['Raman Sethi','Modernbazaar - Punjabi Bagh','1HUILQH',1,'₹ 370.00','27 Jun 2026','09:32 PM',true,true,true],
+        ['Anju Rai','Modern Bazaar Chattarpur','1WDFY8H',2,'₹ 474.75','27 Jun 2026','09:22 PM',false,true,true],
+        ['Aaml Ali','Modernbazaar - DWARKA','106YD5Q',1,'₹ 350.00','27 Jun 2026','09:22 PM',false,true,true],
+        ['Anupam Ghulati','Modern Bazaar - Kailash Colony','W5C1E4',9,'₹ 749.03','27 Jun 2026','09:21 PM',true,false,false],
+        ['Kulbhushan Sharma','Modernbazaar - Noida Sector 16B','R8TV2L',3,'₹ 820.00','27 Jun 2026','09:10 PM',true,true,true],
+        ['Nidhi Bansal','Modernbazaar - East Of Kailash','M3XQ9K',2,'₹ 640.50','27 Jun 2026','08:58 PM',true,true,true],
+        ['Rohit Gupta','Modern Bazaar - Vasant Kunj','ZP4LN7',4,'₹ 1280.00','27 Jun 2026','08:45 PM',true,true,false],
+        ['Kavita Jain','Modernbazaar - DWARKA','T8WE2Q',1,'₹ 299.00','27 Jun 2026','08:32 PM',true,false,true],
+        ['Arun Mishra','Modernbazaar - Cyber Hub Gurgaon','H6BN4M',5,'₹ 2100.75','27 Jun 2026','08:20 PM',true,true,true],
+        ['Sunita Rao','Modern Bazaar - Lajpat Nagar','D9CV3P',2,'₹ 455.00','27 Jun 2026','08:08 PM',false,true,true],
+        ['Vikram Singh','Modernbazaar - Punjabi Bagh','B7XM5N',3,'₹ 980.25','27 Jun 2026','07:55 PM',true,true,true],
+        ['Pooja Mehta','Modernbazaar - East Of Kailash','Y2KP8T',1,'₹ 375.00','27 Jun 2026','07:42 PM',true,false,false],
+        ['Girish Nair','Modern Bazaar Chattarpur','F5QR1W',6,'₹ 1650.00','27 Jun 2026','07:30 PM',true,true,true],
+        ['Meena Pillai','Modernbazaar - DWARKA','A4VH9L',2,'₹ 520.50','27 Jun 2026','07:18 PM',false,true,true],
+        ['Ajay Shetty','Modernbazaar - Noida Sector 16B','L3BX7C',4,'₹ 1120.00','27 Jun 2026','07:05 PM',true,true,true],
+      ];
+      const rows=CARTS.map(([name,store,cartId,items,value,date,time,loc,mail,ph])=>[
+        `<div style="display:flex;align-items:center;gap:10px">${delIco}<div><div style="font-size:12.5px;font-weight:700;color:#374151;letter-spacing:.02em">DELIVERY</div><div style="font-size:11px;color:#9ca3af">${store}</div></div></div>`,
+        `<span style="font-size:12.5px;color:#9ca3af;font-family:monospace">${cartId}</span>`,
+        `<div><div style="font-size:13px;color:#111827;font-weight:500">${name}</div><div style="display:flex;gap:8px;margin-top:4px">${loc?`<i class="ti ti-map-pin" style="font-size:13px;color:#9ca3af;cursor:pointer"></i>`:''}<i class="ti ti-mail" style="font-size:13px;color:${mail?'#9ca3af':'#e5e7eb'};cursor:pointer"></i><i class="ti ti-phone" style="font-size:13px;color:${ph?'#9ca3af':'#e5e7eb'};cursor:pointer"></i></div></div>`,
+        `<span style="font-size:12.5px;color:#374151">${items} Items</span>`,
+        `<span style="font-size:13px;color:#111827;font-weight:500">${value}</span>`,
+        `<div style="font-size:12px;color:#374151">${date}</div><div style="font-size:11px;color:#9ca3af">${time}</div>`,
+        act,
+      ]);
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 200+ abandoned carts</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Order Type & Store','Cart ID','Customer','No. of Items','Total Cart Value','Created date & time','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+tableHtml+'</div>';
+    },
+    rack: ()=>{
+      const racks=['16-cosmetics_16','15-cosmetics_15','11-cosmetics_15','18-cosmetics_18','22-cosmetics_16','14-cosmetics_16','17-cosmetics_18','5-cosmetics_16','17-cosmetics_17','14-cosmetics_14','1-dairy _dairy','21-kitchen shop_21','19-non food_19','12-non food_12','14-non food_14','1-grocery_1','2-grocery_2','bakery-non food_19','10-dairy _10','dairy-dairy _dairy','10-produce_produce','12-bakery_bakery','2-bakery_bakery','22-healthy living_22','3-grocery_3','4-bakery_bakery','4-grocery_4','5-grocery_5','6-bakery_bakery','6-grocery_6','7-bakery_bakery','7-grocery_7','8-grocery_8','9-bakery_bakery','9-grocery_9','bakery-bakery_bakery','dairy-bakery_bakery','deli-grocery_7','deli-deli _deli','meat-dairy _10','produce-dairy _10','produce-produce_produce','seafood-frozen _11','8-frozen _11','11-frozen _11','19-frozen _11','0-0','1-100109','1-103142','1-144130','1-280642','1-l','1-r','10-159711','10-l','10-r','11-l','11-r','12-l','12-r','14-310772','14-r','15-294371','15-294384','15-301634','15-302153','15-330157','15-330158','15-330159','15-330244','15-l','15-r','16-l','17-311852','17-l','18-r','19-r','2-284633','2-l','2-r','20-l','20-r','21-l','22-0','22-292398','22-298475','3-111337','3-200003','3-345618','3-l','3-r','4-106035','4-206750','4-212983','4-280815','4-285429','4-322269','4-332568','4-335291','4-l','4-r','5-l','5-r','6-105050','6-189566','6-261023','6-342304','6-l','6-r','7-253929','7-l','7-r','8-l','8-r','9-173791','9-224719','9-277611','9-277613','9-317511','9-319397','9-322604','9-l','9-r','a-b','bakery-0','bakery-291393','bakery-296788','bakery-296789','bakery-296793','bakery-298020','bakery-315175','bakery-316132','bakery-316133','bakery-316138','bakery-316141','bakery-329732','dairy-0','dairy-105457','dairy-264805','dairy-328358','dairy-328363','dairy-328364','dairy-328368','dairy-328373','dairy-328374','dairy-328376','deli-0','frozen-0','meat-l/','meat-0','produce-271182','produce-319532','produce-r','produce-0','produce-218039','produce-218423','produce-323766','seafood-0','p-p'];
+      const chips=racks.map(r=>`<span style="display:inline-block;padding:6px 14px;border:1.5px solid #e2d9ce;border-radius:6px;font-size:12px;color:#374151;background:#fff;cursor:pointer;margin:4px" onmouseover="this.style.borderColor='#16a34a';this.style.background='#f0fdf4'" onmouseout="this.style.borderColor='#e2d9ce';this.style.background='#fff'">${r}</span>`).join('');
+      const content=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="padding:12px 16px;border-bottom:1px solid #f5f2ee;display:flex;align-items:center;gap:10px">
+          <select style="padding:7px 28px 7px 12px;border:1.5px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;cursor:pointer;background:#fff;color:#374151;font-weight:600;appearance:auto"><option>Default zone</option><option>Zone A</option><option>Zone B</option></select>
+        </div>
+        <div style="padding:16px 20px;line-height:2.2">${chips}</div>
+        <div style="padding:14px 16px;border-top:1px solid #f5f2ee;display:flex;gap:8px">
+          <button style="padding:8px 24px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Save</button>
+          <button style="padding:8px 20px;background:#fff;color:#374151;border:1.5px solid #e2d9ce;border-radius:6px;font-size:13px;cursor:pointer">Clear Sequence</button>
+        </div>
+      </div>`;
+      scroll.innerHTML=pw+content+'</div>';
+    },
+    vplanning: ()=>{
+      const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
+      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const DELIVERY30=[
+        ['06:30 PM - 07:00 PM','0.5 h','Sunday',0],['06:00 PM - 06:30 PM','0.5 h','Sunday',0],
+        ['05:30 PM - 06:00 PM','0.5 h','Sunday',0],['05:00 PM - 05:30 PM','0.5 h','Sunday',0],
+        ['04:30 PM - 05:00 PM','0.5 h','Sunday',0],['04:00 PM - 04:30 PM','0.5 h','Sunday',0],
+        ['03:30 PM - 04:00 PM','0.5 h','Sunday',0],['03:00 PM - 03:30 PM','0.5 h','Sunday',0],
+        ['02:30 PM - 03:00 PM','0.5 h','Sunday',0],['02:00 PM - 02:30 PM','0.5 h','Sunday',0],
+      ];
+      const PICKUP15=[
+        ['09:00 PM - 09:15 PM','0.0 h','All Days',100],['08:45 PM - 09:00 PM','0.0 h','All Days',100],
+        ['08:30 PM - 08:45 PM','0.0 h','All Days',100],['08:15 PM - 08:30 PM','0.0 h','All Days',100],
+        ['08:00 PM - 08:15 PM','0.0 h','All Days',100],['07:45 PM - 08:00 PM','0.0 h','All Days',100],
+        ['07:30 PM - 07:45 PM','0.0 h','All Days',100],['07:15 PM - 07:30 PM','0.0 h','All Days',100],
+        ['07:00 PM - 07:15 PM','0.0 h','All Days',100],['06:45 PM - 07:00 PM','0.0 h','All Days',100],
+      ];
+      const allRows=[
+        ...DELIVERY30.map(([slot,cut,day,cap])=>['Delivery','New Thippasandra',slot,cut,day,cap]),
+        ...PICKUP15.map(([slot,cut,day,cap])=>['Pickup','',slot,cut,day,cap]),
+      ];
+      const rows=allRows.map(([type,area,slot,cut,day,cap])=>[
+        `<span style="font-size:13px;color:#374151">${type}</span>`,
+        area?`<span style="font-size:13px;color:#16a34a;cursor:pointer">${area}</span>`:'',
+        `<span style="font-size:13px;color:#374151">${slot}</span>`,
+        `<span style="font-size:13px;color:#374151">${cut}</span>`,
+        `<span style="font-size:13px;color:#374151">${day}</span>`,
+        `<span style="font-size:13px;color:#374151">${cap}</span>`,
+        act,
+      ]);
+      const dropS=`${inpS}cursor:pointer;appearance:auto`;
+      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+          <div><div style="${lblS}">TYPE</div><select style="${dropS}"><option>Delivery</option><option>Pickup</option></select></div>
+          <div><div style="${lblS}">DATE</div><div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff"><i class="ti ti-calendar" style="padding:0 10px;font-size:16px;color:#16a34a;flex-shrink:0"></i><input style="border:none;outline:none;padding:9px 12px 9px 0;font-size:12.5px;font-family:inherit;width:100%;color:#374151" placeholder="Date"></div></div>
+          <div><div style="${lblS}">DAY</div><select style="${dropS}"><option value="">Select day</option><option>Sunday</option><option>Monday</option><option>All Days</option></select></div>
+          <div><div style="${lblS}">ZONE</div><select style="${dropS}"><option value="">Select zone</option><option>Default zone</option><option>Zone A</option></select></div>
+        </div>
+        <div style="margin-bottom:16px"><div style="${lblS}">SLOT</div><select style="${dropS}"><option value="">Select Slot</option><option>09:00 PM - 09:15 PM</option><option>06:30 PM - 07:00 PM</option></select></div>
+        <div style="display:flex;gap:8px">
+          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Submit</button>
+          <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear</button>
+        </div>
+      </div>`;
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 200+ rules</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Type','Area','Slot','Cutoff time','Date','Capacity','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:12px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
+    },
+    categories: ()=>{
+      const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
+      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const imgPl=`<div style="width:44px;height:44px;border-radius:6px;border:1.5px solid #e5e7eb;background:#f9fafb;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-photo" style="font-size:18px;color:#d1d5db"></i></div>`;
+      const CATS=[
+        ['Other Cutlery & Kitchenware Items','Cutlery & Kitchenware',17,true],
+        ['Dry Cakes','Instant Food & Dessert Mixes',69,true],
+        ['Baby Oral Care','Baby Personal Care',16,true],
+        ['Personal Care','',4229,true],
+        ['Besan','Flours',13,true],
+        ['Herbal Tea','Tea',33,true],
+        ['Oats','Breakfast Cereals',49,true],
+        ['Scissors','Stationery & Craft',24,true],
+        ['Kitchen Lighter','Cutlery & Kitchenware',8,true],
+        ['Plastic Storages','Home & Kitchen',142,true],
+        ['Peeler & Knife','Cutlery & Kitchenware',37,true],
+        ['Ice Trays','Plastic Storages',11,true],
+        ['Can Openers','Cutlery & Kitchenware',6,true],
+        ['Wire Baskets','Plastic Storages',19,true],
+        ['Chopper & Slicers','Cutlery & Kitchenware',28,true],
+        ['Colander & Strainers','Cutlery & Kitchenware',15,true],
+        ['Bottle Openers','Cutlery & Kitchenware',9,false],
+        ['Knife Sharpeners','Peeler & Knife',12,true],
+        ['Spoon Sets','Cutlery & Kitchenware',33,true],
+        ['Grater & Slicers','Peeler & Knife',21,true],
+      ];
+      const rows=CATS.map(([name,parent,count,on])=>[
+        imgPl,
+        `<span style="font-size:13px;color:#111827">${name}</span>`,
+        parent?`<span style="font-size:12.5px;color:#16a34a;cursor:pointer">${parent}</span>`:'',
+        `<span style="font-size:13px;color:#374151">${count.toLocaleString()}</span>`,
+        `<span style="font-size:11.5px;font-weight:600;letter-spacing:.03em;color:#9ca3af">${on?'ENABLED':'DISABLED'}</span>`,
+        act,
+      ]);
+      const statusR=['All','Enabled','Disabled'].map((s,i)=>`<label style="flex:0 0 180px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="catStatus" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
+      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;align-items:end">
+          <div><div style="${lblS}">NAME</div><div style="position:relative"><input style="${inpS}padding-right:36px" placeholder="Search by Name"><i class="ti ti-search" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af"></i></div></div>
+          <div><div style="${lblS}">STATUS</div><div style="display:flex">${statusR}</div></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
+          <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
+        </div>
+      </div>`;
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 300 categories</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','15','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Image','Name','Parent Category','Product Count','Status','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
+    },
+    brands: ()=>{
+      const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
+      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const imgPl=`<div style="width:44px;height:44px;border-radius:6px;border:1.5px solid #e5e7eb;background:#f9fafb;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-photo" style="font-size:18px;color:#d1d5db"></i></div>`;
+      const BRANDS=[
+        ['ENO',12,'Enabled'],['HORLICKS',27,'Enabled'],['BOOST',4,'Enabled'],
+        ['GOODHOME',20,'Enabled'],['EVA',12,'Enabled'],['DABUR',112,'Enabled'],
+        ['SUPER MOM',142,'Enabled'],['REGAL',38,'Enabled'],['APEX',56,'Enabled'],
+        ['FANCY',14,'Enabled'],['TEA',29,'Enabled'],['CARE 4 HOMES',88,'Enabled'],
+        ['NESTLE',210,'Enabled'],['BRITANNIA',184,'Enabled'],['AMUL',320,'Enabled'],
+        ['ITC',265,'Enabled'],['MOTHER DAIRY',95,'Enabled'],['PATANJALI',140,'Enabled'],
+        ['GODREJ',77,'Hidden'],['HALDIRAMS',63,'Enabled'],
+      ];
+      const rows=BRANDS.map(([brand,count,status])=>[
+        imgPl,
+        `<span style="font-size:13px;font-weight:600;color:#111827;letter-spacing:.02em">${brand}</span>`,
+        `<span style="font-size:13px;color:#374151">${count}</span>`,
+        `<span style="font-size:12.5px;color:${status==='Enabled'?'#15803d':'#9ca3af'}">${status}</span>`,
+        act,
+      ]);
+      const statusR=['All','Enabled','Hidden'].map((s,i)=>`<label style="flex:0 0 180px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="brandStatus" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
+      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;align-items:end">
+          <div><div style="${lblS}">BRAND</div><div style="position:relative"><input style="${inpS}padding-right:36px" placeholder="Search by Brand"><i class="ti ti-search" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af"></i></div></div>
+          <div><div style="${lblS}">STATUS</div><div style="display:flex">${statusR}</div></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
+          <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
+        </div>
+      </div>`;
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 3,375 brands</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','169','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Logo','Brand','Product Count','Status','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
+    },
+    tags: ()=>{
+      const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
+      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const imgPl=`<div style="width:40px;height:40px;border-radius:6px;border:1.5px solid #e5e7eb;background:#f9fafb;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-photo" style="font-size:16px;color:#d1d5db"></i></div>`;
+      const TAGS=[
+        ['Sodhis_Offers',0,8],['Mango',0,26],['SodhiliciousDryCakes',0,129],
+        ['SodhiliciousCookies',0,67],['SodhiliciousBreads',0,53],['Sodhis Atta',0,4],
+        ['New Arrivals',0,248],['Bestsellers',0,182],['Organic',0,420],
+        ['Gluten Free',0,96],['Vegan',0,74],['Sugar Free',0,58],
+        ['Low Fat',0,112],['Imported',0,340],['On Sale',0,88],
+        ['Staff Picks',0,64],['Flash Deal',0,36],['Weekend Special',0,72],
+        ['Clearance',0,45],['Buy More Save More',0,118],
+      ];
+      const rows=TAGS.map(([tag,mov,count])=>[
+        imgPl,
+        `<span style="font-size:13px;color:#374151">${tag}</span>`,
+        `<span style="font-size:13px;color:#374151">${mov}</span>`,
+        `<span style="font-size:13px;color:#374151">${count}</span>`,
+        act,
+      ]);
+      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="margin-bottom:16px"><div style="${lblS}">NAME</div><input style="${inpS}" placeholder="Search by Name"></div>
+        <div style="display:flex;gap:8px">
+          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
+          <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
+        </div>
+      </div>`;
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 20 tags</span><div style="display:flex;gap:4px">${['‹','1','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Image','Tag','Minimum Order Value','Product Count','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
+    },
+    subs: ()=>{
+      const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
+      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const SUBS=[
+        ['Sugar',4,'Enabled'],['Salt',3,'Enabled'],['Milk',6,'Enabled'],
+        ['Basmati Rice',4,'Enabled'],['Wheat Flour (Atta)',5,'Enabled'],
+        ['Cooking Oil',3,'Enabled'],['Butter',4,'Enabled'],['Yogurt',3,'Enabled'],
+        ['Tea Bags',5,'Enabled'],['Coffee',4,'Enabled'],['Bread',3,'Enabled'],
+        ['Eggs',2,'Enabled'],['Cheese',4,'Enabled'],['Biscuits',6,'Enabled'],
+        ['Detergent',3,'Enabled'],['Shampoo',5,'Enabled'],['Toothpaste',4,'Enabled'],
+        ['Tomato Ketchup',3,'Enabled'],['Honey',4,'Enabled'],['Jam',3,'Disabled'],
+      ];
+      const rows=SUBS.map(([name,count,status])=>[
+        `<span style="font-size:13px;color:#111827">${name}</span>`,
+        `<span style="font-size:13px;color:#374151">${count}</span>`,
+        `<span style="font-size:12.5px;color:${status==='Enabled'?'#15803d':'#9ca3af'}">${status}</span>`,
+        act,
+      ]);
+      const statusR=['All','Enabled','Disabled'].map((s,i)=>`<label style="flex:0 0 180px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="subsStatus" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
+      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;align-items:end">
+          <div><div style="${lblS}">NAME</div><input style="${inpS}" placeholder="Search by Name"></div>
+          <div><div style="${lblS}">NAME</div><div style="display:flex">${statusR}</div></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
+          <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
+        </div>
+      </div>`;
+      const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 20 groups</span></div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Name','Product Count','Status','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:12px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
+      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
     },
     inventory: ()=>{
       const rows=[
