@@ -2251,13 +2251,23 @@ function renderFilled(scroll){
         if(x==='email')return '<i class="ti ti-mail" style="font-size:14px;color:#9ca3af;cursor:pointer"></i>';
         return '';
       }).join(' ');
-      const colPicker=colDefs.map(c=>`<label style="display:flex;align-items:center;gap:8px;padding:5px 0;cursor:${c.locked?'default':'pointer'}">
-        <input type="checkbox" ${window._oc[c.id]?'checked':''} ${c.locked?'disabled':''}
-          style="width:14px;height:14px;accent-color:#16a34a;cursor:${c.locked?'default':'pointer'}"
-          onchange="(function(el){var id='${c.id}';window._oc[id]=el.checked;document.querySelectorAll('.oc-'+id).forEach(function(e){e.style.display=el.checked?'':'none';});})(this)">
-        <span style="font-size:12px;color:${c.locked?'#9ca3af':'#374151'}">${c.l}</span>
-        ${c.locked?'<i class="ti ti-lock" style="font-size:10px;color:#d1d5db;margin-left:auto"></i>':''}
-      </label>`).join('');
+      const colPicker=`<div id="ocPickList">`+colDefs.map(c=>`
+        <div class="ocPickRow" data-id="${c.id}" data-locked="${c.locked?'1':'0'}"
+          draggable="${!c.locked}"
+          style="display:flex;align-items:center;gap:8px;padding:6px 4px;border-radius:6px;cursor:${c.locked?'default':'grab'};user-select:none;transition:background .1s"
+          ondragstart="if(this.dataset.locked==='0'){window._ocDrag=this;this.style.opacity='.4';event.dataTransfer.effectAllowed='move'}"
+          ondragend="this.style.opacity='1'"
+          ondragover="event.preventDefault();if(window._ocDrag&&window._ocDrag!==this&&this.dataset.locked==='0')this.style.background='#f0fdf4'"
+          ondragleave="this.style.background=''"
+          ondrop="(function(t){event.preventDefault();t.style.background='';var d=window._ocDrag;if(!d||d===t||d.dataset.locked==='1'||t.dataset.locked==='1')return;var p=document.getElementById('ocPickList');var items=Array.from(p.querySelectorAll('.ocPickRow'));var di=items.indexOf(d),ti=items.indexOf(t);if(di<ti)p.insertBefore(d,t.nextSibling);else p.insertBefore(d,t);var mid=d.dataset.id;var prev=d.previousElementSibling;var pid=prev?prev.dataset.id:null;var tbl=document.getElementById('ordTbl');if(!tbl)return;var thr=tbl.querySelector('thead tr');var mth=thr.querySelector('.oc-'+mid);var ath=pid?thr.querySelector('.oc-'+pid):null;if(ath&&ath.nextSibling)thr.insertBefore(mth,ath.nextSibling);else if(ath)thr.appendChild(mth);else thr.insertBefore(mth,thr.firstChild);tbl.querySelectorAll('tbody tr').forEach(function(r){var mtd=r.querySelector('.oc-'+mid);var atd=pid?r.querySelector('.oc-'+pid):null;if(atd&&atd.nextSibling)r.insertBefore(mtd,atd.nextSibling);else if(atd)r.appendChild(mtd);else r.insertBefore(mtd,r.firstChild);});})(this)">
+          ${!c.locked?'<i class="ti ti-grip-vertical" style="font-size:16px;color:#d1d5db;flex-shrink:0;cursor:grab"></i>':'<span style="width:16px;flex-shrink:0"></span>'}
+          <input type="checkbox" ${window._oc[c.id]?'checked':''} ${c.locked?'disabled':''}
+            style="width:14px;height:14px;accent-color:#16a34a;cursor:${c.locked?'default':'pointer'};flex-shrink:0"
+            onclick="event.stopPropagation()"
+            onchange="(function(el){var id='${c.id}';window._oc[id]=el.checked;document.querySelectorAll('.oc-'+id).forEach(function(e){e.style.display=el.checked?'':'none';});})(this)">
+          <span style="font-size:12px;color:${c.locked?'#9ca3af':'#374151'};flex:1">${c.l}</span>
+          ${c.locked?'<i class="ti ti-lock" style="font-size:10px;color:#d1d5db"></i>':''}
+        </div>`).join('')+'</div>';
       const thead=`<thead><tr>
         <th class="oc-orderno" style="${thS}">Order No.</th>
         <th class="oc-customer" style="${thS}">Customer</th>
@@ -2329,13 +2339,14 @@ function renderFilled(scroll){
             <div style="margin-left:auto;display:flex;gap:6px;position:relative">
               <button onclick="var p=document.getElementById('ordColPnl');p.style.display=p.style.display==='none'?'block':'none'" style="padding:6px 12px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap"><i class="ti ti-columns" style="font-size:13px;color:#6b7280"></i>Manage Columns</button>
               <div id="ordColPnl" style="display:none;position:absolute;right:0;top:calc(100% + 6px);width:230px;background:#fff;border:1.5px solid #ede8e0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:10px 14px;z-index:300">
-                <div style="font-size:10.5px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #f3f4f6">Show / Hide Columns</div>
+                <div style="font-size:10.5px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;padding-bottom:8px;border-bottom:1px solid #f3f4f6">Manage Columns</div>
+                <div style="font-size:10.5px;color:#9ca3af;margin-bottom:8px;display:flex;align-items:center;gap:4px"><i class="ti ti-grip-vertical" style="font-size:12px"></i>Drag to reorder &nbsp;·&nbsp; <i class="ti ti-eye" style="font-size:12px"></i>Check to show</div>
                 ${colPicker}
-                <div style="margin-top:10px;padding-top:8px;border-top:1px solid #f3f4f6;font-size:10.5px;color:#9ca3af"><i class="ti ti-lock" style="font-size:11px"></i> Locked columns always visible</div>
+                <div style="margin-top:8px;padding-top:8px;border-top:1px solid #f3f4f6;font-size:10.5px;color:#9ca3af"><i class="ti ti-lock" style="font-size:11px"></i> Locked columns always visible</div>
               </div>
             </div>
           </div>
-          <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12.5px;background:#fff">${thead}<tbody>${tbody}</tbody></table></div>
+          <div style="overflow-x:auto"><table id="ordTbl" style="width:100%;border-collapse:collapse;font-size:12.5px;background:#fff">${thead}<tbody>${tbody}</tbody></table></div>
           <div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;border-radius:0 0 10px 10px;display:flex;align-items:center;justify-content:space-between">
             <span style="font-size:12px;color:#9ca3af">Showing 12 of 142 orders</span>
             <div style="display:flex;gap:4px">${['‹','1','2','3','…','15','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div>
