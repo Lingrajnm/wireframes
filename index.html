@@ -1006,66 +1006,66 @@ const PAGE_CTX={
   overview:     {btns:[],                                                                                          showStore:true,  showLang:false},
 
   // ── Operations (STORE-LEVEL) ──────────────────────────────────────
-  orders:       {btns:[{icon:true,ic:'ti-search'},{l:'Create New Order',ic:'ti-plus',p:true}],                    showStore:true,  showLang:false},
-  picking:      {btns:[{icon:true,ic:'ti-search'}],                                                               showStore:true,  showLang:false},
-  packing:      {btns:[{icon:true,ic:'ti-search'}],                                                               showStore:true,  showLang:false},
-  checking:     {btns:[{icon:true,ic:'ti-search'}],                                                               showStore:true,  showLang:false},
-  rack:         {btns:[{icon:true,ic:'ti-search'},{l:'Add Rack',ic:'ti-plus',p:true}],                            showStore:true,  showLang:false},
+  orders:       {btns:[{l:'Create New Order',ic:'ti-plus',p:true}],                    showStore:true,  showLang:false},
+  picking:      {btns:[],                                                               showStore:true,  showLang:false},
+  packing:      {btns:[],                                                               showStore:true,  showLang:false},
+  checking:     {btns:[],                                                               showStore:true,  showLang:false},
+  rack:         {btns:[{l:'Add Rack',ic:'ti-plus',p:true}],                            showStore:true,  showLang:false},
   slotblock:    {btns:[{l:'Block Slot',ic:'ti-calendar-off',p:true}],                                             showStore:true,  showLang:false},
-  capacity:     {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-calendar'},{l:'Today',p:false},{l:'+ Add Rule',ic:'ti-plus',p:true}], showStore:true, showLang:false},
-  clickcollect: {btns:[{icon:true,ic:'ti-search'},{l:'New C&C Order',ic:'ti-plus',p:true}],                       showStore:true,  showLang:false},
+  capacity:     {btns:[{icon:true,ic:'ti-calendar'},{l:'Today',p:false},{l:'+ Add Rule',ic:'ti-plus',p:true}], showStore:true, showLang:false},
+  clickcollect: {btns:[{l:'New C&C Order',ic:'ti-plus',p:true}],                       showStore:true,  showLang:false},
 
   // ── Customer Support (ORG-LEVEL — customers span all stores) ──────
-  'cs-dash':      {btns:[{icon:true,ic:'ti-search'}],                                                             showStore:false, showLang:false},
-  'cs-customers': {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Add Customer',ic:'ti-user-plus',p:true}], showStore:false,showLang:false},
-  'cs-orders':    {btns:[{icon:true,ic:'ti-search'},{l:'Create Order',ic:'ti-plus',p:true}],                      showStore:false, showLang:false},
+  'cs-dash':      {btns:[],                                                             showStore:false, showLang:false},
+  'cs-customers': {btns:[{icon:true,ic:'ti-download'},{l:'Add Customer',ic:'ti-user-plus',p:true}], showStore:false,showLang:false},
+  'cs-orders':    {btns:[{l:'Create Order',ic:'ti-plus',p:true}],                      showStore:false, showLang:false},
 
   // ── Catalogue (ORG-LEVEL — one catalogue across all stores) ───────
   'cat-dash':   {btns:[],                                                                                          showStore:false, showLang:true},
-  products:     {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Add Product',ic:'ti-package',p:true}],  showStore:false,showLang:true},
-  categories:   {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Add Category',ic:'ti-plus',p:true}],   showStore:false,showLang:true},
-  brands:       {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Add Brand',ic:'ti-plus',p:true}],      showStore:false,showLang:true},
-  tags:         {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Add Tag',ic:'ti-plus',p:true}],        showStore:false,showLang:true},
-  variants:     {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Add Variant',ic:'ti-plus',p:true}],    showStore:false,showLang:true},
-  subs:         {btns:[{icon:true,ic:'ti-search'},{l:'Add Group',ic:'ti-plus',p:true}],                            showStore:false, showLang:true},
+  products:     {btns:[{icon:true,ic:'ti-download'},{l:'Add Product',ic:'ti-package',p:true}],  showStore:false,showLang:true},
+  categories:   {btns:[{icon:true,ic:'ti-download'},{l:'Add Category',ic:'ti-plus',p:true}],   showStore:false,showLang:true},
+  brands:       {btns:[{icon:true,ic:'ti-download'},{l:'Add Brand',ic:'ti-plus',p:true}],      showStore:false,showLang:true},
+  tags:         {btns:[{icon:true,ic:'ti-download'},{l:'Add Tag',ic:'ti-plus',p:true}],        showStore:false,showLang:true},
+  variants:     {btns:[{icon:true,ic:'ti-download'},{l:'Add Variant',ic:'ti-plus',p:true}],    showStore:false,showLang:true},
+  subs:         {btns:[{l:'Add Group',ic:'ti-plus',p:true}],                            showStore:false, showLang:true},
   // Inventory IS store-level — stock levels vary per store
-  inventory:    {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Update Stock',ic:'ti-refresh',p:true}], showStore:true,showLang:false},
+  inventory:    {btns:[{icon:true,ic:'ti-download'},{l:'Update Stock',ic:'ti-refresh',p:true}], showStore:true,showLang:false},
   bulkupload:   {btns:[{icon:true,ic:'ti-download'},{l:'Start Upload',ic:'ti-cloud-upload',p:true}],               showStore:false, showLang:true},
 
   // ── Marketing (ORG-LEVEL — campaigns run across all stores) ───────
-  coupons:      {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Create Coupon',ic:'ti-plus',p:true}],  showStore:false,showLang:true},
-  offers:       {btns:[{icon:true,ic:'ti-search'},{l:'Create Offer',ic:'ti-plus',p:true}],                         showStore:false, showLang:true},
-  campaigns:    {btns:[{icon:true,ic:'ti-search'},{l:'New Campaign',ic:'ti-speakerphone',p:true}],                  showStore:false, showLang:true},
-  banners:      {btns:[{icon:true,ic:'ti-search'},{l:'Add Banner',ic:'ti-plus',p:true}],                            showStore:false, showLang:true},
-  segments:     {btns:[{icon:true,ic:'ti-search'},{l:'Create Segment',ic:'ti-plus',p:true}],                        showStore:false, showLang:true},
+  coupons:      {btns:[{icon:true,ic:'ti-download'},{l:'Create Coupon',ic:'ti-plus',p:true}],  showStore:false,showLang:true},
+  offers:       {btns:[{l:'Create Offer',ic:'ti-plus',p:true}],                         showStore:false, showLang:true},
+  campaigns:    {btns:[{l:'New Campaign',ic:'ti-speakerphone',p:true}],                  showStore:false, showLang:true},
+  banners:      {btns:[{l:'Add Banner',ic:'ti-plus',p:true}],                            showStore:false, showLang:true},
+  segments:     {btns:[{l:'Create Segment',ic:'ti-plus',p:true}],                        showStore:false, showLang:true},
 
   // ── Website (ORG-LEVEL — one storefront) ─────────────────────────
   'web-layout': {btns:[{l:'Preview',ic:'ti-world',p:false},{l:'Save Changes',ic:'ti-check',p:true}],               showStore:false, showLang:true},
   'web-nav':    {btns:[{l:'Add Menu Item',ic:'ti-plus',p:true}],                                                    showStore:false, showLang:true},
-  'web-pages':  {btns:[{icon:true,ic:'ti-search'},{l:'Add Page',ic:'ti-plus',p:true}],                             showStore:false, showLang:true},
-  'web-blog':   {btns:[{icon:true,ic:'ti-search'},{l:'New Post',ic:'ti-plus',p:true}],                             showStore:false, showLang:true},
+  'web-pages':  {btns:[{l:'Add Page',ic:'ti-plus',p:true}],                             showStore:false, showLang:true},
+  'web-blog':   {btns:[{l:'New Post',ic:'ti-plus',p:true}],                             showStore:false, showLang:true},
   'web-sched':  {btns:[{l:'Schedule Page',ic:'ti-calendar-plus',p:true}],                                          showStore:false, showLang:true},
   'web-ann':    {btns:[{l:'Add Announcement',ic:'ti-plus',p:true}],                                                showStore:false, showLang:true},
 
   // ── Logistics (STORE-LEVEL — fleet/trips per store) ───────────────
-  vehicles:     {btns:[{icon:true,ic:'ti-search'},{l:'Add Vehicle',ic:'ti-plus',p:true}],                          showStore:true,  showLang:false},
+  vehicles:     {btns:[{l:'Add Vehicle',ic:'ti-plus',p:true}],                          showStore:true,  showLang:false},
   vplanning:    {btns:[{l:'Create Plan',ic:'ti-plus',p:true}],                                                     showStore:true,  showLang:false},
-  trips:        {btns:[{icon:true,ic:'ti-search'},{l:'Create Trip',ic:'ti-plus',p:true}],                          showStore:true,  showLang:false},
+  trips:        {btns:[{l:'Create Trip',ic:'ti-plus',p:true}],                          showStore:true,  showLang:false},
   tripplan:     {btns:[{l:'Plan Trip',ic:'ti-map',p:true}],                                                        showStore:true,  showLang:false},
-  runners:      {btns:[{icon:true,ic:'ti-search'},{l:'Add Delivery Agent',ic:'ti-user-plus',p:true}],              showStore:true,  showLang:false},
+  runners:      {btns:[{l:'Add Delivery Agent',ic:'ti-user-plus',p:true}],              showStore:true,  showLang:false},
   area:         {btns:[{l:'Edit Zones',ic:'ti-map-pin',p:true}],                                                   showStore:true,  showLang:false},
-  shipping:     {btns:[{icon:true,ic:'ti-search'},{l:'Add Courier',ic:'ti-plus',p:true}],                          showStore:true,  showLang:false},
+  shipping:     {btns:[{l:'Add Courier',ic:'ti-plus',p:true}],                          showStore:true,  showLang:false},
 
   // ── Analytics (STORE-LEVEL — reports filtered per store) ──────────
   analytics:    {btns:[{icon:true,ic:'ti-download'},{l:'Export Report',ic:'ti-file-export',p:false}],              showStore:true,  showLang:false},
   reports:      {btns:[{l:'Schedule',ic:'ti-calendar',p:false},{icon:true,ic:'ti-download'}],                      showStore:true,  showLang:false},
-  actlogs:      {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'}],                                   showStore:true,  showLang:false},
+  actlogs:      {btns:[{icon:true,ic:'ti-download'}],                                   showStore:true,  showLang:false},
 
   // ── Staff & HR (ORG-LEVEL except attendance which is store-specific)
-  employees:    {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Add Employee',ic:'ti-user-plus',p:true}], showStore:false,showLang:false},
-  designations: {btns:[{icon:true,ic:'ti-search'},{l:'Add Designation',ic:'ti-plus',p:true}],                      showStore:false, showLang:false},
-  attendance:   {btns:[{icon:true,ic:'ti-search'},{l:'Mark Attendance',ic:'ti-check',p:true}],                     showStore:true,  showLang:false},
-  leave:        {btns:[{icon:true,ic:'ti-search'},{l:'Apply Leave',ic:'ti-plus',p:true}],                          showStore:false, showLang:false},
+  employees:    {btns:[{icon:true,ic:'ti-download'},{l:'Add Employee',ic:'ti-user-plus',p:true}], showStore:false,showLang:false},
+  designations: {btns:[{l:'Add Designation',ic:'ti-plus',p:true}],                      showStore:false, showLang:false},
+  attendance:   {btns:[{l:'Mark Attendance',ic:'ti-check',p:true}],                     showStore:true,  showLang:false},
+  leave:        {btns:[{l:'Apply Leave',ic:'ti-plus',p:true}],                          showStore:false, showLang:false},
   roles:        {btns:[{l:'Add Role',ic:'ti-plus',p:true}],                                                        showStore:false, showLang:false},
 
   // ── Admin/Settings (ORG-LEVEL) ────────────────────────────────────
@@ -1076,7 +1076,7 @@ const PAGE_CTX={
   comms:        {btns:[{l:'Save Settings',ic:'ti-check',p:true}],                                                  showStore:false, showLang:false},
   mobile:       {btns:[{l:'Save Settings',ic:'ti-check',p:true}],                                                  showStore:false, showLang:false},
   api:          {btns:[{l:'Generate Key',ic:'ti-key',p:true}],                                                     showStore:false, showLang:false},
-  ext:          {btns:[{icon:true,ic:'ti-search'}],                                                                showStore:false, showLang:false},
+  ext:          {btns:[],                                                                showStore:false, showLang:false},
 };
 
 function getSectionContext(){
@@ -1160,17 +1160,63 @@ function renderTopbar(){
 function renderHeaderSearch(){
   const bar=document.getElementById('hdrSearchBar');
   if(!bar) return;
-  // Pages that never get a search bar regardless of hasData
   const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount'];
   if(noSearch.includes(activePage)){bar.style.display='none';bar.innerHTML='';return;}
   if(!hasData){bar.style.display='none';bar.innerHTML='';return;}
   const ps=window._pageSearch||{};
   const showCols=activePage==='orders'&&!!ps.colPicker;
-  const showFilters=(activePage==='orders'||activePage==='products'||activePage==='categories')&&!!ps.advPanel;
-  if(!showFilters&&!showCols){bar.style.display='none';bar.innerHTML='';return;}
-  // Colours
+  const showFilters=!!ps.advPanel;
+  // Placeholder text per page
+  const phMap={
+    orders:'Search by order ID, customer name or phone…',
+    'cs-orders':'Search by order ID, customer name or phone…',
+    products:'Search by product name, SKU or barcode…',
+    categories:'Search by category name…',
+    brands:'Search by brand name…',
+    tags:'Search by tag name…',
+    variants:'Search by variant name…',
+    subs:'Search by group name or product…',
+    inventory:'Search by product name or SKU…',
+    coupons:'Search by coupon code or name…',
+    offers:'Search by offer name…',
+    campaigns:'Search by campaign name…',
+    banners:'Search by banner name…',
+    segments:'Search by segment name…',
+    customers:'Search by name, email, phone or ID…',
+    'cs-customers':'Search by name, email, phone or customer ID…',
+    employees:'Search by name, designation or role…',
+    vehicles:'Search by vehicle name or vendor…',
+    trips:'Search by trip ID, vehicle or runner…',
+    runners:'Search by name or phone…',
+    shipping:'Search by courier name…',
+    picking:'Search by order ID or picker…',
+    packing:'Search by order ID…',
+    checking:'Search by order ID…',
+    rack:'Search by rack ID or zone…',
+    capacity:'Search by slot or zone…',
+    'web-pages':'Search by page title…',
+    'web-blog':'Search by post title…',
+    analytics:'Search reports…',
+    reports:'Search reports…',
+    actlogs:'Search activity logs…',
+    attendance:'Search by staff name…',
+    leave:'Search by staff name…',
+    roles:'Search by role name…',
+    designations:'Search by designation…',
+    area:'Search by zone or area name…',
+    vplanning:'Search by route or vehicle…',
+    tripplan:'Search by trip or area…',
+    'stores-cfg':'Search by store name…',
+    abandoned:'Search by customer or cart…',
+    slotblock:'Search by slot or date…',
+  };
+  const ph=phMap[activePage]||'Search…';
   const btnS='padding:7px 14px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;font-family:inherit;flex-shrink:0';
-  bar.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:8px 20px">
+  bar.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:8px 20px;border-bottom:1px solid #f5f2ee">
+    <div style="flex:1;display:flex;align-items:center;gap:8px;padding:7px 12px;background:#f9f7f4;border:1.5px solid #ede8e0;border-radius:8px">
+      <i class="ti ti-search" style="font-size:14px;color:#9ca3af;flex-shrink:0"></i>
+      <input style="flex:1;border:none;outline:none;font-size:13px;font-family:inherit;color:#374151;background:transparent" placeholder="${ph}">
+    </div>
     ${showFilters?`<button id="hdrFiltersBtn" onclick="(function(b){var p=document.getElementById('hdrAdvPnl');var open=p.style.display!=='none';p.style.display=open?'none':'block';b.style.background=open?'#fff':'#f0fdf4';b.style.borderColor=open?'#e2d9ce':'#16a34a';b.style.color=open?'#374151':'#15803d';})(this)" style="${btnS}"><i class="ti ti-adjustments-horizontal" style="font-size:13px"></i>Filters</button>`:''}
     ${showCols?`<div style="position:relative">
       <button onclick="var p=document.getElementById('hdrColPnl');p.style.display=p.style.display==='none'?'block':'none'" style="${btnS}"><i class="ti ti-columns" style="font-size:13px;color:#6b7280"></i>Columns</button>
