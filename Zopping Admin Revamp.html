@@ -1096,8 +1096,11 @@ function renderTopbar(){
   // ── Page-level CTAs ──
   ctx.btns.forEach(b=>{
     if(b.icon){
-      // Icon-only square button
-      ctaH+=`<button class="tb-icon-btn" title="${b.ic.replace('ti-','')}"><i class="ti ${b.ic}"></i></button>`;
+      // Icon-only square button — search icon gets a focus-in-page handler
+      const searchClick=b.ic==='ti-search'
+        ?`onclick="(function(){var s=document.getElementById('mainScroll');var inp=s?s.querySelector('input[type=text],input:not([type]),input[type=search]'):null;if(inp){inp.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){inp.focus();inp.style.transition='box-shadow .25s,border-color .25s';inp.style.boxShadow='0 0 0 3px rgba(22,163,74,.25)';inp.style.borderColor='#16a34a';setTimeout(function(){inp.style.boxShadow='';inp.style.borderColor='';},1800);},200);}})()"`
+        :'';
+      ctaH+=`<button class="tb-icon-btn" title="${b.ic.replace('ti-','')}" ${searchClick}><i class="ti ${b.ic}"></i></button>`;
     } else {
       // Text + icon button
       ctaH+=`<button class="cta-btn${b.p?' primary':''}"><i class="ti ${b.ic}"></i>${b.l}</button>`;
