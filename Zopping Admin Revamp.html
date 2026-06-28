@@ -3062,7 +3062,14 @@ function renderFilled(scroll){
         ['<strong>TRP-2026-0059</strong>','Ajlan Bike','Arjun P.',badge('Delayed','#b91c1c','#fee2e2'),'3 orders','12:30–01:30 PM','Ajlan Route','<i class="ti ti-alert-triangle" style="color:#ea580c"></i>'],
       ];
       const tFilter=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)"><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:end"><div><div style="font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">TRIP ID</div><input style="width:100%;padding:8px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff" placeholder="Search by trip ID"></div><div><div style="font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">STATUS</div><select style="width:100%;padding:8px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;cursor:pointer;appearance:auto"><option>All</option><option>In Progress</option><option>Completed</option><option>Pending</option><option>Delayed</option></select></div><div style="display:flex;gap:8px;padding-bottom:1px"><button style="padding:8px 20px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button><button style="padding:8px 16px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear</button></div></div></div>`;
-      scroll.innerHTML=pw+tbl(['Trip ID','Vehicle','Runner','Status','Orders','Slot','Route',''],rows)+'</div>';
+      const wipBanner=`<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fef9c3;border:1.5px solid #fde68a;border-radius:10px;margin-bottom:14px">
+        <i class="ti ti-tools" style="font-size:20px;color:#ca8a04;flex-shrink:0"></i>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#92400e">Work in Progress</div>
+          <div style="font-size:12px;color:#a16207;margin-top:1px">Data for Trips will be added by Lingraj — maximum 30th EOD.</div>
+        </div>
+      </div>`;
+      scroll.innerHTML=pw+wipBanner+tFilter+tbl(['Trip ID','Vehicle','Runner','Status','Orders','Slot','Route',''],rows)+'</div>';
     },
     runners: ()=>{
       const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
