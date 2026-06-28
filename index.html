@@ -605,6 +605,8 @@ const NAV=[
     {id:'cs-customers',l:'Customers',       ic:'ti-users',            g:['admin','store','cs']},
     {id:'cs-orders',  l:'Orders',           ic:'ti-shopping-bag',     g:['admin','store','cs'],
      note:'Customer-centric order view — lookup by email, phone, or order ID'},
+    {id:'segments',   l:'Segments',         ic:'ti-chart-pie-2',      g:['admin','store','cs','mkt']},
+    {id:'cs-tags',    l:'Customer Tags',    ic:'ti-tags',             g:['admin','store','cs']},
   ]},
   {sec:'Catalogue', g:['admin','store','cat'], items:[
     {id:'products',   l:'Products',         ic:'ti-package',          g:['admin','store','cat']},
@@ -621,7 +623,6 @@ const NAV=[
     {id:'offers',     l:'Offers',           ic:'ti-percentage',       g:['admin','store','mkt','cat']},
     {id:'campaigns',  l:'Campaigns',        ic:'ti-message-circle',   g:['admin','mkt']},
     {id:'banners',    l:'Banners',          ic:'ti-ad',               g:['admin','mkt','store']},
-    {id:'segments',   l:'Segments',         ic:'ti-chart-pie',        g:['admin','mkt']},
   ]},
   {sec:'Website', g:['admin','store','mkt'], items:[
     {id:'web-layout', l:'Layout & Theme',   ic:'ti-layout',           g:['admin','mkt','store']},
@@ -1027,6 +1028,7 @@ const PAGE_CTX={
   'cs-dash':      {btns:[],                                                             showStore:false, showLang:false},
   'cs-customers': {btns:[{icon:true,ic:'ti-download'},{l:'Add Customer',ic:'ti-user-plus',p:true}], showStore:false,showLang:false},
   'cs-orders':    {btns:[{l:'Create Order',ic:'ti-plus',p:true}],                      showStore:false, showLang:false},
+  'cs-tags':      {btns:[{l:'Add Tag',ic:'ti-plus',p:true}],                           showStore:false, showLang:false},
 
   // ── Catalogue (ORG-LEVEL — one catalogue across all stores) ───────
   'cat-dash':   {btns:[],                                                                                          showStore:false, showLang:true},
@@ -1168,7 +1170,7 @@ function renderTopbar(){
 function renderHeaderSearch(){
   const bar=document.getElementById('hdrSearchBar');
   if(!bar) return;
-  const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount','abandoned','rack','capacity','vplanning','cs-customers'];
+  const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount','abandoned','rack','capacity','vplanning','cs-customers','cs-tags'];
   if(noSearch.includes(activePage)){bar.style.display='none';bar.innerHTML='';return;}
   if(!hasData){bar.style.display='none';bar.innerHTML='';return;}
   const ps=window._pageSearch||{};
@@ -2887,6 +2889,53 @@ function renderFilled(scroll){
         </table>
       </div>`;
       scroll.innerHTML=pw+tableHtml+'</div>';
+    },
+    'cs-tags': ()=>{
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const TAGS=[
+        {tag:'VIP',customers:142,desc:'High-value loyal customers',c:'#7c3aed',bg:'#f5f3ff'},
+        {tag:'New Customer',customers:389,desc:'First-time buyers within last 30 days',c:'#1d4ed8',bg:'#dbeafe'},
+        {tag:'Wholesale',customers:28,desc:'Bulk order customers — min ₹5,000 per order',c:'#0891b2',bg:'#ecfeff'},
+        {tag:'Repeat Buyer',customers:614,desc:'Ordered more than once',c:'#16a34a',bg:'#dcfce7'},
+        {tag:'High Risk',customers:43,desc:'Multiple complaints or chargebacks',c:'#b91c1c',bg:'#fee2e2'},
+        {tag:'Coupon User',customers:287,desc:'Frequently uses discount codes',c:'#ea580c',bg:'#fff7ed'},
+        {tag:'App User',customers:521,desc:'Placed order via mobile app',c:'#0284c7',bg:'#e0f2fe'},
+        {tag:'Referral',customers:96,desc:'Joined via referral program',c:'#059669',bg:'#d1fae5'},
+        {tag:'Corporate',customers:19,desc:'Corporate account with invoice billing',c:'#374151',bg:'#f3f4f6'},
+        {tag:'Dormant',customers:178,desc:'No order in last 90 days',c:'#9ca3af',bg:'#f9fafb'},
+        {tag:'Feedback Given',customers:233,desc:'Left at least one product review',c:'#ca8a04',bg:'#fef9c3'},
+        {tag:'Wallet User',customers:312,desc:'Has store wallet balance or used wallet',c:'#7c3aed',bg:'#f5f3ff'},
+      ];
+      const thS='text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4';
+      const rows=TAGS.map(t=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+        <td style="padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;background:${t.bg};color:${t.c};font-size:12px;font-weight:700">
+            <i class="ti ti-tag" style="font-size:11px"></i>${t.tag}
+          </span>
+        </td>
+        <td style="padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">
+          <span style="font-size:13px;color:#374151">${t.desc}</span>
+        </td>
+        <td style="padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:right">
+          <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px">
+            <i class="ti ti-users" style="font-size:13px;color:#9ca3af"></i>
+            <span style="font-size:13px;font-weight:600;color:#111827">${t.customers.toLocaleString()}</span>
+          </div>
+        </td>
+        <td style="padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:right">${act}</td>
+      </tr>`).join('');
+      const searchBar=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:12px 16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04);display:flex;align-items:center;gap:10px">
+        <i class="ti ti-search" style="font-size:15px;color:#9ca3af;flex-shrink:0"></i>
+        <input style="flex:1;border:none;outline:none;font-size:13px;font-family:inherit;color:#374151;background:transparent" placeholder="Search by tag name or description…">
+      </div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+          <thead><tr><th style="${thS}">Tag</th><th style="${thS}">Description</th><th style="${thS};text-align:right">Customers</th><th style="${thS}"></th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <div style="padding:10px 14px;border-top:1px solid #f5f2ee"><span style="font-size:12px;color:#9ca3af">12 tags · ${TAGS.reduce((a,t)=>a+t.customers,0).toLocaleString()} total tagged customers</span></div>
+      </div>`;
+      scroll.innerHTML=pw+searchBar+tableHtml+'</div>';
     },
     vehicles: ()=>{
       const rows=[
