@@ -2520,7 +2520,7 @@ function renderFilled(scroll){
       const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
       const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
       const img=`<div style="width:40px;height:40px;border-radius:6px;border:1.5px solid #e5e7eb;background:#f9fafb;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-shopping-bag" style="font-size:18px;color:#d1d5db"></i></div>`;
-      const en=(on=true)=>`<span style="font-size:12px;font-weight:600;color:${on?'#15803d':'#9ca3af'}">${on?'Enabled':'Disabled'}</span>`;
+      const en=(on=true)=>badge(on?'Enabled':'Disabled',on?'#15803d':'#6b7280',on?'#dcfce7':'#f3f4f6');
       const cat=t=>`<span style="font-size:12px;color:#16a34a;cursor:pointer">${t}</span>`;
       const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
       const PRODS=[
@@ -2606,7 +2606,7 @@ function renderFilled(scroll){
           `<div style="display:flex;align-items:center">${avi}</div>`,
           nameEl,contact,
           `<div style="font-size:12px;color:#374151">${c.date}</div><div style="font-size:11px;color:#9ca3af">${c.time}</div>`,
-          `<span style="font-size:11.5px;font-weight:600;color:#9ca3af;letter-spacing:.03em">ENABLED</span>`,
+          badge('Enabled','#15803d','#dcfce7'),
           `<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`,
         ];
       });
@@ -2739,7 +2739,7 @@ function renderFilled(scroll){
           `<div style="display:flex;align-items:center">${avi}</div>`,
           nameEl,contact,
           `<div style="font-size:12px;color:#374151">${c.date}</div><div style="font-size:11px;color:#9ca3af">${c.time}</div>`,
-          `<span style="font-size:11.5px;font-weight:600;color:#9ca3af;letter-spacing:.03em">ENABLED</span>`,
+          badge('Enabled','#15803d','#dcfce7'),
           `<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`,
         ];
       });
@@ -2795,7 +2795,7 @@ function renderFilled(scroll){
         `<div style="font-size:13px;font-weight:600;color:#111827">${pct}</div><div style="font-size:11px;color:#9ca3af">${type}</div>`,
         `<div style="font-size:13px;color:#111827">${amt}</div><div style="font-size:11px;color:#9ca3af">${per}</div>`,
         `<div style="font-size:12px;color:#374151">${start}</div><div style="font-size:11px;color:#9ca3af">${end}</div>`,
-        `<span style="font-size:11.5px;font-weight:600;color:#9ca3af;letter-spacing:.03em">${on?'ENABLED':'DISABLED'}</span>`,
+        badge(on?'Enabled':'Disabled',on?'#15803d':'#6b7280',on?'#dcfce7':'#f3f4f6'),
         act,
       ]);
       const statusR=['All','Enabled','Disabled'].map((s,i)=>`<label style="flex:0 0 180px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="cpnStatus" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
@@ -2829,13 +2829,13 @@ function renderFilled(scroll){
         [570,'Onam Special','Onam Festival Offers – Grab Them Now!','CustomersMappedToTag','Completed','05 Sep 2025 08:00 AM','Sep 05, 2025'],
         [541,'Independence Day','Celebrate 78th Independence Day with Savings','AllCustomers','Completed','15 Aug 2025 07:00 AM','Aug 15, 2025'],
       ];
-      const sc={'Completed':'#6b7280','Running':'#16a34a'};
+      const campStatus=s=>s==='Running'?badge('Running','#15803d','#dcfce7'):badge('Completed','#6b7280','#f3f4f6');
       const rows=CAMPS.map(([id,name,title,segment,status,scheduledAt,createdOn])=>[
         `<span style="font-size:12px;color:#9ca3af">${id}</span>`,
         `<span style="font-size:12.5px;color:#111827">${name}</span>`,
         `<span style="font-size:12.5px;color:#374151">${title}</span>`,
         `<span style="font-size:12px;color:#374151">${segment}</span>`,
-        `<span style="font-size:12.5px;font-weight:500;color:${sc[status]||'#6b7280'}">${status}</span>`,
+        campStatus(status),
         `<div style="font-size:12px;color:#374151">${scheduledAt}</div>`,
         `<div style="font-size:12px;color:#374151">${createdOn}</div>`,
         act,
@@ -2983,7 +2983,7 @@ function renderFilled(scroll){
         imgPl,
         `<div><div style="font-size:12.5px;font-weight:500;color:#111827;max-width:500px;line-height:1.4">${desc}</div><div style="font-size:11px;color:#9ca3af;margin-top:3px">${dates}</div></div>`,
         `<span style="font-size:12px;color:#374151">${type}</span>`,
-        `<span style="font-size:11.5px;font-weight:600;letter-spacing:.03em;color:${on?'#15803d':'#9ca3af'}">${on?'ENABLED':'DISABLED'}</span>`,
+        badge(on?'Enabled':'Disabled',on?'#15803d':'#6b7280',on?'#dcfce7':'#f3f4f6'),
         act,
       ]);
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 20 offers</span><div style="display:flex;gap:4px">${['‹','1','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
@@ -3006,7 +3006,7 @@ function renderFilled(scroll){
       const rows=PAGES.map(([title,url,on])=>[
         `<span style="font-size:13px;color:#111827">${title}</span>`,
         `<span style="font-size:12.5px;color:#6b7280;font-family:monospace">${url}</span>`,
-        `<span style="font-size:12.5px;color:${on?'#15803d':'#9ca3af'}">${on?'Enabled':'Disabled'}</span>`,
+        badge(on?'Enabled':'Disabled',on?'#15803d':'#6b7280',on?'#dcfce7':'#f3f4f6'),
         act,
       ]);
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 20 pages</span></div>`;
@@ -3182,7 +3182,7 @@ function renderFilled(scroll){
         `<span style="font-size:13px;color:#111827">${name}</span>`,
         parent?`<span style="font-size:12.5px;color:#16a34a;cursor:pointer">${parent}</span>`:'',
         `<span style="font-size:13px;color:#374151">${count.toLocaleString()}</span>`,
-        `<span style="font-size:11.5px;font-weight:600;letter-spacing:.03em;color:#9ca3af">${on?'ENABLED':'DISABLED'}</span>`,
+        badge(on?'Enabled':'Disabled',on?'#15803d':'#6b7280',on?'#dcfce7':'#f3f4f6'),
         act,
       ]);
       const statusR=['All','Enabled','Disabled'].map((s,i)=>`<label style="flex:0 0 180px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="catStatus" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
@@ -3218,7 +3218,7 @@ function renderFilled(scroll){
         imgPl,
         `<span style="font-size:13px;font-weight:600;color:#111827;letter-spacing:.02em">${brand}</span>`,
         `<span style="font-size:13px;color:#374151">${count}</span>`,
-        `<span style="font-size:12.5px;color:${status==='Enabled'?'#15803d':'#9ca3af'}">${status}</span>`,
+        badge(status==='Enabled'?'Enabled':'Hidden',status==='Enabled'?'#15803d':'#6b7280',status==='Enabled'?'#dcfce7':'#f3f4f6'),
         act,
       ]);
       const statusR=['All','Enabled','Hidden'].map((s,i)=>`<label style="flex:0 0 180px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="brandStatus" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
@@ -3284,7 +3284,7 @@ function renderFilled(scroll){
       const rows=SUBS.map(([name,count,status])=>[
         `<span style="font-size:13px;color:#111827">${name}</span>`,
         `<span style="font-size:13px;color:#374151">${count}</span>`,
-        `<span style="font-size:12.5px;color:${status==='Enabled'?'#15803d':'#9ca3af'}">${status}</span>`,
+        badge(status==='Enabled'?'Enabled':'Disabled',status==='Enabled'?'#15803d':'#6b7280',status==='Enabled'?'#dcfce7':'#f3f4f6'),
         act,
       ]);
       const statusR=['All','Enabled','Disabled'].map((s,i)=>`<label style="flex:0 0 180px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="subsStatus" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
