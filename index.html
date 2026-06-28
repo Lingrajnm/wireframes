@@ -1168,7 +1168,7 @@ function renderTopbar(){
 function renderHeaderSearch(){
   const bar=document.getElementById('hdrSearchBar');
   if(!bar) return;
-  const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount'];
+  const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount','abandoned','rack'];
   if(noSearch.includes(activePage)){bar.style.display='none';bar.innerHTML='';return;}
   if(!hasData){bar.style.display='none';bar.innerHTML='';return;}
   const ps=window._pageSearch||{};
