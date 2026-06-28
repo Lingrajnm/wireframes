@@ -1171,12 +1171,12 @@ function renderTopbar(){
 function renderHeaderSearch(){
   const bar=document.getElementById('hdrSearchBar');
   if(!bar) return;
-  const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount','abandoned','rack','capacity','vplanning','cs-customers','cs-tags'];
+  const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount','abandoned','rack','capacity','vplanning','cs-tags'];
   if(noSearch.includes(activePage)){bar.style.display='none';bar.innerHTML='';return;}
   if(!hasData){bar.style.display='none';bar.innerHTML='';return;}
   const ps=window._pageSearch||{};
-  const showCols=activePage==='orders'&&!!ps.colPicker;
-  const showFilters=!!ps.advPanel;
+  const showCols=true;  // always show Columns button — consistent across all pages
+  const showFilters=true; // always show Filters button
   // Placeholder text per page
   const phMap={
     orders:'Search by order ID, customer name or phone…',
@@ -1228,18 +1228,20 @@ function renderHeaderSearch(){
       <i class="ti ti-search" style="font-size:14px;color:#9ca3af;flex-shrink:0"></i>
       <input style="flex:1;border:none;outline:none;font-size:13px;font-family:inherit;color:#374151;background:transparent" placeholder="${ph}">
     </div>
-    ${showFilters?`<button id="hdrFiltersBtn" onclick="(function(b){var p=document.getElementById('hdrAdvPnl');var open=p.style.display!=='none';p.style.display=open?'none':'block';b.style.background=open?'#fff':'#f0fdf4';b.style.borderColor=open?'#e2d9ce':'#16a34a';b.style.color=open?'#374151':'#15803d';})(this)" style="${btnS}"><i class="ti ti-adjustments-horizontal" style="font-size:13px"></i>Filters</button>`:''}
-    ${showCols?`<div style="position:relative">
+    <button id="hdrFiltersBtn" onclick="(function(b){var p=document.getElementById('hdrAdvPnl');var open=p.style.display!=='none';p.style.display=open?'none':'block';b.style.background=open?'#fff':'#f0fdf4';b.style.borderColor=open?'#e2d9ce':'#16a34a';b.style.color=open?'#374151':'#15803d';})(this)" style="${btnS}"><i class="ti ti-adjustments-horizontal" style="font-size:13px"></i>Filters</button>
+    <div style="position:relative">
       <button onclick="var p=document.getElementById('hdrColPnl');p.style.display=p.style.display==='none'?'block':'none'" style="${btnS}"><i class="ti ti-columns" style="font-size:13px;color:#6b7280"></i>Columns</button>
       <div id="hdrColPnl" style="display:none;position:absolute;right:0;top:calc(100% + 6px);width:230px;background:#fff;border:1.5px solid #ede8e0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:10px 14px;z-index:400">
         <div style="font-size:10.5px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;padding-bottom:8px;border-bottom:1px solid #f3f4f6">Manage Columns</div>
-        <div style="font-size:10.5px;color:#9ca3af;margin-bottom:8px;display:flex;align-items:center;gap:4px"><i class="ti ti-grip-vertical" style="font-size:12px"></i>Drag to reorder &nbsp;\xb7&nbsp; <i class="ti ti-eye" style="font-size:12px"></i>Check to show</div>
-        ${ps.colPicker}
+        <div style="font-size:10.5px;color:#9ca3af;margin-bottom:8px;display:flex;align-items:center;gap:4px"><i class="ti ti-grip-vertical" style="font-size:12px"></i>Drag to reorder &nbsp;·&nbsp; <i class="ti ti-eye" style="font-size:12px"></i>Check to show</div>
+        ${ps.colPicker||'<div style="font-size:12px;color:#9ca3af;text-align:center;padding:8px 0">Column picker not configured</div>'}
         <div style="margin-top:8px;padding-top:8px;border-top:1px solid #f3f4f6;font-size:10.5px;color:#9ca3af"><i class="ti ti-lock" style="font-size:11px"></i> Locked columns always visible</div>
       </div>
-    </div>`:''}
+    </div>
   </div>
-  ${showFilters?ps.advPanel.replace(/id="[^"]*Pnl"/,'id="hdrAdvPnl"'):''}`;
+  ${ps.advPanel?ps.advPanel.replace(/id="[^"]*Pnl"/,'id="hdrAdvPnl"'):`<div id="hdrAdvPnl" style="display:none;padding:10px 20px 12px;border-bottom:1px solid #f5f2ee;background:#fafaf8;display:none">
+    <div style="font-size:11px;color:#9ca3af;display:flex;align-items:center;gap:6px"><i class="ti ti-adjustments-horizontal" style="font-size:13px"></i>Filters not configured for this page yet.</div>
+  </div>`}`;
   bar.style.display='block';
 }
 
@@ -3292,14 +3294,14 @@ function renderFilled(scroll){
         {ic:'ti-currency-rupee',    bg:'#dcfce7', ic_c:'#15803d', val:'₹77,800', lbl:'Revenue Recovered',  sub:'36.6% of value'},
         {ic:'ti-trending-up',       bg:'#fce7f3', ic_c:'#be185d', val:'₹1,496',  lbl:'Avg Recovered Cart', sub:'per conversion'},
       ];
-      const recovRow=`<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px">
-        ${recovStats.map(s=>`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-          <div style="width:32px;height:32px;border-radius:8px;background:${s.bg};display:flex;align-items:center;justify-content:center;margin-bottom:10px">
-            <i class="ti ${s.ic}" style="font-size:16px;color:${s.ic_c}"></i>
+      const recovRow=`<div class="stat-row" style="grid-template-columns:repeat(6,1fr)">
+        ${recovStats.map(s=>`<div class="stat-card">
+          <div class="sc-top">
+            <div class="sc-icon" style="background:${s.bg}"><i class="ti ${s.ic}" style="color:${s.ic_c}"></i></div>
+            <span class="sc-chg" style="background:${s.bg};color:${s.ic_c}">${s.sub}</span>
           </div>
-          <div style="font-size:20px;font-weight:800;color:#111827;line-height:1">${s.val}</div>
-          <div style="font-size:11.5px;font-weight:600;color:#374151;margin-top:4px">${s.lbl}</div>
-          <div style="font-size:10.5px;color:#9ca3af;margin-top:2px">${s.sub}</div>
+          <div class="sc-val">${s.val}</div>
+          <div class="sc-lbl">${s.lbl}</div>
         </div>`).join('')}
       </div>`;
 
