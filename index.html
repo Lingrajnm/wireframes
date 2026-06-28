@@ -3119,7 +3119,65 @@ function renderFilled(scroll){
       ]);
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 200+ abandoned carts</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
       const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Order Type & Store','Cart ID','Customer','No. of Items','Total Cart Value','Created date & time','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
-      scroll.innerHTML=pw+tableHtml+'</div>';
+
+      // ── Cart Recovery Pipeline ────────────────────────────────────
+      const funnelBar=(pct,c)=>`<div style="height:6px;border-radius:3px;background:#f3f4f6;overflow:hidden;margin-top:6px"><div style="width:${pct}%;height:100%;background:${c};border-radius:3px"></div></div>`;
+      const ch=(icon,label,val,sub,color,bg)=>`<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;background:${bg}">
+        <div style="width:34px;height:34px;border-radius:8px;background:${color}20;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${icon}" style="font-size:16px;color:${color}"></i></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:10.5px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.04em">${label}</div>
+          <div style="font-size:17px;font-weight:700;color:#111827;line-height:1.2">${val}</div>
+          <div style="font-size:11px;color:#6b7280;margin-top:1px">${sub}</div>
+        </div>
+      </div>`;
+
+      const pipeline=`<div style="background:#fff;border-radius:12px;border:1px solid #ede8e0;padding:18px 20px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <i class="ti ti-shopping-cart-off" style="font-size:16px;color:#ea580c"></i>
+            <span style="font-size:13.5px;font-weight:700;color:#111827">Cart Recovery Pipeline</span>
+            <span style="font-size:11px;padding:2px 8px;background:#fff7ed;color:#ea580c;border-radius:20px;font-weight:600">Last 30 days</span>
+          </div>
+          <select style="font-size:11.5px;padding:5px 10px;border:1px solid #e2d9ce;border-radius:6px;color:#374151;background:#fff;cursor:pointer;outline:none;font-family:inherit">
+            <option>Last 30 days</option><option>Last 7 days</option><option>Today</option><option>Custom</option>
+          </select>
+        </div>
+
+        <!-- Funnel flow -->
+        <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:center;gap:0;margin-bottom:16px;background:#fafaf8;border-radius:10px;border:1px solid #f0ece4;overflow:hidden">
+          ${[
+            ['ti-shopping-cart','Abandoned','234','₹2,12,500 total','#ea580c','100%'],
+            ['ti-send','Nudges Sent','181','77.4% of carts','#7c3aed','77%'],
+            ['ti-eye','Carts Viewed','96','53% opened nudge','#1d4ed8','41%'],
+            ['ti-check','Converted','42','22 orders recovered','#16a34a','18%'],
+          ].map(([ic,lbl,val,sub,c,pct],i)=>`
+            <div style="padding:14px 16px;text-align:center">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;margin-bottom:4px">${lbl}</div>
+              <div style="font-size:22px;font-weight:800;color:#111827">${val}</div>
+              <div style="font-size:11px;color:#6b7280;margin-bottom:4px">${sub}</div>
+              ${funnelBar(pct,c)}
+            </div>
+            ${i<3?`<div style="display:flex;flex-direction:column;align-items:center;color:#d1d5db;padding:0 4px"><i class="ti ti-chevron-right" style="font-size:18px"></i></div>`:''}
+          `).join('')}
+        </div>
+
+        <!-- Recovery channel + value breakdown -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px">
+          ${ch('ti-brand-whatsapp','WhatsApp','28 carts','₹36,400 recovered','#16a34a','#f0fdf4')}
+          ${ch('ti-message','SMS / RCS','9 carts','₹11,200 recovered','#1d4ed8','#eff6ff')}
+          ${ch('ti-mail','Email','5 carts','₹6,800 recovered','#7c3aed','#f5f3ff')}
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;background:#fafaf8;border:1.5px solid #f0ece4">
+            <div style="width:34px;height:34px;border-radius:8px;background:#fff7ed;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-currency-rupee" style="font-size:16px;color:#ea580c"></i></div>
+            <div style="flex:1">
+              <div style="font-size:10.5px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.04em">Total Recovered</div>
+              <div style="font-size:17px;font-weight:800;color:#16a34a">₹54,400</div>
+              <div style="font-size:11px;color:#6b7280">25.6% of abandoned value</div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+      scroll.innerHTML=pw+pipeline+tableHtml+'</div>';
     },
     rack: ()=>{
       const racks=['0-0','1-l','1-r','10-l','10-r','11-l','11-r','12-l','12-r','14-r','15-l','16-l','2-l','3-l','3-r','4-l','4-r','5-l','5-r','6-l','6-r','7-l','7-r','8-l','8-r','9-l','9-r','dairy-0','deli-0','meat-l/','produce-0','seafood-0'];
