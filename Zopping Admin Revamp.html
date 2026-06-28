@@ -2227,7 +2227,15 @@ function renderFilled(scroll){
         {id:'Z197926',store:"SODHI'S | SEC-41 | GURUGRAM",cust:'Neha Diwan',   icons:'loc,phone',placed:'28 Jun, 05:48 PM',slot:'28 Jun',slotSub:'Within 60 min',     amt:'₹1,683.00',items:'8 Items',  status:'Completed', fill:'100%',   courier:'—',km:'KM001170',otype:'Standard',comp:'28 Jun, 06:10 PM'},
         {id:'Z197912',store:"SODHI'S | SEC-23 | GURUGRAM",cust:'Ravi Kapoor',  icons:'loc,phone',placed:'28 Jun, 05:32 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹4,280.00',items:'22 Items', status:'Cancelled', fill:'',       courier:'—',km:'KM00142', otype:'Standard',comp:'—'},
         {id:'Z197899',store:"SODHI'S | SEC-55 | GURUGRAM",cust:'Meera Sharma', icons:'loc,phone',placed:'28 Jun, 05:20 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹840.00', items:'5 Items',  status:'Returned',  fill:'72%',    courier:'ShipRocket ₹45',km:'KM00598',otype:'Standard',comp:'28 Jun, 07:12 PM'},
-        {id:'Z197875',store:"SODHI'S | SEC-82 | GURUGRAM",cust:'Arjun Nair',   icons:'loc,phone',placed:'28 Jun, 05:05 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹1,150.00',items:'7 Items',  status:'Draft',     fill:'',       courier:'—',km:'—',        otype:'Quick',   comp:'—'},
+        {id:'Z197875',store:"SODHI'S | SEC-82 | GURUGRAM",cust:'Arjun Nair',      icons:'loc,phone',placed:'28 Jun, 05:05 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹1,150.00',items:'7 Items',  status:'Draft',     fill:'',       courier:'—',   km:'—',        otype:'Quick',   comp:'—'},
+        {id:'Z197861',store:"SODHI'S | SEC-23 | GURUGRAM",cust:'Kavya Reddy',     icons:'loc,phone',placed:'28 Jun, 04:52 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹2,310.00',items:'11 Items', status:'Completed', fill:'100%',   courier:'—',   km:'KM00142',  otype:'Standard',comp:'28 Jun, 06:55 PM'},
+        {id:'Z197848',store:"SODHI'S | SEC-57 | GURUGRAM",cust:'Deepak Verma',    icons:'err,phone',placed:'28 Jun, 04:38 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹780.00', items:'4 Items',  status:'Cancelled', fill:'',       courier:'—',   km:'KM00598',  otype:'Standard',comp:'—'},
+        {id:'Z197834',store:"SODHI'S | SEC-41 | GURUGRAM",cust:'Sunita Patel',    icons:'loc,phone',placed:'28 Jun, 04:21 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹3,480.00',items:'18 Items', status:'Completed', fill:'94.4%',  courier:'—',   km:'KM001170', otype:'Standard',comp:'28 Jun, 06:48 PM'},
+        {id:'Z197820',store:"SODHI'S | SEC-82 | GURUGRAM",cust:'Mohit Jain',      icons:'loc,phone',placed:'28 Jun, 04:10 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹560.00', items:'3 Items',  status:'Completed', fill:'100%',   courier:'—',   km:'KM00598',  otype:'Quick',   comp:'28 Jun, 06:30 PM'},
+        {id:'Z197806',store:"SODHI'S | SEC-55 | GURUGRAM",cust:'Anita Gupta',     icons:'loc,phone',placed:'28 Jun, 03:58 PM',slot:'28 Jun',slotSub:'6:00 – 8:00 PM',   amt:'₹1,940.00',items:'9 Items',  status:'Completed', fill:'100%',   courier:'—',   km:'KM00677',  otype:'Standard',comp:'28 Jun, 06:22 PM'},
+        {id:'Z197791',store:"SODHI'S | SEC-23 | GURUGRAM",cust:'Rohit Malhotra',  icons:'loc,phone',placed:'28 Jun, 03:44 PM',slot:'28 Jun',slotSub:'4:00 – 6:00 PM',   amt:'₹4,750.00',items:'25 Items', status:'Completed', fill:'88%',    courier:'ShipRocket ₹60',km:'KM00142',otype:'Standard',comp:'28 Jun, 05:50 PM'},
+        {id:'Z197778',store:"SODHI'S | SEC-57 | GURUGRAM",cust:'Pooja Singh',     icons:'loc,phone',placed:'28 Jun, 03:30 PM',slot:'28 Jun',slotSub:'4:00 – 6:00 PM',   amt:'₹2,080.00',items:'13 Items', status:'Returned',  fill:'76.9%',  courier:'—',   km:'KM00598',  otype:'Standard',comp:'28 Jun, 05:42 PM'},
+        {id:'Z197762',store:"SODHI'S | SEC-41 | GURUGRAM",cust:'Vikram Choudhary',icons:'loc,phone',placed:'28 Jun, 03:15 PM',slot:'28 Jun',slotSub:'4:00 – 6:00 PM',   amt:'₹640.00', items:'4 Items',  status:'Completed', fill:'100%',   courier:'—',   km:'KM001170', otype:'Quick',   comp:'28 Jun, 05:28 PM'},
       ];
       const colDefs=[
         {id:'orderno',   l:'Order No.',        locked:true},
@@ -2350,7 +2358,7 @@ function renderFilled(scroll){
           </div>
           <div style="overflow-x:auto"><table id="ordTbl" style="width:100%;border-collapse:collapse;font-size:12.5px;background:#fff">${thead}<tbody>${tbody}</tbody></table></div>
           <div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;border-radius:0 0 10px 10px;display:flex;align-items:center;justify-content:space-between">
-            <span style="font-size:12px;color:#9ca3af">Showing 12 of 142 orders</span>
+            <span style="font-size:12px;color:#9ca3af">Showing 20 of 142 orders</span>
             <div style="display:flex;gap:4px">${['‹','1','2','3','…','15','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div>
           </div>
         </div></div>`;
