@@ -2339,15 +2339,42 @@ function renderFilled(scroll){
           </div>`).join('')}
         </div>
       </div>`;
-      scroll.innerHTML=`<div style="padding:16px 20px 24px">${statsHtml}
+      const inp=(label,placeholder,type='text')=>`<div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;margin-bottom:5px">${label}</div><input type="${type}" placeholder="${placeholder}" style="width:100%;padding:7px 11px;border:1.5px solid #e2d9ce;border-radius:7px;font-size:12.5px;outline:none;font-family:inherit;color:#374151;background:#fff"></div>`;
+      const sel=(label,opts)=>`<div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;margin-bottom:5px">${label}</div><div style="position:relative"><select style="width:100%;padding:7px 28px 7px 11px;border:1.5px solid #e2d9ce;border-radius:7px;font-size:12.5px;outline:none;font-family:inherit;color:#6b7280;background:#fff;appearance:none;cursor:pointer"><option value="">${opts[0]}</option>${opts.slice(1).map(o=>`<option>${o}</option>`).join('')}</select><i class="ti ti-chevron-down" style="position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:13px;color:#9ca3af;pointer-events:none"></i></div></div>`;
+      const advPanel=`<div id="ordAdvPnl" style="display:none;padding:14px 16px;border-bottom:1px solid #f5f2ee;background:#fafaf8">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 20px">
+          ${inp('Order Number','Enter an order number here')}
+          ${inp('Client ID','Enter client ID')}
+          ${sel('Status',['Choose order status','Pending','Picking','Packing','Packed','Dispatched','Completed','Cancelled','Returned','Draft'])}
+          ${sel('Payment Mode',['Select payment mode','Cash on Delivery','Online (UPI)','Online (Card)','Wallet','Net Banking'])}
+          ${sel('Payment Status',['Select payment status','Paid','Pending','Refunded','Failed'])}
+          ${sel('Order Type',['Select order type','Standard','Quick','Scheduled','Click & Collect'])}
+          ${sel('Tag',['Select order tag','Priority','Fragile','Bulk','VIP','Gift'])}
+          ${inp('KM Code','Enter KM Code')}
+          ${sel('Order Slot',['Select order slot','Within 30 min','Within 60 min','8:00 AM – 10:00 AM','10:00 AM – 12:00 PM','12:00 PM – 3:00 PM','4:00 PM – 6:00 PM','6:00 PM – 8:00 PM'])}
+          ${sel('Sort by Slot',['Default order','Slot: Earliest first','Slot: Latest first','Amount: High to Low','Amount: Low to High','Placed: Newest first'])}
+          <div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;margin-bottom:5px">Placed On</div><input type="date" style="width:100%;padding:7px 11px;border:1.5px solid #e2d9ce;border-radius:7px;font-size:12.5px;outline:none;font-family:inherit;color:#374151;background:#fff"></div>
+          <div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;margin-bottom:5px">Preferred Date</div><input type="date" style="width:100%;padding:7px 11px;border:1.5px solid #e2d9ce;border-radius:7px;font-size:12.5px;outline:none;font-family:inherit;color:#374151;background:#fff"></div>
+          <div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;margin-bottom:5px">Customer Email</div><input type="email" placeholder="Search by email" style="width:100%;padding:7px 11px;border:1.5px solid #e2d9ce;border-radius:7px;font-size:12.5px;outline:none;font-family:inherit;color:#374151;background:#fff"></div>
+          <div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;margin-bottom:5px">Customer Phone</div><div style="display:flex;gap:6px;align-items:center"><span style="font-size:18px">🇮🇳</span><input type="tel" placeholder="Search by phone" style="flex:1;padding:7px 11px;border:1.5px solid #e2d9ce;border-radius:7px;font-size:12.5px;outline:none;font-family:inherit;color:#374151;background:#fff"></div></div>
+          <div style="display:flex;align-items:center;gap:8px;padding-top:8px"><div style="width:36px;height:20px;background:#e5e7eb;border-radius:10px;position:relative;cursor:pointer" onclick="this.style.background=this.dataset.on?'#e5e7eb':'#16a34a';this.dataset.on=this.dataset.on?'':'1';this.firstChild.style.left=this.dataset.on?'18px':'2px'" ><div style="position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .15s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div></div><span style="font-size:12px;font-weight:600;color:#374151">Pre-order only</span></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid #ede8e0">
+          <button style="padding:7px 20px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-search" style="font-size:13px"></i>Search</button>
+          <button style="padding:7px 16px;background:#fff;color:#6b7280;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;cursor:pointer">Clear All</button>
+          <span style="font-size:11px;color:#9ca3af;align-self:center;margin-left:4px">Tip: Use quick search above for instant results</span>
+        </div>
+      </div>`;
+      scroll.innerHTML=`<div style="padding:8px 20px 24px">${statsHtml}
         <div style="border-radius:10px;overflow:visible;border:1px solid #ede8e0;box-shadow:0 1px 3px rgba(0,0,0,.04)">
           <div style="display:flex;border-bottom:2px solid #ede8e0;background:#fff;border-radius:10px 10px 0 0;overflow-x:auto">${tabsHtml}</div>
-          <div style="padding:10px 16px;border-bottom:1px solid #f5f2ee;display:flex;gap:8px;align-items:center;background:#fff;flex-wrap:wrap;position:relative">
-            <i class="ti ti-search" style="position:absolute;left:28px;font-size:14px;color:#9ca3af;pointer-events:none"></i>
-            <input style="padding:7px 12px 7px 34px;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;outline:none;font-family:inherit;width:280px" placeholder="Search order no., customer, phone…">
-            <button style="padding:6px 12px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-calendar" style="font-size:13px;color:#6b7280"></i>28 Jun 2026</button>
-            <div style="margin-left:auto;display:flex;gap:6px;position:relative">
-              <button onclick="var p=document.getElementById('ordColPnl');p.style.display=p.style.display==='none'?'block':'none'" style="padding:6px 12px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap"><i class="ti ti-columns" style="font-size:13px;color:#6b7280"></i>Manage Columns</button>
+          <div style="padding:8px 14px;border-bottom:1px solid #f5f2ee;display:flex;gap:7px;align-items:center;background:#fff;position:relative">
+            <i class="ti ti-search" style="position:absolute;left:27px;font-size:13px;color:#9ca3af;pointer-events:none"></i>
+            <input style="padding:6px 11px 6px 32px;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;outline:none;font-family:inherit;flex:1;min-width:0" placeholder="Quick search: order no., customer name, phone…">
+            <button onclick="var p=document.getElementById('ordAdvPnl');var open=p.style.display!=='none';p.style.display=open?'none':'block';this.style.background=open?'#fff':'#f0fdf4';this.style.borderColor=open?'#e2d9ce':'#16a34a';this.style.color=open?'#374151':'#15803d'" style="padding:6px 12px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0"><i class="ti ti-adjustments-horizontal" style="font-size:13px"></i>Filters</button>
+            <button style="padding:6px 12px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px;flex-shrink:0"><i class="ti ti-calendar" style="font-size:13px;color:#6b7280"></i>28 Jun 2026</button>
+            <div style="display:flex;gap:5px;flex-shrink:0;position:relative">
+              <button onclick="var p=document.getElementById('ordColPnl');p.style.display=p.style.display==='none'?'block':'none'" style="padding:6px 12px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap"><i class="ti ti-columns" style="font-size:13px;color:#6b7280"></i>Columns</button>
               <div id="ordColPnl" style="display:none;position:absolute;right:0;top:calc(100% + 6px);width:230px;background:#fff;border:1.5px solid #ede8e0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:10px 14px;z-index:300">
                 <div style="font-size:10.5px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;padding-bottom:8px;border-bottom:1px solid #f3f4f6">Manage Columns</div>
                 <div style="font-size:10.5px;color:#9ca3af;margin-bottom:8px;display:flex;align-items:center;gap:4px"><i class="ti ti-grip-vertical" style="font-size:12px"></i>Drag to reorder &nbsp;·&nbsp; <i class="ti ti-eye" style="font-size:12px"></i>Check to show</div>
@@ -2356,10 +2383,11 @@ function renderFilled(scroll){
               </div>
             </div>
           </div>
+          ${advPanel}
           <div style="overflow-x:auto"><table id="ordTbl" style="width:100%;border-collapse:collapse;font-size:12.5px;background:#fff">${thead}<tbody>${tbody}</tbody></table></div>
           <div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;border-radius:0 0 10px 10px;display:flex;align-items:center;justify-content:space-between">
             <span style="font-size:12px;color:#9ca3af">Showing 20 of 142 orders</span>
-            <div style="display:flex;gap:4px">${['‹','1','2','3','…','15','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div>
+            <div style="display:flex;gap:4px">${['‹','1','2','3','…','8','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div>
           </div>
         </div></div>`;
     },
