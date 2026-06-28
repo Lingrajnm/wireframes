@@ -4085,6 +4085,81 @@ function renderFilled(scroll){
 
       scroll.innerHTML=pw+wipBanner+dateBar+kpiHtml+chartRow+topProdsHtml+'</div>';
     },
+    designations: ()=>{
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const DESIG=[
+        ['Rider',                  'FIXED', ''],
+        ['SM Role report check',   'FLEXI', ''],
+        ['Website Manager',        'FLEXI', ''],
+        ['Super Admin',            'FLEXI', ''],
+        ['Chetan Test',            'FIXED', ''],
+        ['Test Store Manager',     'FLEXI', ''],
+        ['Director',               'FLEXI', ''],
+        ['ADMIN',                  'FLEXI', ''],
+        ['ACCOUNTS',               'FLEXI', 'Store Manager'],
+        ['F N V Invetory',         'FLEXI', ''],
+        ['Store+Picker+Delivery',  'FIXED', ''],
+        ['Director',               'FLEXI', ''],
+        ['Store Manager',          'FLEXI', ''],
+        ['FTP Creds',              'FLEXI', ''],
+        ['Picker',                 'FIXED', ''],
+        ['Rider',                  'FIXED', ''],
+        ['Cashier',                'FLEXI', ''],
+        ['Delivery',               'FIXED', ''],
+        ['Picker+Rider',           'FIXED', ''],
+      ];
+
+      const inpS='width:100%;padding:9px 36px 9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
+      const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
+
+      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:16px 20px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px">
+          <div>
+            <div style="${lblS}">NAME</div>
+            <div style="position:relative">
+              <input style="${inpS}" placeholder="Enter Name">
+              <i class="ti ti-search" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af"></i>
+            </div>
+          </div>
+          <div>
+            <div style="${lblS}">MANAGER</div>
+            <div style="position:relative">
+              <input style="${inpS}" placeholder="Enter manager designation">
+              <i class="ti ti-search" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#9ca3af"></i>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button style="padding:7px 20px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Submit</button>
+          <button style="padding:7px 16px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
+        </div>
+      </div>`;
+
+      const thS='text-align:left;font-size:11px;font-weight:600;color:#6b7280;padding:10px 16px;background:#fff;border-bottom:1px solid #f0f0f0;white-space:nowrap';
+      const tdS='padding:13px 16px;border-bottom:1px solid #f5f5f5;vertical-align:middle';
+
+      const rows=DESIG.map(([name,timing,mgr])=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+        <td style="${tdS}"><span style="font-size:13px;color:#374151">${name}</span></td>
+        <td style="${tdS}"><span style="font-size:13px;color:#374151">${timing}</span></td>
+        <td style="${tdS}"><span style="font-size:13px;color:#374151">${mgr}</span></td>
+        <td style="${tdS};text-align:right">${act}</td>
+      </tr>`).join('');
+
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr>
+            <th style="${thS}">Name</th>
+            <th style="${thS}">Timing Type</th>
+            <th style="${thS}">Manager</th>
+            <th style="${thS};text-align:right">Actions</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <div style="padding:10px 16px;font-size:12px;color:#9ca3af">Showing 1 – ${DESIG.length} of ${DESIG.length}</div>
+      </div>`;
+
+      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
+    },
   };
 
   const renderer=pages[pg];
