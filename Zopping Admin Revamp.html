@@ -14,12 +14,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .ctrl-bar{background:#111827;border-bottom:1px solid rgba(255,255,255,.07);padding:7px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex-shrink:0}
 .ctrl-grp{display:flex;align-items:center;gap:5px}
 .ctrl-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.3)}
-.rbtn{font-size:10px;padding:2px 8px;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.4);cursor:pointer;white-space:nowrap;transition:all .1s}
-.rbtn:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.75)}
-.rbtn.a{color:#fff;border-color:transparent;font-weight:600}
-.r-mgmt.a{background:#534AB7}.r-ord.a{background:#1d4ed8}.r-cat.a{background:#b45309}
-.r-mkt.a{background:#15803d}.r-cs.a{background:#0e7490}.r-log.a{background:#7c3aed}
-.r-wh.a{background:#be123c}.r-ro.a{background:#475569}
 .ctrl-sep{width:1px;height:20px;background:rgba(255,255,255,.1);margin:0 4px}
 .toggle-wrap{display:flex;align-items:center;gap:6px;cursor:pointer}
 .toggle{width:34px;height:18px;background:rgba(255,255,255,.15);border-radius:9px;position:relative;transition:background .2s;flex-shrink:0}
@@ -28,10 +22,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .toggle.on::after{left:18px}
 .toggle-lbl{font-size:10px;color:rgba(255,255,255,.5);font-weight:600}
 .toggle.on+.toggle-lbl{color:#4ade80}
-.rg-name{font-size:9px;font-weight:700;color:rgba(255,255,255,.2);text-transform:uppercase;margin-right:2px}
-.rgroups{display:flex;flex-wrap:wrap;gap:4px;flex:1}
-.rg{display:flex;align-items:center;gap:2px;padding-right:6px;border-right:1px solid rgba(255,255,255,.07)}
-.rg:last-child{border:none}
 
 /* ── SHELL ── */
 .app{display:grid;grid-template-columns:220px 1fr;flex:1;overflow:hidden}
@@ -416,47 +406,42 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 <!-- ── CONTROLS ── -->
 <div class="ctrl-bar">
   <span class="ctrl-lbl">Role</span>
-  <div class="rgroups">
-    <div class="rg">
-      <span class="rg-name">Mgmt</span>
-      <button class="rbtn r-mgmt a" data-role="STORE_MANAGER">Store Mgr</button>
-      <button class="rbtn r-mgmt" data-role="OPS_MANAGER">OPS Mgr</button>
-      <button class="rbtn r-mgmt" data-role="HR_MANAGER">HR Mgr</button>
-    </div>
-    <div class="rg">
-      <span class="rg-name">Orders</span>
-      <button class="rbtn r-ord" data-role="ORDER_MANAGER">Order Mgr</button>
-      <button class="rbtn r-ord" data-role="CASHIER">Cashier</button>
-      <button class="rbtn r-ord" data-role="ACCOUNTANT">Accountant</button>
-    </div>
-    <div class="rg">
-      <span class="rg-name">Catalogue</span>
-      <button class="rbtn r-cat" data-role="CONTENT_MANAGER">Content Mgr</button>
-      <button class="rbtn r-cat" data-role="SELLER_ADMIN">Seller Admin</button>
-    </div>
-    <div class="rg">
-      <span class="rg-name">Mktg</span>
-      <button class="rbtn r-mkt" data-role="MARKETING_MANAGER">Mkt Mgr</button>
-      <button class="rbtn r-mkt" data-role="MARKETING_EXEC">Mkt Exec</button>
-    </div>
-    <div class="rg">
-      <span class="rg-name">CS</span>
-      <button class="rbtn r-cs" data-role="CS_MANAGER">CS Mgr</button>
-      <button class="rbtn r-cs" data-role="CS_AGENT">CS Agent</button>
-    </div>
-    <div class="rg">
-      <span class="rg-name">Logistics</span>
-      <button class="rbtn r-log" data-role="LOGISTICS_MANAGER">Logistics Mgr</button>
-      <button class="rbtn r-log" data-role="TRANSPORT_COORD">Transport</button>
-    </div>
-    <div class="rg">
-      <span class="rg-name">WH</span>
-      <button class="rbtn r-wh" data-role="PICKING_MANAGER">Picking Mgr</button>
-      <button class="rbtn r-wh" data-role="PICKER">Picker</button>
-      <button class="rbtn r-wh" data-role="PACKER">Packer</button>
-    </div>
-    <div class="rg"><button class="rbtn r-ro" data-role="READ_ONLY">Read Only</button></div>
-  </div>
+  <select id="roleSelect" onchange="setRole(this.value)" style="font-size:11px;padding:4px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.2);background:#1f2937;color:#fff;cursor:pointer;outline:none;min-width:160px">
+    <optgroup label="Management">
+      <option value="STORE_MANAGER">Store Manager</option>
+      <option value="OPS_MANAGER">Operations Manager</option>
+      <option value="HR_MANAGER">HR Manager</option>
+    </optgroup>
+    <optgroup label="Orders">
+      <option value="ORDER_MANAGER">Order Manager</option>
+      <option value="CASHIER">Cashier</option>
+      <option value="ACCOUNTANT">Accountant</option>
+    </optgroup>
+    <optgroup label="Catalogue">
+      <option value="CONTENT_MANAGER">Content Manager</option>
+      <option value="SELLER_ADMIN">Seller Admin</option>
+    </optgroup>
+    <optgroup label="Marketing">
+      <option value="MARKETING_MANAGER">Marketing Manager</option>
+      <option value="MARKETING_EXEC">Marketing Executive</option>
+    </optgroup>
+    <optgroup label="Customer Support">
+      <option value="CS_MANAGER">CS Manager</option>
+      <option value="CS_AGENT">CS Agent</option>
+    </optgroup>
+    <optgroup label="Logistics">
+      <option value="LOGISTICS_MANAGER">Logistics Manager</option>
+      <option value="TRANSPORT_COORD">Transport Coordinator</option>
+    </optgroup>
+    <optgroup label="Warehouse">
+      <option value="PICKING_MANAGER">Picking Manager</option>
+      <option value="PICKER">Picker</option>
+      <option value="PACKER">Packer</option>
+    </optgroup>
+    <optgroup label="Other">
+      <option value="READ_ONLY">Read Only</option>
+    </optgroup>
+  </select>
   <div class="ctrl-sep"></div>
   <div class="toggle-wrap" onclick="toggleEnt()">
     <div class="toggle" id="entToggle"></div>
@@ -467,6 +452,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
     <div class="toggle" id="dataToggle"></div>
     <span class="toggle-lbl" id="dataLbl">Empty State</span>
   </div>
+  <div class="ctrl-sep"></div>
+  <div class="toggle-wrap" onclick="toggleMobile()">
+    <div class="toggle" id="mobileToggle"></div>
+    <span class="toggle-lbl" id="mobileLbl">Desktop View</span>
+  </div>
 </div>
 
 <!-- ── SHELL ── -->
@@ -475,23 +465,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
   <!-- SIDEBAR -->
   <div class="sidebar">
     <!-- Brand -->
-    <div class="sb-brand">
+    <div class="sb-brand" style="display:flex;align-items:center;gap:8px">
       <img src="https://zopping.com/assets/images/Zopping.svg" alt="Zopping" class="sb-logo-img"
            onerror="this.style.display='none';document.getElementById('logoFallback').style.display='block'">
       <span class="sb-logo-fallback" id="logoFallback" style="display:none">Zopping</span>
+      <span id="planBadge" style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:.04em;background:rgba(255,255,255,.15);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.2);flex-shrink:0">Business</span>
     </div>
 
     <!-- Nav -->
     <div class="sb-nav" id="sbNav"></div>
 
-    <!-- Enterprise badge -->
-    <div class="ent-badge" id="entBadge" style="display:none" onclick="gotoPage('billing')">
-      <i class="ti ti-crown"></i>
-      <div>
-        <div class="ent-text">Enterprise Plan</div>
-        <div class="ent-sub">Contact sales to scale</div>
-      </div>
-    </div>
 
     <!-- User — click goes directly to Personal Information -->
     <div class="sb-user">
@@ -622,6 +605,8 @@ const NAV=[
     {id:'cs-customers',l:'Customers',       ic:'ti-users',            g:['admin','store','cs']},
     {id:'cs-orders',  l:'Orders',           ic:'ti-shopping-bag',     g:['admin','store','cs'],
      note:'Customer-centric order view — lookup by email, phone, or order ID'},
+    {id:'segments',   l:'Segments',         ic:'ti-chart-pie-2',      g:['admin','store','cs','mkt']},
+    {id:'cs-tags',    l:'Customer Tags',    ic:'ti-tags',             g:['admin','store','cs']},
   ]},
   {sec:'Catalogue', g:['admin','store','cat'], items:[
     {id:'products',   l:'Products',         ic:'ti-package',          g:['admin','store','cat']},
@@ -638,7 +623,6 @@ const NAV=[
     {id:'offers',     l:'Offers',           ic:'ti-percentage',       g:['admin','store','mkt','cat']},
     {id:'campaigns',  l:'Campaigns',        ic:'ti-message-circle',   g:['admin','mkt']},
     {id:'banners',    l:'Banners',          ic:'ti-ad',               g:['admin','mkt','store']},
-    {id:'segments',   l:'Segments',         ic:'ti-chart-pie',        g:['admin','mkt']},
   ]},
   {sec:'Website', g:['admin','store','mkt'], items:[
     {id:'web-layout', l:'Layout & Theme',   ic:'ti-layout',           g:['admin','mkt','store']},
@@ -816,6 +800,7 @@ const ACTIVITIES=[
 
 // ── STATE ──────────────────────────────────────────────────────────
 let role='STORE_MANAGER', isEnterprise=false, industry='grocery';
+let isMobile=false;
 let activePage='overview', profileOpen=false;
 let storeVal='All Stores (8)', langVal='English';
 let ddOpen=null; // 'store' | 'lang' | null
@@ -935,9 +920,45 @@ function toggleEnt(){
   isEnterprise=!isEnterprise;
   document.getElementById('entToggle').classList.toggle('on',isEnterprise);
   document.getElementById('entLbl').textContent=isEnterprise?'Enterprise ✓':'isEnterprise';
-  document.getElementById('entBadge').style.display=isEnterprise?'flex':'none';
+  updatePlanBadge();
   renderNav();
   if(activePage==='overview') renderMain();
+}
+function updatePlanBadge(){
+  const b=document.getElementById('planBadge');
+  if(!b) return;
+  if(isEnterprise){
+    b.textContent='Enterprise';
+    b.style.background='rgba(234,179,8,.18)';
+    b.style.color='#fbbf24';
+    b.style.borderColor='rgba(234,179,8,.35)';
+  } else {
+    b.textContent='Business';
+    b.style.background='rgba(255,255,255,.15)';
+    b.style.color='rgba(255,255,255,.7)';
+    b.style.borderColor='rgba(255,255,255,.2)';
+  }
+}
+
+// ── MOBILE TOGGLE ──────────────────────────────────────────────────
+function toggleMobile(){
+  isMobile=!isMobile;
+  document.getElementById('mobileToggle').classList.toggle('on',isMobile);
+  document.getElementById('mobileLbl').textContent=isMobile?'Mobile View ✓':'Desktop View';
+  const app=document.querySelector('.app');
+  if(isMobile){
+    app.style.maxWidth='390px';
+    app.style.margin='0 auto';
+    app.style.boxShadow='0 0 0 1px #e5e7eb, 0 8px 32px rgba(0,0,0,.15)';
+    app.style.borderRadius='12px';
+    app.style.overflow='hidden';
+  } else {
+    app.style.maxWidth='';
+    app.style.margin='';
+    app.style.boxShadow='';
+    app.style.borderRadius='';
+    app.style.overflow='';
+  }
 }
 
 // ── RENDER NAV ─────────────────────────────────────────────────────
@@ -994,66 +1015,67 @@ const PAGE_CTX={
   overview:     {btns:[],                                                                                          showStore:true,  showLang:false},
 
   // ── Operations (STORE-LEVEL) ──────────────────────────────────────
-  orders:       {btns:[{icon:true,ic:'ti-search'},{l:'Create New Order',ic:'ti-plus',p:true}],                    showStore:true,  showLang:false},
-  picking:      {btns:[{icon:true,ic:'ti-search'}],                                                               showStore:true,  showLang:false},
-  packing:      {btns:[{icon:true,ic:'ti-search'}],                                                               showStore:true,  showLang:false},
-  checking:     {btns:[{icon:true,ic:'ti-search'}],                                                               showStore:true,  showLang:false},
-  rack:         {btns:[{icon:true,ic:'ti-search'},{l:'Add Rack',ic:'ti-plus',p:true}],                            showStore:true,  showLang:false},
+  orders:       {btns:[{l:'Create New Order',ic:'ti-plus',p:true}],                    showStore:true,  showLang:false},
+  picking:      {btns:[],                                                               showStore:true,  showLang:false},
+  packing:      {btns:[],                                                               showStore:true,  showLang:false},
+  checking:     {btns:[],                                                               showStore:true,  showLang:false},
+  rack:         {btns:[{l:'Add Rack',ic:'ti-plus',p:true}],                            showStore:true,  showLang:false},
   slotblock:    {btns:[{l:'Block Slot',ic:'ti-calendar-off',p:true}],                                             showStore:true,  showLang:false},
-  capacity:     {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-calendar'},{l:'Today',p:false},{l:'+ Add Rule',ic:'ti-plus',p:true}], showStore:true, showLang:false},
-  clickcollect: {btns:[{icon:true,ic:'ti-search'},{l:'New C&C Order',ic:'ti-plus',p:true}],                       showStore:true,  showLang:false},
+  capacity:     {btns:[{icon:true,ic:'ti-calendar'},{l:'Today',p:false},{l:'+ Add Rule',ic:'ti-plus',p:true}], showStore:true, showLang:false},
+  clickcollect: {btns:[{l:'New C&C Order',ic:'ti-plus',p:true}],                       showStore:true,  showLang:false},
 
   // ── Customer Support (ORG-LEVEL — customers span all stores) ──────
-  'cs-dash':      {btns:[{icon:true,ic:'ti-search'}],                                                             showStore:false, showLang:false},
-  'cs-customers': {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Add Customer',ic:'ti-user-plus',p:true}], showStore:false,showLang:false},
-  'cs-orders':    {btns:[{icon:true,ic:'ti-search'},{l:'Create Order',ic:'ti-plus',p:true}],                      showStore:false, showLang:false},
+  'cs-dash':      {btns:[],                                                             showStore:false, showLang:false},
+  'cs-customers': {btns:[{icon:true,ic:'ti-download'},{l:'Add Customer',ic:'ti-user-plus',p:true}], showStore:false,showLang:false},
+  'cs-orders':    {btns:[{l:'Create Order',ic:'ti-plus',p:true}],                      showStore:false, showLang:false},
+  'cs-tags':      {btns:[{l:'Add Tag',ic:'ti-plus',p:true}],                           showStore:false, showLang:false},
 
   // ── Catalogue (ORG-LEVEL — one catalogue across all stores) ───────
   'cat-dash':   {btns:[],                                                                                          showStore:false, showLang:true},
-  products:     {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Add Product',ic:'ti-package',p:true}],  showStore:false,showLang:true},
-  categories:   {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Add Category',ic:'ti-plus',p:true}],   showStore:false,showLang:true},
-  brands:       {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Add Brand',ic:'ti-plus',p:true}],      showStore:false,showLang:true},
-  tags:         {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Add Tag',ic:'ti-plus',p:true}],        showStore:false,showLang:true},
-  variants:     {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Add Variant',ic:'ti-plus',p:true}],    showStore:false,showLang:true},
-  subs:         {btns:[{icon:true,ic:'ti-search'},{l:'Add Group',ic:'ti-plus',p:true}],                            showStore:false, showLang:true},
+  products:     {btns:[{icon:true,ic:'ti-download'},{l:'Add Product',ic:'ti-package',p:true}],  showStore:false,showLang:true},
+  categories:   {btns:[{icon:true,ic:'ti-download'},{l:'Add Category',ic:'ti-plus',p:true}],   showStore:false,showLang:true},
+  brands:       {btns:[{icon:true,ic:'ti-download'},{l:'Add Brand',ic:'ti-plus',p:true}],      showStore:false,showLang:true},
+  tags:         {btns:[{icon:true,ic:'ti-download'},{l:'Add Tag',ic:'ti-plus',p:true}],        showStore:false,showLang:true},
+  variants:     {btns:[{icon:true,ic:'ti-download'},{l:'Add Variant',ic:'ti-plus',p:true}],    showStore:false,showLang:true},
+  subs:         {btns:[{l:'Add Group',ic:'ti-plus',p:true}],                            showStore:false, showLang:true},
   // Inventory IS store-level — stock levels vary per store
-  inventory:    {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Update Stock',ic:'ti-refresh',p:true}], showStore:true,showLang:false},
+  inventory:    {btns:[{icon:true,ic:'ti-download'},{l:'Update Stock',ic:'ti-refresh',p:true}], showStore:true,showLang:false},
   bulkupload:   {btns:[{icon:true,ic:'ti-download'},{l:'Start Upload',ic:'ti-cloud-upload',p:true}],               showStore:false, showLang:true},
 
   // ── Marketing (ORG-LEVEL — campaigns run across all stores) ───────
-  coupons:      {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Create Coupon',ic:'ti-plus',p:true}],  showStore:false,showLang:true},
-  offers:       {btns:[{icon:true,ic:'ti-search'},{l:'Create Offer',ic:'ti-plus',p:true}],                         showStore:false, showLang:true},
-  campaigns:    {btns:[{icon:true,ic:'ti-search'},{l:'New Campaign',ic:'ti-speakerphone',p:true}],                  showStore:false, showLang:true},
-  banners:      {btns:[{icon:true,ic:'ti-search'},{l:'Add Banner',ic:'ti-plus',p:true}],                            showStore:false, showLang:true},
-  segments:     {btns:[{icon:true,ic:'ti-search'},{l:'Create Segment',ic:'ti-plus',p:true}],                        showStore:false, showLang:true},
+  coupons:      {btns:[{icon:true,ic:'ti-download'},{l:'Create Coupon',ic:'ti-plus',p:true}],  showStore:false,showLang:true},
+  offers:       {btns:[{l:'Create Offer',ic:'ti-plus',p:true}],                         showStore:false, showLang:true},
+  campaigns:    {btns:[{l:'New Campaign',ic:'ti-speakerphone',p:true}],                  showStore:false, showLang:true},
+  banners:      {btns:[{l:'Add Banner',ic:'ti-plus',p:true}],                            showStore:false, showLang:true},
+  segments:     {btns:[{l:'Create Segment',ic:'ti-plus',p:true}],                        showStore:false, showLang:true},
 
   // ── Website (ORG-LEVEL — one storefront) ─────────────────────────
   'web-layout': {btns:[{l:'Preview',ic:'ti-world',p:false},{l:'Save Changes',ic:'ti-check',p:true}],               showStore:false, showLang:true},
   'web-nav':    {btns:[{l:'Add Menu Item',ic:'ti-plus',p:true}],                                                    showStore:false, showLang:true},
-  'web-pages':  {btns:[{icon:true,ic:'ti-search'},{l:'Add Page',ic:'ti-plus',p:true}],                             showStore:false, showLang:true},
-  'web-blog':   {btns:[{icon:true,ic:'ti-search'},{l:'New Post',ic:'ti-plus',p:true}],                             showStore:false, showLang:true},
+  'web-pages':  {btns:[{l:'Add Page',ic:'ti-plus',p:true}],                             showStore:false, showLang:true},
+  'web-blog':   {btns:[{l:'New Post',ic:'ti-plus',p:true}],                             showStore:false, showLang:true},
   'web-sched':  {btns:[{l:'Schedule Page',ic:'ti-calendar-plus',p:true}],                                          showStore:false, showLang:true},
   'web-ann':    {btns:[{l:'Add Announcement',ic:'ti-plus',p:true}],                                                showStore:false, showLang:true},
 
   // ── Logistics (STORE-LEVEL — fleet/trips per store) ───────────────
-  vehicles:     {btns:[{icon:true,ic:'ti-search'},{l:'Add Vehicle',ic:'ti-plus',p:true}],                          showStore:true,  showLang:false},
+  vehicles:     {btns:[{l:'Add Vehicle',ic:'ti-plus',p:true}],                          showStore:true,  showLang:false},
   vplanning:    {btns:[{l:'Create Plan',ic:'ti-plus',p:true}],                                                     showStore:true,  showLang:false},
-  trips:        {btns:[{icon:true,ic:'ti-search'},{l:'Create Trip',ic:'ti-plus',p:true}],                          showStore:true,  showLang:false},
+  trips:        {btns:[{l:'Create Trip',ic:'ti-plus',p:true}],                          showStore:true,  showLang:false},
   tripplan:     {btns:[{l:'Plan Trip',ic:'ti-map',p:true}],                                                        showStore:true,  showLang:false},
-  runners:      {btns:[{icon:true,ic:'ti-search'},{l:'Add Delivery Agent',ic:'ti-user-plus',p:true}],              showStore:true,  showLang:false},
+  runners:      {btns:[{l:'Add Delivery Agent',ic:'ti-user-plus',p:true}],              showStore:true,  showLang:false},
   area:         {btns:[{l:'Edit Zones',ic:'ti-map-pin',p:true}],                                                   showStore:true,  showLang:false},
-  shipping:     {btns:[{icon:true,ic:'ti-search'},{l:'Add Courier',ic:'ti-plus',p:true}],                          showStore:true,  showLang:false},
+  shipping:     {btns:[{l:'Add Courier',ic:'ti-plus',p:true}],                          showStore:true,  showLang:false},
 
   // ── Analytics (STORE-LEVEL — reports filtered per store) ──────────
   analytics:    {btns:[{icon:true,ic:'ti-download'},{l:'Export Report',ic:'ti-file-export',p:false}],              showStore:true,  showLang:false},
   reports:      {btns:[{l:'Schedule',ic:'ti-calendar',p:false},{icon:true,ic:'ti-download'}],                      showStore:true,  showLang:false},
-  actlogs:      {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'}],                                   showStore:true,  showLang:false},
+  actlogs:      {btns:[{icon:true,ic:'ti-download'}],                                   showStore:true,  showLang:false},
 
   // ── Staff & HR (ORG-LEVEL except attendance which is store-specific)
-  employees:    {btns:[{icon:true,ic:'ti-search'},{icon:true,ic:'ti-download'},{l:'Add Employee',ic:'ti-user-plus',p:true}], showStore:false,showLang:false},
-  designations: {btns:[{icon:true,ic:'ti-search'},{l:'Add Designation',ic:'ti-plus',p:true}],                      showStore:false, showLang:false},
-  attendance:   {btns:[{icon:true,ic:'ti-search'},{l:'Mark Attendance',ic:'ti-check',p:true}],                     showStore:true,  showLang:false},
-  leave:        {btns:[{icon:true,ic:'ti-search'},{l:'Apply Leave',ic:'ti-plus',p:true}],                          showStore:false, showLang:false},
+  employees:    {btns:[{icon:true,ic:'ti-download'},{l:'Add Employee',ic:'ti-user-plus',p:true}], showStore:false,showLang:false},
+  designations: {btns:[{l:'Add Designation',ic:'ti-plus',p:true}],                      showStore:false, showLang:false},
+  attendance:   {btns:[{l:'Mark Attendance',ic:'ti-check',p:true}],                     showStore:true,  showLang:false},
+  leave:        {btns:[{l:'Apply Leave',ic:'ti-plus',p:true}],                          showStore:false, showLang:false},
   roles:        {btns:[{l:'Add Role',ic:'ti-plus',p:true}],                                                        showStore:false, showLang:false},
 
   // ── Admin/Settings (ORG-LEVEL) ────────────────────────────────────
@@ -1064,7 +1086,7 @@ const PAGE_CTX={
   comms:        {btns:[{l:'Save Settings',ic:'ti-check',p:true}],                                                  showStore:false, showLang:false},
   mobile:       {btns:[{l:'Save Settings',ic:'ti-check',p:true}],                                                  showStore:false, showLang:false},
   api:          {btns:[{l:'Generate Key',ic:'ti-key',p:true}],                                                     showStore:false, showLang:false},
-  ext:          {btns:[{icon:true,ic:'ti-search'}],                                                                showStore:false, showLang:false},
+  ext:          {btns:[],                                                                showStore:false, showLang:false},
 };
 
 function getSectionContext(){
@@ -1148,17 +1170,63 @@ function renderTopbar(){
 function renderHeaderSearch(){
   const bar=document.getElementById('hdrSearchBar');
   if(!bar) return;
-  // Pages that never get a search bar regardless of hasData
-  const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount'];
+  const noSearch=['overview','myaccount','billing','notifications','changepassword','balance','deleteaccount','abandoned','rack','capacity','vplanning','cs-customers','cs-tags'];
   if(noSearch.includes(activePage)){bar.style.display='none';bar.innerHTML='';return;}
   if(!hasData){bar.style.display='none';bar.innerHTML='';return;}
   const ps=window._pageSearch||{};
   const showCols=activePage==='orders'&&!!ps.colPicker;
-  const showFilters=(activePage==='orders'||activePage==='products'||activePage==='categories')&&!!ps.advPanel;
-  if(!showFilters&&!showCols){bar.style.display='none';bar.innerHTML='';return;}
-  // Colours
+  const showFilters=!!ps.advPanel;
+  // Placeholder text per page
+  const phMap={
+    orders:'Search by order ID, customer name or phone…',
+    'cs-orders':'Search by order ID, customer name or phone…',
+    products:'Search by product name, SKU or barcode…',
+    categories:'Search by category name…',
+    brands:'Search by brand name…',
+    tags:'Search by tag name…',
+    variants:'Search by variant name…',
+    subs:'Search by group name or product…',
+    inventory:'Search by product name or SKU…',
+    coupons:'Search by coupon code or name…',
+    offers:'Search by offer name…',
+    campaigns:'Search by campaign name…',
+    banners:'Search by banner name…',
+    segments:'Search by segment name…',
+    customers:'Search by name, email, phone or ID…',
+    'cs-customers':'Search by name, email, phone or customer ID…',
+    employees:'Search by name, designation or role…',
+    vehicles:'Search by vehicle name or vendor…',
+    trips:'Search by trip ID, vehicle or runner…',
+    runners:'Search by name or phone…',
+    shipping:'Search by courier name…',
+    picking:'Search by order ID or picker…',
+    packing:'Search by order ID…',
+    checking:'Search by order ID…',
+    rack:'Search by rack ID or zone…',
+    capacity:'Search by slot or zone…',
+    'web-pages':'Search by page title…',
+    'web-blog':'Search by post title…',
+    analytics:'Search reports…',
+    reports:'Search reports…',
+    actlogs:'Search activity logs…',
+    attendance:'Search by staff name…',
+    leave:'Search by staff name…',
+    roles:'Search by role name…',
+    designations:'Search by designation…',
+    area:'Search by zone or area name…',
+    vplanning:'Search by route or vehicle…',
+    tripplan:'Search by trip or area…',
+    'stores-cfg':'Search by store name…',
+    abandoned:'Search by customer or cart…',
+    slotblock:'Search by slot or date…',
+  };
+  const ph=phMap[activePage]||'Search…';
   const btnS='padding:7px 14px;border:1.5px solid #e2d9ce;border-radius:8px;background:#fff;font-size:12px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;font-family:inherit;flex-shrink:0';
-  bar.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:8px 20px">
+  bar.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:8px 20px;border-bottom:1px solid #f5f2ee">
+    <div style="flex:1;display:flex;align-items:center;gap:8px;padding:7px 12px;background:#f9f7f4;border:1.5px solid #ede8e0;border-radius:8px">
+      <i class="ti ti-search" style="font-size:14px;color:#9ca3af;flex-shrink:0"></i>
+      <input style="flex:1;border:none;outline:none;font-size:13px;font-family:inherit;color:#374151;background:transparent" placeholder="${ph}">
+    </div>
     ${showFilters?`<button id="hdrFiltersBtn" onclick="(function(b){var p=document.getElementById('hdrAdvPnl');var open=p.style.display!=='none';p.style.display=open?'none':'block';b.style.background=open?'#fff':'#f0fdf4';b.style.borderColor=open?'#e2d9ce':'#16a34a';b.style.color=open?'#374151':'#15803d';})(this)" style="${btnS}"><i class="ti ti-adjustments-horizontal" style="font-size:13px"></i>Filters</button>`:''}
     ${showCols?`<div style="position:relative">
       <button onclick="var p=document.getElementById('hdrColPnl');p.style.display=p.style.display==='none'?'block':'none'" style="${btnS}"><i class="ti ti-columns" style="font-size:13px;color:#6b7280"></i>Columns</button>
@@ -2324,20 +2392,27 @@ function renderFilled(scroll){
           </div>
         </div>`;
       };
+      const dots=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const pendingCell=`<div style="display:flex;align-items:center;gap:5px">
+        <button title="Accept order" style="display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11.5px;font-weight:600;background:#dcfce7;color:#15803d;border:none;border-radius:5px;cursor:pointer">
+          <i class="ti ti-check" style="font-size:12px"></i>Accept
+        </button>
+        <button title="Reject order" style="display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11.5px;font-weight:600;background:#fee2e2;color:#b91c1c;border:none;border-radius:5px;cursor:pointer">
+          <i class="ti ti-x" style="font-size:12px"></i>Reject
+        </button>
+      </div>`;
+      const moveStoreBtn=`<button title="Transfer to another store" style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">
+        <i class="ti ti-arrows-transfer-down" style="font-size:14px;color:#15803d"></i>
+      </button>`;
       const orderActions=o=>{
-        const dots=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
-        if(o.status==='Pending'||o.status==='Draft'){
-          return `<div style="display:flex;align-items:center;gap:6px">
-            <button style="padding:4px 12px;font-size:11.5px;font-weight:600;background:#dcfce7;color:#15803d;border:none;border-radius:5px;cursor:pointer">Accept</button>
-            <button style="padding:4px 12px;font-size:11.5px;font-weight:600;background:#fee2e2;color:#b91c1c;border:none;border-radius:5px;cursor:pointer">Reject</button>
-            ${dots}</div>`;
-        }
         if(o.status==='Picking'||o.status==='Packing'||o.status==='Packed'){
-          return `<div style="display:flex;align-items:center;gap:6px">
-            <button style="padding:4px 10px;font-size:11px;font-weight:600;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;border-radius:5px;cursor:pointer;white-space:nowrap"><i class="ti ti-building-store" style="font-size:11px"></i> Move store</button>
-            ${dots}</div>`;
+          return `<div style="display:flex;align-items:center;gap:6px">${moveStoreBtn}${dots}</div>`;
         }
         return dots;
+      };
+      const compCell=o=>{
+        if(o.status==='Pending'||o.status==='Draft') return pendingCell;
+        return `<span style="font-size:12px;color:${o.comp==='—'?'#9ca3af':'#374151'}">${o.comp}</span>`;
       };
       const colPicker=`<div id="ocPickList">`+colDefs.map(c=>`
         <div class="ocPickRow" data-id="${c.id}" data-locked="${c.locked?'1':'0'}"
@@ -2381,7 +2456,7 @@ function renderFilled(scroll){
           <td class="oc-courier" style="${tdS};${hs('courier')}font-size:12px;color:#9ca3af">${o.courier}</td>
           <td class="oc-kmcode" style="${tdS};${hs('kmcode')}font-size:12px;color:#374151">${o.km}</td>
           <td class="oc-ordertype" style="${tdS};${hs('ordertype')}"><div style="display:inline-flex;align-items:center;gap:5px;padding:2px 8px 2px 6px;border-radius:6px;background:${(otypeMap[o.otype]||{bg:'#f3f4f6'}).bg}"><i class="ti ${(otypeMap[o.otype]||{ic:'ti-truck-delivery'}).ic}" style="font-size:12px;color:${(otypeMap[o.otype]||{c:'#9ca3af'}).c}"></i><span style="font-size:11.5px;color:${(otypeMap[o.otype]||{c:'#9ca3af'}).c};font-weight:600">${(otypeMap[o.otype]||{tip:o.otype}).tip}</span></div></td>
-          <td class="oc-completion" style="${tdS};${hs('completion')}font-size:12px;color:${o.comp==='—'?'#9ca3af':'#374151'}">${o.comp}</td>
+          <td class="oc-completion" style="${tdS};${hs('completion')}">${compCell(o)}</td>
           <td class="oc-actions" style="${tdS}">${orderActions(o)}</td>
         </tr>`;
       }).join('');
@@ -2600,20 +2675,19 @@ function renderFilled(scroll){
       }).join(' ');
       const slotMeta={asap:{ic:'ti-bolt',c:'#ef4444'},hyperlocal:{ic:'ti-clock',c:'#d97706'},ndd:{ic:'ti-truck-delivery',c:'#2563eb'},scheduled:{ic:'ti-calendar-event',c:'#7c3aed'}};
       const slotBadge=o=>{const m=slotMeta[o.stype]||{ic:'ti-clock',c:'#9ca3af'};const blink=o.stype==='asap'?'animation:slotBlink 1s ease-in-out infinite':'';return `<div style="display:flex;align-items:flex-start;gap:5px"><i class="ti ${m.ic}" style="font-size:13px;color:${m.c};flex-shrink:0;margin-top:1px;${blink}"></i><div><div style="font-size:12px;color:#374151">${o.slot}</div><div style="font-size:10.5px;color:#9ca3af">${o.slotSub}</div></div></div>`;};
+      const csDots=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const csPendingCell=`<div style="display:flex;align-items:center;gap:5px">
+        <button title="Accept order" style="display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11.5px;font-weight:600;background:#dcfce7;color:#15803d;border:none;border-radius:5px;cursor:pointer"><i class="ti ti-check" style="font-size:12px"></i>Accept</button>
+        <button title="Reject order" style="display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11.5px;font-weight:600;background:#fee2e2;color:#b91c1c;border:none;border-radius:5px;cursor:pointer"><i class="ti ti-x" style="font-size:12px"></i>Reject</button>
+      </div>`;
+      const csMoveBtn=`<button title="Transfer to another store" style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'"><i class="ti ti-arrows-transfer-down" style="font-size:14px;color:#15803d"></i></button>`;
       const orderActions=o=>{
-        const dots=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
-        if(o.status==='Pending'||o.status==='Draft'){
-          return `<div style="display:flex;align-items:center;gap:6px">
-            <button style="padding:4px 12px;font-size:11.5px;font-weight:600;background:#dcfce7;color:#15803d;border:none;border-radius:5px;cursor:pointer">Accept</button>
-            <button style="padding:4px 12px;font-size:11.5px;font-weight:600;background:#fee2e2;color:#b91c1c;border:none;border-radius:5px;cursor:pointer">Reject</button>
-            ${dots}</div>`;
-        }
-        if(o.status==='Picking'||o.status==='Packing'||o.status==='Packed'){
-          return `<div style="display:flex;align-items:center;gap:6px">
-            <button style="padding:4px 10px;font-size:11px;font-weight:600;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;border-radius:5px;cursor:pointer;white-space:nowrap"><i class="ti ti-building-store" style="font-size:11px"></i> Move store</button>
-            ${dots}</div>`;
-        }
-        return dots;
+        if(o.status==='Picking'||o.status==='Packing'||o.status==='Packed') return `<div style="display:flex;align-items:center;gap:6px">${csMoveBtn}${csDots}</div>`;
+        return csDots;
+      };
+      const csCompCell=o=>{
+        if(o.status==='Pending'||o.status==='Draft') return csPendingCell;
+        return `<span style="font-size:12px;color:${o.comp==='—'?'#9ca3af':'#374151'}">${o.comp}</span>`;
       };
       const tbody=ORDERS.map(o=>{
         const [sc,sb]=statusMap[o.status]||['#9ca3af','#f3f4f6'];
@@ -2624,7 +2698,7 @@ function renderFilled(scroll){
           <td style="${tdS}">${slotBadge(o)}</td>
           <td style="${tdS}"><div style="font-size:13px;font-weight:600;color:#111827">${o.amt}</div></td>
           <td style="${tdS}"><span style="display:inline-flex;align-items:center;padding:3px 9px;border-radius:5px;font-size:11.5px;font-weight:600;background:${sb};color:${sc}">${o.status}</span></td>
-          <td style="${tdS}"><div style="font-size:12px;color:${o.comp==='—'?'#9ca3af':'#374151'}">${o.comp}</div></td>
+          <td style="${tdS}">${csCompCell(o)}</td>
           <td style="${tdS}">${orderActions(o)}</td>
         </tr>`;
       }).join('');
@@ -2779,6 +2853,95 @@ function renderFilled(scroll){
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 12 of 12 campaigns</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','47','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
       const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['ID','Name','Title','Segment','Status','Scheduled At','Created On','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
       scroll.innerHTML=pw+tableHtml+'</div>';
+    },
+    segments: ()=>{
+      const SEGS=[
+        {name:'Customers who have purchased at least once', pct:100, created:'24 Jun 2026'},
+        {name:'Email subscribers',                          pct:0,   created:'24 Jun 2026'},
+        {name:'Abandoned checkouts in the last 30 days',   pct:0,   created:'24 Jun 2026'},
+        {name:'Customers who have purchased more than once',pct:50,  created:'24 Jun 2026'},
+        {name:'Customers who haven\'t purchased',           pct:0,   created:'24 Jun 2026'},
+        {name:'High-value customers (LTV > ₹5,000)',        pct:22,  created:'24 Jun 2026'},
+        {name:'Customers inactive for 90+ days',            pct:31,  created:'24 Jun 2026'},
+        {name:'SMS opted-in customers',                     pct:68,  created:'24 Jun 2026'},
+        {name:'Customers who used a coupon',                pct:44,  created:'24 Jun 2026'},
+        {name:'New customers (last 30 days)',                pct:12,  created:'24 Jun 2026'},
+        {name:'Customers with 3+ orders this month',        pct:8,   created:'24 Jun 2026'},
+        {name:'WhatsApp opted-in customers',                pct:55,  created:'24 Jun 2026'},
+      ];
+      const thL='padding:12px 16px;font-size:11.5px;font-weight:600;color:#6b7280;text-align:left;border-bottom:1px solid #f0ece4;background:#fff';
+      const thR='padding:12px 16px;font-size:11.5px;font-weight:600;color:#6b7280;text-align:right;border-bottom:1px solid #f0ece4;background:#fff;white-space:nowrap';
+      const rows=SEGS.map(s=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+        <td style="padding:14px 16px;border-bottom:1px solid #f5f2ee;vertical-align:middle;width:36px"><input type="checkbox" style="width:14px;height:14px;accent-color:#16a34a;cursor:pointer"></td>
+        <td style="padding:14px 16px;border-bottom:1px solid #f5f2ee;vertical-align:middle"><span style="font-size:13px;font-weight:600;color:#111827;cursor:pointer" onmouseover="this.style.color='#16a34a'" onmouseout="this.style.color='#111827'">${s.name}</span></td>
+        <td style="padding:14px 16px;border-bottom:1px solid #f5f2ee;vertical-align:middle;text-align:right"><span style="font-size:13px;color:#374151">${s.pct}%</span></td>
+        <td style="padding:14px 16px;border-bottom:1px solid #f5f2ee;vertical-align:middle;text-align:right;white-space:nowrap"><span style="font-size:13px;color:#6b7280">Created on ${s.created}</span></td>
+      </tr>`).join('');
+      const tableHtml=`<div style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="padding:12px 14px;border-bottom:1px solid #f0ece4">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f9f9f9;border:1px solid #e5e7eb;border-radius:8px">
+            <i class="ti ti-search" style="font-size:14px;color:#9ca3af;flex-shrink:0"></i>
+            <input style="flex:1;border:none;outline:none;font-size:13px;font-family:inherit;color:#374151;background:transparent" placeholder="Search segments">
+          </div>
+        </div>
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr>
+            <th style="${thL};width:36px"><input type="checkbox" style="width:14px;height:14px;accent-color:#16a34a;cursor:pointer"></th>
+            <th style="${thL}">Name</th>
+            <th style="${thR}">% of customers</th>
+            <th style="${thR};display:flex;align-items:center;justify-content:flex-end;gap:4px">Last activity <i class="ti ti-selector" style="font-size:12px"></i></th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+      scroll.innerHTML=pw+tableHtml+'</div>';
+    },
+    'cs-tags': ()=>{
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const TAGS=[
+        {tag:'VIP',customers:142,desc:'High-value loyal customers',c:'#7c3aed',bg:'#f5f3ff'},
+        {tag:'New Customer',customers:389,desc:'First-time buyers within last 30 days',c:'#1d4ed8',bg:'#dbeafe'},
+        {tag:'Wholesale',customers:28,desc:'Bulk order customers — min ₹5,000 per order',c:'#0891b2',bg:'#ecfeff'},
+        {tag:'Repeat Buyer',customers:614,desc:'Ordered more than once',c:'#16a34a',bg:'#dcfce7'},
+        {tag:'High Risk',customers:43,desc:'Multiple complaints or chargebacks',c:'#b91c1c',bg:'#fee2e2'},
+        {tag:'Coupon User',customers:287,desc:'Frequently uses discount codes',c:'#ea580c',bg:'#fff7ed'},
+        {tag:'App User',customers:521,desc:'Placed order via mobile app',c:'#0284c7',bg:'#e0f2fe'},
+        {tag:'Referral',customers:96,desc:'Joined via referral program',c:'#059669',bg:'#d1fae5'},
+        {tag:'Corporate',customers:19,desc:'Corporate account with invoice billing',c:'#374151',bg:'#f3f4f6'},
+        {tag:'Dormant',customers:178,desc:'No order in last 90 days',c:'#9ca3af',bg:'#f9fafb'},
+        {tag:'Feedback Given',customers:233,desc:'Left at least one product review',c:'#ca8a04',bg:'#fef9c3'},
+        {tag:'Wallet User',customers:312,desc:'Has store wallet balance or used wallet',c:'#7c3aed',bg:'#f5f3ff'},
+      ];
+      const thS='text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4';
+      const rows=TAGS.map(t=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+        <td style="padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;background:${t.bg};color:${t.c};font-size:12px;font-weight:700">
+            <i class="ti ti-tag" style="font-size:11px"></i>${t.tag}
+          </span>
+        </td>
+        <td style="padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">
+          <span style="font-size:13px;color:#374151">${t.desc}</span>
+        </td>
+        <td style="padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:right">
+          <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px">
+            <i class="ti ti-users" style="font-size:13px;color:#9ca3af"></i>
+            <span style="font-size:13px;font-weight:600;color:#111827">${t.customers.toLocaleString()}</span>
+          </div>
+        </td>
+        <td style="padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:right">${act}</td>
+      </tr>`).join('');
+      const searchBar=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:12px 16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04);display:flex;align-items:center;gap:10px">
+        <i class="ti ti-search" style="font-size:15px;color:#9ca3af;flex-shrink:0"></i>
+        <input style="flex:1;border:none;outline:none;font-size:13px;font-family:inherit;color:#374151;background:transparent" placeholder="Search by tag name or description…">
+      </div>`;
+      const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+          <thead><tr><th style="${thS}">Tag</th><th style="${thS}">Description</th><th style="${thS};text-align:right">Customers</th><th style="${thS}"></th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <div style="padding:10px 14px;border-top:1px solid #f5f2ee"><span style="font-size:12px;color:#9ca3af">12 tags · ${TAGS.reduce((a,t)=>a+t.customers,0).toLocaleString()} total tagged customers</span></div>
+      </div>`;
+      scroll.innerHTML=pw+searchBar+tableHtml+'</div>';
     },
     vehicles: ()=>{
       const rows=[
@@ -3019,7 +3182,141 @@ function renderFilled(scroll){
       ]);
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 200+ abandoned carts</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
       const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Order Type & Store','Cart ID','Customer','No. of Items','Total Cart Value','Created date & time','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
-      scroll.innerHTML=pw+tableHtml+'</div>';
+
+      // ── Cart Recovery Pipeline ────────────────────────────────────
+      const bar=(pct,c)=>`<div style="height:5px;border-radius:3px;background:#f0ece4;margin-top:5px;overflow:hidden"><div style="width:${pct}%;height:100%;border-radius:3px;background:${c}"></div></div>`;
+      const divider=`<div style="width:1px;background:#f0ece4;align-self:stretch;margin:12px 0"></div>`;
+
+      // ── Row 1: funnel steps
+      const funnelSteps=[
+        {ic:'ti-shopping-cart-off',lbl:'Abandoned',val:'234',sub:'₹2,12,500 total value',c:'#ea580c',pct:100},
+        {ic:'ti-device-mobile-message',lbl:'Nudges Sent',val:'158',sub:'67.5% of carts · WhatsApp/SMS/Email',c:'#7c3aed',pct:68},
+        {ic:'ti-phone-call',lbl:'Agent Calls',val:'86',sub:'36.8% of carts assigned',c:'#1d4ed8',pct:37},
+        {ic:'ti-eye',lbl:'Cart Viewed',val:'112',sub:'47.9% re-engaged',c:'#0891b2',pct:48},
+        {ic:'ti-check',lbl:'Converted',val:'52',sub:'22.2% overall conversion',c:'#16a34a',pct:22},
+      ];
+      const funnelHtml=funnelSteps.map((s,i)=>`
+        <div style="flex:1;padding:14px 18px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+            <div style="width:28px;height:28px;border-radius:7px;background:${s.c}18;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${s.ic}" style="font-size:13px;color:${s.c}"></i></div>
+            <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af">${s.lbl}</span>
+          </div>
+          <div style="font-size:24px;font-weight:800;color:#111827;line-height:1">${s.val}</div>
+          <div style="font-size:11px;color:#6b7280;margin-top:3px;line-height:1.4">${s.sub}</div>
+          ${bar(s.pct,s.c)}
+        </div>
+        ${i<funnelSteps.length-1?`<div style="width:1px;background:#f0ece4;margin:10px 0"></div><div style="display:flex;align-items:center;padding:0 2px"><i class="ti ti-chevron-right" style="font-size:14px;color:#d1d5db"></i></div><div style="width:1px;background:#f0ece4;margin:10px 0"></div>`:''}
+      `).join('');
+
+      // ── Row 2: channel cards
+      const chCard=(ic,lbl,v1,l1,v2,l2,c,bg)=>`<div style="padding:12px 14px;border-radius:8px;border:1px solid #f0ece4;background:${bg}">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+          <i class="ti ${ic}" style="font-size:14px;color:${c}"></i>
+          <span style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:${c}">${lbl}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end">
+          <div><div style="font-size:18px;font-weight:800;color:#111827">${v1}</div><div style="font-size:10.5px;color:#6b7280;margin-top:1px">${l1}</div></div>
+          <div style="text-align:right"><div style="font-size:13px;font-weight:700;color:#16a34a">${v2}</div><div style="font-size:10.5px;color:#9ca3af">${l2}</div></div>
+        </div>
+      </div>`;
+
+      // ── Row 3: agent call breakdown
+      const AGENTS=[
+        {name:'Priya Sharma',  av:'PS',calls:24,conn:19,conv:7, val:'₹9,200', rate:'37%'},
+        {name:'Rahul Mehta',   av:'RM',calls:22,conn:15,conv:5, val:'₹6,800', rate:'33%'},
+        {name:'Anita Verma',   av:'AV',calls:20,conn:18,conv:8, val:'₹11,400',rate:'44%'},
+        {name:'Suresh Kumar',  av:'SK',calls:12,conn:8, conv:2, val:'₹2,600', rate:'25%'},
+        {name:'Deepa Nair',    av:'DN',calls:8, conn:6, conv:3, val:'₹4,100', rate:'50%'},
+      ];
+      const callBar=(n,tot,c)=>`<div style="height:4px;border-radius:2px;background:#f3f4f6;overflow:hidden"><div style="width:${Math.round(n/tot*100)}%;height:100%;background:${c};border-radius:2px"></div></div>`;
+      const agentRows=AGENTS.map(a=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
+        <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#1d4ed8;flex-shrink:0">${a.av}</div>
+            <span style="font-size:12.5px;font-weight:500;color:#111827">${a.name}</span>
+          </div>
+        </td>
+        <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:center">
+          <div style="font-size:13px;font-weight:600;color:#374151">${a.calls}</div>
+          ${callBar(a.calls,24,'#6b7280')}
+        </td>
+        <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:center">
+          <div style="font-size:13px;font-weight:600;color:#1d4ed8">${a.conn}</div>
+          ${callBar(a.conn,19,'#93c5fd')}
+        </td>
+        <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:center">
+          <div style="font-size:13px;font-weight:700;color:#16a34a">${a.conv}</div>
+          ${callBar(a.conv,8,'#4ade80')}
+        </td>
+        <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:right"><span style="font-size:13px;font-weight:600;color:#111827">${a.val}</span></td>
+        <td style="padding:9px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:center">
+          <span style="padding:2px 9px;background:${parseFloat(a.rate)>=40?'#dcfce7':parseFloat(a.rate)>=30?'#fef9c3':'#f3f4f6'};color:${parseFloat(a.rate)>=40?'#15803d':parseFloat(a.rate)>=30?'#a16207':'#6b7280'};border-radius:20px;font-size:11.5px;font-weight:700">${a.rate}</span>
+        </td>
+      </tr>`).join('');
+
+      const pipeline=`<div style="display:flex;flex-direction:column;gap:12px;margin-bottom:14px">
+
+        <!-- Panel header -->
+        <div style="background:#fff;border-radius:12px;border:1px solid #ede8e0;padding:0;box-shadow:0 1px 3px rgba(0,0,0,.04);overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #f5f2ee">
+            <div style="display:flex;align-items:center;gap:8px">
+              <i class="ti ti-shopping-cart-off" style="font-size:15px;color:#ea580c"></i>
+              <span style="font-size:13px;font-weight:700;color:#111827">Cart Recovery Pipeline</span>
+              <span style="font-size:10.5px;padding:2px 9px;background:#fff7ed;color:#ea580c;border-radius:20px;font-weight:600;border:1px solid #fed7aa">Last 30 days</span>
+            </div>
+            <select style="font-size:11.5px;padding:5px 10px;border:1px solid #e2d9ce;border-radius:6px;color:#374151;background:#fff;cursor:pointer;outline:none;font-family:inherit">
+              <option>Last 30 days</option><option>Last 7 days</option><option>Today</option><option>Custom range</option>
+            </select>
+          </div>
+
+          <!-- Funnel row -->
+          <div style="display:flex;align-items:stretch;background:#fafaf8">
+            ${funnelHtml}
+          </div>
+
+          <!-- Channel breakdown row -->
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:14px 18px;border-top:1px solid #f5f2ee">
+            ${chCard('ti-brand-whatsapp','WhatsApp','28','carts recovered','₹36,400','revenue','#16a34a','#f0fdf4')}
+            ${chCard('ti-message','SMS / RCS','9','carts recovered','₹11,200','revenue','#1d4ed8','#eff6ff')}
+            ${chCard('ti-mail','Email','5','carts recovered','₹6,800','revenue','#7c3aed','#f5f3ff')}
+            ${chCard('ti-phone-call','Agent Calls','10','carts recovered','₹23,400','revenue','#0891b2','#ecfeff')}
+            <div style="padding:12px 14px;border-radius:8px;border:1.5px solid #bbf7d0;background:#f0fdf4">
+              <div style="font-size:10.5px;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">Total Recovered</div>
+              <div style="font-size:22px;font-weight:800;color:#15803d">₹77,800</div>
+              <div style="font-size:11px;color:#16a34a;margin-top:2px">36.6% of abandoned value</div>
+              <div style="margin-top:6px;height:5px;border-radius:3px;background:#bbf7d0;overflow:hidden"><div style="width:36.6%;height:100%;background:#16a34a;border-radius:3px"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agent Call Performance -->
+        <div style="background:#fff;border-radius:12px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #f5f2ee">
+            <div style="display:flex;align-items:center;gap:8px">
+              <i class="ti ti-phone-call" style="font-size:15px;color:#1d4ed8"></i>
+              <span style="font-size:13px;font-weight:700;color:#111827">Agent Call Performance</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div style="display:flex;gap:16px">
+                ${[['86','Total Calls','#374151'],['66','Connected','#1d4ed8'],['20','Not Answered','#9ca3af'],['10','Converted','#16a34a'],['₹23,400','via Calls','#16a34a']].map(([v,l,c])=>`<div style="text-align:center"><div style="font-size:15px;font-weight:800;color:${c}">${v}</div><div style="font-size:10px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.04em">${l}</div></div>`).join('')}
+              </div>
+              <div style="width:1px;height:32px;background:#f0ece4;margin:0 4px"></div>
+              <span style="font-size:11px;padding:3px 9px;background:#eff6ff;color:#1d4ed8;border-radius:20px;font-weight:700;border:1px solid #bfdbfe">15.2% call conversion</span>
+            </div>
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+            <thead><tr style="background:#fafaf8">
+              ${['Agent','Calls Made','Connected','Converted','Revenue','Rate'].map((h,i)=>`<th style="padding:8px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;border-bottom:1px solid #f0ece4;${i>0?'text-align:center':''}">${h}</th>`).join('')}
+            </tr></thead>
+            <tbody>${agentRows}</tbody>
+          </table>
+        </div>
+
+      </div>`;
+
+      scroll.innerHTML=pw+pipeline+tableHtml+'</div>';
+
+      scroll.innerHTML=pw+pipeline+tableHtml+'</div>';
     },
     rack: ()=>{
       const racks=['0-0','1-l','1-r','10-l','10-r','11-l','11-r','12-l','12-r','14-r','15-l','16-l','2-l','3-l','3-r','4-l','4-r','5-l','5-r','6-l','6-r','7-l','7-r','8-l','8-r','9-l','9-r','dairy-0','deli-0','meat-l/','produce-0','seafood-0'];
@@ -3100,16 +3397,28 @@ function renderFilled(scroll){
         `<span style="font-size:13px;color:#374151">${cap}</span>`,
         act,
       ]);
-      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr auto;gap:14px;align-items:end">
-          <div><div style="${lblS}">TYPE</div><select style="${dropS}"><option value="">Delivery</option><option>Pickup</option></select></div>
-          <div><div style="${lblS}">DATE</div><div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff"><i class="ti ti-calendar" style="padding:0 10px;font-size:16px;color:#16a34a;flex-shrink:0"></i><input type="date" style="border:none;outline:none;padding:9px 12px 9px 0;font-size:12.5px;font-family:inherit;width:100%;color:#374151"></div></div>
-          <div><div style="${lblS}">DAY</div><select style="${dropS}"><option value="">Select day</option><option>Sunday</option><option>Monday</option><option>All Days</option></select></div>
-          <div><div style="${lblS}">ZONE</div><select style="${dropS}"><option value="">Select zone</option><option>Default zone</option></select></div>
-          <div><div style="${lblS}">SLOT</div><select style="${dropS}"><option value="">Select Slot</option><option>09:00 PM - 09:15 PM</option><option>06:30 PM - 07:00 PM</option></select></div>
-          <div style="display:flex;gap:8px;padding-bottom:1px">
-            <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Submit</button>
-            <button style="padding:8px 16px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear</button>
+      const sel=(lbl,opts)=>`<div>
+        <div style="${lblS}">${lbl}</div>
+        <select style="width:100%;padding:8px 10px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;color:#374151;background:#fff;cursor:pointer;appearance:auto">
+          ${opts.map((o,i)=>`<option${i===0?' selected':''}>${o}</option>`).join('')}
+        </select>
+      </div>`;
+      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:16px 20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:flex;align-items:flex-end;gap:12px">
+          ${sel('TYPE',['Delivery','Pickup'])}
+          <div style="flex:1">
+            <div style="${lblS}">DATE</div>
+            <div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;background:#fff;overflow:hidden">
+              <i class="ti ti-calendar" style="padding:0 8px 0 10px;font-size:15px;color:#16a34a;flex-shrink:0"></i>
+              <input type="date" placeholder="dd/mm/yyyy" style="flex:1;border:none;outline:none;padding:8px 10px 8px 0;font-size:12.5px;font-family:inherit;color:#374151;background:transparent;min-width:0">
+            </div>
+          </div>
+          ${sel('DAY',['Select day','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','All Days'])}
+          ${sel('ZONE',['Select zone','Default zone','Zone A','Zone B','Zone C'])}
+          ${sel('SLOT',['Select Slot','09:00 PM – 09:15 PM','08:45 PM – 09:00 PM','08:30 PM – 08:45 PM','06:30 PM – 07:00 PM','06:00 PM – 06:30 PM'])}
+          <div style="display:flex;gap:8px;flex-shrink:0">
+            <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap">Submit</button>
+            <button style="padding:8px 16px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer;white-space:nowrap">Clear</button>
           </div>
         </div>
       </div>`;
@@ -3271,17 +3580,176 @@ function renderFilled(scroll){
       scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
     },
     inventory: ()=>{
-      const rows=[
-        ['<strong>Fresh Whole Milk 1L</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-4421</span>',badge('Out of Stock','#b91c1c','#fee2e2'),'0','50','50',badge('Critical','#b91c1c','#fee2e2'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Greek Yogurt 200g</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-8872</span>',badge('Low Stock','#ea580c','#fff7ed'),'3','30','30',badge('Low','#ea580c','#fff7ed'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Basmati Rice 5kg</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-8812</span>',badge('In Stock','#15803d','#dcfce7'),'84','20','20',badge('OK','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Sourdough Bread</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-2241</span>',badge('In Stock','#15803d','#dcfce7'),'42','15','15',badge('OK','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Organic Eggs (12)</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-3310</span>',badge('Low Stock','#ca8a04','#fef9c3'),'8','25','25',badge('Low','#ca8a04','#fef9c3'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>Olive Oil 500ml</strong><br><span style="font-size:10.5px;color:#9ca3af">SKU-5521</span>',badge('In Stock','#15803d','#dcfce7'),'124','10','10',badge('OK','#15803d','#dcfce7'),'<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-      ];
-      const iFilter=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)"><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:end"><div><div style="font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">PRODUCT</div><input style="width:100%;padding:8px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff" placeholder="Search by product name or SKU"></div><div><div style="font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">STOCK STATUS</div><select style="width:100%;padding:8px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;cursor:pointer;appearance:auto"><option>All</option><option>In Stock</option><option>Low Stock</option><option>Out of Stock</option></select></div><div style="display:flex;gap:8px;padding-bottom:1px"><button style="padding:8px 20px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button><button style="padding:8px 16px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear</button></div></div></div>`;
-      scroll.innerHTML=pw+iFilter+tbl(['Product','Status','Stock','Reorder Point','Reorder Qty','Alert',''],rows)+'</div>';
-    },
+  const PRODUCTS=[
+    {id:'p1',name:'Harpic Toilet Cleaner',brand:'HARPIC',ic:'ti-droplet',open:true,variants:[
+      {v:'1 Lt',   sku:'HRP-1000',unav:0,comm:2,avail:43,oh:45,inc:0,mrp:85,  price:72,  disc:15},
+      {v:'500 ml', sku:'HRP-500', unav:0,comm:5,avail:115,oh:120,inc:50,mrp:49, price:42, disc:14},
+      {v:'200 ml', sku:'HRP-200', unav:0,comm:3,avail:77,oh:80,inc:0,mrp:25,   price:22, disc:12},
+    ]},
+    {id:'p2',name:'Dettol Original Handwash',brand:'DETTOL',ic:'ti-wash',open:true,variants:[
+      {v:'200 ml',       sku:'DTL-200', unav:0,comm:4,avail:196,oh:200,inc:100,mrp:65, price:55,disc:15},
+      {v:'500 ml Refill',sku:'DTL-500R',unav:0,comm:2,avail:88, oh:90, inc:0,  mrp:120,price:102,disc:15},
+      {v:'1 Lt Pump',    sku:'DTL-1000',unav:1,comm:3,avail:56, oh:60, inc:0,  mrp:210,price:178,disc:15},
+    ]},
+    {id:'p3',name:'Surf Excel Easy Wash',brand:'SURF EXCEL',ic:'ti-shirt',open:false,variants:[
+      {v:'500g',sku:'SRF-500',unav:0,comm:8,avail:92,oh:100,inc:200,mrp:99, price:89,disc:10},
+      {v:'1 kg', sku:'SRF-1K', unav:0,comm:5,avail:45,oh:50, inc:0,  mrp:185,price:165,disc:11},
+      {v:'2 kg', sku:'SRF-2K', unav:0,comm:2,avail:28,oh:30, inc:0,  mrp:349,price:310,disc:11},
+    ]},
+    {id:'p4',name:'Maggi Masala Noodles',brand:'NESTLE',ic:'ti-noodles',open:false,variants:[
+      {v:'70g (Single)',   sku:'MGI-70',  unav:0,comm:20,avail:480,oh:500,inc:1000,mrp:14, price:14,disc:0},
+      {v:'280g (4-pack)',  sku:'MGI-280', unav:0,comm:10,avail:190,oh:200,inc:0,   mrp:54, price:52,disc:4},
+      {v:'560g (8-pack)',  sku:'MGI-560', unav:0,comm:5, avail:95, oh:100,inc:0,   mrp:105,price:100,disc:5},
+    ]},
+    {id:'p5',name:'Amul Butter',brand:'AMUL',ic:'ti-cheese',open:false,variants:[
+      {v:'100g',sku:'AML-100',unav:0,comm:15,avail:135,oh:150,inc:200,mrp:55, price:55,disc:0},
+      {v:'500g',sku:'AML-500',unav:0,comm:6, avail:44, oh:50, inc:0,  mrp:260,price:260,disc:0},
+    ]},
+    {id:'p6',name:'Britannia Good Day Butter Cookies',brand:'BRITANNIA',ic:'ti-cookie',open:false,variants:[
+      {v:'87g', sku:'BRT-87', unav:0,comm:30,avail:270,oh:300,inc:500,mrp:30, price:28,disc:7},
+      {v:'216g',sku:'BRT-216',unav:0,comm:12,avail:88, oh:100,inc:0,  mrp:70, price:65,disc:7},
+      {v:'600g',sku:'BRT-600',unav:0,comm:4, avail:46, oh:50, inc:0,  mrp:190,price:175,disc:8},
+    ]},
+    {id:'p7',name:'Parle-G Original Glucose Biscuits',brand:'PARLE',ic:'ti-cookie',open:false,variants:[
+      {v:'60g',  sku:'PLG-60',  unav:0,comm:50,avail:450,oh:500,inc:1000,mrp:10,price:10,disc:0},
+      {v:'250g', sku:'PLG-250', unav:0,comm:20,avail:180,oh:200,inc:0,   mrp:38,price:38,disc:0},
+      {v:'1 kg', sku:'PLG-1K',  unav:0,comm:8, avail:92, oh:100,inc:0,   mrp:140,price:135,disc:4},
+    ]},
+    {id:'p8',name:'Lay\'s Classic Salted Chips',brand:'LAY\'S',ic:'ti-bow',open:false,variants:[
+      {v:'26g', sku:'LYS-26', unav:0,comm:40,avail:260,oh:300,inc:500,mrp:20,price:20,disc:0},
+      {v:'52g', sku:'LYS-52', unav:0,comm:15,avail:185,oh:200,inc:0,  mrp:40,price:38,disc:5},
+      {v:'98g', sku:'LYS-98', unav:0,comm:8, avail:92, oh:100,inc:0,  mrp:74,price:70,disc:5},
+    ]},
+    {id:'p9',name:'Tropicana 100% Orange Juice',brand:'TROPICANA',ic:'ti-glass',open:false,variants:[
+      {v:'200 ml',sku:'TRP-200',unav:0,comm:25,avail:175,oh:200,inc:300,mrp:35, price:32,disc:9},
+      {v:'500 ml',sku:'TRP-500',unav:0,comm:10,avail:90, oh:100,inc:0,  mrp:80, price:72,disc:10},
+      {v:'1 Lt',  sku:'TRP-1L', unav:0,comm:5, avail:45, oh:50, inc:0,  mrp:145,price:130,disc:10},
+    ]},
+    {id:'p10',name:'Colgate MaxFresh Toothpaste',brand:'COLGATE',ic:'ti-heart',open:false,variants:[
+      {v:'75g', sku:'CLG-75', unav:0,comm:20,avail:180,oh:200,inc:200,mrp:55, price:50,disc:9},
+      {v:'150g',sku:'CLG-150',unav:0,comm:10,avail:90, oh:100,inc:0,  mrp:100,price:90,disc:10},
+      {v:'300g',sku:'CLG-300',unav:0,comm:4, avail:46, oh:50, inc:0,  mrp:190,price:170,disc:11},
+    ]},
+  ];
+
+  const state={};
+  PRODUCTS.forEach(p=>state[p.id]=p.open);
+
+  const inpN=`width:60px;padding:4px 6px;border:1.5px solid #e2d9ce;border-radius:5px;font-size:12px;text-align:right;outline:none;font-family:inherit;color:#374151;background:#fff`;
+  const inpS=`width:90px;padding:4px 6px;border:1.5px solid #e2d9ce;border-radius:5px;font-size:12px;outline:none;font-family:inherit;color:#374151;background:#fff`;
+  const inpP=`width:70px;padding:4px 6px;border:1.5px solid #e2d9ce;border-radius:5px;font-size:12px;text-align:right;outline:none;font-family:inherit;color:#374151;background:#fff`;
+  const thS='text-align:right;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#9ca3af;padding:10px 12px;background:#fafaf8;border-bottom:1px solid #f0ece4;white-space:nowrap';
+  const thSL='text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#9ca3af;padding:10px 12px;background:#fafaf8;border-bottom:1px solid #f0ece4;white-space:nowrap';
+  const tdS='padding:10px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:right';
+  const tdSL='padding:10px 12px;border-bottom:1px solid #f9f7f4;vertical-align:middle;text-align:left';
+
+  const imgPl=(ic)=>`<div style="width:38px;height:38px;border-radius:6px;border:1.5px solid #e5e7eb;background:#f9fafb;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${ic}" style="font-size:17px;color:#d1d5db"></i></div>`;
+
+  function buildTable(){
+    const rows=PRODUCTS.map(p=>{
+      const isOpen=state[p.id];
+      const totOh=p.variants.reduce((a,v)=>a+v.oh,0);
+      const totAvail=p.variants.reduce((a,v)=>a+v.avail,0);
+      const totComm=p.variants.reduce((a,v)=>a+v.comm,0);
+      const totUnav=p.variants.reduce((a,v)=>a+v.unav,0);
+      const totInc=p.variants.reduce((a,v)=>a+v.inc,0);
+
+      const chevron=`<i class="ti ${isOpen?'ti-chevron-down':'ti-chevron-right'}" style="font-size:13px;color:#9ca3af;cursor:pointer;flex-shrink:0" onclick="window._invToggle('${p.id}')"></i>`;
+
+      // Parent row
+      let html=`<tr style="background:${isOpen?'#fafaf8':'#fff'}" onmouseover="this.style.background='#f9f7f4'" onmouseout="this.style.background='${isOpen?'#fafaf8':'#fff'}'">
+        <td style="${tdSL};width:32px"><input type="checkbox" style="width:14px;height:14px;accent-color:#16a34a;cursor:pointer"></td>
+        <td style="${tdSL}">${imgPl(p.ic)}</td>
+        <td style="${tdSL};max-width:220px">
+          <div style="display:flex;align-items:center;gap:8px">
+            ${chevron}
+            <div>
+              <div style="font-size:12.5px;font-weight:600;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px">${p.name}</div>
+              <div style="font-size:10.5px;color:#9ca3af">${p.brand} &middot; ${p.variants.length} variants</div>
+            </div>
+          </div>
+        </td>
+        <td style="${tdSL}"><span style="font-size:11.5px;color:#9ca3af">No SKU</span></td>
+        <td style="${tdS}"><span style="font-size:13px;color:#374151">${totUnav}</span></td>
+        <td style="${tdS}"><span style="font-size:13px;color:#374151">${totComm}</span></td>
+        <td style="${tdS}"><span style="font-size:13px;font-weight:600;color:${totAvail<10?'#b91c1c':totAvail<30?'#ea580c':'#111827'}">${totAvail}</span></td>
+        <td style="${tdS}"><span style="font-size:13px;font-weight:600;color:#111827">${totOh}</span></td>
+        <td style="${tdS}"><span style="font-size:13px;color:${totInc>0?'#1d4ed8':'#374151'}">${totInc}</span></td>
+        <td style="${tdS}"><span style="font-size:10.5px;color:#9ca3af">—</span></td>
+        <td style="${tdS}"><span style="font-size:10.5px;color:#9ca3af">—</span></td>
+        <td style="${tdS}"><span style="font-size:10.5px;color:#9ca3af">—</span></td>
+      </tr>`;
+
+      // Variant sub-rows
+      if(isOpen){
+        p.variants.forEach((vr,vi)=>{
+          html+=`<tr style="background:#f8fdf8" onmouseover="this.style.background='#f0fdf4'" onmouseout="this.style.background='#f8fdf8'">
+            <td style="${tdSL};width:32px"><input type="checkbox" style="width:13px;height:13px;accent-color:#16a34a;cursor:pointer"></td>
+            <td style="${tdSL}"><div style="width:38px"></div></td>
+            <td style="${tdSL}">
+              <div style="display:flex;align-items:center;gap:6px;padding-left:24px">
+                <i class="ti ti-corner-down-right" style="font-size:11px;color:#d1d5db;flex-shrink:0"></i>
+                <span style="font-size:12.5px;color:#374151;font-weight:500">${vr.v}</span>
+              </div>
+            </td>
+            <td style="${tdSL}"><input style="${inpS}" value="${vr.sku}" placeholder="Enter SKU"></td>
+            <td style="${tdS}"><span style="font-size:13px;color:#374151">${vr.unav}</span></td>
+            <td style="${tdS}"><span style="font-size:13px;color:#374151">${vr.comm}</span></td>
+            <td style="${tdS}"><span style="font-size:13px;font-weight:600;color:${vr.avail<10?'#b91c1c':vr.avail<30?'#ea580c':'#111827'}">${vr.avail}</span></td>
+            <td style="${tdS}"><input style="${inpN}" type="number" value="${vr.oh}" min="0"></td>
+            <td style="${tdS}"><input style="${inpN}" type="number" value="${vr.inc}" min="0"></td>
+            <td style="${tdS}"><div style="display:flex;align-items:center;justify-content:flex-end;gap:2px"><span style="font-size:11px;color:#9ca3af">₹</span><input style="${inpP}" type="number" value="${vr.mrp}" min="0"></div></td>
+            <td style="${tdS}"><div style="display:flex;align-items:center;justify-content:flex-end;gap:2px"><span style="font-size:11px;color:#9ca3af">₹</span><input style="${inpP}" type="number" value="${vr.price}" min="0"></div></td>
+            <td style="${tdS}"><div style="display:flex;align-items:center;justify-content:flex-end;gap:2px"><input style="${inpP};width:50px" type="number" value="${vr.disc}" min="0" max="100"><span style="font-size:11px;color:#9ca3af">%</span></div></td>
+          </tr>`;
+        });
+      }
+      return html;
+    }).join('');
+
+    const thead=`<thead><tr>
+      <th style="${thSL};width:32px"><input type="checkbox" style="width:14px;height:14px;accent-color:#16a34a;cursor:pointer"></th>
+      <th style="${thSL};width:48px"></th>
+      <th style="${thSL}">Product</th>
+      <th style="${thSL}">SKU</th>
+      <th style="${thS}">Unavailable</th>
+      <th style="${thS}">Committed</th>
+      <th style="${thS}">Available</th>
+      <th style="${thS}">On hand</th>
+      <th style="${thS}">Incoming</th>
+      <th style="${thS}">MRP (₹)</th>
+      <th style="${thS}">Sell Price</th>
+      <th style="${thS}">Disc %</th>
+    </tr></thead>`;
+
+    const searchBar=`<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #f5f2ee">
+      <span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:5px;background:#16a34a;color:#fff;cursor:pointer">All</span>
+      <i class="ti ti-search" style="font-size:14px;color:#9ca3af;flex-shrink:0"></i>
+      <input style="flex:1;border:none;outline:none;font-size:13px;font-family:inherit;color:#374151;background:transparent" placeholder="Search and filter">
+      <i class="ti ti-layout-columns" style="font-size:16px;color:#9ca3af;cursor:pointer" title="Manage columns"></i>
+    </div>`;
+
+    return `<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+      ${searchBar}
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px">${thead}<tbody>${rows}</tbody></table>
+      </div>
+      <div style="padding:10px 14px;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:12px;color:#9ca3af">Showing ${PRODUCTS.length} products · ${PRODUCTS.reduce((a,p)=>a+p.variants.length,0)} variants total</span>
+        <button onclick="(function(){PRODUCTS.filter(function(p){return window._invState&&window._invState[p.id];}).forEach(function(p){alert('Saved: '+p.name);});})()" style="padding:6px 18px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Save Changes</button>
+      </div>
+    </div>`;
+  }
+
+  window._invState=state;
+  window._invToggle=(id)=>{
+    state[id]=!state[id];
+    window._invState=state;
+    pages.inventory();
+  };
+
+  scroll.innerHTML=pw+buildTable()+'</div>';
+},
   };
 
   const renderer=pages[pg];
@@ -3351,8 +3819,8 @@ function setIndustry(ind){
 }
 
 function setRole(r){
+  const sel=document.getElementById('roleSelect'); if(sel)sel.value=r;
   role=r;
-  document.querySelectorAll('.rbtn').forEach(b=>b.classList.toggle('a',b.dataset.role===r));
   activePage='overview'; profileOpen=false;
   document.getElementById('profileDD').style.display='none';
   // update store selector text
@@ -3365,7 +3833,6 @@ function setRole(r){
 window.addEventListener('resize',()=>{if(activePage==='overview')renderMain();});
 
 // ── INIT ───────────────────────────────────────────────────────────
-document.querySelectorAll('.rbtn').forEach(b=>b.addEventListener('click',()=>setRole(b.dataset.role)));
 setRole('STORE_MANAGER');
 </script>
 </body>
