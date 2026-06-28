@@ -2380,18 +2380,18 @@ function renderFilled(scroll){
         if(x==='email')return '<i class="ti ti-mail" style="font-size:14px;color:#9ca3af;cursor:pointer"></i>';
         return '';
       }).join(' ');
-      // Slot dot — dot + matching date text colour + tooltip
+      // Slot icon — expressive icon per type + matching date colour
       const slotMeta={
-        asap:      {c:'#ef4444', tip:'ASAP — within 60 min'},
-        hyperlocal:{c:'#d97706', tip:'Hyperlocal — same-day slot'},
-        ndd:       {c:'#2563eb', tip:'NDD — next day delivery'},
-        scheduled: {c:'#7c3aed', tip:'Pre-order — scheduled delivery'},
+        asap:      {ic:'ti-bolt',           c:'#ef4444', tip:'ASAP — within 60 min'},
+        hyperlocal:{ic:'ti-clock',          c:'#d97706', tip:'Hyperlocal — same-day slot'},
+        ndd:       {ic:'ti-truck-delivery', c:'#2563eb', tip:'NDD — next day delivery'},
+        scheduled: {ic:'ti-calendar-event', c:'#7c3aed', tip:'Pre-order — scheduled delivery'},
       };
       const slotBadge=o=>{
-        const m=slotMeta[o.stype]||{c:'#9ca3af',tip:''};
+        const m=slotMeta[o.stype]||{ic:'ti-clock',c:'#9ca3af',tip:''};
         const blink=o.stype==='asap'?'animation:slotBlink 1s ease-in-out infinite':'';
-        return `<div style="display:flex;align-items:flex-start;gap:6px">
-          <span title="${m.tip}" style="width:7px;height:7px;border-radius:50%;background:${m.c};flex-shrink:0;margin-top:3px;cursor:default;${blink}"></span>
+        return `<div style="display:flex;align-items:flex-start;gap:5px">
+          <i class="ti ${m.ic}" title="${m.tip}" style="font-size:13px;color:${m.c};flex-shrink:0;margin-top:1px;${blink}"></i>
           <div>
             <div style="font-size:12px;font-weight:600;color:${m.c}">${o.slot}</div>
             <div style="font-size:10.5px;color:#9ca3af">${o.slotSub}</div>
