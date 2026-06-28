@@ -613,7 +613,7 @@ const NAV=[
     {id:'products',   l:'Products',         ic:'ti-package',          g:['admin','store','cat']},
     {id:'categories', l:'Categories',       ic:'ti-category',         g:['admin','store','cat']},
     {id:'brands',     l:'Brands',           ic:'ti-registered',       g:['admin','cat']},
-    {id:'tags',       l:'Tags',             ic:'ti-tag',              g:['admin','cat']},
+    {id:'tags',       l:'Product Tags',     ic:'ti-tag',              g:['admin','cat']},
     {id:'variants',   l:'Product Variants', ic:'ti-versions',         g:['admin','cat','store']},
     {id:'subs',       l:'Substitution Groups',ic:'ti-refresh',        g:['admin','cat']},
     {id:'inventory',  l:'Inventory',        ic:'ti-archive',          g:['admin','store','cat']},
@@ -3492,7 +3492,7 @@ function renderFilled(scroll){
       </div>`;
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 3,375 brands</span><div style="display:flex;gap:4px">${['‹','1','2','3','…','169','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
       const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Logo','Brand','Product Count','Status','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
-      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
+      scroll.innerHTML=pw+tableHtml+'</div>';
     },
     tags: ()=>{
       const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
@@ -3524,7 +3524,7 @@ function renderFilled(scroll){
       </div>`;
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 20 tags</span><div style="display:flex;gap:4px">${['‹','1','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
       const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Image','Tag','Minimum Order Value','Product Count','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
-      scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
+      scroll.innerHTML=pw+tableHtml+'</div>';
     },
     subs: ()=>{
       const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
