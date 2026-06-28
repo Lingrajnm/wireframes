@@ -401,6 +401,64 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .pp-title{font-size:16px;font-weight:700;color:#374151;margin-bottom:6px}
 .pp-sub{font-size:13px}
 
+/* ── MOBILE ENHANCEMENTS ─────────────────────────────────────────── */
+/* Status bar */
+.mob-status-bar{display:none;height:26px;background:#fff;border-bottom:1px solid #f3f3f3;padding:0 16px;align-items:center;justify-content:space-between;flex-shrink:0;z-index:10}
+body.mobile .mob-status-bar{display:flex}
+
+/* Home indicator */
+.mob-home-ind{display:none;height:22px;background:#fff;align-items:center;justify-content:center;flex-shrink:0}
+.mob-home-ind-bar{width:120px;height:5px;border-radius:3px;background:#d1d5db}
+body.mobile .mob-home-ind{display:flex}
+body.mobile .mob-bot-nav{bottom:22px}
+body.mobile .main-scroll{padding-bottom:84px}
+
+/* FAB */
+#mobFab{display:none;position:fixed;bottom:90px;right:18px;z-index:190;width:52px;height:52px;border-radius:50%;background:#16a34a;color:#fff;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(22,163,74,.4);align-items:center;justify-content:center;font-size:22px;transition:transform .15s,box-shadow .15s}
+#mobFab:active{transform:scale(.93);box-shadow:0 2px 8px rgba(22,163,74,.35)}
+body.mobile #mobFab{display:flex}
+
+/* Sidebar close button */
+.mob-sb-close{display:none;width:30px;height:30px;border:none;background:rgba(255,255,255,.1);border-radius:6px;cursor:pointer;align-items:center;justify-content:center;color:rgba(255,255,255,.7);flex-shrink:0;margin-left:auto;transition:background .15s}
+.mob-sb-close:active{background:rgba(255,255,255,.2)}
+body.mobile .mob-sb-close{display:flex}
+
+/* Bigger nav touch targets */
+body.mobile .nav-item{padding:10px 14px!important;min-height:44px;font-size:13px!important}
+body.mobile .nav-item i{font-size:16px!important}
+
+/* Larger table row tap targets */
+body.mobile .main-scroll td{padding:13px 12px!important}
+
+/* Bottom nav improvements */
+body.mobile .mob-bot-nav{border-top:1px solid #e5e7eb;box-shadow:0 -2px 10px rgba(0,0,0,.06)}
+.mbn-item.active i{transform:scale(1.1)}
+.mbn-active-pip{width:4px;height:4px;border-radius:50%;background:#16a34a;margin-top:1px}
+
+/* Remove tap highlight */
+body.mobile *{-webkit-tap-highlight-color:transparent}
+
+/* Topbar mobile improvements */
+body.mobile .topbar{height:50px;border-bottom:1px solid #f0ece4}
+body.mobile .tb-breadcrumb{justify-content:center}
+
+/* Header search mobile */
+body.mobile #hdrSearchBar .hdr-filters-wrap{display:none}
+body.mobile #hdrSearchBar{padding:8px 10px}
+
+/* Scroll hint gradient on table wrappers */
+body.mobile .main-scroll > div > div[style*="border"]{position:relative}
+
+/* sel-row improvements for mobile */
+body.mobile .sel-row{min-height:44px}
+body.mobile .sb-selectors{padding-bottom:4px}
+
+/* Card tap feedback */
+body.mobile .main-scroll tr{-webkit-tap-highlight-color:rgba(0,0,0,.04)}
+
+/* Input font size – prevent iOS zoom */
+body.mobile input,body.mobile select,body.mobile textarea{font-size:16px!important}
+
 /* ── MOBILE MODE ───────────────────────────────────────────────── */
 .mob-ham{width:36px;height:36px;border:none;background:transparent;cursor:pointer;display:none;align-items:center;justify-content:center;color:#374151;flex-shrink:0;border-radius:8px;padding:0}
 .mob-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:198;display:none;cursor:pointer}
@@ -498,6 +556,7 @@ body.mobile #hdrSearchBar{overflow-x:auto}
       <img src="https://zopping.com/assets/images/Zopping.svg" alt="Zopping" class="sb-logo-img"
            onerror="this.style.display='none';document.getElementById('logoFallback').style.display='block'">
       <span class="sb-logo-fallback" id="logoFallback" style="display:none">Zopping</span>
+      <button class="mob-sb-close" onclick="closeMobSidebar()"><i class="ti ti-x" style="font-size:15px"></i></button>
       <span id="planBadge" style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:.04em;background:rgba(255,255,255,.15);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.2);flex-shrink:0">Business</span>
     </div>
 
@@ -520,6 +579,15 @@ body.mobile #hdrSearchBar{overflow-x:auto}
 
   <!-- MAIN -->
   <div class="main">
+    <!-- Mobile status bar (shown only in mobile mode) -->
+    <div class="mob-status-bar" id="mobStatusBar">
+      <span id="mobTime" style="font-size:12px;font-weight:700;color:#111827">9:41</span>
+      <div style="display:flex;align-items:center;gap:5px;color:#374151">
+        <i class="ti ti-wifi" style="font-size:13px"></i>
+        <i class="ti ti-signal-5g" style="font-size:13px"></i>
+        <i class="ti ti-battery-3" style="font-size:13px"></i>
+      </div>
+    </div>
     <!-- Topbar -->
     <div class="topbar">
       <button class="mob-ham" id="mobHam" onclick="toggleMobSidebar()"><i class="ti ti-menu-2" style="font-size:20px"></i></button>
@@ -531,6 +599,9 @@ body.mobile #hdrSearchBar{overflow-x:auto}
     <!-- Header search bar — populated by renderHeaderSearch() on search-enabled pages -->
     <div id="hdrSearchBar" style="display:none"></div>
 
+    <!-- Floating Action Button (mobile primary CTA) -->
+    <button id="mobFab" title="Add"><i class="ti ti-plus" style="font-size:22px"></i></button>
+
     <!-- Mobile overlay (closes sidebar when tapped) -->
     <div class="mob-overlay" id="mobOverlay" onclick="closeMobSidebar()"></div>
 
@@ -539,7 +610,7 @@ body.mobile #hdrSearchBar{overflow-x:auto}
       <button class="mbn-item" id="mbn0" onclick="mbnGo('overview')"><i class="ti ti-layout-dashboard"></i>Home</button>
       <button class="mbn-item" id="mbn1" onclick="mbnGo('orders')"><i class="ti ti-shopping-bag"></i>Orders</button>
       <button class="mbn-item" id="mbn2" onclick="mbnGo('inventory')"><i class="ti ti-package"></i>Catalogue</button>
-      <button class="mbn-item" id="mbn3" onclick="mbnGo('picking')"><i class="ti ti-truck"></i>Ops</button>
+      <button class="mbn-item" id="mbn3" onclick="mbnGo('actlogs')"><i class="ti ti-chart-bar"></i>Analytics</button>
       <button class="mbn-item" id="mbn4" onclick="toggleMobSidebar()"><i class="ti ti-menu-2"></i>More</button>
     </div>
 
@@ -1024,7 +1095,7 @@ function mbnGo(pg){
   gotoPage(pg);
 }
 function updateMbn(){
-  const map=['overview','orders','inventory','picking'];
+  const map=['overview','orders','inventory','actlogs'];
   document.querySelectorAll('.mbn-item').forEach((btn,i)=>{
     const isActive = i<4 ? map[i]===activePage : (!map.includes(activePage));
     btn.classList.toggle('active', isActive);
@@ -1165,7 +1236,43 @@ function getSectionContext(){
 }
 
 // ── TOPBAR ─────────────────────────────────────────────────────────
+function renderMobileTopbar(){
+  const pg=activePage;
+  const item=NAV.flatMap(g=>g.items).find(x=>x.id===pg);
+  const pageLabel=pg==='overview'?'Overview':(item?.l||pg);
+
+  // Center: page title only
+  document.getElementById('tbBreadcrumb').innerHTML=
+    `<span style="font-size:15px;font-weight:700;color:#111827;flex:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${pageLabel}</span>`;
+
+  // Right: notif + avatar only
+  const rm=RM[role];
+  const ctx=getSectionContext();
+  document.getElementById('tbRight').innerHTML=`
+    <div class="tb-icon-btn" id="notifBtn" title="Notifications" onclick="toggleNotifPanel()">
+      <i class="ti ti-bell"></i><span class="tb-notif-badge" id="notifDot"></span>
+    </div>
+    <div class="tb-avatar" id="tbAvatar" style="background:${rm.c}25;color:${rm.c};border-color:${rm.c}40" onclick="toggleProfile()">${rm.init}</div>
+  `;
+
+  // FAB: show primary CTA as floating button
+  const primaryBtn=ctx.btns?.find(b=>b.p&&b.l);
+  const fab=document.getElementById('mobFab');
+  if(fab){
+    if(primaryBtn){
+      fab.innerHTML=`<i class="ti ${primaryBtn.ic}" style="font-size:22px"></i>`;
+      fab.title=primaryBtn.l;
+      fab.style.display='flex';
+    } else {
+      fab.style.display='none';
+    }
+  }
+  updateNotifDot();
+  updateMbn();
+}
+
 function renderTopbar(){
+  if(isMobile){ renderMobileTopbar(); return; }
   const rm=RM[role];
   const pg=activePage;
 
