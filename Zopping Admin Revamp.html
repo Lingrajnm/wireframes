@@ -3458,7 +3458,17 @@ function renderFilled(scroll){
       </div>`;
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 47 staff</span><div style="display:flex;gap:4px">${['‹','1','2','3','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
       const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Name','Weekly off / Stores','Timings / Attendance','Reporting Manager','','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
-      scroll.innerHTML=pw+tableHtml+'</div>';
+      const staffLimitBanner=`<div style="display:flex;align-items:center;gap:12px;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:10px;padding:12px 16px;margin-bottom:14px">
+        <div style="width:36px;height:36px;border-radius:8px;background:#fef3c7;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i class="ti ti-crown" style="font-size:17px;color:#d97706"></i>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700;color:#92400e">Staff User Limit — Basic Plan</div>
+          <div style="font-size:12px;color:#b45309;margin-top:2px">2 / 2 admin users used · Upgrade to Business for 4 users or Enterprise for unlimited</div>
+        </div>
+        <a href="https://zopping.com/pricing" target="_blank" style="flex-shrink:0;padding:7px 16px;background:#d97706;color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">Upgrade Plan →</a>
+      </div>`;
+      scroll.innerHTML=pw+staffLimitBanner+tableHtml+'</div>';
     },
     offers: ()=>{
       const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
@@ -3551,7 +3561,17 @@ function renderFilled(scroll){
         <button style="padding:9px 28px;background:#16a34a;color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer">Save</button>
         <button style="padding:9px 20px;background:#fff;color:#374151;border:1.5px solid #e2d9ce;border-radius:7px;font-size:13px;cursor:pointer">Cancel</button>
       </div>`;
-      scroll.innerHTML=pw+tableHtml+'</div>';
+      const slotBanner=`<div style="display:flex;align-items:center;gap:12px;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:10px;padding:12px 16px;margin-bottom:14px">
+        <div style="width:36px;height:36px;border-radius:8px;background:#fef3c7;display:flex;align-items:center;justify-content:justify;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+          <i class="ti ti-crown" style="font-size:17px;color:#d97706"></i>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700;color:#92400e">Slot Blocking — Business &amp; Enterprise Only</div>
+          <div style="font-size:12px;color:#b45309;margin-top:2px">Slot capacity setup &amp; blocking is not available on your current Basic Plan. Upgrade to enable it.</div>
+        </div>
+        <a href="https://zopping.com/pricing" target="_blank" style="flex-shrink:0;padding:7px 16px;background:#d97706;color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">Upgrade Plan →</a>
+      </div>`;
+      scroll.innerHTML=pw+slotBanner+tableHtml+'</div>';
     },
     abandoned: ()=>{
       const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
@@ -3785,7 +3805,17 @@ function renderFilled(scroll){
       </div>`;
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 20 rules</span><div style="display:flex;gap:4px">${['‹','1','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
       const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Type','Area','Slot','Cutoff time','Date','Capacity','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:12px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
-      scroll.innerHTML=pw+tableHtml+'</div>';
+      const capBanner=`<div style="display:flex;align-items:center;gap:12px;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:10px;padding:12px 16px;margin-bottom:14px">
+        <div style="width:36px;height:36px;border-radius:8px;background:#fef3c7;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i class="ti ti-crown" style="font-size:17px;color:#d97706"></i>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700;color:#92400e">Capacity Planning — Business &amp; Enterprise Only</div>
+          <div style="font-size:12px;color:#b45309;margin-top:2px">Capacity planning &amp; slot cutoff rules are not available on your Basic Plan. Upgrade to unlock this feature.</div>
+        </div>
+        <a href="https://zopping.com/pricing" target="_blank" style="flex-shrink:0;padding:7px 16px;background:#d97706;color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">Upgrade Plan →</a>
+      </div>`;
+      scroll.innerHTML=pw+capBanner+tableHtml+'</div>';
     },
     categories: ()=>{
       const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
@@ -4016,7 +4046,24 @@ function renderFilled(scroll){
 
     const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px">${thead}<tbody>${rows}</tbody></table>${pgn}</div>`;
 
-  scroll.innerHTML=pw+tableHtml+'</div>';
+    const productLimitBanner=`<div style="background:#fffbeb;border:1.5px solid #fcd34d;border-radius:10px;padding:14px 16px;margin-bottom:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <i class="ti ti-crown" style="color:#d97706;font-size:15px"></i>
+          <span style="font-size:13px;font-weight:700;color:#92400e">Product Limit — Basic Plan</span>
+        </div>
+        <span style="font-size:12px;color:#b45309;font-weight:600">750 / 1,000 products used</span>
+      </div>
+      <div style="height:6px;background:#fde68a;border-radius:3px;overflow:hidden;margin-bottom:10px">
+        <div style="height:100%;width:75%;background:linear-gradient(90deg,#f59e0b,#d97706);border-radius:3px"></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <span style="font-size:12px;color:#92400e">250 products remaining · Upgrade to Business for unlimited products</span>
+        <a href="https://zopping.com/pricing" target="_blank" style="flex-shrink:0;padding:6px 16px;background:#d97706;color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">Upgrade Plan →</a>
+      </div>
+    </div>`;
+
+  scroll.innerHTML=pw+productLimitBanner+tableHtml+'</div>';
 },
     reports: ()=>{
       const ALL_REPORTS=[
@@ -4227,7 +4274,20 @@ function renderFilled(scroll){
         </table>
         ${pgn}
       </div>`;
-      scroll.innerHTML=pw+tableHtml+'</div>';
+      const mobileAppBanner=`<div style="display:flex;align-items:center;gap:12px;background:#faf5ff;border:1.5px solid #d8b4fe;border-radius:10px;padding:12px 16px;margin-bottom:14px">
+        <div style="width:36px;height:36px;border-radius:8px;background:#f3e8ff;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i class="ti ti-device-mobile" style="font-size:17px;color:#7c3aed"></i>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700;color:#4c1d95">Android &amp; iOS Apps — Add-on on Basic Plan</div>
+          <div style="font-size:12px;color:#6d28d9;margin-top:2px">Mobile apps are included in Business &amp; Enterprise. On Basic, contact us to enquire about the add-on pricing.</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-shrink:0">
+          <a href="https://zopping.com/pricing" target="_blank" style="padding:7px 14px;background:#7c3aed;color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">Upgrade Plan →</a>
+          <a href="mailto:support@zopping.com" style="padding:7px 14px;background:#fff;color:#7c3aed;border:1.5px solid #d8b4fe;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">Enquire Add-on</a>
+        </div>
+      </div>`;
+      scroll.innerHTML=pw+mobileAppBanner+tableHtml+'</div>';
     },
     'web-ann': ()=>{
       const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
