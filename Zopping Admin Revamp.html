@@ -5623,222 +5623,104 @@ function renderFilled(scroll){
 
     // ── COMMUNICATION ─────────────────────────────────────────────────
     comms: ()=>{
-      const inp=(lbl,val,type,ph)=>`<div style="border-bottom:1px solid #e5e7eb">
-        <div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:.07em;padding:12px 16px 0">${lbl}</div>
-        <input type="${type||'text'}" value="${val||''}" placeholder="${ph||''}" style="width:100%;padding:6px 16px 12px;border:none;font-size:14px;color:#374151;outline:none;font-family:inherit;background:transparent;box-sizing:border-box">
-      </div>`;
+      /* ── helpers ── */
+      const tog=(on)=>`<div style="width:44px;height:24px;border-radius:12px;background:${on?'#16a34a':'#e5e7eb'};position:relative;cursor:pointer;flex-shrink:0"><span style="position:absolute;top:3px;left:${on?'23':'3'}px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span></div>`;
+      const chanTabs=(chs,ai)=>`<div style="display:flex;border-bottom:2px solid #e5e7eb">${chs.map((c,i)=>`<button style="padding:10px 18px;border:none;background:none;font-size:13.5px;font-weight:${i===ai?'700':'500'};color:${i===ai?'#16a34a':'#6b7280'};cursor:pointer;border-bottom:${i===ai?'2.5px solid #16a34a':'2.5px solid transparent'};margin-bottom:-2px;white-space:nowrap">${c}</button>`).join('')}</div>`;
+      const fRow=(lbl,val,type,ph)=>`<div style="padding:14px 18px;border-bottom:1px solid #f3f4f6"><div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:.06em;margin-bottom:6px">${lbl}</div><input type="${type||'text'}" value="${val||''}" placeholder="${ph||''}" style="width:100%;border:none;background:transparent;font-size:14px;color:${val?'#374151':'#b0b0b0'};outline:none;font-family:inherit;box-sizing:border-box"></div>`;
 
-      const toggle=(on)=>`<div style="width:42px;height:24px;border-radius:12px;background:${on?'#16a34a':'#d1d5db'};position:relative;cursor:pointer;flex-shrink:0">
-        <span style="position:absolute;top:3px;left:${on?'21':'3'}px;width:18px;height:18px;border-radius:50%;background:#fff"></span>
-      </div>`;
+      /* ── email settings view ── */
+      const errBanner=`<div style="display:flex;align-items:flex-start;gap:12px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 18px;margin-bottom:24px"><i class="ti ti-alert-circle" style="font-size:18px;color:#dc2626;margin-top:1px;flex-shrink:0"></i><div><div style="font-size:13.5px;font-weight:600;color:#991b1b;margin-bottom:3px">Email credentials are invalid</div><div style="font-size:13px;color:#b91c1c">Last failed at 8th May 2026, 6:11 PM. Please update the configuration below.</div></div></div>`;
 
-      // EMAIL tab content — settings view
-      const emailSettings=`
-        <div style="background:#fee2e2;border:1px solid #fca5a5;border-radius:6px;padding:12px 16px;margin-bottom:20px;font-size:13.5px;color:#374151">
-          <strong style="color:#b91c1c">Email</strong> credentials are invalid (last failed at 8th May 2026, 6:11 PM). Please update them below.
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-          <div style="display:flex;align-items:center;gap:6px">
-            <span style="font-size:22px;color:#3b82f6">@</span>
-            <span style="font-size:15px;color:#3b82f6;font-weight:500">mail.com</span>
-          </div>
-          ${toggle(true)}
-        </div>
-        <div style="border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;max-width:560px;margin-bottom:20px">
-          ${inp('AUTH TYPE','SMTP')}
-          ${inp('SMTP HOST','smtp.gmail.com')}
-          ${inp('SMTP USERNAME','','text','Enter smtp username')}
-          ${inp('SMTP PASSWORD','••••••••••••••','password')}
-          ${inp('SMTP PORT','587')}
-          ${inp('DEFAULT EMAIL','appsupport@ssmretail.com')}
-        </div>
-        <div style="display:flex;gap:10px">
-          <button style="padding:9px 28px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
-          <button style="padding:9px 22px;background:#f3f4f6;color:#374151;border:none;border-radius:6px;font-size:14px;cursor:pointer">Cancel</button>
-        </div>`;
+      const providerCard=`<div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:24px;box-shadow:0 1px 4px rgba(0,0,0,.05)"><div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #f3f4f6"><div style="display:flex;align-items:center;gap:12px"><div style="width:44px;height:44px;border-radius:10px;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:22px;color:#2563eb;font-weight:700">@</div><div><div style="font-size:15px;font-weight:700;color:#111827">mail.com</div><div style="font-size:12.5px;color:#6b7280">SMTP Provider</div></div></div><div style="display:flex;align-items:center;gap:10px"><span style="font-size:12px;font-weight:600;color:#dc2626;background:#fee2e2;padding:4px 10px;border-radius:20px;display:flex;align-items:center;gap:4px"><i class="ti ti-alert-triangle" style="font-size:12px"></i> Invalid Credentials</span>${tog(true)}</div></div><div><div style="padding:14px 18px;border-bottom:1px solid #f3f4f6"><div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:.06em;margin-bottom:6px">AUTH TYPE</div><select style="border:none;background:transparent;font-size:14px;color:#374151;outline:none;font-family:inherit;cursor:pointer"><option>SMTP</option><option>API Key</option><option>OAuth2</option></select></div><div style="display:grid;grid-template-columns:1fr 1fr"><div style="padding:14px 18px;border-bottom:1px solid #f3f4f6;border-right:1px solid #f3f4f6"><div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:.06em;margin-bottom:6px">SMTP HOST</div><input value="smtp.gmail.com" style="width:100%;border:none;background:transparent;font-size:14px;color:#374151;outline:none;font-family:inherit;box-sizing:border-box"></div><div style="padding:14px 18px;border-bottom:1px solid #f3f4f6"><div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:.06em;margin-bottom:6px">SMTP PORT</div><input value="587" style="width:100%;border:none;background:transparent;font-size:14px;color:#374151;outline:none;font-family:inherit;box-sizing:border-box"></div></div>${fRow('SMTP USERNAME','','text','Enter SMTP username')}${fRow('SMTP PASSWORD','••••••••••••••','password','')}${fRow('DEFAULT FROM EMAIL','appsupport@ssmretail.com')}</div><div style="display:flex;gap:10px;padding:16px 20px;background:#fafafa;border-top:1px solid #f3f4f6"><button style="padding:9px 24px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:13.5px;font-weight:600;cursor:pointer">Save Changes</button><button style="padding:9px 20px;background:transparent;color:#6b7280;border:1.5px solid #e5e7eb;border-radius:8px;font-size:13.5px;cursor:pointer">Cancel</button><button style="margin-left:auto;padding:9px 20px;background:transparent;color:#3b82f6;border:1.5px solid #bfdbfe;border-radius:8px;font-size:13.5px;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ti ti-send" style="font-size:14px"></i> Send Test Email</button></div></div>`;
 
-      // Template Control view
+      const emailSettings=errBanner+`<div style="font-size:13px;font-weight:600;color:#374151;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="ti ti-mail-cog" style="font-size:16px;color:#6b7280"></i> Email Configuration</div>`+providerCard;
+
+      /* ── template control view ── */
       const TEMPLATES=[
-        {name:'ProductSalesReport',        placeholders:['{{link}}','{{organizationName}}','{{userName}}'],
-         subject:'[{{organizationName}}] Product Sales Report',
-         body:'Dear {{userName}},\n\nPlease find link which contains your entire Product Sales Report like you had requested.\n{{link}}'},
-        {name:'PaymentRawDataReport',      placeholders:['{{link}}','{{organizationName}}','{{userName}}'], subject:'[{{organizationName}}] Payment Raw Data Report', body:'Dear {{userName}},\n\nPlease find the link for Payment Raw Data Report.\n{{link}}'},
-        {name:'ReportDownload',            placeholders:['{{link}}','{{organizationName}}'], subject:'[{{organizationName}}] Report Ready', body:'Your report is ready. Download here: {{link}}'},
-        {name:'InventoryUploadReport',     placeholders:['{{link}}','{{organizationName}}'], subject:'[{{organizationName}}] Inventory Upload Report', body:'Your inventory upload report: {{link}}'},
-        {name:'CsvConsumptionErrorReport', placeholders:['{{link}}','{{organizationName}}'], subject:'[{{organizationName}}] CSV Error Report', body:'CSV consumption errors found. Details: {{link}}'},
-        {name:'CsvConsumptionReport',      placeholders:['{{link}}','{{organizationName}}'], subject:'[{{organizationName}}] CSV Consumption Report', body:'CSV consumption report: {{link}}'},
-        {name:'ReportWithoutAttachment',   placeholders:['{{link}}','{{organizationName}}'], subject:'[{{organizationName}}] Report', body:'Report available at: {{link}}'},
-        {name:'ReportWithAttachment',      placeholders:['{{link}}','{{organizationName}}'], subject:'[{{organizationName}}] Report (With Attachment)', body:'Report attached. Also available at: {{link}}'},
-        {name:'OneCsvConsumptionReport',   placeholders:['{{link}}','{{organizationName}}'], subject:'[{{organizationName}}] One CSV Report', body:'Your CSV report: {{link}}'},
-        {name:'InventorySheetReport',      placeholders:['{{link}}','{{organizationName}}'], subject:'[{{organizationName}}] Inventory Sheet', body:'Inventory sheet report: {{link}}'},
+        {name:'ProductSalesReport',        ph:['{{link}}','{{organizationName}}','{{userName}}'],subject:'[{{organizationName}}] Product Sales Report',body:'Dear {{userName}},\n\nPlease find the link which contains your entire Product Sales Report.\n{{link}}'},
+        {name:'PaymentRawDataReport',      ph:['{{link}}','{{organizationName}}','{{userName}}'],subject:'[{{organizationName}}] Payment Raw Data Report',body:'Dear {{userName}},\n\nPlease find the link for Payment Raw Data Report.\n{{link}}'},
+        {name:'ReportDownload',            ph:['{{link}}','{{organizationName}}'],subject:'[{{organizationName}}] Report Ready',body:'Your report is ready. Download here: {{link}}'},
+        {name:'InventoryUploadReport',     ph:['{{link}}','{{organizationName}}'],subject:'[{{organizationName}}] Inventory Upload Report',body:'Your inventory upload report: {{link}}'},
+        {name:'CsvConsumptionErrorReport', ph:['{{link}}','{{organizationName}}'],subject:'[{{organizationName}}] CSV Error Report',body:'CSV consumption errors found. Details: {{link}}'},
+        {name:'CsvConsumptionReport',      ph:['{{link}}','{{organizationName}}'],subject:'[{{organizationName}}] CSV Consumption Report',body:'CSV consumption report: {{link}}'},
+        {name:'ReportWithoutAttachment',   ph:['{{link}}','{{organizationName}}'],subject:'[{{organizationName}}] Report',body:'Report available at: {{link}}'},
+        {name:'ReportWithAttachment',      ph:['{{link}}','{{organizationName}}'],subject:'[{{organizationName}}] Report (With Attachment)',body:'Report attached. Also available at: {{link}}'},
+        {name:'OneCsvConsumptionReport',   ph:['{{link}}','{{organizationName}}'],subject:'[{{organizationName}}] One CSV Report',body:'Your CSV report: {{link}}'},
+        {name:'InventorySheetReport',      ph:['{{link}}','{{organizationName}}'],subject:'[{{organizationName}}] Inventory Sheet',body:'Inventory sheet report: {{link}}'},
       ];
 
-      const tplRows=TEMPLATES.map((t,i)=>`
-        <div style="border:1px solid #e5e7eb;border-radius:8px;margin-bottom:8px;overflow:hidden" id="tplRow${i}">
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;background:#fff"
-            onclick="var c=document.getElementById('tplBody${i}');var ic=document.getElementById('tplIc${i}');if(c.style.display==='none'){c.style.display='block';ic.style.transform='rotate(180deg)'}else{c.style.display='none';ic.style.transform=''}">
-            <div style="display:flex;align-items:center;gap:10px">
-              <i id="tplIc${i}" class="ti ti-chevron-down" style="font-size:14px;color:#9ca3af;transition:transform .2s"></i>
-              <span style="font-size:14px;color:#374151"><strong>Admin</strong> · ${t.name}</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px">
-              ${i===0?`<span style="font-size:12px;color:#6b7280;display:flex;align-items:center;gap:5px"><i class="ti ti-eye" style="font-size:13px"></i> View Preview</span>`:''}
-              ${toggle(true)}
-              <span style="font-size:12px;font-weight:700;color:#16a34a">ON</span>
-            </div>
-          </div>
-          <div id="tplBody${i}" style="display:${i===0?'block':'none'};padding:20px 24px;border-top:1px solid #f3f4f6;background:#fafafa">
-            <div style="margin-bottom:16px">
-              <div style="font-size:13px;color:#9ca3af;margin-bottom:8px">Available Placeholders:</div>
-              <div style="display:flex;gap:8px;flex-wrap:wrap;border:1px solid #e5e7eb;border-radius:6px;padding:12px;background:#fff">
-                ${t.placeholders.map(p=>`<span style="padding:4px 10px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:12.5px;color:#374151">${p}</span>`).join('')}
-              </div>
-            </div>
-            <div style="margin-bottom:16px">
-              <div style="font-size:13px;color:#6b7280;margin-bottom:8px">Subject</div>
-              <input value="${t.subject}" style="width:100%;padding:10px 14px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px;color:#374151;outline:none;font-family:inherit;box-sizing:border-box;background:#fff">
-            </div>
-            <div style="margin-bottom:16px">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-                <span style="font-size:13px;color:#6b7280">Body</span>
-                <button style="padding:5px 14px;border:1.5px dashed #d1d5db;border-radius:6px;background:#fff;font-size:12px;color:#374151;cursor:pointer">+ Add Image</button>
-              </div>
-              <div style="border:1px solid #e5e7eb;border-radius:6px;padding:16px;background:#fff;min-height:120px">
-                <div style="font-size:13.5px;color:#374151;white-space:pre-line;line-height:1.7">${t.body}</div>
-              </div>
-            </div>
-            <div style="display:flex;gap:10px;justify-content:flex-end">
-              <button style="padding:8px 20px;border:1.5px solid #d1d5db;border-radius:6px;background:#fff;font-size:13px;color:#374151;cursor:pointer">Reset To Default</button>
-              <button style="padding:8px 20px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Save Template</button>
-            </div>
-          </div>
-        </div>`).join('');
+      const tplRows=TEMPLATES.map((t,i)=>`<div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;overflow:hidden"><div onclick="(function(i){var b=document.getElementById('ctb'+i);var ic=document.getElementById('ctic'+i);b.style.display=b.style.display==='none'?'block':'none';ic.style.transform=b.style.display==='block'?'rotate(180deg)':''})(${i})" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer"><div style="display:flex;align-items:center;gap:12px"><i id="ctic${i}" class="ti ti-chevron-down" style="font-size:15px;color:#9ca3af;transition:transform .2s${i===0?';transform:rotate(180deg)':''}"></i><span style="font-size:11.5px;font-weight:700;color:#6b7280;background:#f3f4f6;padding:2px 9px;border-radius:4px">Admin</span><span style="font-size:13.5px;color:#111827;font-weight:500">${t.name}</span></div><div style="display:flex;align-items:center;gap:12px">${i===0?'<span style="font-size:12.5px;color:#3b82f6;display:flex;align-items:center;gap:4px;cursor:pointer"><i class="ti ti-eye" style="font-size:14px"></i> Preview</span>':''}${tog(true)}<span style="font-size:12px;font-weight:700;color:#16a34a;min-width:22px">ON</span></div></div><div id="ctb${i}" style="display:${i===0?'block':'none'};border-top:1px solid #f3f4f6;padding:20px 24px;background:#fafafa"><div style="margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:.06em;margin-bottom:10px;text-transform:uppercase">Placeholders</div><div style="display:flex;gap:8px;flex-wrap:wrap">${t.ph.map(p=>`<code style="padding:4px 10px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;font-size:12.5px;color:#0f172a">${p}</code>`).join('')}</div></div><div style="margin-bottom:14px"><div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:.06em;margin-bottom:8px;text-transform:uppercase">Subject</div><input value="${t.subject}" style="width:100%;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:13px;color:#374151;outline:none;font-family:inherit;box-sizing:border-box;background:#fff"></div><div style="margin-bottom:18px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:.06em;text-transform:uppercase">Body</div><button style="padding:5px 14px;border:1.5px dashed #d1d5db;border-radius:6px;background:#fff;font-size:12px;color:#6b7280;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-photo-plus" style="font-size:13px"></i> Add Image</button></div><div style="border:1.5px solid #e5e7eb;border-radius:8px;padding:16px;background:#fff;min-height:90px;font-size:13.5px;color:#374151;white-space:pre-line;line-height:1.7">${t.body}</div></div><div style="display:flex;gap:10px;justify-content:flex-end"><button style="padding:8px 20px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fff;font-size:13px;color:#6b7280;cursor:pointer">Reset to Default</button><button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">Save Template</button></div></div></div>`).join('');
 
-      const templateControl=`
-        <div style="display:flex;border-bottom:2px solid #e5e7eb;margin-bottom:20px">
-          ${['EMAIL','SMS','PUSH','IVR','WHATSAPP'].map((t,i)=>`<button style="padding:10px 20px;font-size:13.5px;font-weight:${i===0?'700':'400'};color:${i===0?'#111827':'#9ca3af'};border:none;background:none;cursor:pointer;border-bottom:2.5px solid ${i===0?'#16a34a':'transparent'};margin-bottom:-2px">${t}</button>`).join('')}
-        </div>
-        ${tplRows}`;
+      const templateControl=chanTabs(['EMAIL','SMS','PUSH','IVR','WHATSAPP'],0)+`<div style="margin-top:20px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div style="font-size:14px;font-weight:600;color:#374151">${TEMPLATES.length} Templates</div><div style="display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 14px"><i class="ti ti-search" style="font-size:14px;color:#9ca3af"></i><input placeholder="Search templates..." style="border:none;background:transparent;font-size:13px;color:#374151;outline:none;width:160px"></div></div>${tplRows}</div>`;
 
-      // Settings view (default) — tabs: Call SMS EMAIL WHATSAPP PUSH
-      const settingsTabs=`<div style="display:flex;border-bottom:2px solid #e5e7eb;margin-bottom:20px">
-        ${['Call','SMS','EMAIL','WHATSAPP','PUSH'].map((t,i)=>`<button style="padding:10px 20px;font-size:13.5px;font-weight:${i===2?'700':'400'};color:${i===2?'#111827':'#9ca3af'};border:none;background:none;cursor:pointer;border-bottom:2.5px solid ${i===2?'#16a34a':'transparent'};margin-bottom:-2px">${t}</button>`).join('')}
-      </div>`;
+      const settingsView=chanTabs(['Call','SMS','EMAIL','WHATSAPP','PUSH'],2)+`<div style="margin-top:24px;max-width:680px">`+emailSettings+`</div>`;
 
-      // Switch between settings and template control
-      window._commsView='settings';
+      window._commsView=window._commsView||'settings';
       window.switchCommsView=function(v){
         window._commsView=v;
-        document.getElementById('commsMain').innerHTML=v==='template'?templateControl:settingsTabs+emailSettings;
-        document.getElementById('commsTplBtn').style.background=v==='template'?'#f0fdf4':'#fff';
-        document.getElementById('commsTplBtn').style.borderColor=v==='template'?'#16a34a':'#d1d5db';
-        document.getElementById('commsTplBtn').style.color=v==='template'?'#16a34a':'#374151';
+        const btn=document.getElementById('commsTplBtn');
+        if(v==='template'){
+          document.getElementById('commsMain').innerHTML=templateControl;
+          btn.style.cssText+='background:#f0fdf4!important;border-color:#16a34a!important;color:#16a34a!important';
+          btn.innerHTML='<i class="ti ti-arrow-left" style="font-size:14px;margin-right:6px"></i>Back to Settings';
+        } else {
+          document.getElementById('commsMain').innerHTML=settingsView;
+          btn.style.cssText+='background:#fff!important;border-color:#e5e7eb!important;color:#374151!important';
+          btn.innerHTML='<i class="ti ti-template" style="font-size:14px;margin-right:6px"></i>Template Control';
+        }
       };
 
-      // Wire up Template Control button in topbar area — inject it inline
-      const tplBtn=`<div style="display:flex;justify-content:flex-end;margin-bottom:16px">
-        <button id="commsTplBtn" onclick="switchCommsView(window._commsView==='template'?'settings':'template')" style="padding:9px 18px;border:1.5px solid #d1d5db;border-radius:6px;background:#fff;font-size:13.5px;font-weight:500;color:#374151;cursor:pointer">Template Control</button>
-      </div>`;
+      const tplBtnHtml=`<div style="display:flex;justify-content:flex-end;margin-bottom:20px"><button id="commsTplBtn" onclick="switchCommsView(window._commsView==='template'?'settings':'template')" style="display:inline-flex;align-items:center;padding:9px 18px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fff;font-size:13.5px;font-weight:500;color:#374151;cursor:pointer"><i class="ti ti-template" style="font-size:14px;margin-right:6px"></i>Template Control</button></div>`;
 
-      scroll.innerHTML=pw+tplBtn+`<div id="commsMain">`+settingsTabs+emailSettings+`</div>`+'</div>';
+      scroll.innerHTML=pw+tplBtnHtml+`<div id="commsMain">`+(window._commsView==='template'?templateControl:settingsView)+`</div>`+'</div>';
     },
 
     // ── MOBILE APPS ───────────────────────────────────────────────────
     mobile: ()=>{
-      const inpRow=(lbl,val,ph,req)=>`<div style="border-bottom:1px solid #e5e7eb">
-        <div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:.07em;padding:12px 16px 2px">${lbl}${req?` <span style="color:#ef4444">*</span>`:''}</div>
-        <input value="${val||''}" placeholder="${ph||''}" style="width:100%;padding:4px 16px 12px;border:none;font-size:14px;color:${val?'#374151':'#9ca3af'};outline:none;font-family:inherit;background:transparent;box-sizing:border-box">
-      </div>`;
+      const tog=(on)=>`<div style="width:44px;height:24px;border-radius:12px;background:${on?'#16a34a':'#e5e7eb'};position:relative;cursor:pointer;flex-shrink:0"><span style="position:absolute;top:3px;left:${on?'23':'3'}px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span></div>`;
+      const fRow=(lbl,val,ph,req,hint)=>`<div style="padding:14px 18px;border-bottom:1px solid #f3f4f6"><div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:.06em;margin-bottom:6px">${lbl}${req?' <span style="color:#ef4444">*</span>':''}</div><input value="${val||''}" placeholder="${ph||''}" style="width:100%;border:none;background:transparent;font-size:14px;color:${val?'#374151':'#b0b0b0'};outline:none;font-family:inherit;box-sizing:border-box">${hint?`<div style="font-size:12px;color:#94a3b8;margin-top:5px">${hint}</div>`:''}</div>`;
 
-      // Android tab
-      const androidContent=`
-        <div style="border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-bottom:20px">
-          ${inpRow('NAME','','Enter the App Name',true)}
-          ${inpRow('BASE URL','','Enter the base url',true)}
-          ${inpRow('VARIANT NAME','','Auto-generated in camelCase from App Name')}
-          ${inpRow('GOOGLE DRIVE FOLDER URL','','That includes App Icons + Google Service JSON',true)}
-          ${inpRow('FIREBASE PROJECT ID','zopping-firebase-1234','',true)}
-        </div>
-        <div style="display:flex;gap:10px;margin-bottom:32px">
-          <button style="padding:9px 22px;border:1.5px solid #d1d5db;border-radius:6px;background:#fff;font-size:14px;color:#374151;cursor:pointer">Cancel</button>
-          <button style="padding:9px 22px;background:#9ca3af;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;opacity:.7">Submit Request</button>
-        </div>
-        <div style="text-align:center">
-          <button style="padding:10px 32px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Download APK</button>
-        </div>`;
+      const apkBanner=`<div style="display:flex;align-items:center;justify-content:space-between;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px 18px;margin-bottom:20px"><div style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;border-radius:10px;background:#dcfce7;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-device-mobile-check" style="font-size:20px;color:#16a34a"></i></div><div><div style="font-size:14px;font-weight:700;color:#14532d">APK Ready — v2.4.1</div><div style="font-size:12.5px;color:#166534;margin-top:2px">Built on 15 Jun 2026 · zopping-firebase-1234</div></div></div><button style="padding:9px 18px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ti ti-download" style="font-size:14px"></i> Download APK</button></div>`;
 
-      // iOS tab — split layout with phone preview
-      const iosContent=`
-        <div style="border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;display:grid;grid-template-columns:1fr auto;margin-bottom:20px">
-          <div>
-            ${inpRow('APP NAME','','Enter your app\'s name')}
-            <div style="padding:16px 16px 0">
-              <div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:.07em;margin-bottom:10px">UPLOAD YOUR SQUARE APP ICON</div>
-              <div style="border:2px dashed #e5e7eb;border-radius:8px;padding:32px 16px;text-align:center;cursor:pointer;background:#fafafa;width:160px">
-                <i class="ti ti-device-mobile" style="font-size:36px;color:#d1d5db;display:block;margin-bottom:6px"></i>
-                <div style="font-size:12.5px;color:#9ca3af;line-height:1.5">Click here to upload or drag your App icon</div>
-              </div>
-              <div style="font-size:11.5px;color:#6b7280;margin-top:10px">Icon should be square (not circular) and should be atleast 1024x1024px and maximum of 5MB</div>
-              <div style="font-size:12px;color:#ef4444;margin-top:3px">Supported formats: jpeg/jpg and png</div>
-            </div>
-          </div>
-          <div style="background:#f3f4f6;width:280px;display:flex;align-items:center;justify-content:center;padding:30px">
-            <svg viewBox="0 0 160 300" width="160" height="300" xmlns="http://www.w3.org/2000/svg">
-              <rect x="4" y="0" width="152" height="300" rx="24" ry="24" fill="#111827" stroke="#374151" stroke-width="1"/>
-              <rect x="10" y="6" width="140" height="288" rx="20" ry="20" fill="#f9fafb"/>
-              <!-- notch -->
-              <rect x="55" y="6" width="50" height="10" rx="5" fill="#111827"/>
-              <!-- app icon placeholder -->
-              <rect x="28" y="40" width="38" height="38" rx="8" fill="#e5e7eb"/>
-              <!-- dock -->
-              <rect x="20" y="258" width="32" height="18" rx="6" fill="#e5e7eb"/>
-              <rect x="64" y="258" width="32" height="18" rx="6" fill="#e5e7eb"/>
-              <rect x="108" y="258" width="32" height="18" rx="6" fill="#e5e7eb"/>
-            </svg>
-          </div>
-        </div>
-        <div style="display:flex;gap:10px">
-          <button style="padding:9px 28px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Update</button>
-          <button style="padding:9px 22px;border:1.5px solid #d1d5db;border-radius:6px;background:#fff;font-size:14px;color:#374151;cursor:pointer">Cancel</button>
-        </div>`;
+      const androidForm=`<div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:20px">${fRow('APP NAME','','Enter the app name',true)}${fRow('BASE URL','','e.g. https://yourstore.com',true)}<div style="display:grid;grid-template-columns:1fr 1fr">${fRow('VARIANT NAME','','Auto-generated in camelCase','','')}${fRow('FIREBASE PROJECT ID','zopping-firebase-1234','',true,'')}</div>${fRow('GOOGLE DRIVE FOLDER URL','','Folder URL containing App Icons + google-services.json',true,'Must include App Icons, google-services.json and GoogleService-Info.plist')}</div>`;
+
+      const androidContent=apkBanner+androidForm+`<div style="display:flex;gap:10px"><button style="padding:10px 26px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer">Submit Request</button><button style="padding:10px 22px;background:transparent;color:#6b7280;border:1.5px solid #e5e7eb;border-radius:8px;font-size:14px;cursor:pointer">Cancel</button></div>`;
+
+      const phoneSvg=`<svg viewBox="0 0 180 340" width="160" height="300" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e293b"/><stop offset="100%" stop-color="#0f172a"/></linearGradient></defs><rect x="2" y="2" width="176" height="336" rx="32" fill="url(#pg)" stroke="#334155" stroke-width="2"/><rect x="8" y="8" width="164" height="324" rx="28" fill="#f8fafc"/><rect x="62" y="14" width="56" height="14" rx="7" fill="#0f172a"/><text x="18" y="38" font-size="9" fill="#64748b" font-family="sans-serif">9:41</text><rect x="62" y="72" width="56" height="56" rx="14" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1"/><text x="90" y="106" font-size="8" fill="#94a3b8" text-anchor="middle" font-family="sans-serif">Icon</text><text x="90" y="145" font-size="11" fill="#374151" text-anchor="middle" font-family="sans-serif" font-weight="600">App Name</text><rect x="20" y="162" width="36" height="36" rx="9" fill="#e2e8f0"/><rect x="72" y="162" width="36" height="36" rx="9" fill="#dbeafe"/><rect x="124" y="162" width="36" height="36" rx="9" fill="#dcfce7"/><rect x="20" y="210" width="36" height="36" rx="9" fill="#fce7f3"/><rect x="72" y="210" width="36" height="36" rx="9" fill="#fef3c7"/><rect x="124" y="210" width="36" height="36" rx="9" fill="#ede9fe"/><rect x="20" y="258" width="36" height="36" rx="9" fill="#e2e8f0"/><rect x="72" y="258" width="36" height="36" rx="9" fill="#e2e8f0"/><rect x="124" y="258" width="36" height="36" rx="9" fill="#e2e8f0"/><rect x="16" y="302" width="148" height="1" rx="1" fill="#e2e8f0"/><rect x="58" y="316" width="64" height="4" rx="2" fill="#cbd5e1"/></svg>`;
+
+      const iosContent=`<div style="display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start"><div><div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:16px">${fRow('APP NAME','','Enter your app name',false,'')}</div><div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:.06em;margin-bottom:14px">UPLOAD SQUARE APP ICON</div><div style="display:flex;gap:16px;align-items:flex-start"><div style="border:2px dashed #d1d5db;border-radius:14px;width:110px;height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#fafafa;flex-shrink:0"><i class="ti ti-photo-up" style="font-size:30px;color:#d1d5db;margin-bottom:6px"></i><div style="font-size:10.5px;color:#9ca3af;text-align:center;line-height:1.4">Click or drag<br>to upload</div></div><div><div style="font-size:12.5px;color:#6b7280;line-height:1.7;margin-bottom:10px">Must be square, at least <strong>1024×1024px</strong>, max 5MB.</div><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-size:11.5px;background:#f3f4f6;color:#6b7280;padding:3px 10px;border-radius:4px">JPEG</span><span style="font-size:11.5px;background:#f3f4f6;color:#6b7280;padding:3px 10px;border-radius:4px">JPG</span><span style="font-size:11.5px;background:#f3f4f6;color:#6b7280;padding:3px 10px;border-radius:4px">PNG</span></div></div></div></div><div style="display:flex;gap:10px"><button style="padding:10px 26px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer">Update</button><button style="padding:10px 22px;background:transparent;color:#6b7280;border:1.5px solid #e5e7eb;border-radius:8px;font-size:14px;cursor:pointer">Cancel</button></div></div><div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:16px;padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:10px"><div style="font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:.06em">LIVE PREVIEW</div>${phoneSvg}</div></div>`;
 
       window.switchMobileTab=function(tab){
-        document.getElementById('mobileTabAndroid').style.cssText+=tab==='android'?';font-weight:700;color:#111827;border-bottom-color:#16a34a':';font-weight:400;color:#9ca3af;border-bottom-color:transparent';
-        document.getElementById('mobileTabIos').style.cssText+=tab==='ios'?';font-weight:700;color:#111827;border-bottom-color:#16a34a':';font-weight:400;color:#9ca3af;border-bottom-color:transparent';
+        ['android','ios'].forEach(t=>{
+          const el=document.getElementById('mTab_'+t);
+          if(el){el.style.fontWeight=t===tab?'700':'500';el.style.color=t===tab?'#16a34a':'#6b7280';el.style.borderBottomColor=t===tab?'#16a34a':'transparent';}
+        });
         document.getElementById('mobileContent').innerHTML=tab==='android'?androidContent:iosContent;
       };
 
-      const tabs=`<div style="display:flex;border-bottom:2px solid #e5e7eb;margin-bottom:24px">
-        <button id="mobileTabAndroid" onclick="switchMobileTab('android')" style="display:flex;align-items:center;gap:7px;padding:10px 22px;font-size:14px;font-weight:700;color:#111827;border:none;background:none;cursor:pointer;border-bottom:2.5px solid #16a34a;margin-bottom:-2px">
-          <svg width="16" height="16" viewBox="0 0 24 24"><path d="M17.523 15.341l1.111 1.924a.5.5 0 01-.866.5l-1.124-1.947A7.96 7.96 0 0112 16.5a7.96 7.96 0 01-4.644-1.482l-1.124 1.947a.5.5 0 01-.866-.5l1.111-1.924A7.978 7.978 0 014 9.5h16a7.978 7.978 0 01-2.477 5.841zM8.5 11.5a1 1 0 100 2 1 1 0 000-2zm7 0a1 1 0 100 2 1 1 0 000-2zM8.167 5.765L6.929 3.684a.5.5 0 01.866-.5l1.25 2.165A7.97 7.97 0 0112 4.975a7.97 7.97 0 012.955.374l1.25-2.165a.5.5 0 01.866.5L15.833 5.765A7.99 7.99 0 0120 9.5H4a7.99 7.99 0 014.167-3.735z" fill="#34d399"/></svg>
-          Android
-        </button>
-        <button id="mobileTabIos" onclick="switchMobileTab('ios')" style="display:flex;align-items:center;gap:7px;padding:10px 22px;font-size:14px;font-weight:400;color:#9ca3af;border:none;background:none;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-2px">
-          <svg width="16" height="16" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" fill="#3b82f6"/></svg>
-          IOS
-        </button>
-      </div>
-      <div id="mobileContent">${androidContent}</div>`;
+      const tabBar=`<div style="display:flex;border-bottom:2px solid #e5e7eb;margin-bottom:24px"><button id="mTab_android" onclick="switchMobileTab('android')" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:none;background:none;cursor:pointer;font-size:14px;font-weight:700;color:#16a34a;border-bottom:2.5px solid #16a34a;margin-bottom:-2px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#34d399"><path d="M17.523 15.341l1.111 1.924a.5.5 0 01-.866.5l-1.124-1.947A7.96 7.96 0 0112 16.5a7.96 7.96 0 01-4.644-1.482l-1.124 1.947a.5.5 0 01-.866-.5l1.111-1.924A7.978 7.978 0 014 9.5h16a7.978 7.978 0 01-2.477 5.841zM8.5 11.5a1 1 0 100 2 1 1 0 000-2zm7 0a1 1 0 100 2 1 1 0 000-2zM8.167 5.765L6.929 3.684a.5.5 0 01.866-.5l1.25 2.165A7.97 7.97 0 0112 4.975a7.97 7.97 0 012.955.374l1.25-2.165a.5.5 0 01.866.5L15.833 5.765A7.99 7.99 0 0120 9.5H4a7.99 7.99 0 014.167-3.735z"/></svg>Android</button><button id="mTab_ios" onclick="switchMobileTab('ios')" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:none;background:none;cursor:pointer;font-size:14px;font-weight:500;color:#6b7280;border-bottom:2.5px solid transparent;margin-bottom:-2px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#94a3b8"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>iOS</button></div>`;
 
-      scroll.innerHTML=pw+tabs+'</div>';
+      scroll.innerHTML=pw+tabBar+'<div id="mobileContent">'+androidContent+'</div>'+'</div>';
     },
 
     // ── API KEYS & WEBHOOKS ───────────────────────────────────────────
     api: ()=>{
-      const field=(lbl,val,hint)=>`<div style="margin-bottom:20px">
-        <div style="font-size:10.5px;font-weight:700;color:#9ca3af;letter-spacing:.07em;margin-bottom:8px">${lbl}</div>
-        <input value="${val}" style="width:100%;padding:12px 14px;border:1px solid #e5e7eb;border-radius:6px;font-size:13.5px;color:#374151;outline:none;font-family:inherit;box-sizing:border-box;background:#fff">
-        ${hint?`<div style="font-size:12.5px;color:#16a34a;margin-top:6px">${hint}</div>`:''}
-      </div>`;
+      const copyBtn=`<button onclick="(function(b){var p=b.textContent;b.textContent='Copied!';b.style.background='#f0fdf4';b.style.color='#16a34a';setTimeout(function(){b.textContent=p;b.style.background='#f3f4f6';b.style.color='#6b7280'},2000)})(this)" style="padding:9px 16px;background:#f3f4f6;color:#6b7280;border:1px solid #e5e7eb;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:5px"><i class="ti ti-copy" style="font-size:13px"></i>Copy</button>`;
+      const apiField=(lbl,val,hint)=>`<div style="margin-bottom:${hint?'20':'0'}px"><div style="font-size:13px;font-weight:600;color:#374151;margin-bottom:8px">${lbl}</div><div style="display:flex;gap:8px;align-items:center;margin-bottom:${hint?'8':'0'}px"><input value="${val}" style="flex:1;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:13px;color:#374151;outline:none;font-family:monospace;box-sizing:border-box;background:#fff">${copyBtn}</div>${hint?`<div style="display:flex;align-items:flex-start;gap:6px"><i class="ti ti-info-circle" style="font-size:14px;color:#6b7280;margin-top:1px;flex-shrink:0"></i><div style="font-size:12.5px;color:#6b7280;line-height:1.55">${hint}</div></div>`:''}</div>`;
+      const section=(icon,color,bg,title,sub,body)=>`<div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.04)"><div style="display:flex;align-items:center;gap:14px;padding:18px 22px;border-bottom:1px solid #f3f4f6;background:#fafafa"><div style="width:44px;height:44px;border-radius:10px;background:${bg};display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${icon}" style="font-size:21px;color:${color}"></i></div><div><div style="font-size:15px;font-weight:700;color:#111827">${title}</div><div style="font-size:12.5px;color:#6b7280;margin-top:2px">${sub}</div></div></div><div style="padding:22px">${body}</div></div>`;
 
-      const content=`<div style="max-width:600px">
-        ${field('GOOGLE MAPS API KEY','AIzaSyCMb88WYbz6you-SWsCjEPQzR_fC2Jf73I',
-          'Navigate to Credentials page on your Google Maps Platform account')}
-        ${field('GOOGLE CAPTCHA SITE KEY','6LdcPzQtAAAAAlQ66-9x-bWb9UENP6o9CPQMQCpS',
-          'On your Google reCaptcha Admin Console, navigate to Settings → reCAPTCHA keys')}
-        ${field('GOOGLE CAPTCHA SECRET KEY','6LdcPzQtAAAAEwCR9FclNssSCPdHO3kzLK2uF9c',
-          'On your Google reCaptcha Admin Console, navigate to Settings → reCAPTCHA keys')}
-        <button style="padding:10px 28px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
+      const content=`<div style="max-width:660px">
+        ${section('ti-map-pin','#2563eb','#dbeafe','Google Maps Platform','Enables address autocomplete and map features in your store',
+          apiField('API Key','AIzaSyCMb88WYbz6you-SWsCjEPQzR_fC2Jf73I','Navigate to the Credentials page on your Google Maps Platform account to find or create your API key.')
+        )}
+        ${section('ti-shield-check','#dc2626','#fee2e2','Google reCAPTCHA','Protects your storefront from spam and automated bot abuse',
+          apiField('Site Key','6LdcPzQtAAAAAlQ66-9x-bWb9UENP6o9CPQMQCpS','On your Google reCAPTCHA Admin Console, navigate to Settings → reCAPTCHA keys to find your Site Key.')+
+          apiField('Secret Key','6LdcPzQtAAAAEwCR9FclNssSCPdHO3kzLK2uF9c','On your Google reCAPTCHA Admin Console, navigate to Settings → reCAPTCHA keys to find your Secret Key.')
+        )}
+        <div style="display:flex;gap:10px;padding-top:4px">
+          <button style="padding:10px 28px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer">Save Changes</button>
+          <button style="padding:10px 22px;background:transparent;color:#6b7280;border:1.5px solid #e5e7eb;border-radius:8px;font-size:14px;cursor:pointer">Cancel</button>
+        </div>
       </div>`;
 
       scroll.innerHTML=pw+content+'</div>';
@@ -5847,47 +5729,46 @@ function renderFilled(scroll){
     ext: ()=>{
       const TABS=['All','Installed','Delivery','Catalogue','Marketing','Customer Management','Staff Management','Online Store','Payments','Analytics','External Integration'];
       window._extTab=window._extTab||'All';
-      /* [name, desc, isPremium, btns[], cats[]] */
       const EXT=[
         ['Order Gating','Order Gating allows merchants to review and approve every incoming order before it is processed.',0,['I'],['Delivery']],
         ['Pricing Tier','Pricing Tier lets merchants override product pricing at order time based on customer segments (via customer tags) and purchase quantity brackets.',0,['I'],['Catalogue']],
         ['Global Nomenclature','Enable a configurable global nomenclature mapping between system-defined order statuses and organization-specific display labels.',0,['U','C'],['Online Store']],
         ['Dynamic Hero Banner','Enhance your storefront with a Dynamic Hero Banner section.',1,['P'],['Marketing','Online Store']],
         ['Order Accept & Reject With Hop','Customize how orders are handled after assignment.',1,['P'],['Delivery']],
-        ['Sales Location Mapping','Location Mapping helps you assign areas such as villages, blocks, or zones to staff or operational codes. This makes it clear who is responsible for which location.',1,['P'],['Delivery']],
+        ['Sales Location Mapping','Location Mapping helps you assign areas such as villages, blocks, or zones to staff or operational codes.',1,['P'],['Delivery']],
         ['B2B Management','B2B Set-up enables advanced B2B capabilities for your store, allowing you to onboard and manage business customers with complete control over pricing, compliance, and order visibility.',1,['P'],['Online Store']],
         ['MIS Report','It will automatically generate performance reports for each store and share them with store managers, while keeping organization owners in the loop.',1,['U'],['Analytics']],
-        ['Endless Aisle','The Endless Aisle extension enables in-store tablets or kiosks to access the complete online catalogue, allowing shoppers to browse, order, and pay for both in-stock and out-of-stock items directly from the store.',1,['P'],['Online Store']],
+        ['Endless Aisle','The Endless Aisle extension enables in-store tablets or kiosks to access the complete online catalogue, allowing shoppers to browse, order, and pay for both in-stock and out-of-stock items.',1,['P'],['Online Store']],
         ['Inventory Count','With real-time updates and tracking, it ensures stock levels remain accurate, reducing errors and improving operational efficiency.',1,['P'],['Catalogue']],
         ['VIP Membership Plan','Enable a powerful loyalty program to drive repeat orders and increase customer retention.',1,['P'],['Marketing','Customer Management']],
-        ['Rider Earnings &amp; Incentives','Set up dynamic earning rules and reward milestones to boost rider productivity and satisfaction.',0,['I'],['Delivery','Staff Management']],
-        ['Facebook SDK','Integrate your storefront with Meta\'s SDK for enhanced tracking and analytics.',1,['P'],['External Integration','Analytics']],
+        ['Rider Earnings & Incentives','Set up dynamic earning rules and reward milestones to boost rider productivity and satisfaction.',0,['I'],['Delivery','Staff Management']],
+        ['Facebook SDK','Integrate your storefront with Meta SDK for enhanced tracking and analytics.',1,['P'],['External Integration','Analytics']],
         ['Customer Wishlist','Allow your customers to save products for future purchase with the Wishlist extension.',0,['I'],['Customer Management']],
         ['Customer Sign Up','Customize how customers sign up or log in to your storefront.',0,['U','C'],['Customer Management']],
         ['OneHashCal Integration','Integrate appointment scheduling with oneHashCal for a seamless and hassle-free online booking experience.',0,['I'],['External Integration']],
         ['TidyCal Integration','Integrate appointment scheduling with TidyCal for a seamless and hassle-free online booking experience.',0,['I'],['External Integration']],
-        ['Customer Credit Support','Set up Credit as a payment option so users can buy products now and conveniently pay later, within a repayment period that aligns with your business\'s credit policy.',0,['I'],['Payments','Customer Management']],
+        ['Customer Credit Support','Set up Credit as a payment option so users can buy products now and conveniently pay later.',0,['I'],['Payments','Customer Management']],
         ['Third Party Integration','Easily integrate with third party to transfer the data.',0,['U','C'],['External Integration']],
         ['Keyword History','This feature helps track the words users type in the search bar on the website and mobile app.',1,['U'],['Marketing','Analytics']],
         ['Google Tag Manager','Integrate Google Tag Manager with Zopping to manage tracking tags effortlessly.',0,['U','C'],['External Integration','Analytics']],
-        ['Trending Searches','Highlight the most popular searches on your platform to keep customers engaged and provide quick access to in-demand products or categories.',1,['P'],['Marketing']],
+        ['Trending Searches','Highlight the most popular searches on your platform to keep customers engaged and provide quick access to in-demand products.',1,['P'],['Marketing']],
         ['Notify Me','Notify Me lets you know when out-of-stock items are back and ready to order.',0,['I'],['Customer Management']],
         ['InstagramFeed','This feature allows you to display your Instagram posts directly on your website.',0,['I'],['Online Store','Marketing']],
         ['NewsLetter Subscription','Stay updated with the latest offers, promotions, and product launches by subscribing to our newsletter.',0,['I'],['Marketing','Customer Management']],
         ['User Activity Logs','The User Logs feature provides a centralized view of all user activities within the platform.',0,['U','C'],['Analytics','Customer Management']],
         ['Whatmore','Whatmore.ai is a platform that enables brands to create interactive and shoppable video content for e-commerce.',0,['I'],['Marketing','Online Store']],
-        ['OMS and WMS Management','Streamline your existing and new order processing methods, configure pre-integrated service providers and user-friendly plugins such as Unicommerce and similar solutions.',0,['I'],['Delivery','External Integration']],
-        ['Product Bundles','Enhance your customers\' shopping experience with curated product bundles and exclusive discounts, boosting your average order value.',0,['I'],['Catalogue']],
+        ['OMS and WMS Management','Streamline your existing and new order processing methods, configure pre-integrated service providers and user-friendly plugins.',0,['I'],['Delivery','External Integration']],
+        ['Product Bundles','Enhance your customers shopping experience with curated product bundles and exclusive discounts, boosting your average order value.',0,['I'],['Catalogue']],
         ['Recipe Page Generator','This extension allows you to create engaging and informative recipe pages within your online store.',0,['I'],['Catalogue','Online Store']],
         ['Support for Free Delivery','Boost your sales by offering free delivery on your products.',0,['I'],['Delivery','Marketing']],
-        ['Digital Products','Sell digital products like ebooks, music, photos, videos, digital arts, files, software licenses, etc on your online store.',0,['I'],['Catalogue']],
+        ['Digital Products','Sell digital products like ebooks, music, photos, videos, digital arts, files, software licenses on your online store.',0,['I'],['Catalogue']],
         ['Subscription Products','Easily set up products that customers love to buy on a regular basis.',0,['I'],['Catalogue']],
-        ['Low Stock Alerts','Don\'t lose sales or credibility when an item goes out of stock before you notice.',0,['I'],['Catalogue']],
+        ['Low Stock Alerts','Do not lose sales or credibility when an item goes out of stock before you notice.',0,['I'],['Catalogue']],
         ['Product Restrictions','Set purchase limits on your products — control how many units a customer can buy within a specific time period.',0,['U','C'],['Catalogue']],
-        ['Ticket Management','This extension provides your customers with an option to seamlessly raise tickets against their orders, fostering effective communication and issue resolution.',0,['I'],['Customer Management']],
+        ['Ticket Management','This extension provides your customers with an option to seamlessly raise tickets against their orders.',0,['I'],['Customer Management']],
         ['Hub Trip Support','This extension helps you manage and track the orders by assigning a new order status called At Hub.',0,['I'],['Delivery']],
         ['Referral Management','Grow your customers by extending referral benefits to your existing customers.',0,['I'],['Marketing','Customer Management']],
-        ['Google Merchant Center','Integrate your Google Merchant Center account with your Zopping account and upload your Zopping catalog to Google Merchant Center with the simple click of a button.',0,['I'],['External Integration','Marketing']],
+        ['Google Merchant Center','Integrate your Google Merchant Center account with your Zopping account and upload your catalog with the simple click of a button.',0,['I'],['External Integration','Marketing']],
         ['Unique Coupon Generator','By using this extension, you will be able to create a desired number of unique coupons with the click of a button.',0,['U'],['Marketing']],
         ['Marketplace','Convert your current online store to function as an online marketplace.',0,['I'],['Online Store']],
         ['Reviews and Ratings','Provide an option for your customers to rate and review your products and orders.',0,['I'],['Customer Management']],
@@ -5895,17 +5776,17 @@ function renderFilled(scroll){
         ['Leave Management','Stores that have several employees can use this extension to manage the leaves of their employees.',0,['I'],['Staff Management']],
         ['Marketing Banners','Create and publish multilingual marketing banners on your online store.',0,['U','M'],['Marketing','Online Store']],
         ['Offers Management','Run sales promotions on your online store by choosing from over 10+ offers including bulk purchases, product bundling and BOGO.',0,['U','M'],['Marketing']],
-        ['Reports and Analytics','Monitor the performance of your online store with our in-depth reports covering all aspects including sales, operations, inventory and catalogue.',0,['U'],['Analytics']],
+        ['Reports and Analytics','Monitor the performance of your online store with our in-depth reports covering sales, operations, inventory and catalogue.',0,['U'],['Analytics']],
         ['Abandoned Cart','Remind your customers to finish their purchase if they abandon their cart after adding items to it.',0,['I'],['Marketing','Customer Management']],
         ['Facebook Analytics','Insert Facebook Pixel on your website and app to measure, target and promote your store and products.',0,['I'],['Analytics','External Integration']],
         ['Shipping and Courier','Integrate with 3rd party courier services like ShipRocket and Dunzo.',0,['U','C'],['Delivery','External Integration']],
         ['Customer Wallet Support','Instantly set up your own wallet and give your customers an option to recharge.',0,['U','C'],['Payments','Customer Management']],
         ['Personalized Search Results','Personalise search results and product listing for your customers based on their purchase history.',1,['P'],['Marketing','Catalogue']],
         ['Multiple And Partial Order Picking','Allow your delivery agents to pick multiple or partial orders or a combination of both.',0,['I'],['Delivery']],
-        ['Password Policy','Configure your customers\' password format to improve the website security and enable a secure online shopping experience.',0,['I'],['Online Store','Customer Management']],
-        ['Delivery/Pick-up Slot Charges','Influence customer behaviour by setting up surcharge or discount for Delivery/Pick-up of your choice.',0,['I'],['Delivery','Payments']],
-        ['Website Pages Scheduling','Set up pages of your website / apps in advance and schedule them to replace the existing pages automatically.',0,['I'],['Online Store']],
-        ['Multiple Languages Support','Enable your website / apps to support multiple languages.',0,['I'],['Online Store']],
+        ['Password Policy','Configure your customers password format to improve the website security and enable a secure online shopping experience.',0,['I'],['Online Store','Customer Management']],
+        ['Delivery Slot Charges','Influence customer behaviour by setting up surcharge or discount for Delivery/Pick-up of your choice.',0,['I'],['Delivery','Payments']],
+        ['Website Pages Scheduling','Set up pages of your website/apps in advance and schedule them to replace the existing pages automatically.',0,['I'],['Online Store']],
+        ['Multiple Languages Support','Enable your website and apps to support multiple languages.',0,['I'],['Online Store']],
         ['Pre-order Support','Sell products that need X days to be procured.',0,['I'],['Catalogue']],
         ['Bulk-order Support','Set Bulk-order limits by products.',0,['I'],['Catalogue']],
         ['Slot Capacity Set-up','Set the number of orders that you can take in specific slots.',0,['U','C'],['Delivery']],
@@ -5913,16 +5794,16 @@ function renderFilled(scroll){
         ['Search Results Control','Fix the product(s) to be displayed in the search results for a set of keywords.',1,['U','C'],['Catalogue','Marketing']],
         ['Tags For Customer Segmentation','Create customized customer segments and assign them tags.',0,['U','C'],['Customer Management','Marketing']],
         ['Order Returns Support','Manage return of item(s) or entire order.',0,['U','C'],['Delivery']],
-        ['Delivery / Pick-up Slot Set-up','Set up slots for Delivery and Pick up that work for your business.',0,['U','C'],['Delivery']],
-        ['Custom Fields','Add additional custom fields to various entities such as products, orders and customer signup pages to capture additional information.',0,['U','C'],['Catalogue','Online Store']],
-        ['SEO Optimization','Increase your website\'s rank in the organic web search results by setting customized title, description and keywords for each page.',0,['U','C'],['Online Store','Marketing']],
+        ['Delivery Slot Set-up','Set up slots for Delivery and Pick up that work for your business.',0,['U','C'],['Delivery']],
+        ['Custom Fields','Add additional custom fields to various entities such as products, orders and customer signup pages.',0,['U','C'],['Catalogue','Online Store']],
+        ['SEO Optimization','Increase your website rank in the organic web search results by setting customized title, description and keywords.',0,['U','C'],['Online Store','Marketing']],
         ['Stock Management','Keep track of stock count and download stock report on demand.',0,['U','C'],['Catalogue']],
         ['Online Payment','Receive online payments by easily connecting with your preferred payment gateway.',0,['U','C'],['Payments']],
         ['Sold-By-Weight Product Support','Handle products that are sold by weight (loose products).',0,['U','C'],['Catalogue']],
         ['Tawk.to Integration','Enable Tawk.to chat support to your website and apps.',0,['I'],['External Integration','Customer Management']],
-        ['Marketing Campaigns','Create and run marketing campaigns via Email/ SMS/ App notifications.',0,['U','M'],['Marketing']],
+        ['Marketing Campaigns','Create and run marketing campaigns via Email, SMS and App notifications.',0,['U','M'],['Marketing']],
         ['Delivery Support','Support the planning, dispatch, delivery and rejection of orders.',0,['U','C'],['Delivery']],
-        ['Google Analytics','Insert your Google Analytics ID on your website to track and analyze the traffic on your website using Google Analytics.',0,['U','C'],['Analytics','External Integration']],
+        ['Google Analytics','Insert your Google Analytics ID on your website to track and analyze traffic.',0,['U','C'],['Analytics','External Integration']],
         ['Product Substitution','Improve your fill-rate by sending substitute products in case the originally ordered product is unavailable.',0,['U','C'],['Delivery','Catalogue']],
         ['Delivery Area Setup','Define the locations or boundaries where your store(s) can deliver.',0,['U','C'],['Delivery']],
         ['Product Tag Support','Create custom tags for your products.',0,['U','M'],['Catalogue']],
@@ -5932,45 +5813,50 @@ function renderFilled(scroll){
         ['Brand Support','Enable your customers to search, filter and find products by brand names.',0,['U','M'],['Catalogue']],
       ];
 
-      const iconOf=n=>{
-        const m={'Order Gating':'ti-shield-check','Pricing Tier':'ti-tag','Global Nomenclature':'ti-arrows-exchange','Dynamic Hero Banner':'ti-photo','Order Accept & Reject With Hop':'ti-package','Sales Location Mapping':'ti-map-pin','B2B Management':'ti-building','MIS Report':'ti-chart-bar','Endless Aisle':'ti-device-tablet','Inventory Count':'ti-clipboard-list','VIP Membership Plan':'ti-crown','Rider Earnings &amp; Incentives':'ti-motorbike','Facebook SDK':'ti-brand-facebook','Customer Wishlist':'ti-heart','Customer Sign Up':'ti-user-plus','OneHashCal Integration':'ti-calendar','TidyCal Integration':'ti-calendar-event','Customer Credit Support':'ti-credit-card','Third Party Integration':'ti-arrows-right-left','Keyword History':'ti-history','Google Tag Manager':'ti-tag','Trending Searches':'ti-trending-up','Notify Me':'ti-bell','InstagramFeed':'ti-brand-instagram','NewsLetter Subscription':'ti-mail','User Activity Logs':'ti-activity','Whatmore':'ti-video','OMS and WMS Management':'ti-truck','Product Bundles':'ti-box-multiple','Recipe Page Generator':'ti-chef-hat','Support for Free Delivery':'ti-package-export','Digital Products':'ti-download','Subscription Products':'ti-repeat','Low Stock Alerts':'ti-alert-triangle','Product Restrictions':'ti-lock','Ticket Management':'ti-ticket','Hub Trip Support':'ti-route','Referral Management':'ti-share','Google Merchant Center':'ti-shopping-cart','Unique Coupon Generator':'ti-discount','Marketplace':'ti-store','Reviews and Ratings':'ti-star','Customer Groups':'ti-users-group','Leave Management':'ti-calendar-off','Marketing Banners':'ti-ad','Offers Management':'ti-percentage','Reports and Analytics':'ti-report-analytics','Abandoned Cart':'ti-shopping-cart-off','Facebook Analytics':'ti-brand-facebook','Shipping and Courier':'ti-truck-delivery','Customer Wallet Support':'ti-wallet','Personalized Search Results':'ti-search','Multiple And Partial Order Picking':'ti-packages','Password Policy':'ti-lock-password','Delivery/Pick-up Slot Charges':'ti-currency-dollar','Website Pages Scheduling':'ti-calendar','Multiple Languages Support':'ti-language','Pre-order Support':'ti-clock','Bulk-order Support':'ti-clipboard-list','Slot Capacity Set-up':'ti-calendar-stats','Stock Buffer Set-up':'ti-package','Search Results Control':'ti-search','Tags For Customer Segmentation':'ti-tags','Order Returns Support':'ti-arrow-back-up','Delivery / Pick-up Slot Set-up':'ti-clock-2','Custom Fields':'ti-forms','SEO Optimization':'ti-world-search','Stock Management':'ti-chart-line','Online Payment':'ti-credit-card','Sold-By-Weight Product Support':'ti-scale','Tawk.to Integration':'ti-message-circle','Marketing Campaigns':'ti-speakerphone','Delivery Support':'ti-truck','Google Analytics':'ti-chart-dots','Product Substitution':'ti-arrows-exchange','Delivery Area Setup':'ti-map','Product Tag Support':'ti-tag','Pick Pack Support':'ti-package','Product Variant Support':'ti-color-swatch','Multi User Support':'ti-users','Brand Support':'ti-certificate'};
-        return m[n]||'ti-puzzle';
-      };
+      const iconOf=n=>{const m={'Order Gating':'ti-shield-check','Pricing Tier':'ti-tag','Global Nomenclature':'ti-arrows-exchange','Dynamic Hero Banner':'ti-photo','Order Accept & Reject With Hop':'ti-package-export','Sales Location Mapping':'ti-map-pin','B2B Management':'ti-building','MIS Report':'ti-chart-bar','Endless Aisle':'ti-device-tablet','Inventory Count':'ti-clipboard-list','VIP Membership Plan':'ti-crown','Rider Earnings & Incentives':'ti-motorbike','Facebook SDK':'ti-brand-facebook','Customer Wishlist':'ti-heart','Customer Sign Up':'ti-user-plus','OneHashCal Integration':'ti-calendar','TidyCal Integration':'ti-calendar-event','Customer Credit Support':'ti-credit-card','Third Party Integration':'ti-arrows-right-left','Keyword History':'ti-history','Google Tag Manager':'ti-tag','Trending Searches':'ti-trending-up','Notify Me':'ti-bell','InstagramFeed':'ti-brand-instagram','NewsLetter Subscription':'ti-mail','User Activity Logs':'ti-activity','Whatmore':'ti-video','OMS and WMS Management':'ti-truck','Product Bundles':'ti-box-multiple','Recipe Page Generator':'ti-chef-hat','Support for Free Delivery':'ti-package-export','Digital Products':'ti-download','Subscription Products':'ti-repeat','Low Stock Alerts':'ti-alert-triangle','Product Restrictions':'ti-lock','Ticket Management':'ti-ticket','Hub Trip Support':'ti-route','Referral Management':'ti-share','Google Merchant Center':'ti-shopping-cart','Unique Coupon Generator':'ti-discount','Marketplace':'ti-store','Reviews and Ratings':'ti-star','Customer Groups':'ti-users-group','Leave Management':'ti-calendar-off','Marketing Banners':'ti-ad','Offers Management':'ti-percentage','Reports and Analytics':'ti-report-analytics','Abandoned Cart':'ti-shopping-cart-off','Facebook Analytics':'ti-brand-facebook','Shipping and Courier':'ti-truck-delivery','Customer Wallet Support':'ti-wallet','Personalized Search Results':'ti-search','Multiple And Partial Order Picking':'ti-packages','Password Policy':'ti-lock-password','Delivery Slot Charges':'ti-currency-dollar','Website Pages Scheduling':'ti-calendar','Multiple Languages Support':'ti-language','Pre-order Support':'ti-clock','Bulk-order Support':'ti-clipboard-list','Slot Capacity Set-up':'ti-calendar-stats','Stock Buffer Set-up':'ti-package','Search Results Control':'ti-search','Tags For Customer Segmentation':'ti-tags','Order Returns Support':'ti-arrow-back-up','Delivery Slot Set-up':'ti-clock-2','Custom Fields':'ti-forms','SEO Optimization':'ti-world-search','Stock Management':'ti-chart-line','Online Payment':'ti-credit-card','Sold-By-Weight Product Support':'ti-scale','Tawk.to Integration':'ti-message-circle','Marketing Campaigns':'ti-speakerphone','Delivery Support':'ti-truck','Google Analytics':'ti-chart-dots','Product Substitution':'ti-arrows-exchange','Delivery Area Setup':'ti-map','Product Tag Support':'ti-tag','Pick Pack Support':'ti-package','Product Variant Support':'ti-color-swatch','Multi User Support':'ti-users','Brand Support':'ti-certificate'};return m[n]||'ti-puzzle';};
+
+      const iconColor=n=>{const p=[['#dbeafe','#1d4ed8'],['#dcfce7','#15803d'],['#fce7f3','#be185d'],['#e0e7ff','#4338ca'],['#ffedd5','#c2410c'],['#d1fae5','#065f46'],['#fef3c7','#92400e'],['#ede9fe','#6d28d9'],['#fee2e2','#b91c1c'],['#f0f9ff','#0369a1'],['#fef9c3','#854d0e'],['#ecfdf5','#047857']];let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))%p.length;return p[Math.abs(h)%p.length];};
 
       const btn=t=>{
-        if(t==='I') return `<button style="padding:7px 18px;border:1.5px solid #374151;background:#fff;border-radius:6px;font-size:12.5px;font-weight:600;color:#374151;cursor:pointer">Install</button>`;
-        if(t==='U') return `<button style="padding:7px 18px;border:1.5px solid #9ca3af;background:#fff;border-radius:6px;font-size:12.5px;font-weight:500;color:#6b7280;cursor:pointer">Uninstall</button>`;
-        if(t==='C') return `<button style="padding:7px 14px;border:1.5px solid #0d9488;background:#fff;border-radius:6px;font-size:12.5px;font-weight:600;color:#0d9488;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-settings-2" style="font-size:13px"></i> Configure</button>`;
-        if(t==='M') return `<button style="padding:7px 14px;border:1.5px solid #0d9488;background:#fff;border-radius:6px;font-size:12.5px;font-weight:600;color:#0d9488;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-settings-2" style="font-size:13px"></i> Manage</button>`;
-        if(t==='P') return `<button style="padding:7px 16px;border:1.5px solid #d97706;background:#fff;border-radius:6px;font-size:12.5px;font-weight:600;color:#d97706;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-crown" style="font-size:13px"></i> Premium</button>`;
+        if(t==='I') return '<button style="padding:7px 18px;border:1.5px solid #1f2937;background:#fff;border-radius:7px;font-size:12.5px;font-weight:600;color:#1f2937;cursor:pointer">Install</button>';
+        if(t==='U') return '<button style="padding:7px 16px;border:1.5px solid #e5e7eb;background:#fff;border-radius:7px;font-size:12.5px;font-weight:500;color:#6b7280;cursor:pointer">Uninstall</button>';
+        if(t==='C') return '<button style="padding:7px 14px;border:1.5px solid #0891b2;background:#ecfeff;border-radius:7px;font-size:12.5px;font-weight:600;color:#0891b2;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-settings-2" style="font-size:13px"></i>Configure</button>';
+        if(t==='M') return '<button style="padding:7px 14px;border:1.5px solid #0891b2;background:#ecfeff;border-radius:7px;font-size:12.5px;font-weight:600;color:#0891b2;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-settings-2" style="font-size:13px"></i>Manage</button>';
+        if(t==='P') return '<button style="padding:7px 16px;border:1.5px solid #f59e0b;background:#fffbeb;border-radius:7px;font-size:12.5px;font-weight:600;color:#b45309;cursor:pointer;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-crown" style="font-size:13px"></i>Premium</button>';
         return '';
       };
 
-      const card=e=>`<div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:20px 20px 16px;display:flex;flex-direction:column;min-height:170px">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <div style="width:40px;height:40px;border-radius:8px;background:#ecfdf5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <i class="ti ${iconOf(e[0])}" style="font-size:20px;color:#16a34a"></i>
+      const card=e=>{
+        const [bg,fg]=iconColor(e[0]);
+        const isInst=e[3].includes('U');
+        const isPrem=e[2]&&!isInst;
+        return `<div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;display:flex;flex-direction:column;position:relative;${isInst?'border-top:3px solid #16a34a;':''}box-shadow:0 1px 3px rgba(0,0,0,.04)">
+          ${isInst?'<span style="position:absolute;top:14px;right:14px;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;border-radius:20px;font-size:11px;font-weight:700;padding:3px 9px;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-check" style="font-size:11px"></i>Installed</span>':''}
+          ${isPrem?'<span style="position:absolute;top:14px;right:14px;background:#fffbeb;color:#b45309;border:1px solid #fde68a;border-radius:20px;font-size:11px;font-weight:700;padding:3px 9px;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-crown" style="font-size:11px"></i>Premium</span>':''}
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;${isInst||isPrem?'padding-right:88px':''}">
+            <div style="width:44px;height:44px;border-radius:10px;background:${bg};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ti ${iconOf(e[0])}" style="font-size:22px;color:${fg}"></i>
+            </div>
+            <div style="font-size:14px;font-weight:700;color:#111827;line-height:1.3">${e[0]}</div>
           </div>
-          <div style="font-size:13.5px;font-weight:700;color:#111827;line-height:1.3">${e[0]}${e[2]?'&nbsp;<i class="ti ti-crown" style="color:#d97706;font-size:13px"></i>':''}</div>
-        </div>
-        <div style="font-size:12.5px;color:#6b7280;line-height:1.55;flex:1">${e[1]}</div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;align-items:center">
-          ${e[3].map(btn).join('')}
-        </div>
-      </div>`;
+          <div style="font-size:13px;color:#6b7280;line-height:1.6;flex:1;margin-bottom:16px">${e[1]}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">${e[3].map(btn).join('')}</div>
+        </div>`;
+      };
+
+      const instCount=EXT.filter(e=>e[3].includes('U')).length;
 
       const renderExt=()=>{
         const t=window._extTab;
         const data=t==='All'?EXT:t==='Installed'?EXT.filter(e=>e[3].includes('U')):EXT.filter(e=>e[4].includes(t));
-        const tabRow=TABS.map(tab=>`<span onclick="window._extTab='${tab}';window._renderExt()" style="padding:10px 14px;cursor:pointer;font-size:13px;white-space:nowrap;display:inline-block;${tab===t?'color:#16a34a;font-weight:700;border-bottom:2px solid #16a34a':'color:#6b7280;border-bottom:2px solid transparent'}">${tab}</span>`).join('');
-        const grid=data.length===0?`<div style="grid-column:1/-1;text-align:center;padding:48px;color:#9ca3af;font-size:14px">No extensions in this category.</div>`:data.map(card).join('');
-        scroll.innerHTML=pw+`<div style="max-width:1160px">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-            <div style="display:flex;align-items:center;gap:0;border-bottom:1px solid #e5e7eb;overflow-x:auto;flex:1">${tabRow}</div>
-            <div style="margin-left:16px;flex-shrink:0"><select style="padding:7px 32px 7px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;color:#374151;background:#fff;outline:none;cursor:pointer"><option>All</option></select></div>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px">${grid}</div>
-        </div>`+'</div>';
+        const tabRow=TABS.map(tab=>{
+          const active=tab===t;
+          const cnt=tab==='Installed'?instCount:null;
+          return '<span onclick="window._extTab=\''+tab+'\';window._renderExt()" style="padding:10px 14px;cursor:pointer;font-size:13px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;'+(active?'color:#16a34a;font-weight:700;border-bottom:2.5px solid #16a34a':'color:#6b7280;font-weight:500;border-bottom:2.5px solid transparent')+'">'+tab+(cnt!==null?'<span style="background:'+(active?'#dcfce7':'#f3f4f6')+';color:'+(active?'#16a34a':'#6b7280')+';border-radius:20px;font-size:11px;font-weight:700;padding:1px 7px">'+cnt+'</span>':'')+'</span>';
+        }).join('');
+        const empty='<div style="grid-column:1/-1;text-align:center;padding:48px;color:#9ca3af;font-size:14px">No extensions in this category.</div>';
+        const grid=data.length===0?empty:data.map(card).join('');
+        scroll.innerHTML=pw+'<div style="max-width:1160px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div style="font-size:13.5px;color:#6b7280"><strong style="color:#374151">'+data.length+'</strong> extension'+(data.length!==1?'s':'')+' '+(t!=='All'?'in <strong style="color:#374151">'+t+'</strong>':'across all categories')+'</div><div style="display:flex;align-items:center;gap:10px"><div style="display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 14px"><i class="ti ti-search" style="font-size:14px;color:#9ca3af"></i><input placeholder="Search extensions..." style="border:none;background:transparent;font-size:13px;color:#374151;outline:none;width:180px"></div></div></div><div style="display:flex;align-items:center;border-bottom:1px solid #e5e7eb;margin-bottom:20px;overflow-x:auto">'+tabRow+'</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">'+grid+'</div></div>'+'</div>';
       };
 
       window._renderExt=renderExt;
