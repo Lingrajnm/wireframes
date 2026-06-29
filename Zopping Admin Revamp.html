@@ -19,7 +19,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .toggle-wrap{display:flex;align-items:center;gap:6px;cursor:pointer}
 .toggle{width:34px;height:18px;background:rgba(255,255,255,.15);border-radius:9px;position:relative;transition:background .2s;flex-shrink:0}
 .toggle.on{background:#16a34a}
-#designerToggle.on{background:#d97706}
 .toggle::after{content:'';position:absolute;width:14px;height:14px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .2s}
 .toggle.on::after{left:18px}
 .toggle-lbl{font-size:10px;color:rgba(255,255,255,.5);font-weight:600}
@@ -488,43 +487,6 @@ body.mobile .tb-breadcrumb .sep{display:none}
 body.mobile #hdrSearchBar{overflow-x:auto}
 
 
-/* ── DESIGNER VIEW ── */
-body.designer{background:#F8F8FF}
-body.designer .main{background:#F8F8FF}
-body.designer .main-scroll{background:#F8F8FF}
-/* White sidebar */
-body.designer .sidebar{background:#ffffff;box-shadow:2px 0 12px rgba(0,0,0,.07)}
-body.designer .sb-brand{border-bottom:1px solid #f0f0f4}
-body.designer .sb-logo-img{filter:none}
-body.designer .sel-row.store-sel{background:#f0fdf4}
-body.designer .sel-row.store-sel:hover{background:#dcfce7}
-body.designer .sel-row.lang-sel{background:#fafafa;border-top:1px solid #f0f0f4}
-body.designer .sel-row.lang-sel:hover{background:#f4f4f8}
-body.designer .store-sel .sel-text{color:#16a34a}
-body.designer .lang-sel .sel-text{color:#6b7280}
-body.designer .sel-caret{color:#9ca3af!important}
-body.designer .sel-ic{color:#9ca3af!important}
-body.designer .store-sel .sel-ic{color:#16a34a!important}
-/* Nav items on white sidebar */
-body.designer .nav-item{color:#374151;border-left:2px solid transparent}
-body.designer .nav-item:hover{background:#f4f4f8;color:#111827}
-body.designer .nav-item.active{background:#f0fdf4;color:#16a34a;border-left-color:#16a34a;font-weight:600}
-body.designer .nav-item .nview{color:#d1d5db}
-body.designer .nav-item .nadmin{background:#dbeafe;color:#1d4ed8}
-body.designer .sb-user{border-top:1px solid #f0f0f4;background:#fafafa}
-/* Topbar */
-body.designer .topbar{background:#fff;border-bottom:1px solid #e9e9ef;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-/* Cards — consistent green palette, softer shadows */
-body.designer .stat-card{border-radius:12px!important;box-shadow:0 2px 8px rgba(0,0,0,.06)!important;border:1px solid #ebebf0!important}
-/* Remove mixed colors from overview step cards — unify to green */
-body.designer .main-scroll [style*="background:#fff7ed"]{background:#f0fdf4!important;border-color:#bbf7d0!important}
-body.designer .main-scroll [style*="background:#eff6ff"]{background:#f0fdf4!important;border-color:#bbf7d0!important}
-body.designer .main-scroll [style*="background:#f5f3ff"]{background:#f0fdf4!important;border-color:#bbf7d0!important}
-body.designer .main-scroll [style*="color:#ea580c"]{color:#16a34a!important}
-body.designer .main-scroll [style*="color:#2563eb"]{color:#16a34a!important}
-body.designer .main-scroll [style*="color:#7c3aed"]{color:#16a34a!important}
-/* Sidebar nav group labels */
-body.designer .sb-nav-scroll > div > div[style*="color:rgba(255,255,255,.25)"]{color:#9ca3af!important}
 </style>
 </head>
 <body>
@@ -589,12 +551,6 @@ body.designer .sb-nav-scroll > div > div[style*="color:rgba(255,255,255,.25)"]{c
     <div class="toggle" id="mobileToggle"></div>
     <span class="toggle-lbl" id="mobileLbl">Desktop View</span>
   </div>
-  <div class="ctrl-sep"></div>
-  <div class="toggle-wrap" onclick="toggleDesigner()" title="Preview designer suggestions — toggle off to revert">
-    <div class="toggle" id="designerToggle" style="background:rgba(251,191,36,.25)"></div>
-    <span class="toggle-lbl" id="designerLbl" style="color:rgba(251,191,36,.7)">Designer View</span>
-  </div>
-  <span style="font-size:9px;color:rgba(251,191,36,.35);font-weight:600;letter-spacing:.04em">preview only</span>
 </div>
 
 <!-- ── SHELL ── -->
@@ -965,13 +921,6 @@ const ACTIVITIES=[
 // ── STATE ──────────────────────────────────────────────────────────
 let role='STORE_MANAGER', isEnterprise=false, industry='grocery';
 let isMobile=false;
-let designerView=false;
-function toggleDesigner(){
-  designerView=!designerView;
-  document.body.classList.toggle('designer',designerView);
-  document.getElementById('designerToggle').classList.toggle('on',designerView);
-  document.getElementById('designerLbl').textContent=designerView?'Designer View ✓':'Designer View';
-}
 let activePage='overview', profileOpen=false;
 let storeVal='All Stores (8)', langVal='English';
 let ddOpen=null; // 'store' | 'lang' | null
