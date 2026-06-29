@@ -756,13 +756,13 @@ const NAV=[
     {id:'web-ann',    l:'Announcements',    ic:'ti-speakerphone',     g:['admin','mkt','store']},
   ]},
   {sec:'Logistics', g:['admin','ops','log'], items:[
-    {id:'vehicles',   l:'Vehicles',         ic:'ti-car',              g:['admin','ops','log']},
+    {id:'vehicles',   l:'Vehicles',         ic:'ti-truck',            g:['admin','ops','log']},
     {id:'vplanning',  l:'Vehicle Planning', ic:'ti-steering-wheel',   g:['admin','ops','log']},
     {id:'trips',      l:'Trips',            ic:'ti-route',            g:['admin','ops','log']},
     {id:'tripplan',   l:'Trip Planner',     ic:'ti-map',              g:['admin','ops','log']},
-    {id:'runners',    l:'Delivery Agents',  ic:'ti-run',              g:['admin','ops','log']},
-    {id:'area',       l:'Delivery Area',    ic:'ti-map-pin',          g:['admin','ops','log','store','wh'], ro:['ops','log','store','wh']},
-    {id:'shipping',   l:'Shipping & Couriers',ic:'ti-truck-delivery', g:['admin','ops','log']},
+    {id:'runners',    l:'Delivery Agents',  ic:'ti-motorbike',        g:['admin','ops','log']},
+    {id:'area',       l:'Delivery Area',    ic:'ti-map-2',            g:['admin','ops','log','store','wh'], ro:['ops','log','store','wh']},
+    {id:'shipping',   l:'Shipping & Couriers',ic:'ti-package-export', g:['admin','ops','log']},
   ]},
   {sec:'Analytics', g:['admin','store','mkt','ops','cat'], items:[
     {id:'analytics',  l:'Analytics',        ic:'ti-chart-line',       g:['admin','store','ops','mkt']},
@@ -1386,7 +1386,6 @@ function renderHeaderSearch(){
     campaigns:'Search by campaign name…',
     banners:'Search by banner name…',
     segments:'Search by segment name…',
-    customers:'Search by name, email, phone or ID…',
     'cs-customers':'Search by name, email, phone or customer ID…',
     employees:'Search by name, designation or role…',
     vehicles:'Search by vehicle name or vendor…',
@@ -2377,7 +2376,7 @@ const ES={
       {ic:'ti-star',bg:'#fff7ed',c:'#b45309',title:'Build trust',desc:'Offering alternatives instead of cancellations shows customers you care about fulfilling their order.'},
     ]},
   // ── CUSTOMERS / CS ──
-  customers:{tag:{l:'Customer Support',c:'#0e7490',bg:'#e0f7fa'},illo:'customer',headline:'No customers yet',
+  'cs-customers':{tag:{l:'Customer Support',c:'#0e7490',bg:'#e0f7fa'},illo:'customer',headline:'No customers yet',
     desc:'Your customer base will grow here as people place orders. Search any customer by email, phone, or order number to view their history and manage their account.',
     ctas:[{l:'Share Store Link',ic:'ti-share',p:true},{l:'Run a Campaign',ic:'ti-speakerphone',p:false,action:"gotoPage('campaigns')"}],
     cards:[
@@ -2385,9 +2384,17 @@ const ES={
       {ic:'ti-gift',bg:'#dcfce7',c:'#15803d',title:'Welcome offer converts',desc:'A first-order discount (WELCOME15) is the single most effective way to turn visitors into customers.'},
       {ic:'ti-users-group',bg:'#dbeafe',c:'#1d4ed8',title:'Referral programme',desc:'Enable the referral extension so existing customers bring in new ones for you — zero ad spend.'},
     ]},
+  'cs-tags':{tag:{l:'Customer Support',c:'#0e7490',bg:'#e0f7fa'},illo:'tag',headline:'No customer tags yet',
+    desc:'Tags let you label customers — VIP, Wholesale, Dormant, App User — so you can target them in campaigns, apply special pricing, or filter your customer list quickly.',
+    ctas:[{l:'Create Tag',ic:'ti-plus',p:true}],
+    cards:[
+      {ic:'ti-speakerphone',bg:'#e0f7fa',c:'#0e7490',title:'Power targeted campaigns',desc:'Create a "VIP" tag and send exclusive offers only to your best customers — higher conversion at zero extra cost.'},
+      {ic:'ti-users',bg:'#dbeafe',c:'#1d4ed8',title:'Segment your base',desc:'Tags work alongside Segments — quickly filter customers by tag to see who\'s dormant, who\'s new, and who\'s loyal.'},
+      {ic:'ti-discount',bg:'#dcfce7',c:'#15803d',title:'Personalise pricing',desc:'Apply wholesale pricing or special discounts to tagged groups like "Corporate" or "Bulk Buyer" automatically.'},
+    ]},
   'cs-orders':{tag:{l:'Customer Support',c:'#0e7490',bg:'#e0f7fa'},illo:'order',headline:'No customer orders yet',
     desc:'Orders placed by your customers will appear here. As a support agent you can view order details, update status, initiate refunds, and resolve delivery issues — all from one place.',
-    ctas:[{l:'Create Order',ic:'ti-plus',p:true},{l:'View All Customers',ic:'ti-users',p:false,action:"gotoPage('customers')"}],
+    ctas:[{l:'Create Order',ic:'ti-plus',p:true},{l:'View All Customers',ic:'ti-users',p:false,action:"gotoPage('cs-customers')"}],
     cards:[
       {ic:'ti-search',bg:'#e0f7fa',c:'#0e7490',title:'Search any order',desc:'Look up orders by customer name, phone number, email, or order ID. Full order history is one search away.'},
       {ic:'ti-refresh',bg:'#dbeafe',c:'#1d4ed8',title:'Update order status',desc:'Move orders through stages — mark as picked, packed, dispatched, or delivered. Trigger customer notifications instantly.'},
@@ -3166,7 +3173,7 @@ function renderFilled(scroll){
           </div>
         </div></div>`
     },
-    customers: ()=>{
+    'cs-customers': ()=>{
       const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
       const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
       const grayAv=`<div style="width:36px;height:36px;border-radius:50%;background:#e5e7eb;flex-shrink:0"></div>`;
