@@ -3490,17 +3490,19 @@ function renderFilled(scroll){
       scroll.innerHTML=pw+tableHtml+'</div>';
     },
     vehicles: ()=>{
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const typeCell=(ic,label)=>`<div style="display:flex;align-items:center;gap:7px"><i class="ti ${ic}" style="font-size:17px;color:#9ca3af"></i><span>${label}</span></div>`;
+      const en=badge('ENABLED','#15803d','#dcfce7');
+      const dis=badge('DISABLED','#6b7280','#f3f4f6');
       const rows=[
-        ['Al Shrouq 4 Wheeler','4 Wheeler','Al Shrouq Logistics',badge('On Trip','#7c3aed','#f5f3ff'),'Trip TRP-063 · Corniche Route','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['Al Hamra Van 1','4 Wheeler','Afkar Transport',badge('Idle','#6b7280','#f3f4f6'),'Available for assignment','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['Shola Bike 2','2 Wheeler','Direct (owned)',badge('On Trip','#7c3aed','#f5f3ff'),'Trip TRP-061 · Shola Route','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['ASA 2966 Wheeler','4 Wheeler','ASA Logistics',badge('On Trip','#7c3aed','#f5f3ff'),'Trip TRP-059 · Khozam Route','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['Afkar Delivery 1','4 Wheeler','Afkar Transport',badge('Maintenance','#ea580c','#fff7ed'),'Service scheduled 28 Jun','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['Ajlan Runner Bike','2 Wheeler','Direct (owned)',badge('Idle','#6b7280','#f3f4f6'),'Available for assignment','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
+        ['UK 07 XZ 0879',  typeCell('ti-motorbike','2 Wheeler'), 'Chetan',              en,  act],
+        ['KA 03 MN 1122',  typeCell('ti-motorbike','2 Wheeler'), 'Ramu S.',             en,  act],
+        ['MH 12 AB 4455',  typeCell('ti-truck','4 Wheeler'),     'Al Shrouq Logistics', en,  act],
+        ['DL 01 CD 7788',  typeCell('ti-truck','4 Wheeler'),     'Afkar Transport',     en,  act],
+        ['TN 09 EF 3311',  typeCell('ti-truck','4 Wheeler'),     'ASA Logistics',       dis, act],
+        ['KL 07 GH 5566',  typeCell('ti-motorbike','2 Wheeler'), 'Direct (owned)',      en,  act],
       ];
-      const vs=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">${[['8','Total Vehicles','ti-car','#f5f3ff','#7c3aed','+2',true],['4','On Trip','ti-route','#dbeafe','#1d4ed8','today',true],['2','Idle','ti-clock','#f3f4f6','#6b7280','available',true],['1','In Maintenance','ti-tool','#fff7ed','#ea580c','scheduled',false]].map(s=>stat(...s)).join('')}</div>`;
-      const vFilter=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)"><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:end"><div><div style="font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">VEHICLE</div><input style="width:100%;padding:8px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff" placeholder="Search by vehicle name"></div><div><div style="font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">STATUS</div><select style="width:100%;padding:8px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;cursor:pointer;appearance:auto"><option>All</option><option>On Trip</option><option>Idle</option><option>Maintenance</option></select></div><div style="display:flex;gap:8px;padding-bottom:1px"><button style="padding:8px 20px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button><button style="padding:8px 16px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear</button></div></div></div>`;
-      scroll.innerHTML=pw+tbl(['Vehicle','Type','Vendor','Status','Current Assignment',''],rows)+'</div>';
+      scroll.innerHTML=pw+tbl(['Number','Type','Vendor','Status','Actions'],rows)+'</div>';
     },
     trips: ()=>{
       const rows=[
