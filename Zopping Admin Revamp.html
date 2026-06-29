@@ -3505,22 +3505,145 @@ function renderFilled(scroll){
       scroll.innerHTML=pw+tbl(['Number','Type','Vendor','Status','Actions'],rows)+'</div>';
     },
     trips: ()=>{
-      const rows=[
-        ['<strong>TRP-2026-0063</strong>','Al Shrouq 4 Wheeler','Babu K.',badge('In Progress','#7c3aed','#f5f3ff'),'6 orders','12:30–03:30 PM','Corniche Route','<i class="ti ti-map-pin" style="color:#16a34a;cursor:pointer"></i>'],
-        ['<strong>TRP-2026-0062</strong>','Shola Bike 2','Ramu S.',badge('In Progress','#7c3aed','#f5f3ff'),'4 orders','10:30–11:30 AM','Shola Route','<i class="ti ti-map-pin" style="color:#16a34a;cursor:pointer"></i>'],
-        ['<strong>TRP-2026-0061</strong>','ASA 2966','Vijay M.',badge('Completed','#15803d','#dcfce7'),'8 orders','08:00–10:00 AM','Khozam Route','<i class="ti ti-check" style="color:#16a34a"></i>'],
-        ['<strong>TRP-2026-0060</strong>','Al Hamra Van 1','—',badge('Pending','#ca8a04','#fef9c3'),'5 orders','03:30–05:00 PM','Al Hamra Route','<i class="ti ti-dots-vertical" style="color:#9ca3af;cursor:pointer"></i>'],
-        ['<strong>TRP-2026-0059</strong>','Ajlan Bike','Arjun P.',badge('Delayed','#b91c1c','#fee2e2'),'3 orders','12:30–01:30 PM','Ajlan Route','<i class="ti ti-alert-triangle" style="color:#ea580c"></i>'],
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const fcStatus=`<span style="font-size:13px;color:#9ca3af">Financially closed</span>`;
+      const TRIPS=[
+        {id:'56948',agent:'Manish',     start:'29 Jun 2026 08:20 PM',end:'29 Jun 2026 08:32 PM'},
+        {id:'56917',agent:'Subodh Yadav',start:'29 Jun 2026 05:12 PM',end:'29 Jun 2026 06:08 PM'},
+        {id:'56916',agent:'Sudhir Solanki',start:'29 Jun 2026 05:13 PM',end:'29 Jun 2026 06:06 PM'},
+        {id:'56844',agent:'Subodh Yadav',start:'29 Jun 2026 11:24 AM',end:'29 Jun 2026 11:53 AM'},
+        {id:'56823',agent:'Sudhir Solanki',start:'28 Jun 2026 08:56 PM',end:'28 Jun 2026 08:58 PM'},
+        {id:'56803',agent:'Sudhir Solanki',start:'28 Jun 2026 06:29 PM',end:'28 Jun 2026 06:40 PM'},
+        {id:'56792',agent:'Subodh Yadav',start:'28 Jun 2026 05:28 PM',end:'28 Jun 2026 06:01 PM'},
       ];
-      const tFilter=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)"><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:end"><div><div style="font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">TRIP ID</div><input style="width:100%;padding:8px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff" placeholder="Search by trip ID"></div><div><div style="font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">STATUS</div><select style="width:100%;padding:8px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;cursor:pointer;appearance:auto"><option>All</option><option>In Progress</option><option>Completed</option><option>Pending</option><option>Delayed</option></select></div><div style="display:flex;gap:8px;padding-bottom:1px"><button style="padding:8px 20px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button><button style="padding:8px 16px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear</button></div></div></div>`;
-      const wipBanner=`<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fef9c3;border:1.5px solid #fde68a;border-radius:10px;margin-bottom:14px">
-        <i class="ti ti-tools" style="font-size:20px;color:#ca8a04;flex-shrink:0"></i>
-        <div>
-          <div style="font-size:13px;font-weight:700;color:#92400e">Work in Progress</div>
-          <div style="font-size:12px;color:#a16207;margin-top:1px">Data for Trips will be added by Lingraj — maximum 30th EOD.</div>
+      const rows=TRIPS.map(t=>[
+        `<span style="font-size:13px;color:#374151;cursor:pointer" onclick="showTripDetail('${t.id}')">${t.id}</span>`,
+        t.agent,
+        t.start,
+        t.end,
+        fcStatus,
+        act,
+      ]);
+
+      // Detail panel (hidden by default, shown on ID click)
+      const detailPanel=`<div id="tripDetailPanel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:9000;overflow:auto" onclick="if(event.target===this)this.style.display='none'">
+        <div style="background:#f5f5f5;min-height:100%;margin-left:18%;padding:0 0 40px 0">
+          <div style="background:#fff;padding:20px 32px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:16px">
+            <button onclick="document.getElementById('tripDetailPanel').style.display='none'" style="background:none;border:none;font-size:18px;color:#6b7280;cursor:pointer;padding:0;display:flex;align-items:center"><i class="ti ti-arrow-left"></i></button>
+            <div style="font-size:12px;color:#9ca3af">Dashboard &gt; Trips &gt; <span style="font-weight:600;color:#374151">View Trip Details</span></div>
+          </div>
+          <div style="padding:24px 32px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+              <h2 id="tripDetailTitle" style="font-size:22px;font-weight:700;color:#111827;margin:0"></h2>
+              <span style="font-size:13px;color:#9ca3af;cursor:pointer">View logs</span>
+            </div>
+            <div style="display:grid;grid-template-columns:320px 1fr;gap:20px">
+              <div style="background:#fff;border-radius:10px;border:1px solid #e5e7eb;padding:20px;display:flex;flex-direction:column;gap:16px">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <div style="width:44px;height:44px;border-radius:50%;background:#f3f4f6;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-user-circle" style="font-size:26px;color:#d1d5db"></i></div>
+                  <div>
+                    <div style="font-size:11px;color:#9ca3af;margin-bottom:2px">Delivery Agent</div>
+                    <div id="tripDetailAgent" style="font-size:14px;font-weight:600;color:#111827"></div>
+                    <div style="font-size:12px;color:#6b7280;margin-top:2px"><i class="ti ti-phone" style="color:#3b82f6;margin-right:3px"></i>+91 93106 48994</div>
+                  </div>
+                  <span style="margin-left:auto;background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px">CLOSED</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #f3f4f6;border-bottom:1px solid #f3f4f6">
+                  <i class="ti ti-motorbike" style="font-size:22px;color:#9ca3af"></i>
+                  <i class="ti ti-device-desktop" style="font-size:18px;color:#9ca3af;margin-left:8px"></i>
+                  <span style="margin-left:auto;font-size:14px;font-weight:600;color:#111827">₹2,099.00</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <div style="display:flex;align-items:flex-start;gap:10px">
+                    <i class="ti ti-clock" style="font-size:15px;color:#9ca3af;margin-top:1px"></i>
+                    <div>
+                      <div style="font-size:11px;color:#9ca3af">Trip Started</div>
+                      <div id="tripDetailStart" style="font-size:13px;color:#374151;margin-top:1px"></div>
+                    </div>
+                  </div>
+                  <div style="display:flex;align-items:flex-start;gap:10px">
+                    <i class="ti ti-clock" style="font-size:15px;color:#9ca3af;margin-top:1px"></i>
+                    <div>
+                      <div style="font-size:11px;color:#9ca3af">Trip Ended</div>
+                      <div id="tripDetailEnd" style="font-size:13px;color:#374151;margin-top:1px"></div>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding-top:12px;border-top:1px solid #f3f4f6">
+                  <i class="ti ti-building-store" style="font-size:16px;color:#9ca3af"></i>
+                  <div style="font-size:13px;color:#374151"><strong>HUDA Market</strong>, Sector 55</div>
+                </div>
+              </div>
+              <div style="background:#fff;border-radius:10px;border:1px solid #e5e7eb;overflow:hidden">
+                <div style="padding:12px 16px;border-bottom:1px solid #e5e7eb;display:flex;gap:4px">
+                  <button style="padding:5px 16px;border-radius:6px;border:none;background:#e5e7eb;font-size:13px;font-weight:600;color:#374151;cursor:pointer">Map</button>
+                  <button style="padding:5px 16px;border-radius:6px;border:1px solid #e5e7eb;background:#fff;font-size:13px;color:#6b7280;cursor:pointer">Satellite</button>
+                </div>
+                <div style="height:300px;background:linear-gradient(135deg,#e8f5e9 0%,#f1f8e9 50%,#e3f2fd 100%);display:flex;align-items:center;justify-content:center;position:relative">
+                  <svg width="100%" height="100%" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0">
+                    <rect width="800" height="300" fill="#e8ead3"/>
+                    <line x1="0" y1="120" x2="800" y2="120" stroke="#fff" stroke-width="18"/>
+                    <line x1="0" y1="200" x2="800" y2="200" stroke="#fff" stroke-width="12"/>
+                    <line x1="200" y1="0" x2="200" y2="300" stroke="#fff" stroke-width="10"/>
+                    <line x1="550" y1="0" x2="550" y2="300" stroke="#fff" stroke-width="16"/>
+                    <rect x="60" y="50" width="100" height="50" rx="4" fill="#d9dbb0"/>
+                    <rect x="260" y="140" width="120" height="45" rx="4" fill="#d9dbb0"/>
+                    <rect x="600" y="60" width="90" height="60" rx="4" fill="#d9dbb0"/>
+                    <circle cx="320" cy="220" r="16" fill="#c62828" stroke="#fff" stroke-width="2"/>
+                    <text x="316" y="225" fill="#fff" font-size="13" font-weight="bold">1</text>
+                    <circle cx="320" cy="236" r="3" fill="#c62828"/>
+                    <circle cx="100" cy="90" r="8" fill="#2196f3" stroke="#fff" stroke-width="1.5"/>
+                    <text x="90" y="80" fill="#374151" font-size="9">Harish Bakery</text>
+                    <text x="200" y="115" fill="#555" font-size="10">Sector 56 Main Rd</text>
+                    <text x="555" y="115" fill="#555" font-size="10">Sector 56 Main Rd</text>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div style="background:#fff;border-radius:10px;border:1px solid #e5e7eb;margin-top:20px;padding:20px 24px">
+              <div style="font-size:15px;font-weight:600;color:#111827;margin-bottom:16px">1 Order with this trip</div>
+              <table style="width:100%;border-collapse:collapse">
+                <thead><tr style="border-bottom:1px solid #e5e7eb">${['S.N','Reference No','Status','Order Time','Preferred Slot','Location'].map(h=>`<th style="text-align:left;font-size:12px;font-weight:500;color:#9ca3af;padding:0 0 10px 0">${h}</th>`).join('')}</tr></thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:16px 0;font-size:13px;color:#374151;border-bottom:1px solid #f3f4f6">1</td>
+                    <td style="padding:16px 0;border-bottom:1px solid #f3f4f6">
+                      <div style="font-size:13px;color:#2563eb;font-weight:500">Z197181</div>
+                      <div style="font-size:12px;color:#6b7280">₹ 2,099.00</div>
+                    </td>
+                    <td style="padding:16px 0;border-bottom:1px solid #f3f4f6">
+                      <div style="font-size:13px;color:#374151">Completed</div>
+                      <div style="font-size:12px;color:#9ca3af">06:59 PM</div>
+                    </td>
+                    <td style="padding:16px 0;border-bottom:1px solid #f3f4f6">
+                      <div style="font-size:13px;color:#374151">06:11 PM</div>
+                      <div style="font-size:12px;color:#9ca3af">27 Jun 2026</div>
+                    </td>
+                    <td style="padding:16px 0;border-bottom:1px solid #f3f4f6">
+                      <div style="font-size:13px;color:#374151">Within 60 minutes</div>
+                      <div style="font-size:12px;color:#9ca3af">27 Jun 2026</div>
+                    </td>
+                    <td style="padding:16px 0;border-bottom:1px solid #f3f4f6;text-align:center"><i class="ti ti-map-pin" style="font-size:18px;color:#9ca3af;cursor:pointer"></i></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>`;
-      scroll.innerHTML=pw+wipBanner+tFilter+tbl(['Trip ID','Vehicle','Runner','Status','Orders','Slot','Route',''],rows)+'</div>';
+
+      window.showTripDetail=function(id){
+        const t=window._tripsData.find(x=>x.id===id);
+        if(!t) return;
+        document.getElementById('tripDetailTitle').textContent='Trip #'+id;
+        document.getElementById('tripDetailAgent').textContent=t.agent;
+        document.getElementById('tripDetailStart').textContent=t.start;
+        document.getElementById('tripDetailEnd').textContent=t.end;
+        document.getElementById('tripDetailPanel').style.display='block';
+      };
+      window._tripsData=${JSON.stringify(TRIPS)};
+
+      scroll.innerHTML=pw+detailPanel+tbl(['ID','Delivery Agent','Start Time','End Time','Status','Actions'],rows)+'</div>';
     },
     runners: ()=>{
       const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
