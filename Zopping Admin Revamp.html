@@ -537,10 +537,12 @@ body.mobile #hdrSearchBar{overflow-x:auto}
     </optgroup>
   </select>
   <div class="ctrl-sep"></div>
-  <div class="toggle-wrap" onclick="toggleEnt()">
-    <div class="toggle" id="entToggle"></div>
-    <span class="toggle-lbl" id="entLbl">isEnterprise</span>
-  </div>
+  <span class="ctrl-lbl">Plan</span>
+  <select id="planSelect" onchange="setPlan(this.value)" style="font-size:11px;padding:4px 8px;border-radius:6px;border:1px solid rgba(167,139,250,.3);background:#3b0764;color:#e9d5ff;cursor:pointer;outline:none;min-width:120px">
+    <option value="basic">Basic</option>
+    <option value="business">Business</option>
+    <option value="enterprise">Enterprise</option>
+  </select>
   <div class="ctrl-sep"></div>
   <div class="toggle-wrap" onclick="toggleData()">
     <div class="toggle" id="dataToggle"></div>
@@ -919,7 +921,7 @@ const ACTIVITIES=[
 ];
 
 // ── STATE ──────────────────────────────────────────────────────────
-let role='STORE_MANAGER', isEnterprise=false, industry='grocery';
+let role='STORE_MANAGER', plan='basic', isEnterprise=false, industry='grocery';
 let isMobile=false;
 let activePage='overview', profileOpen=false;
 let storeVal='All Stores (8)', langVal='English';
@@ -1009,19 +1011,26 @@ function renderProfileDD(){
   document.getElementById('pddName').textContent=rm.store||'Store';
   document.getElementById('pddRole').textContent=rm.l;
   const planEl=document.getElementById('pddPlan');
-  if(isEnterprise){
+  if(plan==='enterprise'){
     planEl.innerHTML=`<div class="pdd-sec-title">Plan &amp; Billing</div>
       <div class="pdd-ent-plan">
         <div class="pdd-ent-name"><i class="ti ti-crown" style="font-size:14px;color:#eab308"></i> Enterprise Plan</div>
         <div style="font-size:11px;color:#6b7280;margin-top:3px">Need to scale further?</div>
         <div class="pdd-plan-cta">Contact Sales →</div>
       </div>`;
+  } else if(plan==='business'){
+    planEl.innerHTML=`<div class="pdd-sec-title">Plan &amp; Billing <a onclick="gotoPage('billing')">View →</a></div>
+      <div class="pdd-plan">
+        <div class="pdd-plan-name">Business Plan</div>
+        <div class="pdd-plan-sub">4 stores · 4 staff · Renews 25 Jul 2026</div>
+        <div class="pdd-plan-cta">Upgrade to Enterprise →</div>
+      </div>`;
   } else {
     planEl.innerHTML=`<div class="pdd-sec-title">Plan &amp; Billing <a onclick="gotoPage('billing')">View →</a></div>
       <div class="pdd-plan">
-        <div class="pdd-plan-name">Pro Plan</div>
-        <div class="pdd-plan-sub">8 stores · 23 staff · Renews 25 Jul 2026</div>
-        <div class="pdd-plan-cta">Upgrade to Enterprise →</div>
+        <div class="pdd-plan-name" style="color:#6b7280">Basic Plan</div>
+        <div class="pdd-plan-sub">2 stores · 2 staff · Renews 25 Jul 2026</div>
+        <div class="pdd-plan-cta">Upgrade to Business →</div>
       </div>`;
   }
 }
@@ -1035,29 +1044,27 @@ function toggleData(){
   renderMain();
 }
 
-// ── ENTERPRISE TOGGLE ──────────────────────────────────────────────
-function toggleEnt(){
-  isEnterprise=!isEnterprise;
-  document.getElementById('entToggle').classList.toggle('on',isEnterprise);
-  document.getElementById('entLbl').textContent=isEnterprise?'Enterprise ✓':'isEnterprise';
+// ── PLAN SELECTOR ──────────────────────────────────────────────────
+function setPlan(val){
+  plan=val;
+  isEnterprise=(plan==='enterprise');
   updatePlanBadge();
   renderNav();
-  if(activePage==='overview') renderMain();
+  renderMain();
 }
 function updatePlanBadge(){
   const b=document.getElementById('planBadge');
   if(!b) return;
-  if(isEnterprise){
-    b.textContent='Enterprise';
-    b.style.background='rgba(234,179,8,.18)';
-    b.style.color='#fbbf24';
-    b.style.borderColor='rgba(234,179,8,.35)';
-  } else {
-    b.textContent='Business';
-    b.style.background='rgba(255,255,255,.15)';
-    b.style.color='rgba(255,255,255,.7)';
-    b.style.borderColor='rgba(255,255,255,.2)';
-  }
+  const cfg={
+    basic:    {label:'Basic',    bg:'rgba(107,114,128,.18)', color:'#9ca3af', border:'rgba(107,114,128,.3)'},
+    business: {label:'Business', bg:'rgba(255,255,255,.15)', color:'rgba(255,255,255,.7)', border:'rgba(255,255,255,.2)'},
+    enterprise:{label:'Enterprise',bg:'rgba(234,179,8,.18)', color:'#fbbf24', border:'rgba(234,179,8,.35)'},
+  };
+  const c=cfg[plan]||cfg.basic;
+  b.textContent=c.label;
+  b.style.background=c.bg;
+  b.style.color=c.color;
+  b.style.borderColor=c.border;
 }
 
 // ── MOBILE TOGGLE ──────────────────────────────────────────────────
@@ -1118,7 +1125,7 @@ function renderNav(){
   </div>`;
   NAV.forEach(grp=>{
     // Hide Admin/Extensions sections when enterprise
-    if(isEnterprise && grp.ent===false) return;
+    if(plan==='enterprise' && grp.ent===false) return;
     const vis=grp.items.filter(canSeeItem);
     if(!vis.length) return;
     h+=`<div class="nav-sec">${grp.sec}</div>`;
@@ -1824,7 +1831,7 @@ function renderMyAccount(scroll){
       <button class="form-save">Save</button>`;
   } else if(sub==='billing'){
     content=`<div class="acc-sec-title">Billing Information</div>
-      ${isEnterprise?`<div class="bc-ent">
+      ${plan==='enterprise'?`<div class="bc-ent">
         <div style="display:flex;align-items:center;gap:6px;font-size:15px;font-weight:700;color:#92400e"><i class="ti ti-crown" style="color:#eab308"></i>Enterprise Plan</div>
         <div style="font-size:12px;color:#6b7280;margin-top:4px">Need to scale further? Contact our sales team.</div>
         <button class="form-save" style="margin-top:10px;background:#eab308;border:none">Contact Sales</button>
@@ -3505,7 +3512,7 @@ function renderFilled(scroll){
         </div>
         <a href="https://zopping.com/pricing" target="_blank" style="flex-shrink:0;padding:7px 16px;background:#d97706;color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">Upgrade Plan →</a>
       </div>`;
-      scroll.innerHTML=pw+staffLimitBanner+tableHtml+'</div>';
+      scroll.innerHTML=pw+(plan==='basic'?staffLimitBanner:'')+tableHtml+'</div>';
     },
     offers: ()=>{
       const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
@@ -3608,7 +3615,7 @@ function renderFilled(scroll){
         </div>
         <a href="https://zopping.com/pricing" target="_blank" style="flex-shrink:0;padding:7px 16px;background:#d97706;color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">Upgrade Plan →</a>
       </div>`;
-      scroll.innerHTML=pw+slotBanner+tableHtml+'</div>';
+      scroll.innerHTML=pw+(plan==='basic'?slotBanner:'')+tableHtml+'</div>';
     },
     abandoned: ()=>{
       const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
@@ -3852,7 +3859,7 @@ function renderFilled(scroll){
         </div>
         <a href="https://zopping.com/pricing" target="_blank" style="flex-shrink:0;padding:7px 16px;background:#d97706;color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">Upgrade Plan →</a>
       </div>`;
-      scroll.innerHTML=pw+capBanner+tableHtml+'</div>';
+      scroll.innerHTML=pw+(plan==='basic'?capBanner:'')+tableHtml+'</div>';
     },
     categories: ()=>{
       const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
@@ -4100,7 +4107,7 @@ function renderFilled(scroll){
       </div>
     </div>`;
 
-  scroll.innerHTML=pw+productLimitBanner+tableHtml+'</div>';
+  scroll.innerHTML=pw+(plan==='basic'?productLimitBanner:'')+tableHtml+'</div>';
 },
     reports: ()=>{
       const ALL_REPORTS=[
@@ -4324,7 +4331,7 @@ function renderFilled(scroll){
           <a href="mailto:support@zopping.com" style="padding:7px 14px;background:#fff;color:#7c3aed;border:1.5px solid #d8b4fe;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">Enquire Add-on</a>
         </div>
       </div>`;
-      scroll.innerHTML=pw+mobileAppBanner+tableHtml+'</div>';
+      scroll.innerHTML=pw+(plan==='basic'?mobileAppBanner:'')+tableHtml+'</div>';
     },
     'web-ann': ()=>{
       const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
