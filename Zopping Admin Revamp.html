@@ -1501,59 +1501,59 @@ function renderOverview(scroll){
 
     // ── Launch readiness banner ──
     const nextSteps=[
-      {step:1,label:'Add Product Catalogue',sub:'SKUs · Prices · Images',icon:'ti-packages',page:'inventory',time:'15–60 min',color:'#f97316',bg:'rgba(249,115,22,.15)',border:'rgba(249,115,22,.3)'},
-      {step:2,label:'Set Delivery Zones',sub:'Pincodes · Fees · Express',icon:'ti-map-pin',page:'capacity',time:'10 min',color:'#60a5fa',bg:'rgba(96,165,250,.15)',border:'rgba(96,165,250,.3)'},
-      {step:3,label:'Enable Payment',sub:'UPI · Cards · COD',icon:'ti-credit-card',page:'billing',time:'5 min',color:'#a78bfa',bg:'rgba(167,139,250,.15)',border:'rgba(167,139,250,.3)'},
+      {step:1,label:'Add Product Catalogue',sub:'SKUs · Prices · Images',icon:'ti-packages',page:'inventory',time:'15–60 min',accent:'#ea580c',light:'#fff7ed',border:'#fed7aa'},
+      {step:2,label:'Set Delivery Zones',sub:'Pincodes · Fees · Express',icon:'ti-map-pin',page:'capacity',time:'~10 min',accent:'#2563eb',light:'#eff6ff',border:'#bfdbfe'},
+      {step:3,label:'Enable Payments',sub:'UPI · Cards · COD',icon:'ti-credit-card',page:'billing',time:'~5 min',accent:'#7c3aed',light:'#f5f3ff',border:'#ddd6fe'},
     ];
-    const stepCards=nextSteps.map(s=>`
-      <div onclick="gotoPage('${s.page}')" style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 16px;cursor:pointer;transition:background .2s;min-width:0"
-        onmouseover="this.style.background='rgba(255,255,255,.09)'" onmouseout="this.style.background='rgba(255,255,255,.05)'">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-          <div style="width:30px;height:30px;border-radius:7px;background:${s.bg};border:1px solid ${s.border};display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <i class="ti ${s.icon}" style="font-size:15px;color:${s.color}"></i>
+    const stepCards=nextSteps.map((s,i)=>`
+      <div onclick="gotoPage('${s.page}')" style="flex:1;background:${s.light};border:1.5px solid ${s.border};border-radius:10px;padding:14px 16px;cursor:pointer;transition:box-shadow .2s;min-width:0;position:relative"
+        onmouseover="this.style.boxShadow='0 4px 14px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="width:34px;height:34px;border-radius:8px;background:#fff;border:1.5px solid ${s.border};display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)">
+            <i class="ti ${s.icon}" style="font-size:17px;color:${s.accent}"></i>
           </div>
-          <span style="font-size:10px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em">Step ${s.step}</span>
+          <span style="font-size:10px;font-weight:800;color:${s.accent};background:#fff;border:1px solid ${s.border};padding:2px 8px;border-radius:20px;letter-spacing:.04em">STEP ${s.step}</span>
         </div>
-        <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;line-height:1.3">${s.label}</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:10px">${s.sub}</div>
+        <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:3px;line-height:1.3">${s.label}</div>
+        <div style="font-size:11.5px;color:#6b7280;margin-bottom:12px">${s.sub}</div>
         <div style="display:flex;align-items:center;justify-content:space-between">
-          <span style="font-size:11px;color:rgba(255,255,255,.3)"><i class="ti ti-clock" style="font-size:10px"></i> ${s.time}</span>
-          <span style="font-size:11px;font-weight:700;color:${s.color}">Start →</span>
+          <span style="font-size:11px;color:#9ca3af"><i class="ti ti-clock" style="font-size:10px"></i> ${s.time}</span>
+          <span style="font-size:12px;font-weight:700;color:${s.accent};display:flex;align-items:center;gap:3px">Go <i class="ti ti-arrow-right" style="font-size:11px"></i></span>
         </div>
       </div>`).join('');
 
-    const readinessBanner=`<div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a2f 100%);border-radius:14px;padding:24px 28px;margin-bottom:16px;position:relative;overflow:hidden">
-      <div style="position:absolute;right:-30px;top:-30px;width:200px;height:200px;border-radius:50%;background:rgba(74,222,128,.05)"></div>
-      <div style="position:absolute;left:-20px;bottom:-20px;width:120px;height:120px;border-radius:50%;background:rgba(74,222,128,.03)"></div>
+    const readinessBanner=`<div style="background:#fff;border-radius:14px;border:1.5px solid #e5e7eb;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:16px;overflow:hidden">
+      <!-- Green accent top bar -->
+      <div style="height:4px;background:linear-gradient(90deg,#16a34a,#4ade80,#16a34a);background-size:200% 100%"></div>
 
-      <!-- Top row -->
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:20px;position:relative">
-        <div style="flex:1">
-          <div style="font-size:11px;color:rgba(255,255,255,.4);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">${gr}, ${rm.n}</div>
-          <div style="font-size:21px;font-weight:800;color:#fff;line-height:1.2">Get <span style="color:#4ade80">${storeName}</span> live — 3 steps away</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:16px;flex-shrink:0">
-          <div style="text-align:right">
-            <div style="font-size:11px;color:rgba(255,255,255,.35);margin-bottom:3px">${DONE} of ${TOTAL} steps done</div>
-            <div style="display:flex;align-items:center;gap:8px">
-              <div style="width:120px;height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden">
-                <div style="height:100%;width:${PCT}%;background:linear-gradient(90deg,#4ade80,#16a34a);border-radius:3px"></div>
-              </div>
-              <span style="font-size:12px;font-weight:700;color:#4ade80">${PCT}%</span>
-            </div>
+      <div style="padding:20px 24px">
+        <!-- Top: identity + progress + CTA -->
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:11px;color:#9ca3af;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px">${gr}, ${rm.n}</div>
+            <div style="font-size:19px;font-weight:800;color:#111827;line-height:1.25">Launch <span style="color:#16a34a">${storeName}</span> — you're <span style="color:#16a34a">${PCT}% ready</span></div>
           </div>
-          <button onclick="toggleData()" style="padding:9px 18px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 4px 12px rgba(22,163,74,.35)">Preview Store →</button>
+          <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
+            <div style="text-align:right">
+              <div style="font-size:11px;color:#9ca3af;margin-bottom:4px">${DONE} of ${TOTAL} steps complete</div>
+              <div style="display:flex;align-items:center;gap:8px;justify-content:flex-end">
+                <div style="width:100px;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden">
+                  <div style="height:100%;width:${PCT}%;background:linear-gradient(90deg,#16a34a,#4ade80);border-radius:3px"></div>
+                </div>
+              </div>
+            </div>
+            <button onclick="toggleData()" style="padding:9px 18px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(22,163,74,.3)">Preview Store →</button>
+          </div>
         </div>
-      </div>
 
-      <!-- Next step cards -->
-      <div style="display:flex;gap:10px;position:relative">
-        ${stepCards}
-        <div style="flex-shrink:0;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:110px;text-align:center">
-          <i class="ti ti-rocket" style="font-size:22px;color:#4ade80"></i>
-          <div style="font-size:11px;color:rgba(255,255,255,.5)">Est. time</div>
-          <div style="font-size:18px;font-weight:800;color:#4ade80;line-height:1">~30</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.35)">min to live</div>
+        <!-- Step cards row -->
+        <div style="display:flex;gap:10px">
+          ${stepCards}
+          <div style="flex-shrink:0;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #bbf7d0;border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:100px;text-align:center">
+            <i class="ti ti-rocket" style="font-size:22px;color:#16a34a"></i>
+            <div style="font-size:20px;font-weight:900;color:#15803d;line-height:1">~30</div>
+            <div style="font-size:11px;color:#16a34a;font-weight:600">min to go live</div>
+          </div>
         </div>
       </div>
     </div>`;
