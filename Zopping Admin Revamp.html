@@ -538,10 +538,10 @@ body.mobile #hdrSearchBar{overflow-x:auto}
   </select>
   <div class="ctrl-sep"></div>
   <span class="ctrl-lbl">Plan</span>
-  <select id="planSelect" onchange="setPlan(this.value)" style="font-size:11px;padding:4px 8px;border-radius:6px;border:1px solid rgba(167,139,250,.3);background:#3b0764;color:#e9d5ff;cursor:pointer;outline:none;min-width:120px">
-    <option value="basic">Basic</option>
-    <option value="business">Business</option>
-    <option value="enterprise">Enterprise</option>
+  <select id="planSelect" onchange="setPlan(this.value)" style="font-size:11px;padding:4px 8px;border-radius:6px;border:1px solid rgba(167,139,250,.3);background:#3b0764;color:#e9d5ff;cursor:pointer;outline:none;min-width:140px">
+    <option value="basic">Basic — Entrepreneurs</option>
+    <option value="business">Business — Scale</option>
+    <option value="enterprise">Enterprise — Multi-store</option>
   </select>
   <div class="ctrl-sep"></div>
   <div class="toggle-wrap" onclick="toggleData()">
@@ -1022,14 +1022,14 @@ function renderProfileDD(){
     planEl.innerHTML=`<div class="pdd-sec-title">Plan &amp; Billing <a onclick="gotoPage('billing')">View →</a></div>
       <div class="pdd-plan">
         <div class="pdd-plan-name">Business Plan</div>
-        <div class="pdd-plan-sub">4 stores · 4 staff · Renews 25 Jul 2026</div>
-        <div class="pdd-plan-cta">Upgrade to Enterprise →</div>
+        <div class="pdd-plan-sub">4 stores · 4 users · 5,000 SKUs · Renews 25 Jul 2026</div>
+        <div class="pdd-plan-cta" style="color:#7c3aed">Upgrade to Enterprise →</div>
       </div>`;
   } else {
     planEl.innerHTML=`<div class="pdd-sec-title">Plan &amp; Billing <a onclick="gotoPage('billing')">View →</a></div>
       <div class="pdd-plan">
         <div class="pdd-plan-name" style="color:#6b7280">Basic Plan</div>
-        <div class="pdd-plan-sub">2 stores · 2 staff · Renews 25 Jul 2026</div>
+        <div class="pdd-plan-sub">2 stores · 2 users · 1,000 SKUs · Renews 25 Jul 2026</div>
         <div class="pdd-plan-cta">Upgrade to Business →</div>
       </div>`;
   }
@@ -1056,9 +1056,9 @@ function updatePlanBadge(){
   const b=document.getElementById('planBadge');
   if(!b) return;
   const cfg={
-    basic:    {label:'Basic',    bg:'rgba(107,114,128,.18)', color:'#9ca3af', border:'rgba(107,114,128,.3)'},
-    business: {label:'Business', bg:'rgba(255,255,255,.15)', color:'rgba(255,255,255,.7)', border:'rgba(255,255,255,.2)'},
-    enterprise:{label:'Enterprise',bg:'rgba(234,179,8,.18)', color:'#fbbf24', border:'rgba(234,179,8,.35)'},
+    basic:     {label:'Basic Plan',      bg:'rgba(107,114,128,.18)', color:'#9ca3af',            border:'rgba(107,114,128,.3)'},
+    business:  {label:'Business Plan',   bg:'rgba(255,255,255,.15)', color:'rgba(255,255,255,.7)',border:'rgba(255,255,255,.2)'},
+    enterprise:{label:'Enterprise Plan', bg:'rgba(234,179,8,.18)',   color:'#fbbf24',            border:'rgba(234,179,8,.35)'},
   };
   const c=cfg[plan]||cfg.basic;
   b.textContent=c.label;
@@ -3502,17 +3502,22 @@ function renderFilled(scroll){
       </div>`;
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 1 – 20 of 47 staff</span><div style="display:flex;gap:4px">${['‹','1','2','3','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===1?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===1?'#16a34a':'#fff'};color:${i===1?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
       const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px"><thead><tr>${['Name','Weekly off / Stores','Timings / Attendance','Reporting Manager','','Actions'].map(c=>`<th style="text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;padding:10px 14px;background:#fafaf8;border-bottom:1px solid #f0ece4">${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">${r.map(c=>`<td style="padding:10px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>${pgn}</div>`;
-      const staffLimitBanner=`<div style="display:flex;align-items:center;gap:12px;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:10px;padding:12px 16px;margin-bottom:14px">
+      const staffBannerCfg={
+        basic:    {title:'Staff User Limit — Basic Plan',    sub:'2 / 2 admin users used · Upgrade to Business for 4 users, or Enterprise for unlimited',used:2,total:2,pct:100},
+        business: {title:'Staff User Limit — Business Plan', sub:'4 / 4 admin users used · Upgrade to Enterprise for unlimited users',used:4,total:4,pct:100},
+      };
+      const sbc=staffBannerCfg[plan];
+      const staffLimitBanner=sbc?`<div style="display:flex;align-items:center;gap:12px;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:10px;padding:12px 16px;margin-bottom:14px">
         <div style="width:36px;height:36px;border-radius:8px;background:#fef3c7;display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <i class="ti ti-crown" style="font-size:17px;color:#d97706"></i>
         </div>
         <div style="flex:1">
-          <div style="font-size:13px;font-weight:700;color:#92400e">Staff User Limit — Basic Plan</div>
-          <div style="font-size:12px;color:#b45309;margin-top:2px">2 / 2 admin users used · Upgrade to Business for 4 users or Enterprise for unlimited</div>
+          <div style="font-size:13px;font-weight:700;color:#92400e">${sbc.title}</div>
+          <div style="font-size:12px;color:#b45309;margin-top:2px">${sbc.sub}</div>
         </div>
         <a href="https://zopping.com/pricing" target="_blank" style="flex-shrink:0;padding:7px 16px;background:#d97706;color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">Upgrade Plan →</a>
-      </div>`;
-      scroll.innerHTML=pw+(plan==='basic'?staffLimitBanner:'')+tableHtml+'</div>';
+      </div>`:'';
+      scroll.innerHTML=pw+staffLimitBanner+tableHtml+'</div>';
     },
     offers: ()=>{
       const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
@@ -4090,24 +4095,29 @@ function renderFilled(scroll){
 
     const tableHtml=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)"><table style="width:100%;border-collapse:collapse;font-size:12.5px">${thead}<tbody>${rows}</tbody></table>${pgn}</div>`;
 
-    const productLimitBanner=`<div style="background:#fffbeb;border:1.5px solid #fcd34d;border-radius:10px;padding:14px 16px;margin-bottom:14px">
+    const prodBannerCfg={
+      basic:    {title:'Product SKU Limit — Basic Plan',    used:750,  total:1000, pct:75, remaining:250,  next:'Business (5,000 SKUs)'},
+      business: {title:'Product SKU Limit — Business Plan', used:4200, total:5000, pct:84, remaining:800,  next:'Enterprise (Unlimited)'},
+    };
+    const pbc=prodBannerCfg[plan];
+    const productLimitBanner=pbc?`<div style="background:#fffbeb;border:1.5px solid #fcd34d;border-radius:10px;padding:14px 16px;margin-bottom:14px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div style="display:flex;align-items:center;gap:8px">
           <i class="ti ti-crown" style="color:#d97706;font-size:15px"></i>
-          <span style="font-size:13px;font-weight:700;color:#92400e">Product Limit — Basic Plan</span>
+          <span style="font-size:13px;font-weight:700;color:#92400e">${pbc.title}</span>
         </div>
-        <span style="font-size:12px;color:#b45309;font-weight:600">750 / 1,000 products used</span>
+        <span style="font-size:12px;color:#b45309;font-weight:600">${pbc.used.toLocaleString()} / ${pbc.total.toLocaleString()} SKUs used</span>
       </div>
       <div style="height:6px;background:#fde68a;border-radius:3px;overflow:hidden;margin-bottom:10px">
-        <div style="height:100%;width:75%;background:linear-gradient(90deg,#f59e0b,#d97706);border-radius:3px"></div>
+        <div style="height:100%;width:${pbc.pct}%;background:linear-gradient(90deg,#f59e0b,#d97706);border-radius:3px"></div>
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-        <span style="font-size:12px;color:#92400e">250 products remaining · Upgrade to Business for unlimited products</span>
+        <span style="font-size:12px;color:#92400e">${pbc.remaining.toLocaleString()} SKUs remaining · Upgrade to ${pbc.next}</span>
         <a href="https://zopping.com/pricing" target="_blank" style="flex-shrink:0;padding:6px 16px;background:#d97706;color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">Upgrade Plan →</a>
       </div>
-    </div>`;
+    </div>`:'';
 
-  scroll.innerHTML=pw+(plan==='basic'?productLimitBanner:'')+tableHtml+'</div>';
+  scroll.innerHTML=pw+productLimitBanner+tableHtml+'</div>';
 },
     reports: ()=>{
       const ALL_REPORTS=[
