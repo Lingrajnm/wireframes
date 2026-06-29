@@ -5105,6 +5105,395 @@ function renderFilled(scroll){
 
       scroll.innerHTML=pw+filterPanel+tableHtml+'</div>';
     },
+
+    // ── ROLES & PERMISSIONS ────────────────────────────────────────────
+    roles: ()=>{
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const USERS=[
+        {name:'JNTU',             phone:'+919959022885', email:'jntu@vijetha.in'},
+        {name:'Govardhan',        phone:'+919391363212', email:'gov@vijetha.in'},
+        {name:'Padmasri Hills',   phone:'+919154241069', email:'padma@vijetha.in'},
+        {name:'Kondaiah',         phone:'+919133754378', email:'kon@vijetha.in'},
+        {name:'Narendar Mokila',  phone:'+916300360844', email:'naren@vijetha.in'},
+        {name:'Manikanta',        phone:'+917995617891', email:'maniW@vijetha.in'},
+        {name:'Uday',             phone:'+918688629750', email:'uda@vijetha.in'},
+        {name:'vikas',            phone:'+916305687412', email:'1234@vijetha.in'},
+        {name:'Vamshi Kompally',  phone:'+918309594590', email:'kom@gamil.com'},
+        {name:'Naveen ET CC',     phone:'+917997621111', email:'Etcc1@gmail.com'},
+        {name:'Kokapet',          phone:'+919032299943', email:'kokapet@vijetha.in'},
+        {name:'Naveen Reddy DC',  phone:'+917893552025', email:'naveen@gmail.com'},
+      ];
+
+      // Permission services data
+      const SERVICES=[
+        {name:'ACCOUNT-SERVICE', r:true, w:true, perms:[
+          {p:'account',          d:'Manage the Store Domain, Logo and Store information', r:false,w:true},
+          {p:'attendance',       d:'Manage the Attendance of the Employees',              r:false,w:true},
+          {p:'change-password',  d:'Manage Login Credentials of you admin and Employee account', r:false,w:true},
+          {p:'config',           d:"Manage your store's configs after store creation",    r:true, w:false},
+          {p:'domain-validation',d:'Manage and update/set domain validation',             r:false,w:true},
+          {p:'extension',        d:'Manage, set and configure extension for your Stores', r:true, w:false},
+          {p:'industry',         d:'Manage and update the industry of the organization',  r:true, w:false},
+          {p:'logout',           d:'Allows you and your employees to logout on their own',r:false,w:true},
+          {p:'me',               d:'Allows owner to see their information or store information', r:true,w:true},
+          {p:'pending-action',   d:'Manage Action related to addition of Products and Catalogue and other necessary steps after Store Creation', r:true,w:true},
+          {p:'store',            d:'Allows you to setup or edit store',                   r:true, w:true},
+        ]},
+        {name:'ANALYTICS-SERVICE', r:true, w:false, perms:[
+          {p:'metrics', d:'Allow you to fetch order-analytics', r:true, w:false},
+        ]},
+        {name:'AUTH-SERVICE', r:true, w:true, perms:[
+          {p:'verification-code', d:'Allows you to send the verification-code for account-setup for your Customers', r:true, w:true},
+        ]},
+        {name:'BILLING-SERVICE', r:false, w:false, perms:[]},
+        {name:'BLOG-SERVICE', r:false, w:false, perms:[]},
+        {name:'BULK-PROCESSING-SERVICE', r:true, w:true, perms:[
+          {p:'file-request', d:'Allows user to request files for downloads', r:true, w:true},
+        ]},
+        {name:'CATALOGUE-SERVICE', r:true, w:true, perms:[
+          {p:'brand',            d:'Allows you to add brand for your products',                          r:true, w:true},
+          {p:'category',         d:'Allow you to manage categories for your product',                    r:true, w:true},
+          {p:'category-upload',  d:'Allow you to upload categories details via file uploads',            r:true, w:false},
+          {p:'product',          d:'Allow you to edit products details',                                 r:false,w:true},
+          {p:'product-issue',    d:'Allow you to get the information of product issues',                 r:false,w:true},
+          {p:'product-properties',d:'Allow you to edit properties/details of your products',            r:true, w:true},
+          {p:'product-rating',   d:'Allow you to get the details of rating of a product',               r:true, w:true},
+          {p:'product-tag-file', d:'Allow you to upload product-tag-files.',                            r:false,w:true},
+          {p:'product-upload',   d:'Allow you to edit product details/info via uploads',                r:true, w:true},
+          {p:'sales',            d:'Allow you to GET stats/analytics for particular date',              r:true, w:false},
+          {p:'stats',            d:'Allow you to GET stats and analytics of your website',              r:true, w:false},
+          {p:'stock-override',   d:'Allow you to GET/update stock-override details for store(s)',       r:true, w:true},
+          {p:'substitution-group',d:'-',                                                                r:true, w:true},
+          {p:'tag',              d:'Allow you to GET/update tag details',                               r:true, w:true},
+        ]},
+        {name:'COMMUNICATION-SERVICE', r:true, w:true, perms:[
+          {p:'call',         d:'Allow you to get call access for your organization',                             r:true, w:true},
+          {p:'device',       d:'Allow you to list the registered devices for your organization',                 r:false,w:true},
+          {p:'email',        d:'Allow you to get email access for your organization',                            r:false,w:true},
+          {p:'notification', d:'Allow you to push Notifications to ios, android and web device(s) for your Store Front', r:true,w:false},
+          {p:'sms',          d:'Allow you to get SMS access for your organization',                              r:false,w:true},
+        ]},
+        {name:'CONFIG-SERVICE', r:true, w:true, perms:[
+          {p:'config',    d:'Allow you to Post configuration or get configuration of analytics communication customer etc', r:true,w:false},
+          {p:'meta-data', d:'Allow you to Return a configuration of meta-data',                                              r:true,w:true},
+        ]},
+        {name:'CREDIT-SERVICE', r:false, w:false, perms:[]},
+        {name:'CUSTOMER-SERVICE', r:true, w:true, perms:[
+          {p:'address',        d:'Allow you to edit the address of your customers',                    r:false,w:true},
+          {p:'customer',       d:'Allow you to get the details of your customers',                     r:true, w:true},
+          {p:'email',          d:'Allows you to Update email status for customer',                     r:false,w:true},
+          {p:'phone',          d:'Allows you to let your customers to Create/update the Phone number', r:false,w:true},
+          {p:'reset-password', d:'Allows you to to let your customers to reset password',             r:false,w:true},
+          {p:'stats',          d:'Allow you to get stats of a particular customer',                   r:true, w:false},
+        ]},
+        {name:'GATEWAY-INTERNAL', r:false, w:false, perms:[]},
+        {name:'INVENTORY-SERVICE', r:true, w:true, perms:[
+          {p:'inventory-file', d:'Allow you to bulk upload for creating multiple items in the inventory.', r:true,w:true},
+          {p:'item',           d:'Allow you to Fetch/update all the inventory details of the given product from given store', r:true,w:true},
+        ]},
+        {name:'LOGISTICS-SERVICE', r:true, w:true, perms:[
+          {p:'courier',           d:'Allows you to Get or add courier orders',          r:true, w:true},
+          {p:'courier-eligibility',d:'Allows you to Get or add courier eligibility',    r:true, w:false},
+          {p:'delivery-area',     d:'Allows you to manage delivery areas',              r:true, w:false},
+          {p:'logistics-provider',d:'Allows you to retrieve all logistics providers.',  r:true, w:false},
+          {p:'serviceable-area',  d:'Allows you to manage serviceable areas',           r:true, w:false},
+          {p:'trip-log',          d:'-',                                                r:true, w:false},
+          {p:'zone-capacity',     d:'-',                                                r:true, w:true},
+        ]},
+        {name:'MASTER-SERVICE', r:true, w:true, perms:[
+          {p:'fields',             d:'-', r:true, w:false},
+          {p:'master-data',        d:'-', r:true, w:false},
+          {p:'master-data-mapping',d:'-', r:true, w:true},
+          {p:'master-data-upload', d:'-', r:true, w:true},
+        ]},
+        {name:'MEDIA-SERVICE', r:false, w:true, perms:[
+          {p:'file',         d:'Allow you to upload a file',      r:false,w:true},
+          {p:'image-upload', d:'Allows you to upload images',     r:false,w:true},
+          {p:'video-upload', d:'Allows you to upload videos',     r:false,w:true},
+        ]},
+        {name:'OFFER-SERVICE', r:true, w:true, perms:[
+          {p:'offer',        d:'-', r:true, w:true},
+          {p:'offer-upload', d:'-', r:true, w:true},
+        ]},
+        {name:'ONDC-INTEGRATION-SERVICE', r:false, w:false, perms:[]},
+        {name:'ORDER-SERVICE', r:true, w:true, perms:[
+          {p:'credit-settlement',      d:'-',                                                   r:true, w:true},
+          {p:'delivery-area-slot-rule', d:'-',                                                  r:true, w:true},
+          {p:'invoice',                d:'Allow you to generate invoice',                       r:true, w:false},
+          {p:'order',                  d:'Allow you to place order for an customer',            r:false,w:true},
+          {p:'order-count',            d:'Allow you to get count of orders',                    r:true, w:false},
+          {p:'order-log',              d:'Allow you to fetch the logs of order',                r:true, w:false},
+          {p:'order-payment',          d:'Allow you to get the status of order payment',        r:false,w:true},
+          {p:'order-rating',           d:'Allow you to rate an order',                         r:true, w:true},
+          {p:'package',                d:'Allow you to Returns All package of organization',   r:true, w:true},
+          {p:'picker-activity',        d:'Allow you to fetch the activity of the picker',      r:true, w:false},
+          {p:'picking-zone',           d:'Allow you to edit pickup zones for order',           r:true, w:false},
+          {p:'slot',                   d:'-',                                                   r:true, w:false},
+          {p:'slot-availability',      d:'-',                                                   r:true, w:false},
+          {p:'slot-charge',            d:'Allow you to define prices for slot',                r:true, w:false},
+          {p:'stats',                  d:'Allow you to get the stats of order',                r:true, w:false},
+          {p:'store',                  d:'-',                                                   r:true, w:true},
+          {p:'store-slot-rule',        d:'-',                                                   r:true, w:true},
+        ]},
+        {name:'PARTNER-INTEGRATIONS', r:true, w:false, perms:[
+          {p:'event-integrations',  d:'-', r:true, w:false},
+          {p:'events',              d:'-', r:true, w:false},
+          {p:'org-client-mappings', d:'-', r:true, w:false},
+          {p:'partner-integrations',d:'-', r:true, w:false},
+          {p:'partners',            d:'-', r:true, w:false},
+          {p:'pull-requests',       d:'-', r:true, w:false},
+          {p:'push-requests',       d:'-', r:true, w:false},
+          {p:'templates',           d:'-', r:true, w:false},
+        ]},
+        {name:'PROMO-SERVICE', r:false, w:false, perms:[]},
+        {name:'RECIPE-SERVICE', r:false, w:false, perms:[]},
+        {name:'REPORT-SERVICE', r:true, w:false, perms:[
+          {p:'reports', d:'Allow you to generate reports', r:true, w:false},
+        ]},
+        {name:'REPORTING-AGGREGATOR-SERVICE', r:false, w:false, perms:[]},
+        {name:'SUPPLIER-SERVICE', r:false, w:false, perms:[]},
+        {name:'TICKET-SERVICE', r:false, w:false, perms:[]},
+        {name:'WALLET-SERVICE', r:false, w:false, perms:[]},
+        {name:'WEBSITE-SERVICE', r:false, w:false, perms:[]},
+      ];
+
+      const cb=(checked,dim)=>{
+        if(!checked && !dim) return `<div style="width:17px;height:17px;border:1.5px solid #d1d5db;border-radius:3px;background:#fff"></div>`;
+        const fill = checked ? (dim ? '#a7d7a7' : '#16a34a') : 'transparent';
+        const border = checked ? (dim ? '#a7d7a7' : '#16a34a') : '#d1d5db';
+        if(!checked) return `<div style="width:17px;height:17px;border:1.5px solid ${border};border-radius:3px;background:#fff"></div>`;
+        return `<div style="width:17px;height:17px;border:1.5px solid ${fill};border-radius:3px;background:${fill};display:flex;align-items:center;justify-content:center">
+          <i class="ti ti-check" style="font-size:11px;color:#fff;font-weight:bold"></i>
+        </div>`;
+      };
+      const cbDim=(on)=>cb(on,true);
+      const cbFull=(on)=>cb(on,false);
+
+      // Permission detail view
+      const permRows=SERVICES.flatMap(svc=>{
+        const hdrR = svc.r ? cbFull(true) : '';
+        const hdrW = svc.w ? cbFull(true) : '';
+        const hdr=`<tr style="background:#fafafa">
+          <td style="padding:10px 14px;font-size:13px;font-weight:700;color:#111827;border-bottom:1px solid #e5e7eb">${svc.name}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb"></td>
+          <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;text-align:center">${hdrR}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;text-align:center">${hdrW}</td>
+        </tr>`;
+        const permRowsHtml=svc.perms.map(p=>`<tr>
+          <td style="padding:8px 14px 8px 24px;font-size:13px;color:#374151;border-bottom:1px solid #f3f4f6">${p.p}</td>
+          <td style="padding:8px 14px;font-size:12.5px;color:#6b7280;border-bottom:1px solid #f3f4f6">${p.d}</td>
+          <td style="padding:8px 14px;border-bottom:1px solid #f3f4f6;text-align:center">${cbDim(p.r)}</td>
+          <td style="padding:8px 14px;border-bottom:1px solid #f3f4f6;text-align:center">${cbDim(p.w)}</td>
+        </tr>`).join('');
+        return hdr+(permRowsHtml||'');
+      }).join('');
+
+      const permDetail=`<div id="rolesPermPanel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:9000;overflow:auto" onclick="if(event.target===this)this.style.display='none'">
+        <div style="background:#f9fafb;min-height:100%;margin-left:10%;padding:0 0 60px">
+          <div style="background:#fff;padding:16px 32px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:12px">
+            <button onclick="document.getElementById('rolesPermPanel').style.display='none'" style="background:none;border:none;font-size:18px;color:#6b7280;cursor:pointer"><i class="ti ti-arrow-left"></i></button>
+          </div>
+          <div style="padding:28px 32px">
+            <h2 id="rolesPermTitle" style="font-size:22px;font-weight:700;color:#111827;margin:0 0 20px"></h2>
+            <!-- User selector -->
+            <div id="rolesPermUserCard" style="border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px;background:#fff;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
+              <div><div id="rolesPermUserName" style="font-size:14px;font-weight:500;color:#111827"></div>
+                <div id="rolesPermUserEmail" style="font-size:12.5px;color:#9ca3af;margin-top:2px"></div>
+              </div>
+              <i class="ti ti-chevron-down" style="font-size:16px;color:#9ca3af"></i>
+            </div>
+            <!-- Copy from -->
+            <div style="border:1px solid #e5e7eb;border-radius:8px;background:#fff;padding:16px 18px;margin-bottom:20px">
+              <div style="font-size:11px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:10px">COPY FROM</div>
+              <div style="border:1px solid #e5e7eb;border-radius:6px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer">
+                <div><div style="font-size:14px;color:#374151;font-weight:500">No User</div>
+                  <div style="font-size:12px;color:#9ca3af;margin-top:2px">Select a user to copy permissions</div>
+                </div>
+                <i class="ti ti-chevron-down" style="font-size:16px;color:#9ca3af"></i>
+              </div>
+            </div>
+            <!-- Permissions table -->
+            <div style="border:1px solid #e5e7eb;border-radius:8px;background:#fff;overflow:hidden">
+              <div style="display:flex;justify-content:flex-end;padding:10px 14px;border-bottom:1px solid #e5e7eb">
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                  <div style="width:17px;height:17px;border-radius:3px;background:#16a34a;display:flex;align-items:center;justify-content:center">
+                    <i class="ti ti-check" style="font-size:11px;color:#fff"></i>
+                  </div>
+                  <span style="font-size:13px;font-weight:500;color:#374151">Select All</span>
+                </label>
+              </div>
+              <table style="width:100%;border-collapse:collapse">
+                <thead><tr style="background:#f5f5f5">
+                  <th style="text-align:left;padding:10px 14px;font-size:12px;color:#9ca3af;font-weight:500;border-bottom:1px solid #e5e7eb;width:200px">Name</th>
+                  <th style="text-align:left;padding:10px 14px;font-size:12px;color:#9ca3af;font-weight:500;border-bottom:1px solid #e5e7eb">Description</th>
+                  <th style="padding:10px 14px;font-size:12px;color:#9ca3af;font-weight:500;border-bottom:1px solid #e5e7eb;width:60px;text-align:center">Read</th>
+                  <th style="padding:10px 14px;font-size:12px;color:#9ca3af;font-weight:500;border-bottom:1px solid #e5e7eb;width:60px;text-align:center">Write</th>
+                </tr></thead>
+                <tbody>${permRows}</tbody>
+              </table>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:20px">
+              <button style="padding:9px 28px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
+              <button onclick="document.getElementById('rolesPermPanel').style.display='none'" style="padding:9px 22px;background:#fff;color:#374151;border:1px solid #d1d5db;border-radius:6px;font-size:14px;cursor:pointer">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+      window.showRolesPermission=function(u){
+        document.getElementById('rolesPermTitle').textContent='Permissions for '+u.name;
+        document.getElementById('rolesPermUserName').textContent=u.name;
+        document.getElementById('rolesPermUserEmail').textContent=u.email;
+        document.getElementById('rolesPermPanel').style.display='block';
+      };
+
+      const rows=USERS.map(u=>[
+        `<span style="font-size:13px;color:#374151;cursor:pointer;font-weight:500" onclick='showRolesPermission(${JSON.stringify(u)})'>${u.name}</span>`,
+        `<span style="font-size:13px;color:#374151">${u.phone}</span>`,
+        `<span style="font-size:13px;color:#374151">${u.email}</span>`,
+        act,
+      ]);
+      scroll.innerHTML=pw+permDetail+tbl(['Name','Phone','Email','Actions'],rows)+'</div>';
+    },
+
+    // ── STORES & INFO ────────────────────────────────────────────────
+    'stores-cfg': ()=>{
+      const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
+      const STORES=[
+        {name:"SODHI'S | Khanna Market | New Delhi",  addr:'Khanna Market, Khanna Market, New Delhi, Delhi, 110003',              hub:true, pick:true, client:'', status:'Enabled'},
+        {name:"SODHI'S | SEC-57 | GURUGRAM",          addr:'Basement 1, M3M Atrium 57, Gurugram, Haryana, 122011',                hub:true, pick:true, client:'', status:'Enabled'},
+        {name:"SODHI'S (I)| SEC-46 | GURUGRAM",       addr:'HUDA Market, Sector 46, Gurugram, Haryana, 122003',                   hub:true, pick:true, client:'', status:'Disabled'},
+        {name:"SODHI'S | SEC-93 | GURUGRAM",          addr:'Lower Ground Floor, JMS Crosswalk Mall, Sector 93, Gurugram, Haryana, 122505', hub:true,pick:true,client:'',status:'Enabled'},
+        {name:"SODHI'S | SEC-82 | GURUGRAM",          addr:'VATIKA INDIA NEXT, Lower ground floor, Town square -2, Sector 82, Gurugram, Haryana, 122004', hub:true,pick:true,client:'',status:'Enabled'},
+        {name:"SODHI'S | SEC-70 | GURUGRAM",          addr:'GF, Reach 3Roads Mall, Opp Tulip Violet, Sector 70, Gurugram, Haryana, 122101', hub:true,pick:true,client:'',status:'Enabled'},
+      ];
+      const rows=STORES.map(s=>[
+        `<span style="font-size:13px;font-weight:400;color:#374151">${s.name}</span>`,
+        `<span style="font-size:13px;color:#6b7280;line-height:1.4">${s.addr}</span>`,
+        `<span style="font-size:13px;color:#374151">${s.hub?'Yes':'No'}</span>`,
+        `<span style="font-size:13px;color:#374151">${s.pick?'Yes':'No'}</span>`,
+        `<span style="font-size:13px;color:#374151">${s.client}</span>`,
+        `<span style="font-size:13px;color:${s.status==='Enabled'?'#374151':'#9ca3af'}">${s.status}</span>`,
+        act,
+      ]);
+      scroll.innerHTML=pw+tbl(['Name','Address','Has Delivery Hub','Has Picking','Client Id','Status','Actions'],rows)+'</div>';
+    },
+
+    // ── ORDER CONFIGURATION ──────────────────────────────────────────
+    orderconf: ()=>{
+      const lbl=(t,sub)=>`<div style="margin-bottom:16px">
+        <div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:6px">${t}</div>
+        ${sub?`<div style="font-size:11.5px;color:#9ca3af;margin-top:-2px;margin-bottom:6px">${sub}</div>`:''}`;
+      const inp=(ph,val)=>`<input style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff" placeholder="${ph}" value="${val||''}">`;
+      const chk=(id,checked,label,sub)=>`<label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-bottom:${sub?'4px':'16px'}">
+        <input type="checkbox" id="${id}" ${checked?'checked':''} style="margin-top:2px;width:16px;height:16px;accent-color:#16a34a;cursor:pointer;flex-shrink:0">
+        <div><span style="font-size:14px;color:#111827;font-weight:${checked?'500':'400'}">${label}</span>${sub?`<div style="font-size:12px;color:#6b7280;margin-top:3px;line-height:1.5">${sub}</div>`:''}</div>
+      </label>`;
+
+      // ORDER TYPES
+      const typeBtn=(ic,lbl,active)=>`<button style="display:flex;align-items:center;gap:6px;padding:8px 20px;border:1.5px solid ${active?'#16a34a':'#e5e7eb'};border-radius:6px;background:${active?'#f0fdf4':'#fff'};font-size:13.5px;font-weight:500;color:${active?'#15803d':'#9ca3af'};cursor:pointer">
+        ${active?`<i class="ti ti-check" style="font-size:13px;color:#16a34a"></i>`:''} ${lbl}
+      </button>`;
+
+      const content=`
+        <div style="max-width:480px">
+          <div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:8px">ORDER TYPES *</div>
+          <div style="display:flex;gap:8px;margin-bottom:6px">
+            ${typeBtn('ti-truck','Delivery',true)}${typeBtn('ti-shopping-bag','Pickup',true)}${typeBtn('ti-store','Self Checkout',false)}
+          </div>
+          <div style="font-size:12px;color:#9ca3af;margin-bottom:20px">Types of orders that your customers can place on your online store</div>
+
+          <div style="margin-bottom:4px"><div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:6px">MINIMUM ORDER VALUE</div>
+          ${inp('Enter the minimum order value','')}
+          <div style="font-size:12px;color:#9ca3af;margin-top:4px;margin-bottom:16px">Your customers cannot place delivery or pickup orders below this value</div></div>
+
+          <div style="margin-bottom:4px"><div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:6px">MINIMUM ORDER VALUE FOR FREE DELIVERY</div>
+          ${inp('',500)}
+          <div style="font-size:12px;color:#9ca3af;margin-top:4px;margin-bottom:16px">Orders beyond this value will have 0 delivery charge</div></div>
+
+          <div style="margin-bottom:4px"><div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:6px">MINIMUM ORDER VALUE FOR FREE PICKUP</div>
+          ${inp('Enter the minimum order value for free pickup','')}
+          <div style="font-size:12px;color:#9ca3af;margin-top:4px;margin-bottom:16px">Orders beyond this value will have 0 pickup charge</div></div>
+
+          <div style="margin-bottom:4px"><div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:6px">MINIMUM ORDER VALUE FOR DELIVERY</div>
+          ${inp('Enter the minimum order value for delivery','')}
+          <div style="font-size:12px;color:#9ca3af;margin-top:4px;margin-bottom:16px"></div></div>
+
+          <div style="margin-bottom:4px"><div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:6px">MINIMUM ORDER VALUE FOR PICKUP</div>
+          ${inp('Enter the minimum order value for pickup','')}
+          <div style="font-size:12px;color:#9ca3af;margin-top:4px;margin-bottom:16px"></div></div>
+
+          <div style="margin-bottom:4px"><div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:6px">DELIVERY FEES</div>
+          ${inp('',50)}
+          <div style="font-size:12px;color:#9ca3af;margin-top:4px;margin-bottom:16px">Flat delivery fees will be charged on all orders whose value is below the 'Minimum order value for free delivery'</div></div>
+
+          <div style="margin-bottom:4px"><div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:6px">PICKUP FEES</div>
+          ${inp('Enter the pickup fees','')}
+          <div style="font-size:12px;color:#9ca3af;margin-top:4px;margin-bottom:16px">Flat pickup fees will be charged on all orders whose value is below the 'Minimum order value for free pickup'</div></div>
+
+          <div style="margin-bottom:16px">
+            <div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:6px">INVOICE TEMPLATE</div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <select style="flex:1;padding:10px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;color:#374151;background:#fff;cursor:pointer;appearance:auto;outline:none;font-family:inherit">
+                <option selected>Default</option><option>Professional</option><option>Compact</option>
+              </select>
+              <button style="display:flex;align-items:center;gap:6px;padding:10px 16px;border:1.5px solid #d1d5db;border-radius:6px;background:#fff;font-size:13px;color:#374151;cursor:pointer;white-space:nowrap">
+                <i class="ti ti-eye" style="font-size:14px"></i> Preview
+              </button>
+            </div>
+            <div style="font-size:12px;color:#9ca3af;margin-top:4px">Simple layout focusing on essential information only</div>
+            <div style="font-size:12.5px;color:#16a34a;margin-top:4px;display:flex;align-items:center;gap:6px"><i class="ti ti-mail" style="font-size:13px"></i> Need a custom invoice template? Contact Support</div>
+          </div>
+
+          <div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:8px">REFERENCE NUMBER</div>
+          ${chk('refnum',true,'Generate random reference numbers','Order reference numbers will be assigned randomly')}
+
+          <div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:8px">CANCELLATION REASON</div>
+          ${chk('cancreason',true,'Enable cancellation reasons for your orders','Provide admin with a predefined list of reasons to choose from when cancelling an order, ensuring better insights and standardized feedback.')}
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+            <div>
+              <div style="font-size:13px;font-weight:500;color:#374151;margin-bottom:8px">Admin Reasons:</div>
+              <div style="border:1px solid #e5e7eb;border-radius:6px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;background:#fff">
+                <span style="font-size:13px;color:#374151">Item Out Of Stock</span>
+                <i class="ti ti-trash" style="font-size:15px;color:#9ca3af;cursor:pointer"></i>
+              </div>
+              <div style="border:1px solid #e5e7eb;border-radius:6px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;background:#fff">
+                <span style="font-size:13px;color:#374151">Other</span>
+                <i class="ti ti-trash" style="font-size:15px;color:#9ca3af;cursor:pointer"></i>
+              </div>
+              <button style="font-size:12.5px;color:#16a34a;background:none;border:none;cursor:pointer;padding:0;font-weight:500">+ Add More Reasons</button>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:500;color:#374151;margin-bottom:8px">Consumer Reasons:</div>
+              <div style="border:1px solid #e5e7eb;border-radius:6px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;background:#fff">
+                <span style="font-size:13px;color:#374151">Item Out Of Stock</span>
+                <i class="ti ti-trash" style="font-size:15px;color:#9ca3af;cursor:pointer"></i>
+              </div>
+              <div style="border:1px solid #e5e7eb;border-radius:6px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;background:#fff">
+                <span style="font-size:13px;color:#374151">Other</span>
+                <i class="ti ti-trash" style="font-size:15px;color:#9ca3af;cursor:pointer"></i>
+              </div>
+              <button style="font-size:12.5px;color:#16a34a;background:none;border:none;cursor:pointer;padding:0;font-weight:500">+ Add More Reasons</button>
+            </div>
+          </div>
+
+          <div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:8px">ORDER CONFIRMATION</div>
+          ${chk('orderconf',true,'Confirm order only upon successful online payment','Applies only to orders where online payment is chosen as a payment mode')}
+
+          <div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:8px">EXTRA CHARGES</div>
+          ${chk('extrach',false,'Enable extra charges like platform and handling charges','Enable this option to charge additional fees')}
+
+          <div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:8px">EMAIL VERIFICATION</div>
+          ${chk('emailver',false,'Enable email verification','Enable this option for customer email verification on checkout')}
+
+          <div style="display:flex;gap:10px;margin-top:8px">
+            <button style="padding:9px 28px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
+            <button style="padding:9px 22px;background:#f3f4f6;color:#374151;border:none;border-radius:6px;font-size:14px;cursor:pointer">Cancel</button>
+          </div>
+        </div>`;
+
+      scroll.innerHTML=pw+content+'</div>';
+    },
   };
 
   const renderer=pages[pg];
