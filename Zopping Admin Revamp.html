@@ -5843,6 +5843,139 @@ function renderFilled(scroll){
 
       scroll.innerHTML=pw+content+'</div>';
     },
+
+    ext: ()=>{
+      const TABS=['All','Installed','Delivery','Catalogue','Marketing','Customer Management','Staff Management','Online Store','Payments','Analytics','External Integration'];
+      window._extTab=window._extTab||'All';
+      /* [name, desc, isPremium, btns[], cats[]] */
+      const EXT=[
+        ['Order Gating','Order Gating allows merchants to review and approve every incoming order before it is processed.',0,['I'],['Delivery']],
+        ['Pricing Tier','Pricing Tier lets merchants override product pricing at order time based on customer segments (via customer tags) and purchase quantity brackets.',0,['I'],['Catalogue']],
+        ['Global Nomenclature','Enable a configurable global nomenclature mapping between system-defined order statuses and organization-specific display labels.',0,['U','C'],['Online Store']],
+        ['Dynamic Hero Banner','Enhance your storefront with a Dynamic Hero Banner section.',1,['P'],['Marketing','Online Store']],
+        ['Order Accept & Reject With Hop','Customize how orders are handled after assignment.',1,['P'],['Delivery']],
+        ['Sales Location Mapping','Location Mapping helps you assign areas such as villages, blocks, or zones to staff or operational codes. This makes it clear who is responsible for which location.',1,['P'],['Delivery']],
+        ['B2B Management','B2B Set-up enables advanced B2B capabilities for your store, allowing you to onboard and manage business customers with complete control over pricing, compliance, and order visibility.',1,['P'],['Online Store']],
+        ['MIS Report','It will automatically generate performance reports for each store and share them with store managers, while keeping organization owners in the loop.',1,['U'],['Analytics']],
+        ['Endless Aisle','The Endless Aisle extension enables in-store tablets or kiosks to access the complete online catalogue, allowing shoppers to browse, order, and pay for both in-stock and out-of-stock items directly from the store.',1,['P'],['Online Store']],
+        ['Inventory Count','With real-time updates and tracking, it ensures stock levels remain accurate, reducing errors and improving operational efficiency.',1,['P'],['Catalogue']],
+        ['VIP Membership Plan','Enable a powerful loyalty program to drive repeat orders and increase customer retention.',1,['P'],['Marketing','Customer Management']],
+        ['Rider Earnings &amp; Incentives','Set up dynamic earning rules and reward milestones to boost rider productivity and satisfaction.',0,['I'],['Delivery','Staff Management']],
+        ['Facebook SDK','Integrate your storefront with Meta\'s SDK for enhanced tracking and analytics.',1,['P'],['External Integration','Analytics']],
+        ['Customer Wishlist','Allow your customers to save products for future purchase with the Wishlist extension.',0,['I'],['Customer Management']],
+        ['Customer Sign Up','Customize how customers sign up or log in to your storefront.',0,['U','C'],['Customer Management']],
+        ['OneHashCal Integration','Integrate appointment scheduling with oneHashCal for a seamless and hassle-free online booking experience.',0,['I'],['External Integration']],
+        ['TidyCal Integration','Integrate appointment scheduling with TidyCal for a seamless and hassle-free online booking experience.',0,['I'],['External Integration']],
+        ['Customer Credit Support','Set up Credit as a payment option so users can buy products now and conveniently pay later, within a repayment period that aligns with your business\'s credit policy.',0,['I'],['Payments','Customer Management']],
+        ['Third Party Integration','Easily integrate with third party to transfer the data.',0,['U','C'],['External Integration']],
+        ['Keyword History','This feature helps track the words users type in the search bar on the website and mobile app.',1,['U'],['Marketing','Analytics']],
+        ['Google Tag Manager','Integrate Google Tag Manager with Zopping to manage tracking tags effortlessly.',0,['U','C'],['External Integration','Analytics']],
+        ['Trending Searches','Highlight the most popular searches on your platform to keep customers engaged and provide quick access to in-demand products or categories.',1,['P'],['Marketing']],
+        ['Notify Me','Notify Me lets you know when out-of-stock items are back and ready to order.',0,['I'],['Customer Management']],
+        ['InstagramFeed','This feature allows you to display your Instagram posts directly on your website.',0,['I'],['Online Store','Marketing']],
+        ['NewsLetter Subscription','Stay updated with the latest offers, promotions, and product launches by subscribing to our newsletter.',0,['I'],['Marketing','Customer Management']],
+        ['User Activity Logs','The User Logs feature provides a centralized view of all user activities within the platform.',0,['U','C'],['Analytics','Customer Management']],
+        ['Whatmore','Whatmore.ai is a platform that enables brands to create interactive and shoppable video content for e-commerce.',0,['I'],['Marketing','Online Store']],
+        ['OMS and WMS Management','Streamline your existing and new order processing methods, configure pre-integrated service providers and user-friendly plugins such as Unicommerce and similar solutions.',0,['I'],['Delivery','External Integration']],
+        ['Product Bundles','Enhance your customers\' shopping experience with curated product bundles and exclusive discounts, boosting your average order value.',0,['I'],['Catalogue']],
+        ['Recipe Page Generator','This extension allows you to create engaging and informative recipe pages within your online store.',0,['I'],['Catalogue','Online Store']],
+        ['Support for Free Delivery','Boost your sales by offering free delivery on your products.',0,['I'],['Delivery','Marketing']],
+        ['Digital Products','Sell digital products like ebooks, music, photos, videos, digital arts, files, software licenses, etc on your online store.',0,['I'],['Catalogue']],
+        ['Subscription Products','Easily set up products that customers love to buy on a regular basis.',0,['I'],['Catalogue']],
+        ['Low Stock Alerts','Don\'t lose sales or credibility when an item goes out of stock before you notice.',0,['I'],['Catalogue']],
+        ['Product Restrictions','Set purchase limits on your products — control how many units a customer can buy within a specific time period.',0,['U','C'],['Catalogue']],
+        ['Ticket Management','This extension provides your customers with an option to seamlessly raise tickets against their orders, fostering effective communication and issue resolution.',0,['I'],['Customer Management']],
+        ['Hub Trip Support','This extension helps you manage and track the orders by assigning a new order status called At Hub.',0,['I'],['Delivery']],
+        ['Referral Management','Grow your customers by extending referral benefits to your existing customers.',0,['I'],['Marketing','Customer Management']],
+        ['Google Merchant Center','Integrate your Google Merchant Center account with your Zopping account and upload your Zopping catalog to Google Merchant Center with the simple click of a button.',0,['I'],['External Integration','Marketing']],
+        ['Unique Coupon Generator','By using this extension, you will be able to create a desired number of unique coupons with the click of a button.',0,['U'],['Marketing']],
+        ['Marketplace','Convert your current online store to function as an online marketplace.',0,['I'],['Online Store']],
+        ['Reviews and Ratings','Provide an option for your customers to rate and review your products and orders.',0,['I'],['Customer Management']],
+        ['Customer Groups','Allows multiple users to log in to the same customer account.',1,['P'],['Customer Management']],
+        ['Leave Management','Stores that have several employees can use this extension to manage the leaves of their employees.',0,['I'],['Staff Management']],
+        ['Marketing Banners','Create and publish multilingual marketing banners on your online store.',0,['U','M'],['Marketing','Online Store']],
+        ['Offers Management','Run sales promotions on your online store by choosing from over 10+ offers including bulk purchases, product bundling and BOGO.',0,['U','M'],['Marketing']],
+        ['Reports and Analytics','Monitor the performance of your online store with our in-depth reports covering all aspects including sales, operations, inventory and catalogue.',0,['U'],['Analytics']],
+        ['Abandoned Cart','Remind your customers to finish their purchase if they abandon their cart after adding items to it.',0,['I'],['Marketing','Customer Management']],
+        ['Facebook Analytics','Insert Facebook Pixel on your website and app to measure, target and promote your store and products.',0,['I'],['Analytics','External Integration']],
+        ['Shipping and Courier','Integrate with 3rd party courier services like ShipRocket and Dunzo.',0,['U','C'],['Delivery','External Integration']],
+        ['Customer Wallet Support','Instantly set up your own wallet and give your customers an option to recharge.',0,['U','C'],['Payments','Customer Management']],
+        ['Personalized Search Results','Personalise search results and product listing for your customers based on their purchase history.',1,['P'],['Marketing','Catalogue']],
+        ['Multiple And Partial Order Picking','Allow your delivery agents to pick multiple or partial orders or a combination of both.',0,['I'],['Delivery']],
+        ['Password Policy','Configure your customers\' password format to improve the website security and enable a secure online shopping experience.',0,['I'],['Online Store','Customer Management']],
+        ['Delivery/Pick-up Slot Charges','Influence customer behaviour by setting up surcharge or discount for Delivery/Pick-up of your choice.',0,['I'],['Delivery','Payments']],
+        ['Website Pages Scheduling','Set up pages of your website / apps in advance and schedule them to replace the existing pages automatically.',0,['I'],['Online Store']],
+        ['Multiple Languages Support','Enable your website / apps to support multiple languages.',0,['I'],['Online Store']],
+        ['Pre-order Support','Sell products that need X days to be procured.',0,['I'],['Catalogue']],
+        ['Bulk-order Support','Set Bulk-order limits by products.',0,['I'],['Catalogue']],
+        ['Slot Capacity Set-up','Set the number of orders that you can take in specific slots.',0,['U','C'],['Delivery']],
+        ['Stock Buffer Set-up','Avoid stock outs by setting buffer stock by category or product.',0,['I'],['Catalogue']],
+        ['Search Results Control','Fix the product(s) to be displayed in the search results for a set of keywords.',1,['U','C'],['Catalogue','Marketing']],
+        ['Tags For Customer Segmentation','Create customized customer segments and assign them tags.',0,['U','C'],['Customer Management','Marketing']],
+        ['Order Returns Support','Manage return of item(s) or entire order.',0,['U','C'],['Delivery']],
+        ['Delivery / Pick-up Slot Set-up','Set up slots for Delivery and Pick up that work for your business.',0,['U','C'],['Delivery']],
+        ['Custom Fields','Add additional custom fields to various entities such as products, orders and customer signup pages to capture additional information.',0,['U','C'],['Catalogue','Online Store']],
+        ['SEO Optimization','Increase your website\'s rank in the organic web search results by setting customized title, description and keywords for each page.',0,['U','C'],['Online Store','Marketing']],
+        ['Stock Management','Keep track of stock count and download stock report on demand.',0,['U','C'],['Catalogue']],
+        ['Online Payment','Receive online payments by easily connecting with your preferred payment gateway.',0,['U','C'],['Payments']],
+        ['Sold-By-Weight Product Support','Handle products that are sold by weight (loose products).',0,['U','C'],['Catalogue']],
+        ['Tawk.to Integration','Enable Tawk.to chat support to your website and apps.',0,['I'],['External Integration','Customer Management']],
+        ['Marketing Campaigns','Create and run marketing campaigns via Email/ SMS/ App notifications.',0,['U','M'],['Marketing']],
+        ['Delivery Support','Support the planning, dispatch, delivery and rejection of orders.',0,['U','C'],['Delivery']],
+        ['Google Analytics','Insert your Google Analytics ID on your website to track and analyze the traffic on your website using Google Analytics.',0,['U','C'],['Analytics','External Integration']],
+        ['Product Substitution','Improve your fill-rate by sending substitute products in case the originally ordered product is unavailable.',0,['U','C'],['Delivery','Catalogue']],
+        ['Delivery Area Setup','Define the locations or boundaries where your store(s) can deliver.',0,['U','C'],['Delivery']],
+        ['Product Tag Support','Create custom tags for your products.',0,['U','M'],['Catalogue']],
+        ['Pick Pack Support','Get support for the picking and packing of orders using an automated picking queue and an Android Picker-app.',0,['U','C'],['Delivery']],
+        ['Product Variant Support','Enable customers to buy product variants that are available in multiple colours, weights, sizes, etc.',0,['U','C'],['Catalogue']],
+        ['Multi User Support','Invite your teammates to collaborate and manage your ecommerce portal.',0,['U','C'],['Staff Management']],
+        ['Brand Support','Enable your customers to search, filter and find products by brand names.',0,['U','M'],['Catalogue']],
+      ];
+
+      const iconOf=n=>{
+        const m={'Order Gating':'ti-shield-check','Pricing Tier':'ti-tag','Global Nomenclature':'ti-arrows-exchange','Dynamic Hero Banner':'ti-photo','Order Accept & Reject With Hop':'ti-package','Sales Location Mapping':'ti-map-pin','B2B Management':'ti-building','MIS Report':'ti-chart-bar','Endless Aisle':'ti-device-tablet','Inventory Count':'ti-clipboard-list','VIP Membership Plan':'ti-crown','Rider Earnings &amp; Incentives':'ti-motorbike','Facebook SDK':'ti-brand-facebook','Customer Wishlist':'ti-heart','Customer Sign Up':'ti-user-plus','OneHashCal Integration':'ti-calendar','TidyCal Integration':'ti-calendar-event','Customer Credit Support':'ti-credit-card','Third Party Integration':'ti-arrows-right-left','Keyword History':'ti-history','Google Tag Manager':'ti-tag','Trending Searches':'ti-trending-up','Notify Me':'ti-bell','InstagramFeed':'ti-brand-instagram','NewsLetter Subscription':'ti-mail','User Activity Logs':'ti-activity','Whatmore':'ti-video','OMS and WMS Management':'ti-truck','Product Bundles':'ti-box-multiple','Recipe Page Generator':'ti-chef-hat','Support for Free Delivery':'ti-package-export','Digital Products':'ti-download','Subscription Products':'ti-repeat','Low Stock Alerts':'ti-alert-triangle','Product Restrictions':'ti-lock','Ticket Management':'ti-ticket','Hub Trip Support':'ti-route','Referral Management':'ti-share','Google Merchant Center':'ti-shopping-cart','Unique Coupon Generator':'ti-discount','Marketplace':'ti-store','Reviews and Ratings':'ti-star','Customer Groups':'ti-users-group','Leave Management':'ti-calendar-off','Marketing Banners':'ti-ad','Offers Management':'ti-percentage','Reports and Analytics':'ti-report-analytics','Abandoned Cart':'ti-shopping-cart-off','Facebook Analytics':'ti-brand-facebook','Shipping and Courier':'ti-truck-delivery','Customer Wallet Support':'ti-wallet','Personalized Search Results':'ti-search','Multiple And Partial Order Picking':'ti-packages','Password Policy':'ti-lock-password','Delivery/Pick-up Slot Charges':'ti-currency-dollar','Website Pages Scheduling':'ti-calendar','Multiple Languages Support':'ti-language','Pre-order Support':'ti-clock','Bulk-order Support':'ti-clipboard-list','Slot Capacity Set-up':'ti-calendar-stats','Stock Buffer Set-up':'ti-package','Search Results Control':'ti-search','Tags For Customer Segmentation':'ti-tags','Order Returns Support':'ti-arrow-back-up','Delivery / Pick-up Slot Set-up':'ti-clock-2','Custom Fields':'ti-forms','SEO Optimization':'ti-world-search','Stock Management':'ti-chart-line','Online Payment':'ti-credit-card','Sold-By-Weight Product Support':'ti-scale','Tawk.to Integration':'ti-message-circle','Marketing Campaigns':'ti-speakerphone','Delivery Support':'ti-truck','Google Analytics':'ti-chart-dots','Product Substitution':'ti-arrows-exchange','Delivery Area Setup':'ti-map','Product Tag Support':'ti-tag','Pick Pack Support':'ti-package','Product Variant Support':'ti-color-swatch','Multi User Support':'ti-users','Brand Support':'ti-certificate'};
+        return m[n]||'ti-puzzle';
+      };
+
+      const btn=t=>{
+        if(t==='I') return `<button style="padding:7px 18px;border:1.5px solid #374151;background:#fff;border-radius:6px;font-size:12.5px;font-weight:600;color:#374151;cursor:pointer">Install</button>`;
+        if(t==='U') return `<button style="padding:7px 18px;border:1.5px solid #9ca3af;background:#fff;border-radius:6px;font-size:12.5px;font-weight:500;color:#6b7280;cursor:pointer">Uninstall</button>`;
+        if(t==='C') return `<button style="padding:7px 14px;border:1.5px solid #0d9488;background:#fff;border-radius:6px;font-size:12.5px;font-weight:600;color:#0d9488;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-settings-2" style="font-size:13px"></i> Configure</button>`;
+        if(t==='M') return `<button style="padding:7px 14px;border:1.5px solid #0d9488;background:#fff;border-radius:6px;font-size:12.5px;font-weight:600;color:#0d9488;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-settings-2" style="font-size:13px"></i> Manage</button>`;
+        if(t==='P') return `<button style="padding:7px 16px;border:1.5px solid #d97706;background:#fff;border-radius:6px;font-size:12.5px;font-weight:600;color:#d97706;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-crown" style="font-size:13px"></i> Premium</button>`;
+        return '';
+      };
+
+      const card=e=>`<div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:20px 20px 16px;display:flex;flex-direction:column;min-height:170px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="width:40px;height:40px;border-radius:8px;background:#ecfdf5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="ti ${iconOf(e[0])}" style="font-size:20px;color:#16a34a"></i>
+          </div>
+          <div style="font-size:13.5px;font-weight:700;color:#111827;line-height:1.3">${e[0]}${e[2]?'&nbsp;<i class="ti ti-crown" style="color:#d97706;font-size:13px"></i>':''}</div>
+        </div>
+        <div style="font-size:12.5px;color:#6b7280;line-height:1.55;flex:1">${e[1]}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;align-items:center">
+          ${e[3].map(btn).join('')}
+        </div>
+      </div>`;
+
+      const renderExt=()=>{
+        const t=window._extTab;
+        const data=t==='All'?EXT:t==='Installed'?EXT.filter(e=>e[3].includes('U')):EXT.filter(e=>e[4].includes(t));
+        const tabRow=TABS.map(tab=>`<span onclick="window._extTab='${tab}';window._renderExt()" style="padding:10px 14px;cursor:pointer;font-size:13px;white-space:nowrap;display:inline-block;${tab===t?'color:#16a34a;font-weight:700;border-bottom:2px solid #16a34a':'color:#6b7280;border-bottom:2px solid transparent'}">${tab}</span>`).join('');
+        const grid=data.length===0?`<div style="grid-column:1/-1;text-align:center;padding:48px;color:#9ca3af;font-size:14px">No extensions in this category.</div>`:data.map(card).join('');
+        scroll.innerHTML=pw+`<div style="max-width:1160px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+            <div style="display:flex;align-items:center;gap:0;border-bottom:1px solid #e5e7eb;overflow-x:auto;flex:1">${tabRow}</div>
+            <div style="margin-left:16px;flex-shrink:0"><select style="padding:7px 32px 7px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;color:#374151;background:#fff;outline:none;cursor:pointer"><option>All</option></select></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px">${grid}</div>
+        </div>`+'</div>';
+      };
+
+      window._renderExt=renderExt;
+      renderExt();
+    },
   };
 
   const renderer=pages[pg];
