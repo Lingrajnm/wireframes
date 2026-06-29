@@ -4142,6 +4142,101 @@ function renderFilled(scroll){
 
       scroll.innerHTML=pw+tabs+layout+'</div>';
     },
+    shipping: ()=>{
+      // Courier logo placeholder (colored icon block)
+      const logo=(ic,bg,c)=>`<div style="width:34px;height:34px;border-radius:6px;background:${bg};display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${ic}" style="font-size:17px;color:${c}"></i></div>`;
+
+      const COURIERS=[
+        {name:'ShipRocket HyperLocal', logo:logo('ti-rocket','#fff7ed','#ea580c'),          enabled:true},
+        {name:'Dunzo',                  logo:logo('ti-bike','#f0fdf4','#16a34a'),             enabled:false},
+        {name:'Qwqer',                  logo:logo('ti-motorbike','#fef9c3','#ca8a04'),        enabled:false},
+        {name:'Volta',                  logo:logo('ti-bolt','#f5f3ff','#7c3aed'),             enabled:false},
+        {name:'Delhivery Hyperlocal',   logo:logo('ti-package-export','#111827','#ffffff'),   enabled:true},
+      ];
+
+      const toggle=(on)=>`<div onclick="this.dataset.on=(this.dataset.on==='1'?'0':'1');this.style.background=this.dataset.on==='1'?'#16a34a':'#d1d5db';this.querySelector('span').style.left=this.dataset.on==='1'?'18px':'2px'"
+        data-on="${on?'1':'0'}" style="width:38px;height:22px;border-radius:11px;background:${on?'#16a34a':'#d1d5db'};position:relative;cursor:pointer;flex-shrink:0;transition:background .2s">
+        <span style="position:absolute;top:2px;left:${on?'18':'2'}px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s"></span>
+      </div>`;
+
+      const courierRows=COURIERS.map(c=>`
+        <div style="display:flex;align-items:center;padding:16px 0;border-bottom:1px solid #f3f4f6;gap:14px">
+          <i class="ti ti-chevron-right" style="font-size:15px;color:#9ca3af;cursor:pointer;flex-shrink:0"></i>
+          ${c.logo}
+          <span style="flex:1;font-size:14px;color:#111827;font-weight:400">${c.name}</span>
+          <span style="font-size:13px;color:#ef4444;cursor:pointer;display:flex;align-items:center;gap:5px;margin-right:16px">
+            <i class="ti ti-trash" style="font-size:14px"></i> Delete
+          </span>
+          ${toggle(c.enabled)}
+        </div>`).join('');
+
+      // Tab content — Courier Support
+      const courierTab=`
+        <div style="margin-bottom:16px">
+          <div style="font-size:10.5px;font-weight:700;color:#6b7280;letter-spacing:.06em;margin-bottom:8px">COURIER SUPPORT</div>
+          <select style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:6px;font-size:13.5px;color:#9ca3af;background:#fff;cursor:pointer;appearance:auto;outline:none;font-family:inherit">
+            <option value="" disabled selected>Select Courier Service</option>
+            <option>ShipRocket</option><option>Dunzo</option><option>Qwqer</option>
+            <option>Volta</option><option>Delhivery</option><option>Porter</option>
+          </select>
+        </div>
+        <div style="background:#fff;border-radius:8px;border:1px solid #e5e7eb;padding:0 16px;margin-bottom:20px">
+          ${courierRows}
+        </div>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:24px">
+          <input type="checkbox" style="width:16px;height:16px;accent-color:#16a34a;cursor:pointer">
+          <span style="font-size:13.5px;color:#374151">Show courier estimation and charges to customers</span>
+        </label>
+        <div style="display:flex;gap:10px">
+          <button style="padding:9px 28px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
+          <button style="padding:9px 22px;background:#fff;color:#374151;border:1px solid #d1d5db;border-radius:6px;font-size:14px;cursor:pointer">Cancel</button>
+        </div>`;
+
+      // Tab content — 3PL Automation Settings
+      const modeCard=(label,desc,active)=>`
+        <div onclick="document.querySelectorAll('.mode-card').forEach(c=>{c.style.borderColor='#e5e7eb';c.querySelector('.radio-dot').style.borderColor='#d1d5db';c.querySelector('.radio-dot').style.background='#fff'});this.style.borderColor='#16a34a';this.querySelector('.radio-dot').style.borderColor='#16a34a';this.querySelector('.radio-dot').style.background='#16a34a'" class="mode-card"
+          style="flex:1;border:1.5px solid ${active?'#16a34a':'#e5e7eb'};border-radius:8px;padding:16px;cursor:pointer">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <div class="radio-dot" style="width:17px;height:17px;border-radius:50%;border:2px solid ${active?'#16a34a':'#d1d5db'};background:${active?'#16a34a':'#fff'};flex-shrink:0;position:relative">
+              ${active?`<div style="position:absolute;inset:3px;border-radius:50%;background:#fff"></div>`:''}
+            </div>
+            <span style="font-size:14px;font-weight:600;color:#111827">${label}</span>
+          </div>
+          <div style="font-size:12.5px;color:#6b7280;line-height:1.5;padding-left:27px">${desc}</div>
+        </div>`;
+
+      const automationTab=`
+        <div style="margin-bottom:20px">
+          <div style="font-size:16px;font-weight:600;color:#111827;margin-bottom:16px">Automation Mode</div>
+          <div style="display:flex;gap:16px;margin-bottom:28px">
+            ${modeCard('Manual Assignment','Orders must be manually assigned by store admin.',true)}
+            ${modeCard('Auto Assignment','Select Your Preference',false)}
+            ${modeCard('Sequential Automation','System assigns 3PL partners automatically based on configured priority and retry logic.',false)}
+          </div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button style="padding:9px 28px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
+          <button style="padding:9px 22px;background:#fff;color:#374151;border:1px solid #d1d5db;border-radius:6px;font-size:14px;cursor:pointer">Cancel</button>
+        </div>`;
+
+      const tabs=`<div style="display:flex;border-bottom:2px solid #e5e7eb;margin-bottom:24px">
+        <button id="shipTab1" onclick="switchShipTab(1)" style="padding:10px 22px;font-size:14px;font-weight:600;color:#111827;border:none;background:none;cursor:pointer;border-bottom:2.5px solid #16a34a;margin-bottom:-2px">Courier Support</button>
+        <button id="shipTab2" onclick="switchShipTab(2)" style="padding:10px 22px;font-size:14px;font-weight:400;color:#9ca3af;border:none;background:none;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-2px">3PL Automation Settings</button>
+      </div>
+      <div id="shipContent1">${courierTab}</div>
+      <div id="shipContent2" style="display:none">${automationTab}</div>`;
+
+      window.switchShipTab=function(n){
+        [1,2].forEach(i=>{
+          const btn=document.getElementById('shipTab'+i);
+          const con=document.getElementById('shipContent'+i);
+          if(i===n){ btn.style.cssText+=';color:#111827;border-bottom-color:#16a34a;font-weight:600'; con.style.display=''; }
+          else      { btn.style.cssText+=';color:#9ca3af;border-bottom-color:transparent;font-weight:400'; con.style.display='none'; }
+        });
+      };
+
+      scroll.innerHTML=pw+tabs+'</div>';
+    },
     capacity: ()=>{
       const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
       const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
@@ -4954,16 +5049,7 @@ function renderFilled(scroll){
         </div>
       </div>`;
 
-      const entityStyle={
-        'Store':    ['#1d4ed8','#dbeafe'],
-        'Order':    ['#16a34a','#dcfce7'],
-        'Product':  ['#7c3aed','#f5f3ff'],
-        'Customer': ['#0891b2','#ecfeff'],
-        'Coupon':   ['#ca8a04','#fef9c3'],
-        'User':     ['#ea580c','#fff7ed'],
-        'Trip':     ['#b91c1c','#fee2e2'],
-        'Vehicle':  ['#374151','#f3f4f6'],
-      };
+      const entityStyle={}; // no color differentiation — plain label only
 
       const LOGS=[
         {entity:'Order',    store:'Sodhis Supermarket',  user:'Lingraj',        date:'29 Jun 2026, 10:42 AM', action:'Order <strong>#ORD-2026-0841</strong> status updated to <strong>Dispatched</strong>'},
@@ -4992,10 +5078,9 @@ function renderFilled(scroll){
       const tdS='padding:11px 14px;border-bottom:1px solid #f9f7f4;vertical-align:middle';
 
       const rows=LOGS.map(l=>{
-        const [ec,eb]=entityStyle[l.entity]||['#374151','#f3f4f6'];
         return `<tr onmouseover="this.style.background='#fafaf9'" onmouseout="this.style.background=''">
           <td style="${tdS}">
-            <span style="display:inline-flex;padding:2px 9px;border-radius:5px;background:${eb};color:${ec};font-size:11px;font-weight:700;white-space:nowrap">${l.entity}</span>
+            <span style="font-size:12.5px;color:#374151;font-weight:500">${l.entity}</span>
           </td>
           <td style="${tdS}"><span style="font-size:12.5px;color:#374151">${l.store}</span></td>
           <td style="${tdS}"><span style="font-size:12.5px;color:#374151">${l.user}</span></td>
