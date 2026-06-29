@@ -1500,27 +1500,30 @@ function renderOverview(scroll){
     const TOTAL=8, DONE=1, PCT=Math.round(DONE/TOTAL*100);
 
     // ── Launch readiness banner ──
-    const readinessBanner=`<div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a2f 100%);border-radius:14px;padding:24px 28px;margin-bottom:16px;position:relative;overflow:hidden">
-      <div style="position:absolute;right:-20px;top:-20px;width:160px;height:160px;border-radius:50%;background:rgba(74,222,128,.07)"></div>
-      <div style="position:absolute;right:40px;bottom:-30px;width:100px;height:100px;border-radius:50%;background:rgba(74,222,128,.05)"></div>
-      <div style="display:flex;align-items:center;justify-content:space-between;position:relative">
-        <div>
-          <div style="font-size:13px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:.04em;margin-bottom:6px">${gr}, ${rm.n}</div>
-          <div style="font-size:22px;font-weight:800;color:#fff;margin-bottom:4px">Get <span style="color:#4ade80">${storeName}</span> live on Zopping</div>
-          <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:18px">Compete with Blinkit & Zepto on your own turf — quick commerce, your brand.</div>
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-            <div style="flex:1;max-width:240px;height:8px;background:rgba(255,255,255,.12);border-radius:4px;overflow:hidden">
-              <div style="height:100%;width:${PCT}%;background:linear-gradient(90deg,#4ade80,#16a34a);border-radius:4px"></div>
+    const readinessBanner=`<div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a2f 100%);border-radius:14px;padding:28px 32px;margin-bottom:16px;position:relative;overflow:hidden">
+      <div style="position:absolute;right:-30px;top:-30px;width:200px;height:200px;border-radius:50%;background:rgba(74,222,128,.06)"></div>
+      <div style="position:absolute;right:60px;bottom:-40px;width:120px;height:120px;border-radius:50%;background:rgba(74,222,128,.04)"></div>
+      <div style="position:absolute;left:-20px;bottom:-20px;width:100px;height:100px;border-radius:50%;background:rgba(74,222,128,.03)"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;position:relative;gap:24px">
+        <div style="flex:1">
+          <div style="font-size:11.5px;color:rgba(255,255,255,.4);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">${gr}, ${rm.n}</div>
+          <div style="font-size:24px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.2">Your store <span style="color:#4ade80">${storeName}</span> is almost ready</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.45);margin-bottom:20px;line-height:1.5">Complete a few quick steps to start accepting online orders and grow your business.</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+            <div style="flex:1;max-width:280px;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden">
+              <div style="height:100%;width:${PCT}%;background:linear-gradient(90deg,#4ade80,#16a34a);border-radius:4px;transition:width .4s"></div>
             </div>
-            <span style="font-size:12px;font-weight:700;color:#4ade80">${PCT}% ready</span>
+            <span style="font-size:12px;font-weight:700;color:#4ade80">${PCT}% complete</span>
           </div>
-          <div style="font-size:11.5px;color:rgba(255,255,255,.4)">${DONE} of ${TOTAL} steps complete &nbsp;·&nbsp; ~45 min to launch</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.35)">${DONE} of ${TOTAL} steps done</div>
         </div>
-        <div style="text-align:center;flex-shrink:0;margin-left:24px">
-          <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.06em">Estimated daily revenue</div>
-          <div style="font-size:36px;font-weight:900;color:#4ade80;line-height:1">₹18K</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:3px">at 30 orders · ₹600 AOV</div>
-          <button onclick="toggleData()" style="margin-top:14px;padding:9px 22px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(22,163,74,.4)">Preview Live Store →</button>
+        <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:12px">
+          <div style="background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:16px 24px;text-align:center;min-width:160px">
+            <div style="font-size:11px;color:rgba(255,255,255,.4);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Launch Readiness</div>
+            <div style="font-size:32px;font-weight:900;color:#4ade80;line-height:1">${PCT}%</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:4px">${DONE} of ${TOTAL} steps</div>
+          </div>
+          <button onclick="toggleData()" style="width:100%;padding:10px 20px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(22,163,74,.35);transition:background .2s">Preview Live Store →</button>
         </div>
       </div>
     </div>`;
