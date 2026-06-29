@@ -3265,21 +3265,63 @@ function renderFilled(scroll){
           `<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`,
         ];
       });
-      const statusR=['All','Enabled','Disabled'].map((s,i)=>`<label style="flex:0 0 200px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="custStatus" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
-      const verifyR=['All','Verified','Not Verified'].map((s,i)=>`<label style="flex:0 0 200px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border:1px solid #e2d9ce;cursor:pointer;${i===0?'border-radius:6px 0 0 6px':i===2?'border-radius:0 6px 6px 0;border-left:none':'border-left:none'}"><input type="radio" name="custVerify" ${i===0?'checked':''} style="accent-color:#16a34a;margin:0"><span style="font-size:12.5px;color:#374151">${s}</span></label>`).join('');
-      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-          <div><div style="${lblS}">ENTER CUSTOMER'S EMAIL</div><input style="${inpS}" placeholder="Search By Email"></div>
-          <div><div style="${lblS}">ENTER CUSTOMER'S PHONE</div><div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff"><span style="padding:0 10px;font-size:16px;flex-shrink:0">🇮🇳</span><input style="border:none;outline:none;padding:9px 12px 9px 4px;font-size:12.5px;font-family:inherit;width:100%;color:#374151" placeholder="Search By Phone"></div></div>
-          <div><div style="${lblS}">ENTER CLIENT'S ID</div><input style="${inpS}" placeholder="Search by Id"></div>
-          <div><div style="${lblS}">JOINED ON</div><div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff"><i class="ti ti-calendar" style="padding:0 10px;font-size:16px;color:#16a34a;flex-shrink:0"></i><input style="border:none;outline:none;padding:9px 12px 9px 0;font-size:12.5px;font-family:inherit;width:100%;color:#374151" placeholder="Date"></div></div>
-          <div><div style="${lblS}">UPDATED ON</div><div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff"><i class="ti ti-calendar" style="padding:0 10px;font-size:16px;color:#16a34a;flex-shrink:0"></i><input style="border:none;outline:none;padding:9px 12px 9px 0;font-size:12.5px;font-family:inherit;width:100%;color:#374151" placeholder="Date"></div></div>
-          <div><div style="${lblS}">STATUS</div><div style="display:flex">${statusR}</div></div>
+      const pill=(opts,name,activeIdx=0)=>opts.map((s,i)=>`<button onclick="this.parentNode.querySelectorAll('button').forEach(b=>b.style.cssText=b.dataset.off);this.style.cssText=this.dataset.on"
+        data-on="padding:5px 14px;border-radius:20px;border:1.5px solid #16a34a;background:#dcfce7;color:#15803d;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap"
+        data-off="padding:5px 14px;border-radius:20px;border:1.5px solid #e5e7eb;background:#fff;color:#6b7280;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap"
+        style="padding:5px 14px;border-radius:20px;border:1.5px solid ${i===activeIdx?'#16a34a':'#e5e7eb'};background:${i===activeIdx?'#dcfce7':'#fff'};color:${i===activeIdx?'#15803d':'#6b7280'};font-size:12px;font-weight:${i===activeIdx?700:500};cursor:pointer;white-space:nowrap">${s}</button>`).join('');
+
+      const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:16px 20px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px">
+          <div>
+            <div style="${lblS}">Email</div>
+            <div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff">
+              <i class="ti ti-mail" style="padding:0 10px;font-size:15px;color:#9ca3af;flex-shrink:0"></i>
+              <input style="border:none;outline:none;padding:8px 10px 8px 0;font-size:12.5px;font-family:inherit;width:100%;color:#374151" placeholder="Search by email">
+            </div>
+          </div>
+          <div>
+            <div style="${lblS}">Phone</div>
+            <div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff">
+              <span style="padding:0 8px 0 10px;font-size:14px;flex-shrink:0">🇮🇳</span>
+              <input style="border:none;outline:none;padding:8px 10px 8px 0;font-size:12.5px;font-family:inherit;width:100%;color:#374151" placeholder="Search by phone">
+            </div>
+          </div>
+          <div>
+            <div style="${lblS}">Customer ID</div>
+            <div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff">
+              <i class="ti ti-id" style="padding:0 10px;font-size:15px;color:#9ca3af;flex-shrink:0"></i>
+              <input style="border:none;outline:none;padding:8px 10px 8px 0;font-size:12.5px;font-family:inherit;width:100%;color:#374151" placeholder="Search by ID">
+            </div>
+          </div>
+          <div>
+            <div style="${lblS}">Joined On</div>
+            <div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff">
+              <i class="ti ti-calendar" style="padding:0 10px;font-size:15px;color:#9ca3af;flex-shrink:0"></i>
+              <input style="border:none;outline:none;padding:8px 10px 8px 0;font-size:12.5px;font-family:inherit;width:100%;color:#374151" placeholder="Select date">
+            </div>
+          </div>
+          <div>
+            <div style="${lblS}">Updated On</div>
+            <div style="display:flex;align-items:center;border:1px solid #e2d9ce;border-radius:6px;overflow:hidden;background:#fff">
+              <i class="ti ti-calendar" style="padding:0 10px;font-size:15px;color:#9ca3af;flex-shrink:0"></i>
+              <input style="border:none;outline:none;padding:8px 10px 8px 0;font-size:12.5px;font-family:inherit;width:100%;color:#374151" placeholder="Select date">
+            </div>
+          </div>
         </div>
-        <div style="margin-bottom:16px"><div style="${lblS}">VERIFICATION STATUS</div><div style="display:flex">${verifyR}</div></div>
+        <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="${lblS};margin-bottom:0">Status</span>
+            <div style="display:flex;gap:6px">${pill(['All','Enabled','Disabled'],'custStatus')}</div>
+          </div>
+          <div style="width:1px;height:20px;background:#e5e7eb"></div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="${lblS};margin-bottom:0">Verification</span>
+            <div style="display:flex;gap:6px">${pill(['All','Verified','Not Verified'],'custVerify')}</div>
+          </div>
+        </div>
         <div style="display:flex;gap:8px">
-          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
-          <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
+          <button style="padding:7px 20px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ti ti-search" style="font-size:13px"></i>Search</button>
+          <button style="padding:7px 16px;background:#fff;color:#6b7280;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear</button>
         </div>
       </div>`;
       const pgn=`<div style="padding:10px 16px;background:#fff;border-top:1px solid #f5f2ee;display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:#9ca3af">Showing 15341 – 15360 of 15,355 customers</span><div style="display:flex;gap:4px">${['‹','1','…','767','768','›'].map((p,i)=>`<button style="padding:4px 10px;border:1.5px solid ${i===4?'#16a34a':'#e2d9ce'};border-radius:6px;background:${i===4?'#16a34a':'#fff'};color:${i===4?'#fff':'#6b7280'};font-size:12px;cursor:pointer;min-width:30px">${p}</button>`).join('')}</div></div>`;
