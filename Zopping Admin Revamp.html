@@ -1120,7 +1120,7 @@ function renderNav(){
       const active=activePage===item.id;
       h+=`<div class="nav-item${active?' active':''}" onclick="gotoPage('${item.id}')">
         <i class="ti ${item.ic}"></i>${item.l}
-        ${item.badge&&!ro?`<span class="nbadge">${item.badge}</span>`:''}
+        ${item.badge&&!ro&&hasData?`<span class="nbadge">${item.badge}</span>`:''}
         ${ro?`<span class="nview">view</span>`:''}
         ${item.adm?`<span class="nadmin">admin</span>`:''}
       </div>`;
@@ -1492,104 +1492,124 @@ function renderOverview(scroll){
 
   // ── EMPTY STATE ────────────────────────────────────────────────────
   if(!hasData){
-    const SETUP=[
-      {n:1,label:'Basic Information',      emoji:'🗂️', est:'3 min',  desc:'Set your store name, link your online domain, and upload your store logo to begin shaping your brand identity.',              cta:'Add Details',    done:false},
-      {n:2,label:'Store Information',      emoji:'📞', est:'5 min',  desc:'Update your store\'s contact details and add social media links to stay connected with customers easily.',                    cta:'Add Details',    done:false},
-      {n:3,label:'Catalogue Upload',       emoji:'📊', est:'15 min', desc:'Add products and categories using single or bulk upload to get your storefront ready for selling.',                           cta:'Add Products',   done:false},
-      {n:4,label:'Communication Config',   emoji:'⚙️', est:'5 min',  desc:'Set up SMS and Email to send order updates. You\'ll need an SMS account and SMTP details.',                                   cta:'Configure',      done:false},
-      {n:5,label:'Payment Set Up',         emoji:'💳', est:'5 min',  desc:'Set up your payment gateway to accept transactions. Keep your API keys or token IDs available.',                               cta:'Setup now',      done:false},
-      {n:6,label:'Logistics',              emoji:'🚚', est:'',       desc:'Add your Google Maps API key to enable delivery zone setup and logistics partner configuration.',                               cta:'',               done:true},
-    ];
-    const done=SETUP.filter(s=>s.done).length;
-    const pct=Math.round(done/SETUP.length*100);
-    const barW=Math.max(pct,4);
+    const h2=new Date().getHours();
+    const gr=h2<12?'Good morning':h2<17?'Good afternoon':'Good evening';
+    const storeName=rm.store||'Your Store';
 
-    const checklistRows=SETUP.map(s=>`
-      <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid #f5f5f5;${s.done?'background:#f0fdf4;':''}" onmouseover="if(!${s.done})this.style.background='#fafaf9'" onmouseout="if(!${s.done})this.style.background=''">
-        ${s.done
-          ? `<div style="width:40px;height:40px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-check" style="font-size:18px;color:#fff"></i></div>`
-          : `<div style="width:40px;height:40px;border-radius:50%;background:#f3f4f6;border:2px solid #e5e7eb;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;font-weight:700;color:#6b7280">${s.n}</div>`
+    // Progress: 1 of 8 complete (Logistics pre-done)
+    const TOTAL=8, DONE=1, PCT=Math.round(DONE/TOTAL*100);
+
+    // ── Launch readiness banner ──
+    const readinessBanner=`<div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a2f 100%);border-radius:14px;padding:24px 28px;margin-bottom:16px;position:relative;overflow:hidden">
+      <div style="position:absolute;right:-20px;top:-20px;width:160px;height:160px;border-radius:50%;background:rgba(74,222,128,.07)"></div>
+      <div style="position:absolute;right:40px;bottom:-30px;width:100px;height:100px;border-radius:50%;background:rgba(74,222,128,.05)"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;position:relative">
+        <div>
+          <div style="font-size:13px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:.04em;margin-bottom:6px">${gr}, ${rm.n}</div>
+          <div style="font-size:22px;font-weight:800;color:#fff;margin-bottom:4px">Get <span style="color:#4ade80">${storeName}</span> live on Zopping</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:18px">Compete with Blinkit & Zepto on your own turf — quick commerce, your brand.</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <div style="flex:1;max-width:240px;height:8px;background:rgba(255,255,255,.12);border-radius:4px;overflow:hidden">
+              <div style="height:100%;width:${PCT}%;background:linear-gradient(90deg,#4ade80,#16a34a);border-radius:4px"></div>
+            </div>
+            <span style="font-size:12px;font-weight:700;color:#4ade80">${PCT}% ready</span>
+          </div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.4)">${DONE} of ${TOTAL} steps complete &nbsp;·&nbsp; ~45 min to launch</div>
+        </div>
+        <div style="text-align:center;flex-shrink:0;margin-left:24px">
+          <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.06em">Estimated daily revenue</div>
+          <div style="font-size:36px;font-weight:900;color:#4ade80;line-height:1">₹18K</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:3px">at 30 orders · ₹600 AOV</div>
+          <button onclick="toggleData()" style="margin-top:14px;padding:9px 22px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(22,163,74,.4)">Preview Live Store →</button>
+        </div>
+      </div>
+    </div>`;
+
+    // ── Quick start path ──
+    const quickStart=`<div style="background:#fff;border:1.5px solid #bbf7d0;border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 4px rgba(22,163,74,.08)">
+      <div style="width:40px;height:40px;border-radius:10px;background:#dcfce7;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i class="ti ti-rocket" style="font-size:20px;color:#16a34a"></i>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:2px">⚡ Fastest path to your first order</div>
+        <div style="font-size:12px;color:#6b7280">Add catalogue → Set delivery zones → Enable payment &nbsp;·&nbsp; Takes ~30 min</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+        <span style="width:24px;height:24px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">1</span>
+        <span style="width:24px;height:24px;border-radius:50%;background:#e5e7eb;color:#6b7280;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">2</span>
+        <span style="width:24px;height:24px;border-radius:50%;background:#e5e7eb;color:#6b7280;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">3</span>
+      </div>
+    </div>`;
+
+    // ── Task groups ──
+    const taskRow=(n,ic,bg,ic_c,label,sublabel,est,cta,page,done,unlock)=>`
+      <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid #f5f5f5;${done?'background:#f0fdf4;':''}" onmouseover="this.style.background='${done?'#f0fdf4':'#fafaf9'}'" onmouseout="this.style.background='${done?'#f0fdf4':''}'">
+        ${done
+          ? `<div style="width:38px;height:38px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-check" style="color:#fff;font-size:16px"></i></div>`
+          : `<div style="width:38px;height:38px;border-radius:10px;background:${bg};display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${ic}" style="color:${ic_c};font-size:18px"></i></div>`
         }
         <div style="flex:1;min-width:0">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-            <span style="font-size:14px;font-weight:600;color:${s.done?'#16a34a':'#111827'}">${s.label}</span>
-            <span style="font-size:11px">${s.emoji}</span>
-            ${s.est?`<span style="font-size:11px;padding:2px 8px;border-radius:20px;background:#f3f4f6;color:#6b7280;font-weight:600">Estimate: ${s.est}</span>`:''}
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:13.5px;font-weight:${done?600:700};color:${done?'#16a34a':'#111827'}">${label}</span>
+            ${est?`<span style="font-size:11px;padding:2px 8px;border-radius:20px;background:${done?'#dcfce7':'#f3f4f6'};color:${done?'#16a34a':'#6b7280'};font-weight:600">${done?'Done':est}</span>`:''}
           </div>
-          <div style="font-size:12.5px;color:#6b7280;line-height:1.5">${s.desc}</div>
+          <div style="font-size:12px;color:#9ca3af;margin-top:2px">${sublabel}</div>
+          ${unlock&&!done?`<div style="font-size:11.5px;color:#7c3aed;margin-top:4px;display:flex;align-items:center;gap:4px"><i class="ti ti-lock-open" style="font-size:11px"></i>Unlocks: ${unlock}</div>`:''}
         </div>
-        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;margin-top:4px">
-          ${!s.done?`<span style="font-size:12px;color:#16a34a;cursor:pointer;font-weight:500">Learn more</span>`:''}
-          ${s.cta?`<button style="padding:6px 16px;border:1.5px solid #d1d5db;border-radius:7px;background:#fff;color:#374151;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap" onmouseover="this.style.borderColor='#16a34a';this.style.color='#16a34a'" onmouseout="this.style.borderColor='#d1d5db';this.style.color='#374151'">${s.cta}</button>`:''}
-        </div>
-      </div>`).join('');
+        ${!done&&cta?`<button onclick="gotoPage('${page}')" style="padding:6px 16px;border:1.5px solid #d1d5db;border-radius:7px;background:#fff;color:#374151;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0" onmouseover="this.style.borderColor='#16a34a';this.style.color='#16a34a'" onmouseout="this.style.borderColor='#d1d5db';this.style.color='#374151'">${cta}</button>`:''}
+      </div>`;
 
-    const setupCard=`<div style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
-      <div style="padding:18px 20px 14px;border-bottom:1px solid #f0f0f0">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+    const section=(icon,color,bg,title,subtitle,rows)=>`
+      <div style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.04)">
+        <div style="padding:12px 18px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;background:${bg}">
+          <i class="ti ${icon}" style="font-size:16px;color:${color}"></i>
           <div>
-            <div style="font-size:15px;font-weight:700;color:#111827">Full Store Setup — To-Do List</div>
-            <div style="font-size:12px;color:#9ca3af;margin-top:2px">${done} of ${SETUP.length} steps completed</div>
+            <div style="font-size:13px;font-weight:700;color:${color}">${title}</div>
+            <div style="font-size:11.5px;color:#9ca3af">${subtitle}</div>
           </div>
-          <span style="font-size:14px;font-weight:700;color:#374151">${pct}%</span>
         </div>
-        <div style="height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden">
-          <div style="height:100%;width:${barW}%;background:linear-gradient(90deg,#16a34a,#4ade80);border-radius:4px;transition:width .4s"></div>
-        </div>
-      </div>
-      ${checklistRows}
-    </div>`;
+        ${rows}
+      </div>`;
 
-    // Operational stats (zeroed)
-    const opStats=`<div style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;margin-bottom:16px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05)">
-      <div style="padding:14px 20px;border-bottom:1px solid #f0f0f0;font-size:14px;font-weight:700;color:#111827">
-        Operational Stats
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid #f0f0f0">
-        ${[['Orders','0','#3b82f6'],['Sales','₹ 0.00','#16a34a'],['Avg Order Value','₹ 0.00','#7c3aed']].map(([l,v,c])=>`
-          <div style="padding:16px 20px;text-align:center;border-right:1px solid #f0f0f0">
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${c};margin-bottom:6px">${l}</div>
-            <div style="font-size:22px;font-weight:800;color:#111827">${v}</div>
-          </div>`).join('')}
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr">
-        ${[['Customers','0','#be185d'],['Fill Rate','—','#ca8a04'],['Deliveries','0','#059669']].map(([l,v,c])=>`
-          <div style="padding:16px 20px;text-align:center;border-right:1px solid #f0f0f0">
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${c};margin-bottom:6px">${l}</div>
-            <div style="font-size:22px;font-weight:800;color:#111827">${v}</div>
-          </div>`).join('')}
-      </div>
-    </div>`;
+    const criticalRows=
+      taskRow(1,'ti-building-store','#dbeafe','#1d4ed8','Store Identity','Name · Logo · Domain · Contact','5 min','Set Up','myaccount',false,'Branded storefront for customers')+
+      taskRow(2,'ti-packages','#fff7ed','#ea580c','Product Catalogue','SKUs · Categories · Images · Prices','15–60 min','Add Products','inventory',false,'Customers can browse & buy')+
+      taskRow(3,'ti-credit-card','#f5f3ff','#7c3aed','Payment Gateway','Razorpay · UPI · COD','10 min','Configure','billing',false,'Accept real money from day one');
 
-    // Grow your store tips
-    const TIPS=[
-      {ic:'ti-speakerphone',bg:'#ede9fe',ic_c:'#7c3aed',title:'Launch your first campaign',desc:'Send an SMS or email to your contacts to announce the store launch and drive first orders.',cta:"gotoPage('campaigns')",btn:'Create Campaign'},
-      {ic:'ti-users',bg:'#dbeafe',ic_c:'#1d4ed8',title:'Add customer segments',desc:'Group your customers by behaviour so you can target them with personalised offers.',cta:"gotoPage('segments')",btn:'Add Segment'},
-      {ic:'ti-discount',bg:'#dcfce7',ic_c:'#16a34a',title:'Create your first offer',desc:'Give new shoppers a welcome discount to encourage their first order on your store.',cta:"gotoPage('offers')",btn:'Create Offer'},
-      {ic:'ti-truck',bg:'#fff7ed',ic_c:'#ea580c',title:'Set up delivery zones',desc:'Define which areas you deliver to and set zone-wise fees before going live.',cta:"gotoPage('vplanning')",btn:'Setup Delivery'},
-      {ic:'ti-users-group',bg:'#fce7f3',ic_c:'#be185d',title:'Invite your team',desc:'Add staff members and assign roles so your operations team can get started.',cta:"gotoPage('staff')",btn:'Add Staff'},
-      {ic:'ti-chart-line',bg:'#f0fdf4',ic_c:'#16a34a',title:'Enable Analytics',desc:'Connect your analytics to track orders, revenue and customer behaviour from day one.',cta:"gotoPage('analytics')",btn:'Enable Now'},
-    ];
-    const tipsHtml=`<div style="margin-bottom:16px">
-      <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="ti ti-rocket" style="font-size:18px;color:#16a34a"></i>Grow your store faster</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
-        ${TIPS.map(t=>`<div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:16px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.04);transition:box-shadow .15s" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,.09)'" onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,.04)'">
-          <div style="width:38px;height:38px;border-radius:9px;background:${t.bg};display:flex;align-items:center;justify-content:center;margin-bottom:10px">
-            <i class="ti ${t.ic}" style="font-size:18px;color:${t.ic_c}"></i>
-          </div>
-          <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:5px">${t.title}</div>
-          <div style="font-size:12px;color:#6b7280;line-height:1.5;margin-bottom:12px">${t.desc}</div>
-          <button onclick="${t.cta}" style="font-size:12px;font-weight:600;color:#16a34a;background:transparent;border:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:4px">${t.btn} <i class="ti ti-arrow-right" style="font-size:12px"></i></button>
+    const operateRows=
+      taskRow(4,'ti-map-pin','#dcfce7','#16a34a','Delivery Zones & Slots','Pincodes · Fees · Express vs Scheduled','10 min','Setup Delivery','capacity',false,'Go hyperlocal — 30–60 min delivery')+
+      taskRow(5,'ti-message','#fce7f3','#be185d','SMS & Email Notifications','Order updates · OTP · Confirmations','5 min','Configure','myaccount',false,'Customers trust status updates')+
+      taskRow(6,'ti-users','#e0f2fe','#0284c7','Add Your Team','Pickers · Riders · Store Managers','5 min','Add Staff','staff',false,'Parallel operations from day one')+
+      taskRow(7,'ti-truck','#fff7ed','#ea580c','Logistics','Delivery zones & Google Maps API','','','' ,true,'');
+
+    const growRows=
+      taskRow(8,'ti-speakerphone','#ede9fe','#7c3aed','Launch Announcement','WhatsApp broadcast · SMS campaign to existing customers','','Create Campaign','campaigns',false,'Your first orders')+
+      taskRow(9,'ti-discount','#dcfce7','#16a34a','Welcome Offer','Give new shoppers a discount on their first order','','Create Offer','offers',false,'Converts first-time visitors')+
+      taskRow(10,'ti-device-mobile','#fef9c3','#ca8a04','Mobile App & Website','Customise your homepage banners and app theme','','Customise','web-sched',false,'Brand experience customers remember');
+
+    const tasksHtml=
+      section('ti-alert-circle','#dc2626','#fff5f5','🔴 Launch Critical — Complete before going live','3 steps · ~75 min',criticalRows)+
+      section('ti-clock','#d97706','#fffbeb','🟡 Operate — Complete in your first week','4 steps · ~20 min',operateRows)+
+      section('ti-trending-up','#16a34a','#f0fdf4','🟢 Grow — Maximise revenue once live','3 steps · ongoing',growRows);
+
+    // ── What you unlock card ──
+    const unlockCard=`<div style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;padding:18px 20px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.04)">
+      <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:14px">What you unlock when live 🚀</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+        ${[
+          ['ti-shopping-bag','#dbeafe','#1d4ed8','Online Orders','24/7, no phone calls'],
+          ['ti-truck','#dcfce7','#16a34a','Quick Delivery','30–60 min hyperlocal'],
+          ['ti-chart-line','#f5f3ff','#7c3aed','Live Analytics','Revenue & fill rate'],
+          ['ti-users','#fff7ed','#ea580c','Customer Base','Loyalty & repeat orders'],
+        ].map(([ic,bg,c,t,s])=>`<div style="padding:14px;background:${bg};border-radius:10px;text-align:center">
+          <i class="ti ${ic}" style="font-size:22px;color:${c};display:block;margin-bottom:7px"></i>
+          <div style="font-size:12.5px;font-weight:700;color:#111827;margin-bottom:2px">${t}</div>
+          <div style="font-size:11px;color:#6b7280">${s}</div>
         </div>`).join('')}
       </div>
     </div>`;
 
-    const greetHtml=`<div class="ov-greeting" style="margin-bottom:16px">
-      <h1>${greeting}, ${rm.n} 👋</h1>
-      <p>Let's get your store ready. Complete the steps below to go live.</p>
-    </div>`;
-
-    scroll.innerHTML=`<div style="padding:${isMobile?'10px 10px 20px':'16px 20px 24px'}">${greetHtml}${setupCard}${tipsHtml}${opStats}</div>`;
+    scroll.innerHTML=`<div style="padding:${isMobile?'10px 10px 20px':'16px 20px 24px'}">${readinessBanner}${quickStart}${tasksHtml}${unlockCard}</div>`;
     return;
   }
   // ── END EMPTY STATE ────────────────────────────────────────────────
