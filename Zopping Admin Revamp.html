@@ -3641,7 +3641,7 @@ function renderFilled(scroll){
         document.getElementById('tripDetailEnd').textContent=t.end;
         document.getElementById('tripDetailPanel').style.display='block';
       };
-      window._tripsData=${JSON.stringify(TRIPS)};
+      window._tripsData=TRIPS;
 
       scroll.innerHTML=pw+detailPanel+tbl(['ID','Delivery Agent','Start Time','End Time','Status','Actions'],rows)+'</div>';
     },
