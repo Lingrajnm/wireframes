@@ -716,12 +716,12 @@ const NAV=[
   {sec:'Operations', g:['admin','store','ops','wh'], items:[
     {id:'orders',     l:'Orders',           ic:'ti-shopping-bag',     g:['admin','store','ops','wh','cs'],  badge:14},
     {id:'abandoned',  l:'Abandoned Carts',  ic:'ti-shopping-cart-off',g:['admin','store','mkt']},
-    {id:'picking',    l:'Picking Queue',    ic:'ti-stack',            g:['admin','ops','wh'],               badge:7},
-    {id:'packing',    l:'Packing Queue',    ic:'ti-archive',          g:['admin','ops','wh']},
-    {id:'checking',   l:'Checking Queue',   ic:'ti-list-check',       g:['admin','ops','wh']},
+    {id:'picking',    l:'Picking Queue',    ic:'ti-stack',            g:['admin','ops','wh'],               badge:7, plans:['enterprise']},
+    {id:'packing',    l:'Packing Queue',    ic:'ti-archive',          g:['admin','ops','wh'],                        plans:['enterprise']},
+    {id:'checking',   l:'Checking Queue',   ic:'ti-list-check',       g:['admin','ops','wh'],                        plans:['enterprise']},
     {id:'rack',       l:'Rack Management',  ic:'ti-server',           g:['admin','ops','wh']},
     {id:'slotblock',  l:'Slot Blocking',    ic:'ti-hand-stop',        g:['admin','ops','store']},
-    {id:'capacity',   l:'Capacity Planning',ic:'ti-chart-area',       g:['admin','ops','store']},
+    {id:'capacity',   l:'Capacity Planning',ic:'ti-chart-area',       g:['admin','ops','store'],                     plans:['business','enterprise']},
   ]},
   {sec:'Customer Support', g:['admin','store','cs'], items:[
     {id:'cs-customers',l:'Customers',       ic:'ti-users',            g:['admin','store','cs']},
@@ -936,7 +936,9 @@ function getFirstG(){
   return ['admin','store','ops','mkt','cat','cs','log','wh','hr'].find(g=>gs.includes(g))||'store';
 }
 function canSeeItem(item){
-  return (item.g||[]).some(g=>(RM[role]?.grp||[]).includes(g));
+  if(!(item.g||[]).some(g=>(RM[role]?.grp||[]).includes(g))) return false;
+  if(item.plans && !item.plans.includes(plan)) return false;
+  return true;
 }
 function isItemRO(item){
   if(role==='READ_ONLY') return true;
@@ -1049,6 +1051,9 @@ function setPlan(val){
   plan=val;
   isEnterprise=(plan==='enterprise');
   updatePlanBadge();
+  // If current page is no longer accessible under new plan, go to overview
+  const curItem=NAV.flatMap(g=>g.items).find(x=>x.id===activePage);
+  if(curItem && !canSeeItem(curItem)) activePage='overview';
   renderNav();
   renderMain();
 }
@@ -1343,16 +1348,18 @@ function renderTopbar(){
   // ── Ask Zopping AI shortcut ──
   ctaH+=`<button class="tb-icon-btn" title="Ask Zopping AI" onclick="openAIChat()" style="position:relative"><i class="ti ti-sparkles" style="font-size:17px"></i></button>`;
 
-  // ── Language — icon only, always visible ──
-  ctaH+=`<div class="gb-dd" id="gbLangDD" style="position:relative">
-    <button class="tb-icon-btn" onclick="gbToggle('lang',event)" title="Language: ${langVal}">
-      <i class="ti ti-language"></i>
-    </button>
-    <div class="gb-panel rgt" id="gbLangPanel" style="min-width:160px">
-      <div class="gbpt">Language</div>
-      ${LANGS.map(l=>`<div class="gbpi${l===langVal?' sel':''}" onclick="gbSetLang('${l}')"><i class="ti ti-${l===langVal?'check':'circle'}"></i>${l}</div>`).join('')}
-    </div>
-  </div>`;
+  // ── Language — Enterprise only (multi-language is an Enterprise feature) ──
+  if(plan==='enterprise'){
+    ctaH+=`<div class="gb-dd" id="gbLangDD" style="position:relative">
+      <button class="tb-icon-btn" onclick="gbToggle('lang',event)" title="Language: ${langVal}">
+        <i class="ti ti-language"></i>
+      </button>
+      <div class="gb-panel rgt" id="gbLangPanel" style="min-width:160px">
+        <div class="gbpt">Language</div>
+        ${LANGS.map(l=>`<div class="gbpi${l===langVal?' sel':''}" onclick="gbSetLang('${l}')"><i class="ti ti-${l===langVal?'check':'circle'}"></i>${l}</div>`).join('')}
+      </div>
+    </div>`;
+  }
 
   ctaH+=`<div class="tbvsep"></div>`;
   ctaH+=`<div class="tb-icon-btn" id="notifBtn" title="Notifications" onclick="toggleNotifPanel()"><i class="ti ti-bell"></i><span class="tb-notif-badge" id="notifDot"></span></div>`;
