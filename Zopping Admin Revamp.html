@@ -4043,6 +4043,105 @@ function renderFilled(scroll){
       const addBtn=document.querySelector('.tb-cta-btn');
       if(addBtn){ const old=addBtn.cloneNode(true); addBtn.parentNode.replaceChild(old,addBtn); old.addEventListener('click',()=>{ document.getElementById('vplanModal').style.display='flex'; }); }
     },
+    area: ()=>{
+      // Tabs
+      const tabs=`<div style="display:flex;border-bottom:2px solid #e5e7eb;margin-bottom:20px">
+        <button id="areaTabHL" onclick="switchAreaTab('hl')" style="padding:10px 20px;font-size:14px;font-weight:600;color:#111827;border:none;background:none;cursor:pointer;border-bottom:2.5px solid #16a34a;margin-bottom:-2px">Hyperlocal</button>
+        <button id="areaTabRG" onclick="switchAreaTab('rg')" style="padding:10px 20px;font-size:14px;font-weight:400;color:#9ca3af;border:none;background:none;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-2px">Regional</button>
+      </div>`;
+
+      // Store selector
+      const storeDropdown=`<div style="margin-bottom:22px">
+        <div style="font-size:10.5px;font-weight:700;color:#9ca3af;letter-spacing:.06em;margin-bottom:8px">STORE</div>
+        <select style="width:180px;padding:9px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;color:#374151;background:#fff;cursor:pointer;appearance:auto;outline:none;font-family:inherit">
+          <option>All stores</option>
+          <option>HUDA Market, Sec 55</option>
+          <option>Sector 14 Store</option>
+        </select>
+      </div>`;
+
+      // Zone items
+      const zones=[
+        {label:'Zipcodes',      sub:'No zone defined',  count:null},
+        {label:'Radial Zone',   sub:'2 zones covered',  count:2},
+        {label:'Draw On Map',   sub:'12 zones covered', count:12},
+        {label:'Delivery by Apartment', sub:'No zone defined', count:null},
+      ];
+      const zoneList=zones.map(z=>`
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:10px;background:#fff;cursor:pointer" onmouseover="this.style.borderColor='#16a34a'" onmouseout="this.style.borderColor='#e5e7eb'">
+          <div>
+            <div style="font-size:13.5px;font-weight:600;color:#111827">${z.label}</div>
+            <div style="font-size:12px;color:#9ca3af;margin-top:2px">${z.sub}</div>
+          </div>
+          <i class="ti ti-plus" style="font-size:17px;color:#9ca3af"></i>
+        </div>`).join('');
+
+      // Map SVG — Gurugram/Delhi style with polygons and pins
+      const mapSvg=`<div style="flex:1;border-radius:10px;overflow:hidden;border:1px solid #e5e7eb;position:relative;min-height:420px">
+        <svg viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+          <!-- Base map background -->
+          <rect width="800" height="480" fill="#e8ead3"/>
+          <!-- Major roads -->
+          <line x1="0" y1="200" x2="800" y2="200" stroke="#fff" stroke-width="18"/>
+          <line x1="0" y1="340" x2="800" y2="340" stroke="#fff" stroke-width="12"/>
+          <line x1="0" y1="420" x2="800" y2="420" stroke="#fff" stroke-width="8"/>
+          <line x1="180" y1="0" x2="180" y2="480" stroke="#fff" stroke-width="10"/>
+          <line x1="420" y1="0" x2="420" y2="480" stroke="#fff" stroke-width="16"/>
+          <line x1="620" y1="0" x2="620" y2="480" stroke="#fff" stroke-width="10"/>
+          <line x1="80" y1="0" x2="80" y2="480" stroke="#fff" stroke-width="7"/>
+          <!-- Minor roads -->
+          <line x1="0" y1="130" x2="800" y2="130" stroke="#f5f3ee" stroke-width="6"/>
+          <line x1="0" y1="280" x2="800" y2="280" stroke="#f5f3ee" stroke-width="5"/>
+          <line x1="300" y1="0" x2="300" y2="480" stroke="#f5f3ee" stroke-width="5"/>
+          <line x1="530" y1="0" x2="530" y2="480" stroke="#f5f3ee" stroke-width="5"/>
+          <!-- Green zone polygon — Draw On Map zones -->
+          <polygon points="200,210 340,195 430,230 450,320 380,370 260,360 190,300" fill="rgba(59,130,246,.18)" stroke="rgba(59,130,246,.5)" stroke-width="2"/>
+          <polygon points="420,205 560,195 610,250 590,340 480,350 420,290" fill="rgba(99,102,241,.2)" stroke="rgba(99,102,241,.5)" stroke-width="2"/>
+          <polygon points="100,240 185,215 195,310 160,380 80,370 60,300" fill="rgba(249,115,22,.15)" stroke="rgba(249,115,22,.4)" stroke-width="2"/>
+          <!-- Radial zones (circles) -->
+          <circle cx="590" cy="100" r="75" fill="rgba(168,85,247,.12)" stroke="rgba(168,85,247,.45)" stroke-width="2" stroke-dasharray="6 3"/>
+          <!-- City labels -->
+          <text x="320" y="290" font-size="22" font-weight="800" fill="rgba(30,64,175,.6)" text-anchor="middle" font-family="sans-serif">Gurugram</text>
+          <text x="590" y="110" font-size="13" font-weight="700" fill="#4b5563" text-anchor="middle" font-family="sans-serif">New Delhi</text>
+          <text x="100" y="390" font-size="12" fill="#6b7280" text-anchor="middle" font-family="sans-serif">Faridabad</text>
+          <text x="130" y="155" font-size="11" fill="#9ca3af" font-family="sans-serif">DELHI</text>
+          <text x="300" y="155" font-size="11" fill="#9ca3af" font-family="sans-serif">HARYANA</text>
+          <!-- Red delivery pins -->
+          ${[[270,265],[340,280],[310,310],[380,300],[420,260],[350,340],[290,340],[240,290],[400,330],[360,250],[430,300]].map(([x,y])=>`
+            <g transform="translate(${x},${y})">
+              <path d="M0-14 C-7-14-12-9-12-3 C-12,5,0,14,0,14 C0,14,12,5,12,-3 C12,-9,7,-14,0,-14 Z" fill="#ef4444" stroke="#fff" stroke-width="1.2"/>
+              <circle cx="0" cy="-3" r="4" fill="#fff"/>
+            </g>`).join('')}
+          <!-- Airport icon marker -->
+          <circle cx="420" cy="100" r="10" fill="#3b82f6" stroke="#fff" stroke-width="2"/>
+          <text x="420" y="104" text-anchor="middle" font-size="10" fill="#fff" font-family="sans-serif">✈</text>
+          <!-- Road labels -->
+          <text x="210" y="196" font-size="9" fill="#6b7280" font-family="sans-serif">Dwarka Expy</text>
+          <text x="438" y="196" font-size="9" fill="#6b7280" font-family="sans-serif">Sector 56 Main Rd</text>
+          <!-- Google watermark -->
+          <text x="8" y="474" font-size="9" fill="#9ca3af" font-family="sans-serif">Google</text>
+          <text x="540" y="474" font-size="8" fill="#9ca3af" font-family="sans-serif">Map data ©2026   Terms   Report a map error</text>
+          <!-- Expand icon -->
+          <rect x="774" y="454" width="20" height="20" rx="3" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
+          <text x="784" y="467" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="sans-serif">⛶</text>
+        </svg>
+      </div>`;
+
+      window.switchAreaTab=function(tab){
+        document.getElementById('areaTabHL').style.cssText+=tab==='hl'?';color:#111827;border-bottom-color:#16a34a;font-weight:600':';color:#9ca3af;border-bottom-color:transparent;font-weight:400';
+        document.getElementById('areaTabRG').style.cssText+=tab==='rg'?';color:#111827;border-bottom-color:#16a34a;font-weight:600':';color:#9ca3af;border-bottom-color:transparent;font-weight:400';
+      };
+
+      const leftCol=`<div style="width:320px;flex-shrink:0">
+        ${storeDropdown}
+        <div style="font-size:16px;font-weight:600;color:#111827;margin-bottom:14px">Delivering Zones</div>
+        ${zoneList}
+      </div>`;
+
+      const layout=`<div style="display:flex;gap:20px;align-items:flex-start">${leftCol}${mapSvg}</div>`;
+
+      scroll.innerHTML=pw+tabs+layout+'</div>';
+    },
     capacity: ()=>{
       const inpS='width:100%;padding:9px 12px;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;color:#374151;background:#fff;';
       const lblS='font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px';
