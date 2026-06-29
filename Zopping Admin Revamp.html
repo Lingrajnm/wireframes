@@ -4441,40 +4441,7 @@ function renderFilled(scroll){
         </table>
         ${pgn}
       </div>`;
-      const mobileAppBanner=`<div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-        <div style="padding:10px 16px;background:#fff7ed;border-bottom:1px solid #fed7aa;display:flex;align-items:center;gap:8px">
-          <i class="ti ti-device-mobile" style="font-size:13px;color:#ea580c"></i>
-          <span style="font-size:12px;font-weight:700;color:#9a3412;text-transform:uppercase;letter-spacing:.05em">Mobile Apps — Add-on for Basic Plan</span>
-          <span style="font-size:11.5px;color:#c2410c;margin-left:4px">Included free in Business &amp; Enterprise</span>
-        </div>
-        <div style="border-bottom:1px solid #f3f4f6;padding:12px 16px;display:flex;align-items:center;justify-content:space-between">
-          <div style="display:flex;align-items:center;gap:10px">
-            <i class="ti ti-brand-android" style="font-size:18px;color:#16a34a"></i>
-            <div>
-              <div style="font-size:13px;font-weight:500;color:#111827">Android App</div>
-              <div style="font-size:11.5px;color:#6b7280">Customer-facing app on Google Play</div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px">
-            <span style="font-size:12px;color:#9ca3af">Add-on</span>
-            <a href="mailto:support@zopping.com" style="padding:5px 14px;background:#16a34a;color:#fff;border-radius:20px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">Enquire</a>
-          </div>
-        </div>
-        <div style="padding:12px 16px;display:flex;align-items:center;justify-content:space-between">
-          <div style="display:flex;align-items:center;gap:10px">
-            <i class="ti ti-brand-apple" style="font-size:18px;color:#374151"></i>
-            <div>
-              <div style="font-size:13px;font-weight:500;color:#111827">iOS App</div>
-              <div style="font-size:11.5px;color:#6b7280">Customer-facing app on App Store</div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px">
-            <span style="font-size:12px;color:#9ca3af">Add-on</span>
-            <a href="mailto:support@zopping.com" style="padding:5px 14px;background:#16a34a;color:#fff;border-radius:20px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap">Enquire</a>
-          </div>
-        </div>
-      </div>`;
-      scroll.innerHTML=pw+(plan==='basic'?mobileAppBanner:'')+tableHtml+'</div>';
+      scroll.innerHTML=pw+tableHtml+'</div>';
     },
     'web-ann': ()=>{
       const act=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
