@@ -38,6 +38,7 @@
   .preview-amber  { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); }
   .preview-blue   { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); }
   .preview-teal   { background: linear-gradient(135deg, #e8f5e9 0%, #ddf2ee 100%); }
+  .preview-red    { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); }
   .card-preview-inner { display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 1; }
   .preview-icon { font-size: 40px; }
   .preview-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, #5c54f022 1px, transparent 1px); background-size: 18px 18px; }
@@ -48,6 +49,7 @@
   .tag-rider-pill  { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
   .tag-client-pill { background: #fdf4ff; color: #7e22ce; border: 1px solid #e9d5ff; }
   .tag-mktg-pill   { background: #ecfdf5; color: #065f46; border: 1px solid #6ee7b7; }
+  .tag-app-pill    { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
   .card-body { padding: 18px 20px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
   .card-title { font-size: 15px; font-weight: 700; color: #1e2240; }
   .card-desc { font-size: 12px; color: #8890b5; line-height: 1.6; flex: 1; }
@@ -89,8 +91,8 @@
 </div>
 
 <div class="stats-row">
-  <div class="stat-chip">&#128193; Total: <strong id="totalCount">6</strong></div>
-  <div class="stat-chip">&#128336; Last updated: <strong>Jun 2026</strong></div>
+  <div class="stat-chip">&#128193; Total: <strong id="totalCount">7</strong></div>
+  <div class="stat-chip">&#128336; Last updated: <strong>Jul 2026</strong></div>
   <div class="stat-chip">&#128279; <strong><a href="https://lingrajnm.github.io/wireframes/" style="color:inherit;text-decoration:none">lingrajnm.github.io/wireframes</a></strong></div>
 </div>
 
@@ -102,9 +104,31 @@
   <button class="filter-btn" onclick="filterTag('store',this)">Store</button>
   <button class="filter-btn" onclick="filterTag('client',this)">Client</button>
   <button class="filter-btn" onclick="filterTag('marketing',this)">Marketing</button>
+  <button class="filter-btn" onclick="filterTag('app',this)">App</button>
 </div>
 
 <div class="grid" id="cardGrid">
+
+  <a class="card" href="Sodhies App Revamp.html" data-title="Sodhies App Revamp — Quick Commerce Customer App" data-tags="app client store" data-counter="sodhies-app-revamp">
+    <div class="card-preview preview-red">
+      <div class="preview-dots"></div>
+      <div class="card-preview-inner">
+        <div class="preview-icon">&#128722;</div>
+        <div class="preview-badge tag-app-pill">App &middot; 17 Screens</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-title">Sodhies App Revamp — Customer App</div>
+      <div class="card-desc">High-fidelity clickable design for Sodhi's Super Market quick-commerce app &mdash; splash, OTP login, home, category browse, product detail, Swap &amp; Save cart, multi-delivery checkout, payment, live order tracking, and account. Full customer journey in one interactive phone mockup with real product imagery.</div>
+    </div>
+    <div class="card-footer">
+      <span class="tag tag-app-pill">App</span>
+      <span class="tag tag-client-pill">Client</span>
+      <span class="tag tag-store-pill">Store</span>
+      <span class="view-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span class="vc-num">—</span></span><span class="card-date">Jul 2026</span>
+      <div class="card-arrow">&rarr;</div>
+    </div>
+  </a>
 
   <a class="card" href="zopping-order-flow.html" data-title="Zopping Order Flow" data-tags="oms store ops" data-counter="zopping-order-flow">
     <div class="card-preview preview-purple">
@@ -287,5 +311,3 @@
 </script>
 </body>
 </html>
-
-
