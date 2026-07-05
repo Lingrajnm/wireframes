@@ -1121,11 +1121,37 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
       <div class="sect">
         <h4>Delivery Type</h4>
         <div class="dtype">
-          <div class="dopt"><span class="rdo"></span><b>Combined</b><s>All together · 20 mins</s></div>
-          <div class="dopt on"><span class="rdo"></span><b>Multi-Delivery ⚡</b><s>Fastest first · from 5 mins</s></div>
+          <div class="dopt" id="dopt-comb" onclick="dtype('comb')"><span class="rdo"></span><b>Combined</b><s>One delivery · tomorrow 6–8 AM</s></div>
+          <div class="dopt on" id="dopt-multi" onclick="dtype('multi')"><span class="rdo"></span><b>Multi-Delivery ⚡</b><s>Fastest first · from 5 mins</s></div>
         </div>
       </div>
 
+      <div id="cart-combined" style="display:none">
+        <div class="sect">
+          <div class="hrow" style="margin-bottom:4px"><h4 style="margin:0"><i class="ic s16" data-i="truck" style="color:#3E5E8E"></i>Single Delivery · All together</h4><span class="dchip sched">🚚 TOMORROW, 6–8 AM</span></div>
+          <div class="ci">
+            <div class="cim tC"><em>🫙</em></div>
+            <div class="nm"><b>Sodhi's Jeera 250gm</b><s>250 g</s><em>Special Offer applied</em></div>
+            <span class="mstp"><i class="ic s12" data-i="minus"></i>1<i class="ic s12" data-i="plus"></i></span>
+            <div class="pr"><b>₹109</b><s>₹146</s></div>
+          </div>
+          <div class="ci">
+            <div class="cim tY"><em>🫘</em></div>
+            <div class="nm"><b>Sodhi's Black Chana 500gm</b><s>500 g</s></div>
+            <span class="mstp"><i class="ic s12" data-i="minus"></i>1<i class="ic s12" data-i="plus"></i></span>
+            <div class="pr"><b>₹69</b><s>₹93</s></div>
+          </div>
+          <div class="ci">
+            <div class="cim tY"><em>🍚</em></div>
+            <div class="nm"><b>Sodhi's Rice 5kg (Gold)</b><s>5 kg · big pack, ships from warehouse</s></div>
+            <span class="mstp"><i class="ic s12" data-i="minus"></i>1<i class="ic s12" data-i="plus"></i></span>
+            <div class="pr"><b>₹600</b><s>₹775</s></div>
+          </div>
+          <s style="text-decoration:none;display:block;font-size:10px;font-weight:600;color:var(--faint);margin-top:8px;line-height:1.5">⏳ Your big pack sets the window — everything arrives together tomorrow morning. Want the fresh items in 5–10 mins? Switch to <b style="color:var(--red);cursor:pointer" onclick="dtype('multi')">Multi-Delivery ⚡</b></s>
+        </div>
+      </div>
+
+      <div id="cart-multi">
       <div class="sect">
         <div class="hrow" style="margin-bottom:4px"><h4 style="margin:0"><i class="ic s16" data-i="bolt" style="color:#E3A82B"></i>Delivery 1 · Express</h4><span class="dchip fast">⚡ IN 5–10 MINS</span></div>
         <div class="ci">
@@ -1158,6 +1184,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
         </div>
         <s style="text-decoration:none;display:block;font-size:10px;font-weight:600;color:var(--faint);margin-top:8px;line-height:1.5">💡 Big packs are delivered next morning from our warehouse — no extra delivery fee.</s>
       </div>
+      </div><!-- /cart-multi -->
 
       <div class="sect">
         <div class="hrow" style="border:1.4px dashed #E7B9B3;border-radius:13px;padding:12px 13px;background:linear-gradient(140deg,#fff,var(--red-soft));cursor:pointer">
@@ -1536,6 +1563,14 @@ function ktab(el,key){
   document.querySelectorAll('#home .tabc').forEach(t=>t.classList.toggle('on',t.id==='tab-'+key));
   var t=THEME[key]||THEME.grocery,h=document.getElementById('home');
   h.style.setProperty('--h1',t[0]);h.style.setProperty('--h2',t[1]);h.style.setProperty('--h3',t[2]);h.style.setProperty('--hAcc',t[3]);
+}
+/* cart delivery-type toggle */
+function dtype(m){
+  var c=document.getElementById('dopt-comb'),x=document.getElementById('dopt-multi');
+  if(c&&x){c.classList.toggle('on',m==='comb');x.classList.toggle('on',m!=='comb');}
+  var mc=document.getElementById('cart-multi'),cc=document.getElementById('cart-combined');
+  if(mc)mc.style.display=(m==='comb')?'none':'';
+  if(cc)cc.style.display=(m==='comb')?'':'none';
 }
 /* variant bottom sheet */
 function openVariant(){var v=document.getElementById('vsheet');if(v)v.classList.add('on');}
