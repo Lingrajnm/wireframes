@@ -279,6 +279,111 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
 .stat.r{background:var(--red-soft);color:var(--red)}
 .stat.g{background:var(--green-soft);color:var(--green)}
 .note{color:#8B857D;font-size:11px;text-align:left;max-width:520px;line-height:1.7}
+
+/* ============ V3 ADDITIONS ============ */
+@keyframes pop{0%{opacity:0;transform:scale(.55)}65%{transform:scale(1.07)}100%{opacity:1;transform:scale(1)}}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes floaty{0%,100%{transform:rotate(-6deg) translateY(0)}50%{transform:rotate(-2deg) translateY(-6px)}}
+@keyframes shimmer{0%{transform:translateX(-130%)}100%{transform:translateX(260%)}}
+@keyframes confall{0%{transform:translateY(-30px) rotate(0deg);opacity:0}8%{opacity:1}100%{transform:translateY(600px) rotate(560deg);opacity:0}}
+@keyframes blinkdot{0%,80%,100%{opacity:.25;transform:scale(.8)}40%{opacity:1;transform:scale(1.2)}}
+/* splash */
+#splash .blogo{animation:pop .8s cubic-bezier(.34,1.4,.5,1) both}
+#splash .tagline{animation:rise .7s .35s both}
+#splash .basket{animation:rise .7s .55s both}
+#splash .basket>span:first-child{display:inline-block;animation:bob 3.2s 1.5s ease-in-out infinite}
+.brandpromo{position:relative;margin:8px 24px 14px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.28);border-radius:16px;padding:10px 13px;display:flex;align-items:center;gap:10px;overflow:hidden;animation:rise .7s .8s both;backdrop-filter:blur(3px)}
+.brandpromo:after{content:'';position:absolute;top:0;bottom:0;left:0;width:38%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.25),transparent);animation:shimmer 2.6s 1.6s infinite}
+.brandpromo .be{font-size:27px;filter:drop-shadow(0 4px 5px rgba(0,0,0,.3))}
+.brandpromo b{font-size:12px;font-weight:800;display:block;line-height:1.3}
+.brandpromo s{text-decoration:none;font-size:9.8px;opacity:.85;font-weight:600;display:block;margin-top:1px}
+.brandpromo .bt{margin-left:auto;background:var(--yellow);color:#4A3000;font-size:10px;font-weight:800;border-radius:9px;padding:6px 11px;white-space:nowrap}
+/* auth promo banner */
+.authpromo{margin:4px 22px;border-radius:22px;padding:18px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--sh-md)}
+.authpromo:before{content:'';position:absolute;right:-20px;top:-26px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.14)}
+.authpromo .pk{font-size:9px;font-weight:800;letter-spacing:1.4px;color:var(--yellow);position:relative}
+.authpromo b.big{display:block;font-size:22px;font-weight:800;line-height:1.18;margin-top:6px;letter-spacing:-.4px;position:relative}
+.authpromo>s{text-decoration:none;display:block;font-size:11px;font-weight:600;opacity:.92;margin-top:6px;position:relative;max-width:75%}
+.authpromo .pe{position:absolute;right:10px;bottom:8px;font-size:46px;filter:drop-shadow(0 10px 10px rgba(0,0,0,.28));animation:floaty 3.4s ease-in-out infinite}
+.authdots{display:flex;gap:5px;margin-top:14px;position:relative}
+.authdots i{width:5px;height:5px;border-radius:3px;background:rgba(255,255,255,.45)}
+.authdots i.on{width:16px;background:#fff}
+/* confetti + countdown + dots */
+.confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.confetti span{position:absolute;top:-20px;width:8px;height:8px;border-radius:2px;animation:confall linear infinite}
+.count-redirect{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;color:var(--sub);background:#fff;border:1px solid var(--hairline);border-radius:20px;padding:8px 15px;box-shadow:var(--sh-sm)}
+.count-redirect b{color:var(--red);width:12px;text-align:center;font-size:13px}
+.dots{display:inline-flex;gap:4px;margin-left:6px;vertical-align:middle}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blinkdot 1.2s infinite}
+.dots i:nth-child(2){animation-delay:.2s}
+.dots i:nth-child(3){animation-delay:.4s}
+/* themed header + sticky search */
+#home{--h1:#E9604F;--h2:#D5382B;--h3:#C02A1E;--hAcc:#D5382B}
+.hd{background:linear-gradient(158deg,var(--h1) 0%,var(--h2) 60%,var(--h3) 100%);border-radius:0;box-shadow:none;padding-bottom:2px}
+.hds{background:linear-gradient(180deg,var(--h2) 0%,var(--h3) 100%);padding:0 16px;position:sticky;top:-1px;z-index:35;border-radius:0 0 26px 26px;box-shadow:0 10px 26px rgba(30,10,5,.22)}
+.hds .srch{margin-top:4px}
+.ktab.on{color:var(--hAcc)}
+.mins{border-radius:14px;padding:7px 10px 6px}
+.mins b{font-size:17px;display:flex;align-items:center;justify-content:center;gap:1px}
+.mins s{font-size:6.3px;letter-spacing:1.1px;margin-top:3px}
+.addr .l0{font-size:8.5px;font-weight:800;letter-spacing:1.4px;opacity:.72}
+.addr .l1{margin-top:1px}
+.hic.wal{width:auto;border-radius:20px;padding:0 11px;gap:5px;font-size:11px;font-weight:800}
+.srch .s-r{margin-left:auto;display:flex;align-items:center;gap:8px;color:var(--red)}
+.srch .s-r .ic+.ic{border-left:1px solid var(--line);padding-left:8px;width:28px}
+/* bundles */
+.bundle{border-radius:18px;padding:15px 14px;position:relative;overflow:hidden;cursor:pointer;box-shadow:var(--sh-md);color:#fff;display:flex;flex-direction:column;min-height:150px}
+.bundle:before{content:'';position:absolute;inset:0;background:radial-gradient(90% 90% at 88% 100%,rgba(255,255,255,.25),transparent 55%)}
+.bundle .bk2{text-decoration:none;font-size:8.5px;font-weight:800;letter-spacing:1.3px;color:var(--yellow);position:relative}
+.bundle b{font-size:15px;font-weight:800;letter-spacing:-.2px;margin-top:4px;position:relative;line-height:1.2}
+.bundle .bsub{text-decoration:none;font-size:10px;font-weight:600;opacity:.85;margin-top:3px;position:relative;line-height:1.45}
+.bundle .bprice{margin-top:auto;position:relative;font-size:15px;font-weight:800;padding-top:10px}
+.bundle .bprice s{font-size:10.5px;font-weight:600;opacity:.75;margin-left:4px}
+.bundle .bcta{position:absolute;right:12px;bottom:12px;background:#fff;color:#1B1B1E;font-size:10px;font-weight:800;border-radius:9px;padding:6px 11px;box-shadow:0 3px 8px rgba(0,0,0,.2)}
+.bundle .bem{position:absolute;right:8px;top:34px;font-size:38px;transform:rotate(-6deg);filter:drop-shadow(0 8px 9px rgba(0,0,0,.25))}
+/* recipes */
+.rcp{min-width:212px;width:212px;background:#fff;border:1px solid var(--hairline);border-radius:16px;box-shadow:var(--sh-sm);overflow:hidden;flex-shrink:0;cursor:pointer}
+.rcp .rv{height:88px;display:flex;align-items:center;justify-content:center;font-size:42px;position:relative}
+.rcp .rv em{font-style:normal;filter:drop-shadow(0 8px 9px rgba(48,18,6,.25));transform:rotate(-4deg)}
+.rcp .rtime{position:absolute;top:8px;left:8px;background:rgba(255,255,255,.94);border-radius:8px;font-size:9px;font-weight:800;padding:3px 7px;color:#57534D}
+.rcp .rb{padding:10px 12px 12px}
+.rcp .rb b{font-size:12.5px;font-weight:800;display:block;letter-spacing:-.1px}
+.rcp .rb s{text-decoration:none;font-size:10.5px;color:var(--sub);font-weight:600;display:block;margin-top:2px}
+.rcp .radd{margin-top:9px;display:flex;align-items:center;justify-content:space-between;background:var(--red-soft);border:1px dashed #EBB9B3;border-radius:10px;padding:7px 10px;font-size:11px;font-weight:800;color:var(--red)}
+/* min-cart progress */
+.mincart{margin:12px 16px 2px;background:#fff;border:1px solid var(--hairline);border-radius:16px;padding:12px 14px;box-shadow:var(--sh-sm)}
+.mincart .t{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#57534D}
+.mincart .t b{color:var(--red)}
+.mincart .fd{margin-left:auto;font-size:10px;color:var(--green);font-weight:800;white-space:nowrap}
+.mcbar{height:7px;background:#F1EEE8;border-radius:4px;margin-top:10px;overflow:hidden;position:relative}
+.mcbar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:linear-gradient(90deg,#7CC98F,#2E9E4C)}
+.mcx{display:flex;justify-content:space-between;font-size:9.5px;font-weight:700;color:var(--faint);margin-top:5px}
+/* delivery chips + scheduled eta */
+.dchip{font-size:10px;font-weight:800;border-radius:8px;padding:4px 9px;letter-spacing:.3px}
+.dchip.fast{background:#FAF3DC;color:#8A6D1B}
+.dchip.sched{background:#E7EFF9;color:#3E5E8E}
+.eta.sch{color:#3E5E8E;background:#E7EFF9}
+/* tab-specific modules */
+.tick{margin:12px 16px 0;background:#EFF7F0;border:1px solid #CEE9D5;color:#2C6B36;font-size:10.5px;font-weight:700;border-radius:12px;padding:9px 12px;display:flex;gap:7px;align-items:center}
+.story{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:10px;font-weight:700;color:#57534D;min-width:60px;cursor:pointer}
+.story span{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:25px;border:2px solid #E7B9CB;background:#fff;box-shadow:var(--sh-sm)}
+.wcard{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--hairline);border-radius:16px;padding:10px 12px;box-shadow:var(--sh-sm);cursor:pointer}
+.wcard .cim{width:48px;height:48px;font-size:24px}
+.wcard .nm{flex:1;min-width:0}
+.wcard .nm b{font-size:12.5px;font-weight:800;display:block;line-height:1.3}
+.wcard .nm s{text-decoration:none;font-size:10.5px;color:var(--faint);font-weight:600}
+.wcard .pr{text-align:right;margin-right:2px}
+.wcard .pr b{display:block;font-size:13px;font-weight:800}
+.wcard .pr s{font-size:10px;color:var(--faint);text-decoration:line-through}
+.wcard .addb{position:static;box-shadow:none}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:6px 16px 16px}
+.g3 .pc{width:auto;min-width:0;padding:6px 8px 10px}
+.g3 .pv{height:74px;margin-bottom:14px}
+.g3 .pv em{font-size:34px}
+.g3 .pnm{font-size:10.3px;min-height:28px;-webkit-line-clamp:2}
+.g3 .addb{padding:4px 12px;font-size:11px;bottom:-11px}
+.g3 .prc{font-size:12.5px}
 @media (max-width:460px){.phone{width:100%;height:80vh;border-radius:40px;padding:6px}.vp{border-radius:34px}}
 </style>
 </head>
@@ -306,16 +411,21 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
           <text x="50" y="80" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="12" font-weight="800" fill="#C22B1F" letter-spacing="1.5">SODHI'S<tspan font-size="5.5" dy="-6">®</tspan></text>
           <text x="50" y="97" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="7.8" font-weight="700" fill="#C22B1F" letter-spacing="2.6">SUPER MARKET</text>
         </svg>
-        <div style="text-align:center">
+        <div class="tagline" style="text-align:center">
           <div style="font-size:18px;font-weight:600;letter-spacing:.1px;opacity:.95">Everything you need,</div>
           <div style="font-family:Caveat,cursive;font-size:34px;color:var(--yellow);margin-top:-2px;text-shadow:0 2px 8px rgba(0,0,0,.18)">delivered with care!</div>
         </div>
-        <div style="position:relative;margin-top:2px">
+        <div class="basket" style="position:relative;margin-top:2px">
           <span style="font-size:92px;line-height:1;filter:drop-shadow(0 18px 16px rgba(60,5,0,.4))">🧺</span>
           <span style="position:absolute;top:-14px;left:-38px;font-size:30px;transform:rotate(-14deg);filter:drop-shadow(0 6px 6px rgba(60,5,0,.3))">🥬</span>
           <span style="position:absolute;top:-22px;right:-34px;font-size:28px;transform:rotate(12deg);filter:drop-shadow(0 6px 6px rgba(60,5,0,.3))">🍅</span>
           <span style="position:absolute;top:-34px;left:24px;font-size:24px;transform:rotate(-5deg);filter:drop-shadow(0 6px 6px rgba(60,5,0,.3))">🥛</span>
         </div>
+      </div>
+      <div class="brandpromo">
+        <span class="be">🥤</span>
+        <span><b>Coca-Cola Week at Sodhi's</b><s>Buy 2 Get 1 Free on 750 ml — this week only</s></span>
+        <span class="bt">SHOP NOW</span>
       </div>
       <div style="position:relative;background:#fff;color:var(--ink);border-radius:34px 34px 0 0;padding:22px 8px 30px;display:flex;text-align:center;box-shadow:0 -12px 40px rgba(60,5,0,.3)">
         <div style="flex:1;border-right:1px solid var(--hairline);padding:0 6px"><i class="ic s24" data-i="star" style="color:var(--red)"></i><b style="font-size:11.5px;display:block;margin-top:6px;line-height:1.35">Quality<br>You Trust</b></div>
@@ -331,13 +441,22 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
       <div style="display:flex;justify-content:flex-end;padding:8px 18px">
         <button class="chip" onclick="go('home')" style="box-shadow:var(--sh-sm)">Skip <i class="ic s14" data-i="chev"></i></button>
       </div>
-      <div style="flex:1;display:flex;align-items:center;justify-content:center">
-        <svg class="blogo" width="146" height="185" viewBox="0 0 100 128" style="filter:drop-shadow(0 14px 24px rgba(158,33,24,.28))">
-          <path d="M50 2 C60 11 88 5 94 13 C99 21 91 30 94 40 L94 88 C91 98 99 107 94 115 C88 123 60 117 50 126 C40 117 12 123 6 115 C1 107 9 98 6 88 L6 40 C9 30 1 21 6 13 C12 5 40 11 50 2 Z" fill="#C6291C"/>
-          <text x="50" y="60" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="55" font-weight="900" fill="#fff">S</text>
-          <text x="50" y="80" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="12" font-weight="800" fill="#fff" letter-spacing="1.5">SODHI'S<tspan font-size="5.5" dy="-6">®</tspan></text>
-          <text x="50" y="97" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="7.8" font-weight="700" fill="#fff" letter-spacing="2.6">SUPER MARKET</text>
-        </svg>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px">
+        <div style="display:flex;justify-content:center">
+          <svg class="blogo" width="76" height="96" viewBox="0 0 100 128" style="filter:drop-shadow(0 10px 18px rgba(158,33,24,.28))">
+            <path d="M50 2 C60 11 88 5 94 13 C99 21 91 30 94 40 L94 88 C91 98 99 107 94 115 C88 123 60 117 50 126 C40 117 12 123 6 115 C1 107 9 98 6 88 L6 40 C9 30 1 21 6 13 C12 5 40 11 50 2 Z" fill="#C6291C"/>
+            <text x="50" y="60" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="55" font-weight="900" fill="#fff">S</text>
+            <text x="50" y="80" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="12" font-weight="800" fill="#fff" letter-spacing="1.5">SODHI'S<tspan font-size="5.5" dy="-6">®</tspan></text>
+            <text x="50" y="97" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="7.8" font-weight="700" fill="#fff" letter-spacing="2.6">SUPER MARKET</text>
+          </svg>
+        </div>
+        <div class="authpromo" style="background:linear-gradient(115deg,#E9604F,#C02A1E)">
+          <span class="pk">WELCOME OFFER</span>
+          <b class="big">Flat ₹50 off<br>your first order</b>
+          <s>Code <b style="color:var(--yellow)">SODHI50</b> · auto-applies on carts above ₹499</s>
+          <span class="pe">🎁</span>
+          <div class="authdots"><i class="on"></i><i></i><i></i></div>
+        </div>
       </div>
       <div style="background:#fff;border-radius:30px 30px 0 0;padding:12px 22px 32px;box-shadow:0 -12px 36px rgba(27,20,12,.1)">
         <div style="width:40px;height:4.5px;background:#E8E4DD;border-radius:3px;margin:0 auto 18px"></div>
@@ -357,13 +476,22 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     <div class="screen doodle" id="otp">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div style="padding:8px 18px"><span class="thead" style="all:unset"><span style="width:36px;height:36px;border-radius:12px;background:#fff;box-shadow:var(--sh-sm);display:inline-flex;align-items:center;justify-content:center;cursor:pointer" onclick="go('login')"><i class="ic" data-i="back"></i></span></span></div>
-      <div style="flex:1;display:flex;align-items:center;justify-content:center">
-        <svg class="blogo" width="120" height="152" viewBox="0 0 100 128" style="filter:drop-shadow(0 14px 24px rgba(158,33,24,.28))">
-          <path d="M50 2 C60 11 88 5 94 13 C99 21 91 30 94 40 L94 88 C91 98 99 107 94 115 C88 123 60 117 50 126 C40 117 12 123 6 115 C1 107 9 98 6 88 L6 40 C9 30 1 21 6 13 C12 5 40 11 50 2 Z" fill="#C6291C"/>
-          <text x="50" y="60" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="55" font-weight="900" fill="#fff">S</text>
-          <text x="50" y="80" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="12" font-weight="800" fill="#fff" letter-spacing="1.5">SODHI'S</text>
-          <text x="50" y="97" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="7.8" font-weight="700" fill="#fff" letter-spacing="2.6">SUPER MARKET</text>
-        </svg>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px">
+        <div style="display:flex;justify-content:center">
+          <svg class="blogo" width="70" height="88" viewBox="0 0 100 128" style="filter:drop-shadow(0 10px 18px rgba(158,33,24,.28))">
+            <path d="M50 2 C60 11 88 5 94 13 C99 21 91 30 94 40 L94 88 C91 98 99 107 94 115 C88 123 60 117 50 126 C40 117 12 123 6 115 C1 107 9 98 6 88 L6 40 C9 30 1 21 6 13 C12 5 40 11 50 2 Z" fill="#C6291C"/>
+            <text x="50" y="60" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="55" font-weight="900" fill="#fff">S</text>
+            <text x="50" y="80" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="12" font-weight="800" fill="#fff" letter-spacing="1.5">SODHI'S</text>
+            <text x="50" y="97" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="7.8" font-weight="700" fill="#fff" letter-spacing="2.6">SUPER MARKET</text>
+          </svg>
+        </div>
+        <div class="authpromo" style="background:linear-gradient(115deg,#3E7A94,#2C5A70)">
+          <span class="pk">SODHI'S PROMISE</span>
+          <b class="big">Free delivery<br>for your first month</b>
+          <s>On every order above ₹99 · zero hidden fees</s>
+          <span class="pe">🛵</span>
+          <div class="authdots"><i></i><i class="on"></i><i></i></div>
+        </div>
       </div>
       <div style="background:#fff;border-radius:30px 30px 0 0;padding:12px 22px 32px;box-shadow:0 -12px 36px rgba(27,20,12,.1)">
         <div style="width:40px;height:4.5px;background:#E8E4DD;border-radius:3px;margin:0 auto 18px"></div>
@@ -379,14 +507,23 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     <div class="screen" id="success" style="background:linear-gradient(180deg,#fff 0%,#F4FBF5 100%)">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="cwr">
-        <span style="position:absolute;top:24%;left:20%;width:9px;height:9px;border-radius:2px;background:#F6C445;transform:rotate(18deg)"></span>
-        <span style="position:absolute;top:19%;right:24%;width:8px;height:8px;border-radius:50%;background:#E88379"></span>
-        <span style="position:absolute;top:31%;right:16%;width:7px;height:7px;border-radius:2px;background:#7CC98F;transform:rotate(-14deg)"></span>
-        <span style="position:absolute;top:34%;left:13%;width:6px;height:6px;border-radius:50%;background:#9DB3E8"></span>
-        <div class="seal"><i class="ic" data-i="check" style="width:40px;height:40px"></i></div>
-        <h2 style="font-size:22px;font-weight:800;letter-spacing:-.4px">Sign-in successful</h2>
-        <p class="cap" style="font-size:13px;margin-top:-6px;line-height:1.6">Welcome to Sodhi's, Lingraj!<br>Your mobile number has been verified.</p>
-        <button class="btn" style="max-width:300px" onclick="go('home')">Go to Homepage</button>
+        <div class="confetti">
+          <span style="left:8%;background:#F6C445;animation-duration:2.6s;animation-delay:0s"></span>
+          <span style="left:18%;background:#E88379;animation-duration:3.1s;animation-delay:.5s;border-radius:50%"></span>
+          <span style="left:30%;background:#7CC98F;animation-duration:2.8s;animation-delay:1.1s"></span>
+          <span style="left:42%;background:#9DB3E8;animation-duration:3.4s;animation-delay:.2s;border-radius:50%"></span>
+          <span style="left:54%;background:#F6C445;animation-duration:2.5s;animation-delay:.9s"></span>
+          <span style="left:64%;background:#D5382B;animation-duration:3.2s;animation-delay:.4s"></span>
+          <span style="left:74%;background:#7CC98F;animation-duration:2.9s;animation-delay:1.4s;border-radius:50%"></span>
+          <span style="left:84%;background:#E3A82B;animation-duration:2.7s;animation-delay:.7s"></span>
+          <span style="left:92%;background:#9DB3E8;animation-duration:3.3s;animation-delay:1.8s"></span>
+          <span style="left:48%;background:#E88379;animation-duration:2.4s;animation-delay:2s"></span>
+        </div>
+        <div class="seal" style="animation:pop .7s cubic-bezier(.34,1.4,.5,1) both"><i class="ic" data-i="check" style="width:40px;height:40px"></i></div>
+        <h2 style="font-size:25px;font-weight:800;letter-spacing:-.5px;line-height:1.25;animation:rise .6s .2s both">Welcome to Sodhi's,<br><span style="color:var(--red)">Lingraj!</span> 🎉</h2>
+        <p class="cap" style="font-size:12.5px;margin-top:-6px;line-height:1.6;animation:rise .6s .35s both">Sign-in successful · your number is verified</p>
+        <div class="count-redirect" style="animation:rise .6s .5s both">Taking you to Home in <b id="cnt">3</b>s</div>
+        <button class="btn" style="max-width:300px;animation:rise .6s .6s both" onclick="go('home')">Go to Homepage now</button>
       </div>
     </div>
 
@@ -395,15 +532,18 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
       <div class="hd">
         <div class="sbar lite" style="padding:16px 10px 4px"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
         <div class="hd-top">
-          <div class="mins"><b>20</b><s>MINS</s><s>DELIVERY</s></div>
+          <div class="mins"><b>⚡20</b><s>MIN DELIVERY</s></div>
           <div class="addr" onclick="go('address')">
+            <div class="l0">DELIVERING TO</div>
             <div class="l1"><i class="ic s16" data-i="pin"></i>Home <i class="ic s14" data-i="down"></i></div>
-            <div class="l2">C-402, Orchid Residency, 24th Main Rd, Sec 46</div>
+            <div class="l2">C-402, Orchid Residency, Sector 46, Gurugram</div>
           </div>
-          <div class="hic" onclick="go('offers')"><i class="ic" data-i="ticket"></i></div>
+          <div class="hic wal" onclick="go('account')"><i class="ic s16" data-i="wallet"></i>₹120</div>
           <div class="hic" onclick="go('account')"><i class="ic" data-i="user"></i></div>
         </div>
-        <div class="srch" onclick="go('searchsc')"><i class="ic" data-i="search"></i>Search for “<b>sodhi's jeera</b>”<i class="ic mic" data-i="mic"></i></div>
+      </div>
+      <div class="hds">
+        <div class="srch" onclick="go('searchsc')"><i class="ic" data-i="search"></i>Search for “<b>sodhi's jeera</b>”<span class="s-r"><i class="ic" data-i="cam"></i><i class="ic" data-i="mic"></i></span></div>
         <div class="ktabs" id="ktabs">
           <div class="ktab on" onclick="ktab(this,'grocery')"><span class="ke">🏪</span>Grocery</div>
           <div class="ktab" onclick="ktab(this,'fresh')"><span class="ke">🥬</span>Fresh</div>
@@ -450,6 +590,48 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
         <s style="text-decoration:none;font-size:9.5px;font-weight:800;letter-spacing:1.5px;color:#F6C445">SODHI'S TRUSTED BRAND</s>
         <b style="display:block;font-size:16.5px;font-weight:800;margin-top:4px;letter-spacing:-.2px">Pantry staples, packed<br>by our own hands.</b>
         <span class="chip" style="margin-top:10px;background:#fff;border:none;color:#4A2E1A;font-weight:800" onclick="go('listing')">Explore the range <i class="ic s14" data-i="chev"></i></span>
+      </div>
+
+      <div class="shead"><span class="h2">Monthly Shopping</span><span class="link">How it works <i class="ic s12" data-i="chev"></i></span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:2px 16px 4px">
+        <div class="bundle" style="background:linear-gradient(150deg,#2E7D46,#1F5E33)" onclick="go('cart')">
+          <s class="bk2">READY-MADE KIT</s>
+          <b>Sodhi's<br>Grocery Kit</b>
+          <s class="bsub">24 monthly essentials — atta, dals, oil, masale</s>
+          <span class="bem">🧺</span>
+          <div class="bprice">₹1,499 <s>₹1,810</s></div>
+          <span class="bcta">ADD KIT</span>
+        </div>
+        <div class="bundle" style="background:linear-gradient(150deg,#B06A22,#8F5313)" onclick="go('listing')">
+          <s class="bk2">BUILD YOUR OWN</s>
+          <b>Build your<br>Basket</b>
+          <s class="bsub">Pick any 15+ items &amp; get extra 5% off</s>
+          <span class="bem">🛒</span>
+          <div class="bprice">From ₹999</div>
+          <span class="bcta">START</span>
+        </div>
+      </div>
+
+      <div class="shead"><span class="h2">Shop by Recipe</span><span class="link">All recipes <i class="ic s12" data-i="chev"></i></span></div>
+      <div class="hsc">
+        <div class="rcp" onclick="go('cart')">
+          <div class="rv tR"><span class="rtime">⏱ 35 min · Serves 4</span><em>🍛</em></div>
+          <div class="rb"><b>Paneer Butter Masala</b><s>9 ingredients · paneer, butter, masale…</s>
+            <div class="radd"><span>Add all 9 · ₹249</span><i class="ic s14" data-i="cart"></i></div>
+          </div>
+        </div>
+        <div class="rcp" onclick="go('cart')">
+          <div class="rv tY"><span class="rtime">⏱ 50 min · Serves 4</span><em>🍚</em></div>
+          <div class="rb"><b>Veg Biryani</b><s>11 ingredients · rice, veggies, biryani masala…</s>
+            <div class="radd"><span>Add all 11 · ₹199</span><i class="ic s14" data-i="cart"></i></div>
+          </div>
+        </div>
+        <div class="rcp" onclick="go('cart')">
+          <div class="rv tO"><span class="rtime">⏱ 20 min · Serves 2</span><em>🫓</em></div>
+          <div class="rb"><b>Poha + Masala Chai</b><s>7 ingredients · poha, chai patti, adrak…</s>
+            <div class="radd"><span>Add all 7 · ₹129</span><i class="ic s14" data-i="cart"></i></div>
+          </div>
+        </div>
       </div>
 
       <div class="shead"><span class="h2">Sodhi's Trusted Brand</span><span class="link" onclick="go('listing')">See all <i class="ic s12" data-i="chev"></i></span></div>
@@ -509,11 +691,12 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
           <div class="tile" style="background:linear-gradient(150deg,#F6C889,#EFA84F)" onclick="go('listing')"><b>Cut &amp; Sprouts</b><s>Ready to cook</s><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🥗</span></div>
           <div class="tile" style="background:linear-gradient(150deg,#BCDCE8,#93C2D6)" onclick="go('listing')"><b>Exotics</b><s>Imported picks</s><span class="go"><i class="ic s16" data-i="chev" style="color:#3E7A94"></i></span><span class="em">🥑</span></div>
         </div>
+        <div class="tick">🌱 <b>Picked at 5:40 AM today</b> · sourced from Sohna &amp; Farrukhnagar farms</div>
         <div class="shead"><span class="h2">Today's Harvest</span><span class="link" onclick="go('listing')">See all <i class="ic s12" data-i="chev"></i></span></div>
-        <div class="hsc">
+        <div class="g2">
           <div class="pc" onclick="go('pdp')"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥦</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Broccoli Fresh 250–300 g</div><span class="pwt">1 pc ▾</span><div class="prow"><span class="prc">₹45</span><span class="mrp">₹69</span><span class="sv">SAVE ₹24</span></div></div>
           <div class="pc" onclick="go('pdp')"><span class="flag">FRESH</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥬</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Palak (Spinach) 250 g</div><span class="pwt">250 g ▾</span><div class="prow"><span class="prc">₹22</span><span class="mrp">₹30</span><span class="sv">SAVE ₹8</span></div></div>
-          <div class="pc" onclick="go('pdp')"><span class="flag">COMBO</span><div class="pv tO"><img class="pimg" src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🧺</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Weekly Veggie Basket 12 items</div><span class="pwt">~3 kg ▾</span><div class="prow"><span class="prc">₹299</span><span class="mrp">₹410</span><span class="sv">SAVE ₹111</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">COMBO</span><div class="pv tO"><img class="pimg" src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🧺</em><button class="addb">ADD</button></div><span class="eta sch"><i class="ic s12" data-i="truck"></i>TOMORROW 6 AM</span><div class="pnm">Weekly Veggie Basket 12 items</div><span class="pwt">~3 kg ▾</span><div class="prow"><span class="prc">₹299</span><span class="mrp">₹410</span><span class="sv">SAVE ₹111</span></div></div>
           <div class="pc" onclick="go('pdp')"><span class="flag">EXOTIC</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1585059895524-72359e06133a?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥝</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Kiwi Green Imported 3 pc</div><span class="pwt">3 pc ▾</span><div class="prow"><span class="prc">₹99</span><span class="mrp">₹135</span><span class="sv">SAVE ₹36</span></div></div>
         </div>
         <div class="sect" style="background:linear-gradient(140deg,#F2FAF3,#E9F6EC);border-color:#CEE9D5;display:flex;gap:10px;align-items:center;margin-top:4px">
@@ -527,6 +710,9 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
           <div class="tile wide" style="background:linear-gradient(115deg,#D9C9EE,#BBA3DE)" onclick="go('listing')"><b>Everything for Baby</b><s>Certified &amp; gentle · 400+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#6C4E99"></i></span><span class="em">🍼🧸</span></div>
           <div class="tile" style="background:linear-gradient(150deg,#BCDCE8,#93C2D6)" onclick="go('listing')"><b>Diapers &amp; Wipes</b><span class="go"><i class="ic s16" data-i="chev" style="color:#3E7A94"></i></span><span class="em">🧷</span></div>
           <div class="tile" style="background:linear-gradient(150deg,#F6C889,#EFA84F)" onclick="go('listing')"><b>Baby Food</b><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🥣</span></div>
+        </div>
+        <div style="display:flex;gap:8px;overflow-x:auto;padding:12px 16px 0;scrollbar-width:none">
+          <span class="chip on">👶 0–6 m</span><span class="chip">6–12 m</span><span class="chip">1–2 y</span><span class="chip">2 y+</span><span class="chip">🤱 For Moms</span>
         </div>
         <div class="shead"><span class="h2">Parents' Favourites</span><span class="link" onclick="go('listing')">See all <i class="ic s12" data-i="chev"></i></span></div>
         <div class="hsc">
@@ -547,6 +733,14 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
           <div class="tile" style="background:linear-gradient(150deg,#D9C9EE,#BBA3DE)" onclick="go('listing')"><b>Skincare</b><span class="go"><i class="ic s16" data-i="chev" style="color:#6C4E99"></i></span><span class="em">🧴</span></div>
           <div class="tile" style="background:linear-gradient(150deg,#BCDCE8,#93C2D6)" onclick="go('listing')"><b>Bath &amp; Body</b><span class="go"><i class="ic s16" data-i="chev" style="color:#3E7A94"></i></span><span class="em">🧼</span></div>
         </div>
+        <div style="display:flex;gap:12px;overflow-x:auto;padding:14px 16px 2px;scrollbar-width:none">
+          <div class="story" onclick="go('listing')"><span>✨</span>Glow</div>
+          <div class="story" onclick="go('listing')"><span>💇</span>Hair</div>
+          <div class="story" onclick="go('listing')"><span>💋</span>Lips</div>
+          <div class="story" onclick="go('listing')"><span>🛁</span>Bath</div>
+          <div class="story" onclick="go('listing')"><span>🧔</span>Men</div>
+          <div class="story" onclick="go('listing')"><span>🌿</span>Natural</div>
+        </div>
         <div class="shead"><span class="h2">Trending in Beauty</span><span class="link" onclick="go('listing')">See all <i class="ic s12" data-i="chev"></i></span></div>
         <div class="hsc">
           <div class="pc" onclick="go('pdp')"><span class="flag">30% OFF</span><div class="pv tR"><em>💄</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Lakmé Lip Love Crimson 3.5 g</div><span class="pwt">3.5 g ▾</span><div class="prow"><span class="prc">₹209</span><span class="mrp">₹299</span><span class="sv">SAVE ₹90</span></div></div>
@@ -564,11 +758,11 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
           <div class="tile" style="background:linear-gradient(150deg,#B7D8A6,#8FBF7C)" onclick="go('listing')"><b>Tea &amp; Coffee</b><span class="go"><i class="ic s16" data-i="chev" style="color:#4C7A3C"></i></span><span class="em">☕</span></div>
         </div>
         <div class="shead"><span class="h2">Beat the Heat</span><span class="link" onclick="go('listing')">See all <i class="ic s12" data-i="chev"></i></span></div>
-        <div class="hsc">
-          <div class="pc" onclick="go('pdp')"><span class="flag">CHILLED</span><div class="pv tB"><em>🥤</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Coca-Cola 750 ml</div><span class="pwt">750 ml ▾</span><div class="prow"><span class="prc">₹40</span><span class="mrp">₹45</span><span class="sv">SAVE ₹5</span></div></div>
-          <div class="pc" onclick="go('pdp')"><div class="pv tO"><em>🧃</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Real Mixed Fruit Juice 1 L</div><span class="pwt">1 L ▾</span><div class="prow"><span class="prc">₹105</span><span class="mrp">₹125</span><span class="sv">SAVE ₹20</span></div></div>
-          <div class="pc" onclick="go('pdp')"><span class="flag">FRESH</span><div class="pv tB"><img class="pimg" src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥛</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Cold Coffee Shake 300 ml</div><span class="pwt">300 ml ▾</span><div class="prow"><span class="prc">₹75</span><span class="mrp">₹90</span><span class="sv">SAVE ₹15</span></div></div>
-          <div class="pc" onclick="go('pdp')"><div class="pv tG"><em>💧</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Bisleri Water 1 L × 6</div><span class="pwt">6 pc ▾</span><div class="prow"><span class="prc">₹108</span><span class="mrp">₹120</span><span class="sv">SAVE ₹12</span></div></div>
+        <div style="display:flex;flex-direction:column;gap:9px;padding:4px 16px 14px">
+          <div class="wcard" onclick="go('pdp')"><span class="cim tB"><em>🥤</em></span><span class="nm"><b>Coca-Cola 750 ml</b><s>Chilled · ⚡ 20 mins</s></span><span class="pr"><b>₹40</b><s>₹45</s></span><button class="addb">ADD</button></div>
+          <div class="wcard" onclick="go('pdp')"><span class="cim tO"><em>🧃</em></span><span class="nm"><b>Real Mixed Fruit Juice 1 L</b><s>⚡ 20 mins</s></span><span class="pr"><b>₹105</b><s>₹125</s></span><button class="addb">ADD</button></div>
+          <div class="wcard" onclick="go('pdp')"><span class="cim tB"><em>🥛</em></span><span class="nm"><b>Cold Coffee Shake 300 ml</b><s>Fresh made · ⚡ 20 mins</s></span><span class="pr"><b>₹75</b><s>₹90</s></span><button class="addb">ADD</button></div>
+          <div class="wcard" onclick="go('pdp')"><span class="cim tG"><em>💧</em></span><span class="nm"><b>Bisleri Water 1 L × 6</b><s>🚚 Tomorrow 6–8 AM</s></span><span class="pr"><b>₹108</b><s>₹120</s></span><button class="addb">ADD</button></div>
         </div>
       </div>
 
@@ -580,11 +774,13 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
           <div class="tile" style="background:linear-gradient(150deg,#F0B9C8,#DE8BA5)" onclick="go('listing')"><b>Biscuits</b><span class="go"><i class="ic s16" data-i="chev" style="color:#A34D6B"></i></span><span class="em">🍪</span></div>
         </div>
         <div class="shead"><span class="h2">Most Munched</span><span class="link" onclick="go('listing')">See all <i class="ic s12" data-i="chev"></i></span></div>
-        <div class="hsc">
-          <div class="pc" onclick="go('pdp')"><span class="flag">20% OFF</span><div class="pv tY"><em>🍟</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Lay's India's Magic Masala 90 g</div><span class="pwt">90 g ▾</span><div class="prow"><span class="prc">₹40</span><span class="mrp">₹50</span><span class="sv">SAVE ₹10</span></div></div>
-          <div class="pc" onclick="go('pdp')"><span class="flag gold">OWN BRAND</span><div class="pv tO"><span class="pack" data-e="🥨" data-n="Mix Namkeen" data-s="Classic · 350 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Mix Namkeen 350 g</div><span class="pwt">350 g ▾</span><div class="prow"><span class="prc">₹99</span><span class="mrp">₹130</span><span class="sv">SAVE ₹31</span></div></div>
-          <div class="pc" onclick="go('pdp')"><div class="pv tL"><em>🍫</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dairy Milk Silk 150 g</div><span class="pwt">150 g ▾</span><div class="prow"><span class="prc">₹172</span><span class="mrp">₹190</span><span class="sv">SAVE ₹18</span></div></div>
-          <div class="pc" onclick="go('pdp')"><span class="flag">BOGO</span><div class="pv tR"><em>🍪</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Hide &amp; Seek Chocolate 200 g</div><span class="pwt">200 g ▾</span><div class="prow"><span class="prc">₹45</span><span class="mrp">₹90</span><span class="sv">1+1 FREE</span></div></div>
+        <div class="g3">
+          <div class="pc" onclick="go('pdp')"><div class="pv tY"><em>🍟</em><button class="addb">ADD</button></div><div class="pnm">Lay's Magic Masala 90 g</div><div class="prow"><span class="prc">₹40</span><span class="mrp">₹50</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tO"><em>🥨</em><button class="addb">ADD</button></div><div class="pnm">Sodhi's Namkeen 350 g</div><div class="prow"><span class="prc">₹99</span><span class="mrp">₹130</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tL"><em>🍫</em><button class="addb">ADD</button></div><div class="pnm">Dairy Milk Silk 150 g</div><div class="prow"><span class="prc">₹172</span><span class="mrp">₹190</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tR"><em>🍪</em><button class="addb">ADD</button></div><div class="pnm">Hide &amp; Seek 200 g</div><div class="prow"><span class="prc">₹45</span><span class="mrp">₹90</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tG"><em>🍿</em><button class="addb">ADD</button></div><div class="pnm">Act II Popcorn 3-pack</div><div class="prow"><span class="prc">₹90</span><span class="mrp">₹105</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tB"><em>🧇</em><button class="addb">ADD</button></div><div class="pnm">Karachi Fruit Biscuit</div><div class="prow"><span class="prc">₹120</span><span class="mrp">₹140</span></div></div>
         </div>
       </div>
 
@@ -767,7 +963,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
         <div class="pc" onclick="go('pdp')"><span class="flag">50% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🌿</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dhania (Coriander Leaves) 100 g</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">₹14</span><span class="mrp">₹28</span><span class="sv">SAVE ₹14</span></div></div>
         <div class="pc" onclick="go('pdp')"><span class="flag">50% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🫑</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Shimla Mirch (Capsicum) 2 pc</div><span class="pwt">250–300 g ▾</span><div class="prow"><span class="prc">₹25</span><span class="mrp">₹49</span><span class="sv">SAVE ₹24</span></div></div>
         <div class="pc" onclick="go('pdp')"><span class="flag gold">BOGO</span><div class="pv tC"><span class="pack" data-e="🍞" data-n="Milk Bread" data-s="Bakery Fresh · 400 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Milk Bread 400 g</div><span class="pwt">400 g ▾</span><div class="prow"><span class="prc">₹45</span><span class="mrp">₹90</span><span class="sv">1+1 FREE</span></div></div>
-        <div class="pc" onclick="go('pdp')"><span class="flag">MEGA</span><div class="pv tY"><span class="pack" data-e="🍚" data-n="Rice Gold" data-s="Premium · 5 kg" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Rice 5 kg (Gold)</div><span class="pwt">5 kg ▾</span><div class="prow"><span class="prc">₹600</span><span class="mrp">₹775</span><span class="sv">SAVE ₹175</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">MEGA</span><div class="pv tY"><span class="pack" data-e="🍚" data-n="Rice Gold" data-s="Premium · 5 kg" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb">ADD</button></div><span class="eta sch"><i class="ic s12" data-i="truck"></i>TOMORROW 6 AM</span><div class="pnm">Sodhi's Rice 5 kg (Gold)</div><span class="pwt">5 kg ▾</span><div class="prow"><span class="prc">₹600</span><span class="mrp">₹775</span><span class="sv">SAVE ₹175</span></div></div>
         <div class="pc" onclick="go('pdp')"><span class="flag">FLASH</span><div class="pv tO"><span class="pack" data-e="🥜" data-n="Badam" data-s="American · 500 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Badam American 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">₹489</span><span class="mrp">₹650</span><span class="sv">SAVE ₹161</span></div></div>
       </div>
       <div class="bnav">
@@ -783,7 +979,11 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     <div class="screen" id="cart">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span>My Cart<span class="rt"><span class="cap" style="align-self:center">3 items · saving ₹236</span></span></div>
-      <div class="warn"><i class="ic s16" data-i="clock"></i>Add items worth <b>₹22</b> more to reach the ₹199 minimum cart value</div>
+      <div class="mincart">
+        <div class="t"><span style="font-size:17px">🧺</span><span>Almost there! Add <b>₹22</b> more to checkout</span><span class="fd">FREE delivery above ₹199</span></div>
+        <div class="mcbar"><i style="width:89%"></i></div>
+        <div class="mcx"><span>₹177 in cart</span><span>₹199 minimum</span></div>
+      </div>
 
       <div class="sect">
         <h4>Delivery Type</h4>
@@ -794,7 +994,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
       </div>
 
       <div class="sect">
-        <div class="hrow" style="margin-bottom:4px"><h4 style="margin:0"><i class="ic s16" data-i="bolt" style="color:#E3A82B"></i>Delivered in 5 mins</h4><span class="cap">2 items · Delivery 1</span></div>
+        <div class="hrow" style="margin-bottom:4px"><h4 style="margin:0"><i class="ic s16" data-i="bolt" style="color:#E3A82B"></i>Delivery 1 · Express</h4><span class="dchip fast">⚡ IN 5–10 MINS</span></div>
         <div class="ci">
           <div class="cim tC"><em>🫙</em></div>
           <div class="nm"><b>Sodhi's Jeera 250gm</b><s>250 g</s><em>Special Offer applied</em></div>
@@ -816,13 +1016,14 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
       </div>
 
       <div class="sect">
-        <div class="hrow" style="margin-bottom:4px"><h4 style="margin:0"><i class="ic s16" data-i="truck" style="color:var(--sub)"></i>Delivered in 20 mins</h4><span class="cap">1 item · Delivery 2</span></div>
+        <div class="hrow" style="margin-bottom:4px"><h4 style="margin:0"><i class="ic s16" data-i="truck" style="color:#3E5E8E"></i>Delivery 2 · Scheduled</h4><span class="dchip sched">🚚 TOMORROW, 6–8 AM</span></div>
         <div class="ci">
           <div class="cim tY"><em>🍚</em></div>
-          <div class="nm"><b>Sodhi's Rice 5kg (Gold)</b><s>5 kg</s></div>
+          <div class="nm"><b>Sodhi's Rice 5kg (Gold)</b><s>5 kg · big pack, ships from warehouse</s></div>
           <span class="mstp"><i class="ic s12" data-i="minus"></i>1<i class="ic s12" data-i="plus"></i></span>
           <div class="pr"><b>₹600</b><s>₹775</s></div>
         </div>
+        <s style="text-decoration:none;display:block;font-size:10px;font-weight:600;color:var(--faint);margin-top:8px;line-height:1.5">💡 Big packs are delivered next morning from our warehouse — no extra delivery fee.</s>
       </div>
 
       <div class="sect">
@@ -921,13 +1122,21 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     <div class="screen" id="confirm" style="background:linear-gradient(180deg,#fff 0%,#F4FBF5 100%)">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="cwr" style="gap:12px">
-        <span style="position:absolute;top:16%;left:20%;width:9px;height:9px;border-radius:2px;background:#F6C445;transform:rotate(18deg)"></span>
-        <span style="position:absolute;top:12%;right:24%;width:8px;height:8px;border-radius:50%;background:#E88379"></span>
-        <span style="position:absolute;top:23%;right:15%;width:7px;height:7px;border-radius:2px;background:#7CC98F;transform:rotate(-14deg)"></span>
-        <span style="position:absolute;top:26%;left:13%;width:6px;height:6px;border-radius:50%;background:#9DB3E8"></span>
-        <div class="seal"><i class="ic" data-i="check" style="width:40px;height:40px"></i></div>
+        <div class="confetti">
+          <span style="left:6%;background:#F6C445;animation-duration:2.7s;animation-delay:0s"></span>
+          <span style="left:16%;background:#E88379;animation-duration:3.2s;animation-delay:.6s;border-radius:50%"></span>
+          <span style="left:28%;background:#7CC98F;animation-duration:2.9s;animation-delay:1.2s"></span>
+          <span style="left:40%;background:#9DB3E8;animation-duration:3.5s;animation-delay:.3s;border-radius:50%"></span>
+          <span style="left:52%;background:#F6C445;animation-duration:2.6s;animation-delay:1s"></span>
+          <span style="left:63%;background:#D5382B;animation-duration:3.1s;animation-delay:.5s"></span>
+          <span style="left:73%;background:#7CC98F;animation-duration:2.8s;animation-delay:1.5s;border-radius:50%"></span>
+          <span style="left:83%;background:#E3A82B;animation-duration:2.9s;animation-delay:.8s"></span>
+          <span style="left:91%;background:#9DB3E8;animation-duration:3.4s;animation-delay:1.9s"></span>
+        </div>
+        <div class="seal" style="animation:pop .7s cubic-bezier(.34,1.4,.5,1) both"><i class="ic" data-i="check" style="width:40px;height:40px"></i></div>
         <h2 style="font-size:22px;font-weight:800;letter-spacing:-.4px">Order Placed!</h2>
         <p class="cap" style="font-size:12.5px;line-height:1.7;margin-top:-4px">Order <b style="color:var(--ink)">#SOD-240193</b> · ₹787 paid via UPI<br>Arriving at Home in <b style="color:var(--red)">20 mins</b> ⚡</p>
+        <p class="cap" style="font-size:12px;font-weight:700;color:#57534D;display:flex;align-items:center">Assigning your delivery partner<span class="dots"><i></i><i></i><i></i></span></p>
         <div class="card" style="width:100%;padding:14px 16px;text-align:left">
           <div class="hrow"><div style="display:flex;gap:6px;font-size:22px"><em style="font-style:normal">🫙</em><em style="font-style:normal">🫘</em><em style="font-style:normal">🍚</em></div><span class="cap"><b style="color:var(--ink)">3 items</b> · ₹787</span></div>
           <div class="hrow" style="margin-top:9px;padding-top:9px;border-top:1px solid var(--hairline)"><span class="cap" style="display:flex;align-items:center;gap:5px"><i class="ic s12" data-i="store"></i>Sodhi's Sector 46 dark store</span><span class="cap">1.2 km away</span></div>
@@ -1088,6 +1297,7 @@ gift:'<rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M12 9V20M4 13.
 truck:'<path d="M3 6.5H14.5V16H3Z"/><path d="M14.5 9.5H18.5L21 12.5V16H14.5"/><circle cx="7" cy="17.8" r="1.7"/><circle cx="17.5" cy="17.8" r="1.7"/>',
 store:'<path d="M4 9L5.3 4.5H18.7L20 9C20 10.4 18.9 11.5 17.5 11.5C16.6 11.5 15.8 11 15.4 10.3C14.9 11 14.1 11.5 13.2 11.5C12.7 11.5 12.3 11.4 12 11.1C11.7 11.4 11.3 11.5 10.8 11.5C9.9 11.5 9.1 11 8.6 10.3C8.2 11 7.4 11.5 6.5 11.5C5.1 11.5 4 10.4 4 9Z"/><path d="M5.5 11.5V19.5H18.5V11.5M10 19.5V15H14V19.5"/>',
 mic:'<rect x="9.2" y="3.5" width="5.6" height="10" rx="2.8"/><path d="M6 11.5A6 6 0 0 0 18 11.5M12 17.5V20.5"/>',
+cam:'<path d="M4 8.5A2 2 0 0 1 6 6.5H8L9.5 4.5H14.5L16 6.5H18A2 2 0 0 1 20 8.5V17A2 2 0 0 1 18 19H6A2 2 0 0 1 4 17Z"/><circle cx="12" cy="12.5" r="3.2"/>',
 minus:'<path d="M6 12H18"/>',
 edit:'<path d="M4 20H8L19 9L15 5L4 16V20Z"/><path d="M13 7L17 11"/>'
 };
@@ -1111,16 +1321,39 @@ function packSVG(d){
 }
 function paint(){
   document.querySelectorAll('.pack').forEach(p=>{if(!p.dataset.done){p.innerHTML=packSVG(p.dataset);p.dataset.done=1}});document.querySelectorAll('i.ic').forEach(e=>{if(!e.dataset.done&&IC[e.dataset.i]){e.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+IC[e.dataset.i]+'</svg>';e.dataset.done=1}})}
+var scTimer=null;
+function startSuccessCount(){
+  clearInterval(scTimer);
+  var n=3,el=document.getElementById('cnt');
+  if(!el)return;
+  el.textContent=n;
+  scTimer=setInterval(function(){
+    n--;
+    if(n<=0){clearInterval(scTimer);var sc=document.getElementById('success');if(sc&&sc.classList.contains('on'))go('home');}
+    else el.textContent=n;
+  },1000);
+}
 function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
   var el=document.getElementById(id); if(el){el.classList.add('on');el.scrollTop=0;}
   document.querySelectorAll('#picker button').forEach(b=>b.classList.toggle('active',b.dataset.s===id));
+  if(id==='success')startSuccessCount(); else clearInterval(scTimer);
 }
 document.querySelectorAll('#picker button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+var THEME={
+  grocery:['#E9604F','#D5382B','#C02A1E','#D5382B'],
+  fresh:['#57A86A','#37904F','#26763C','#2E8B47'],
+  baby:['#9F7FC9','#8461B4','#6C4E99','#7E5BAE'],
+  beauty:['#E387A7','#D3648C','#B94E74','#C75981'],
+  drinks:['#6E88C9','#5470B4','#44599C','#4E67AC'],
+  snacks:['#F2A254','#E08A2E','#C57318','#D07E20']
+};
 function ktab(el,key){
   document.querySelectorAll('#ktabs .ktab').forEach(t=>t.classList.remove('on'));
   el.classList.add('on');
   document.querySelectorAll('#home .tabc').forEach(t=>t.classList.toggle('on',t.id==='tab-'+key));
+  var t=THEME[key]||THEME.grocery,h=document.getElementById('home');
+  h.style.setProperty('--h1',t[0]);h.style.setProperty('--h2',t[1]);h.style.setProperty('--h3',t[2]);h.style.setProperty('--hAcc',t[3]);
 }
 paint();
 </script>
