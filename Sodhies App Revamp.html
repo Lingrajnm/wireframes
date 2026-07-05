@@ -386,6 +386,19 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
 .g3 .prc{font-size:12.5px}
 /* ============ V4: hero banners, variant sheet, refined imagery, account ============ */
 @keyframes kenburns{from{transform:scale(1) translate(0,0)}to{transform:scale(1.14) translate(-2%,-2%)}}
+/* brand hero (splash-style) for login/OTP */
+.bhero{position:relative;flex:1;overflow:hidden;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:56px 24px 14px;background:radial-gradient(130% 70% at 50% -8%,#EC6A58 0%,#D5382B 45%,#B4251A 100%)}
+.bhero .pat{position:absolute;inset:0;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22190%22 height=%22190%22><g fill=%22none%22 stroke=%22rgba(255,255,255,.1)%22 stroke-width=%221.5%22 stroke-linecap=%22round%22><circle cx=%2234%22 cy=%2230%22 r=%2211%22/><path d=%22M95 22c9 0 14 7 14 13s-5 13-14 13-14-7-14-13 5-13 14-13z%22/><path d=%22M152 62l10 17h-20z%22/><path d=%22M40 112c0 10 8 17 17 17s17-7 17-17%22/><rect x=%22115%22 y=%22115%22 width=%2228%22 height=%2221%22 rx=%224%22/><path d=%22M20 158c6-8 15-8 21 0%22/></g></svg>')}
+.bhero .blogo{animation:pop .8s cubic-bezier(.34,1.4,.5,1) both;position:relative}
+.bhero .btag{text-align:center;animation:rise .7s .3s both;position:relative}
+.bhero .btag .t1{font-size:16.5px;font-weight:600;letter-spacing:.1px;opacity:.95}
+.bhero .btag .t2{font-family:Caveat,cursive;font-size:31px;color:var(--yellow);margin-top:-2px;text-shadow:0 2px 8px rgba(0,0,0,.18)}
+.bhero .bart{position:relative;animation:rise .7s .5s both;margin-top:2px}
+.bhero .bart .bmain{display:inline-block;font-size:64px;line-height:1;filter:drop-shadow(0 14px 14px rgba(60,5,0,.4));animation:bob 3.2s 1.4s ease-in-out infinite}
+.bhero .bart .bf{position:absolute;filter:drop-shadow(0 6px 6px rgba(60,5,0,.3))}
+.bhero .brandpromo{margin:4px 0 0;align-self:stretch;animation-delay:.7s}
+.bhero .hskip{position:absolute;top:54px;right:16px;z-index:4;background:rgba(255,255,255,.94);box-shadow:var(--sh-sm)}
+.bhero .hback{position:absolute;top:54px;left:16px;z-index:4;width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,.94);color:var(--ink);box-shadow:var(--sh-sm);display:flex;align-items:center;justify-content:center;cursor:pointer}
 .hero{position:relative;flex:1;overflow:hidden;background:#3A1410;min-height:340px}
 .hero .hphoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kenburns 16s ease-in-out infinite alternate}
 .hero .hgrad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,8,5,.5) 0%,rgba(18,8,5,.05) 34%,rgba(58,12,7,.42) 66%,rgba(44,8,4,.9) 100%)}
@@ -425,6 +438,10 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
 .vrow .vpr s.pk2{text-decoration:none;display:block;font-size:10px;color:var(--faint);font-weight:600;margin-top:1px}
 .vrow .addb,.vrow .mstp{position:static;box-shadow:none}
 .pwt.hasvar{color:var(--red);font-weight:700;cursor:pointer}
+/* add-to-cart button on result cards */
+.cartbtn{margin-top:10px;width:100%;border:1.5px solid var(--red);background:#fff;color:var(--red);border-radius:11px;padding:8.5px 0;font-size:11.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:.15s;letter-spacing:.2px}
+.cartbtn:hover{background:var(--red);color:#fff}
+.cartbtn.added{background:linear-gradient(140deg,var(--red-3),var(--red-2));color:#fff;border:none;justify-content:space-between;padding:8.5px 14px;box-shadow:0 4px 12px rgba(213,56,43,.3)}
 /* account v2 */
 .qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:12px 16px 0}
 .qcard{background:#fff;border:1px solid var(--hairline);border-radius:16px;padding:14px 8px 12px;text-align:center;box-shadow:var(--sh-sm);cursor:pointer}
@@ -451,7 +468,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
   <h1>SODHI'S <em>·</em> Quick Commerce App — Visual Design v2</h1>
   <p>Full customer journey, clickable end-to-end. Jump to any screen with the chips, or tap through inside the phone.</p>
   <div class="picker" id="picker">
-    <button data-s="splash" class="active">Splash</button><button data-s="login">Login</button><button data-s="otp">OTP</button><button data-s="success">Success</button><button data-s="home">Home</button><button data-s="categories">Categories</button><button data-s="listing">Product List</button><button data-s="searchsc">Search</button><button data-s="pdp">Product Detail</button><button data-s="offers">Offers</button><button data-s="cart">Cart</button><button data-s="address">Address</button><button data-s="payment">Payment</button><button data-s="confirm">Order Placed</button><button data-s="track">Tracking</button><button data-s="orders">My Orders</button><button data-s="account">Account</button>
+    <button data-s="splash" class="active">Splash</button><button data-s="login">Login</button><button data-s="otp">OTP</button><button data-s="success">Success</button><button data-s="home">Home</button><button data-s="categories">Categories</button><button data-s="listing">Product List</button><button data-s="brandlist">Own Brand</button><button data-s="searchsc">Search</button><button data-s="pdp">Product Detail</button><button data-s="offers">Offers</button><button data-s="cart">Cart</button><button data-s="address">Address</button><button data-s="payment">Payment</button><button data-s="confirm">Order Placed</button><button data-s="track">Tracking</button><button data-s="orders">My Orders</button><button data-s="account">Account</button>
   </div>
   <p class="note">Sodhi's Super Market · Quick-commerce app design v2 · Product photos shown as styled placeholders — replace with photography in production.</p>
   </div><!-- /intro -->
@@ -494,23 +511,31 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- LOGIN -->
-    <div class="screen" id="login" style="background:#2A1310">
-      <div class="hero">
-        <img class="hphoto" src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=900&q=70" loading="lazy" onerror="this.remove()" alt="">
-        <div class="hgrad"></div>
+    <div class="screen" id="login" style="background:#B4251A">
+      <div class="bhero">
+        <div class="pat"></div>
         <div class="sbar lite" style="position:absolute;top:0;left:0;right:0;z-index:4"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
-        <svg class="blogo hlogo" width="52" height="66" viewBox="0 0 100 128">
-          <path d="M50 2 C60 11 88 5 94 13 C99 21 91 30 94 40 L94 88 C91 98 99 107 94 115 C88 123 60 117 50 126 C40 117 12 123 6 115 C1 107 9 98 6 88 L6 40 C9 30 1 21 6 13 C12 5 40 11 50 2 Z" fill="#fff"/>
-          <text x="50" y="62" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="52" font-weight="900" fill="#C22B1F">S</text>
-          <text x="50" y="84" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="11" font-weight="800" fill="#C22B1F" letter-spacing="1.2">SODHI'S</text>
-        </svg>
         <button class="chip hskip" onclick="go('home')">Skip <i class="ic s14" data-i="chev"></i></button>
-        <div class="fbadge">🎁 FLAT ₹50 OFF</div>
-        <div class="hcopy">
-          <span class="pk">WELCOME OFFER · FIRST ORDER</span>
-          <b class="big">Fresh groceries,<br>happier mornings.</b>
-          <s>Flat ₹50 off with code <b style="color:var(--yellow)">SODHI50</b> · on carts above ₹499</s>
-          <div class="hchips"><span>⚡ 20-min delivery</span><span>🥬 Farm fresh daily</span></div>
+        <svg class="blogo" width="118" height="149" viewBox="0 0 100 128">
+          <path d="M50 2 C60 11 88 5 94 13 C99 21 91 30 94 40 L94 88 C91 98 99 107 94 115 C88 123 60 117 50 126 C40 117 12 123 6 115 C1 107 9 98 6 88 L6 40 C9 30 1 21 6 13 C12 5 40 11 50 2 Z" fill="#fff"/>
+          <text x="50" y="60" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="55" font-weight="900" fill="#C22B1F">S</text>
+          <text x="50" y="80" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="12" font-weight="800" fill="#C22B1F" letter-spacing="1.5">SODHI'S<tspan font-size="5.5" dy="-6">®</tspan></text>
+          <text x="50" y="97" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="7.8" font-weight="700" fill="#C22B1F" letter-spacing="2.6">SUPER MARKET</text>
+        </svg>
+        <div class="btag">
+          <div class="t1">Groceries at your door,</div>
+          <div class="t2">in just 20 minutes!</div>
+        </div>
+        <div class="bart">
+          <span class="bmain">🧺</span>
+          <span class="bf" style="top:-10px;left:-32px;font-size:24px;transform:rotate(-14deg)">🥬</span>
+          <span class="bf" style="top:-16px;right:-28px;font-size:22px;transform:rotate(12deg)">🍅</span>
+          <span class="bf" style="top:-26px;left:20px;font-size:19px;transform:rotate(-5deg)">🥛</span>
+        </div>
+        <div class="brandpromo">
+          <span class="be">🎁</span>
+          <span><b>Flat ₹50 off your first order</b><s>Code SODHI50 · auto-applies on carts above ₹499</s></span>
+          <span class="bt">CLAIM</span>
         </div>
       </div>
       <div style="background:#fff;border-radius:30px 30px 0 0;padding:12px 22px 32px;box-shadow:0 -12px 36px rgba(27,20,12,.1)">
@@ -528,18 +553,30 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- OTP -->
-    <div class="screen" id="otp" style="background:#12222B">
-      <div class="hero">
-        <img class="hphoto" src="https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=900&q=70" loading="lazy" onerror="this.remove()" alt="">
-        <div class="hgrad" style="background:linear-gradient(180deg,rgba(8,16,20,.5) 0%,rgba(8,16,20,.05) 34%,rgba(12,42,56,.45) 66%,rgba(8,32,44,.92) 100%)"></div>
+    <div class="screen" id="otp" style="background:#B4251A">
+      <div class="bhero">
+        <div class="pat"></div>
         <div class="sbar lite" style="position:absolute;top:0;left:0;right:0;z-index:4"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
         <span class="hback" onclick="go('login')"><i class="ic" data-i="back"></i></span>
-        <div class="fbadge" style="background:#fff;color:#2C5A70">🛵 FREE DELIVERY</div>
-        <div class="hcopy">
-          <span class="pk" style="color:#8FD8F2">SODHI'S PROMISE</span>
-          <b class="big">Delivered with a smile,<br>in 20 minutes.</b>
-          <s>Free delivery for your first month · every order above ₹99</s>
-          <div class="hchips"><span>🧊 Cold chain fresh</span><span>💯 No hidden fees</span></div>
+        <svg class="blogo" width="96" height="121" viewBox="0 0 100 128">
+          <path d="M50 2 C60 11 88 5 94 13 C99 21 91 30 94 40 L94 88 C91 98 99 107 94 115 C88 123 60 117 50 126 C40 117 12 123 6 115 C1 107 9 98 6 88 L6 40 C9 30 1 21 6 13 C12 5 40 11 50 2 Z" fill="#fff"/>
+          <text x="50" y="60" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="55" font-weight="900" fill="#C22B1F">S</text>
+          <text x="50" y="80" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="12" font-weight="800" fill="#C22B1F" letter-spacing="1.5">SODHI'S<tspan font-size="5.5" dy="-6">®</tspan></text>
+          <text x="50" y="97" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="7.8" font-weight="700" fill="#C22B1F" letter-spacing="2.6">SUPER MARKET</text>
+        </svg>
+        <div class="btag">
+          <div class="t1">You're one step away,</div>
+          <div class="t2">from fresh &amp; fast!</div>
+        </div>
+        <div class="bart">
+          <span class="bmain">🛵</span>
+          <span class="bf" style="top:-12px;left:-30px;font-size:22px;transform:rotate(-12deg)">💨</span>
+          <span class="bf" style="top:-18px;right:-26px;font-size:21px;transform:rotate(10deg)">🥬</span>
+        </div>
+        <div class="brandpromo">
+          <span class="be">🛵</span>
+          <span><b>Free delivery for your first month</b><s>On every order above ₹99 · zero hidden fees</s></span>
+          <span class="bt">YAY!</span>
         </div>
       </div>
       <div style="background:#fff;border-radius:30px 30px 0 0;padding:12px 22px 32px;box-shadow:0 -12px 36px rgba(27,20,12,.1)">
@@ -638,7 +675,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
         <span style="position:absolute;right:-6px;bottom:-10px;font-size:64px;transform:rotate(-8deg);opacity:.9">🥜</span>
         <s style="text-decoration:none;font-size:9.5px;font-weight:800;letter-spacing:1.5px;color:#F6C445">SODHI'S TRUSTED BRAND</s>
         <b style="display:block;font-size:16.5px;font-weight:800;margin-top:4px;letter-spacing:-.2px">Pantry staples, packed<br>by our own hands.</b>
-        <span class="chip" style="margin-top:10px;background:#fff;border:none;color:#4A2E1A;font-weight:800" onclick="go('listing')">Explore the range <i class="ic s14" data-i="chev"></i></span>
+        <span class="chip" style="margin-top:10px;background:#fff;border:none;color:#4A2E1A;font-weight:800" onclick="go('brandlist')">Explore the range <i class="ic s14" data-i="chev"></i></span>
       </div>
 
       <div class="shead"><span class="h2">Monthly Shopping</span><span class="link">How it works <i class="ic s12" data-i="chev"></i></span></div>
@@ -683,7 +720,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
         </div>
       </div>
 
-      <div class="shead"><span class="h2">Sodhi's Trusted Brand</span><span class="link" onclick="go('listing')">See all <i class="ic s12" data-i="chev"></i></span></div>
+      <div class="shead"><span class="h2">Sodhi's Trusted Brand</span><span class="link" onclick="go('brandlist')">See all <i class="ic s12" data-i="chev"></i></span></div>
       <div class="hsc">
         <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 250 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Jeera 250 gm</div><span class="pwt">250 g ▾</span><div class="prow"><span class="prc">₹109</span><span class="mrp">₹120</span><span class="sv">9% OFF</span></div></div>
         <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tR"><span class="pack" data-e="🫘" data-n="Rajma Chitra" data-s="Premium · 500 g" data-c1="#8E3B2E" data-c2="#F6E6DF"></span><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Rajma Chitra 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">₹95</span><span class="mrp">₹120</span><span class="sv">21% OFF</span></div></div>
@@ -694,7 +731,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
       <div class="shead" style="padding-top:6px"><span class="h2">Fresh Vegetables</span><span class="link" onclick="go('listing')">See all <i class="ic s12" data-i="chev"></i></span></div>
       <div class="hsc">
         <div class="pc"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🫑</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Shimla Mirch (Capsicum) 2 pc</div><span class="pwt">250–300 g ▾</span><div class="prow"><span class="prc">₹32</span><span class="mrp">₹49</span><span class="sv">SAVE ₹17</span></div></div>
-        <div class="pc"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🌿</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dhania (Coriander Leaves) 100 g</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">₹18</span><span class="mrp">₹28</span><span class="sv">SAVE ₹10</span></div></div>
+        <div class="pc"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🌿</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dhania (Coriander Leaves) 100 g</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">₹18</span><span class="mrp">₹28</span><span class="sv">SAVE ₹10</span></div></div>
         <div class="pc"><span class="flag">20% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍅</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamatar (Tomato) Hybrid 500 g</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">₹24</span><span class="mrp">₹30</span><span class="sv">SAVE ₹6</span></div></div>
         <div class="pc"><span class="flag">25% OFF</span><div class="pv tO"><img class="pimg" src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥔</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Potato (Aloo) 950 g – 1 kg</div><span class="pwt">1 kg ▾</span><div class="prow"><span class="prc">₹34</span><span class="mrp">₹46</span><span class="sv">SAVE ₹12</span></div></div>
       </div>
@@ -912,13 +949,48 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
         <div class="lgrid">
           <div class="pc"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1568584711075-3d021a7c3ca3?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥦</em><span class="stp"><i class="ic s12" data-i="minus"></i>1<i class="ic s12" data-i="plus"></i></span></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Phool Gobhi (Cauliflower) 450–550 g</div><span class="pwt">1 pc ▾</span><div class="prow"><span class="prc">₹32</span><span class="mrp">₹49</span><span class="sv">SAVE ₹17</span></div></div>
           <div class="pc" onclick="go('pdp')"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🫑</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Shimla Mirch (Capsicum) Green 2 pc</div><span class="pwt">250–300 g ▾</span><div class="prow"><span class="prc">₹32</span><span class="mrp">₹49</span><span class="sv">SAVE ₹17</span></div></div>
-          <div class="pc" onclick="go('pdp')"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🌿</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dhania (Coriander Leaves) 100 g</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">₹18</span><span class="mrp">₹28</span><span class="sv">SAVE ₹10</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🌿</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dhania (Coriander Leaves) 100 g</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">₹18</span><span class="mrp">₹28</span><span class="sv">SAVE ₹10</span></div></div>
           <div class="pc" onclick="go('pdp')"><span class="flag">30% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥒</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Lauki (Bottle Gourd) 1 pc 450–600 g</div><span class="pwt">1 pc ▾</span><div class="prow"><span class="prc">₹26</span><span class="mrp">₹38</span><span class="sv">SAVE ₹12</span></div></div>
           <div class="pc" onclick="go('pdp')"><span class="flag">35% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1508747703725-719777637510?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🧅</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Pyaaj (Onion) 450 g</div><span class="pwt">450 g ▾</span><div class="prow"><span class="prc">₹29</span><span class="mrp">₹45</span><span class="sv">SAVE ₹16</span></div></div>
           <div class="pc" onclick="go('pdp')"><span class="flag">25% OFF</span><div class="pv tO"><img class="pimg" src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥔</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Potato (Aloo) 950 g – 1 kg</div><span class="pwt">1 kg ▾</span><div class="prow"><span class="prc">₹34</span><span class="mrp">₹46</span><span class="sv">SAVE ₹12</span></div></div>
           <div class="pc" onclick="go('pdp')"><span class="flag">20% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍅</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamatar (Tomato) Hybrid 500 g</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">₹24</span><span class="mrp">₹30</span><span class="sv">SAVE ₹6</span></div></div>
           <div class="pc" onclick="go('pdp')"><span class="flag">15% OFF</span><div class="pv tY"><img class="pimg" src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍌</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Kela (Banana) Robusta 6 pc</div><span class="pwt">6 pc ▾</span><div class="prow"><span class="prc">₹42</span><span class="mrp">₹49</span><span class="sv">SAVE ₹7</span></div></div>
         </div>
+      </div>
+      <div class="bnav">
+        <a onclick="go('home')"><i class="ic" data-i="home"></i>Home</a>
+        <a class="on"><i class="ic" data-i="grid"></i>Categories</a>
+        <a onclick="go('offers')"><i class="ic" data-i="tag"></i>Offers</a>
+        <a onclick="go('cart')"><i class="ic" data-i="cart"></i>Cart<span class="bdg">3</span></a>
+        <a onclick="go('account')"><i class="ic" data-i="user"></i>Account</a>
+      </div>
+    </div>
+
+    <!-- SODHI'S TRUSTED BRAND LISTING -->
+    <div class="screen" id="brandlist">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span>Sodhi's Trusted Brand<span class="rt"><span class="bk" onclick="go('searchsc')"><i class="ic" data-i="search"></i></span></span></div>
+      <div style="margin:10px 16px 0;border-radius:18px;background:linear-gradient(115deg,#2E1F14,#4A2E1A);color:#fff;padding:15px 17px;position:relative;overflow:hidden;box-shadow:var(--sh-md);flex-shrink:0">
+        <span style="position:absolute;right:-4px;bottom:-12px;font-size:56px;transform:rotate(-8deg);opacity:.9">🫙</span>
+        <s style="text-decoration:none;font-size:9.5px;font-weight:800;letter-spacing:1.5px;color:#F6C445">SODHI'S® OWN BRAND · SINCE 1995</s>
+        <b style="display:block;font-size:15.5px;font-weight:800;margin-top:4px;letter-spacing:-.2px;line-height:1.35">Packed by our own hands,<br>priced for family kitchens.</b>
+      </div>
+      <div class="ltools"><b>24 Products <s>· own brand · in 20 mins</s></b>
+        <div style="display:flex;gap:7px"><button class="tbtn"><i class="ic s14" data-i="filter"></i>Filter</button><button class="tbtn"><i class="ic s14" data-i="sort"></i>Sort</button></div>
+      </div>
+      <div class="g2" style="padding-top:2px">
+        <div class="pc" onclick="go('pdp')"><span class="flag gold">BESTSELLER</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 250 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Jeera 250 gm</div><span class="pwt">250 g ▾</span><div class="prow"><span class="prc">₹109</span><span class="mrp">₹120</span><span class="sv">9% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tR"><span class="pack" data-e="🫘" data-n="Rajma Chitra" data-s="Premium · 500 g" data-c1="#8E3B2E" data-c2="#F6E6DF"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Rajma Chitra 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">₹95</span><span class="mrp">₹120</span><span class="sv">21% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tL"><span class="pack" data-e="⚪" data-n="Phool Makhana" data-s="Fox Nuts · 100 g" data-c1="#7A5C9E" data-c2="#EFE8F6"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Phool Makhana 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">₹135</span><span class="mrp">₹160</span><span class="sv">16% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tY"><span class="pack" data-e="🟡" data-n="Moong Dhuli" data-s="Dal · 500 g" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Moong Dhuli Dal 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">₹78</span><span class="mrp">₹95</span><span class="sv">18% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">MEGA</span><div class="pv tY"><span class="pack" data-e="🍚" data-n="Rice Gold" data-s="Premium · 5 kg" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta sch"><i class="ic s12" data-i="truck"></i>TOMORROW 6 AM</span><div class="pnm">Sodhi's Rice 5 kg (Gold)</div><span class="pwt">5 kg ▾</span><div class="prow"><span class="prc">₹600</span><span class="mrp">₹775</span><span class="sv">SAVE ₹175</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">FLASH</span><div class="pv tO"><span class="pack" data-e="🥜" data-n="Badam" data-s="American · 500 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Badam American 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">₹489</span><span class="mrp">₹650</span><span class="sv">SAVE ₹161</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tC"><span class="pack" data-e="🌰" data-n="Kaju W320" data-s="Cashews · 500 g" data-c1="#A97C42" data-c2="#F7F1E5"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Kaju W320 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">₹560</span><span class="mrp">₹720</span><span class="sv">22% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tR"><span class="pack" data-e="🌶️" data-n="Mirch Powder" data-s="Chilli · 100 g" data-c1="#B92D20" data-c2="#FAE4E0"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Mirch Powder 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">₹52</span><span class="mrp">₹60</span><span class="sv">13% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tO"><span class="pack" data-e="🟠" data-n="Haldi Powder" data-s="Turmeric · 100 g" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Haldi Powder 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">₹38</span><span class="mrp">₹45</span><span class="sv">16% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tO"><span class="pack" data-e="🥨" data-n="Mix Namkeen" data-s="Classic · 350 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Mix Namkeen 350 g</div><span class="pwt">350 g ▾</span><div class="prow"><span class="prc">₹99</span><span class="mrp">₹130</span><span class="sv">SAVE ₹31</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag gold">BOGO</span><div class="pv tC"><span class="pack" data-e="🍞" data-n="Milk Bread" data-s="Bakery Fresh · 400 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Milk Bread 400 g</div><span class="pwt">400 g ▾</span><div class="prow"><span class="prc">₹45</span><span class="mrp">₹90</span><span class="sv">1+1 FREE</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tG"><span class="pack" data-e="🫒" data-n="Kachi Ghani" data-s="Mustard Oil · 1 L" data-c1="#2E7D46" data-c2="#E8F1E2"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Kachi Ghani Oil 1 L</div><span class="pwt">1 L ▾</span><div class="prow"><span class="prc">₹165</span><span class="mrp">₹195</span><span class="sv">15% OFF</span></div></div>
       </div>
       <div class="bnav">
         <a onclick="go('home')"><i class="ic" data-i="home"></i>Home</a>
@@ -941,10 +1013,15 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
       </div>
       <div class="shead"><span class="h2">Results for “jeera” <s style="text-decoration:none;color:var(--sub);font-weight:600;font-size:11.5px">· 6 items</s></span></div>
       <div class="g2">
-        <div class="pc" onclick="go('pdp')"><span class="flag gold">OWN BRAND</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 250 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Jeera 250 gm</div><span class="pwt">250 g ▾</span><div class="prow"><span class="prc">₹109</span><span class="mrp">₹120</span><span class="sv">9% OFF</span></div></div>
-        <div class="pc" onclick="go('pdp')"><div class="pv tC"><em>🫙</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Catch Jeera Whole 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">₹65</span><span class="mrp">₹68</span><span class="sv">4% OFF</span></div></div>
-        <div class="pc" onclick="go('pdp')"><span class="flag">25% OFF</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 100 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Jeera 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">₹47</span><span class="mrp">₹63</span><span class="sv">SAVE ₹16</span></div></div>
-        <div class="pc" onclick="go('pdp')"><div class="pv tB"><em>🥤</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Jeera Masala Soda 250 ml</div><span class="pwt">250 ml ▾</span><div class="prow"><span class="prc">₹20</span><span class="mrp">₹25</span><span class="sv">SAVE ₹5</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag gold">OWN BRAND</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 250 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Jeera 250 gm</div><span class="pwt">250 g ▾</span><div class="prow"><span class="prc">₹109</span><span class="mrp">₹120</span><span class="sv">9% OFF</span></div><div class="cartbtn added" onclick="event.stopPropagation()"><i class="ic s14" data-i="minus"></i><b>1 in cart</b><i class="ic s14" data-i="plus"></i></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tC"><em>🫙</em></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Catch Jeera Whole 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">₹65</span><span class="mrp">₹68</span><span class="sv">4% OFF</span></div><button class="cartbtn" onclick="event.stopPropagation()"><i class="ic s14" data-i="cart"></i>Add to Cart</button></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">25% OFF</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 100 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Jeera 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">₹47</span><span class="mrp">₹63</span><span class="sv">SAVE ₹16</span></div><button class="cartbtn" onclick="event.stopPropagation()"><i class="ic s14" data-i="cart"></i>Add to Cart</button></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tB"><em>🥤</em></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Jeera Masala Soda 250 ml</div><span class="pwt">250 ml ▾</span><div class="prow"><span class="prc">₹20</span><span class="mrp">₹25</span><span class="sv">SAVE ₹5</span></div><button class="cartbtn" onclick="event.stopPropagation()"><i class="ic s14" data-i="cart"></i>Add to Cart</button></div>
+      </div>
+      <div style="margin-top:auto"></div>
+      <div class="paybar">
+        <div class="tt"><b>4 items</b><s>₹787 · saving ₹236</s></div>
+        <button onclick="go('cart')">View Cart <i class="ic s16" data-i="chev"></i></button>
       </div>
     </div>
 
@@ -1016,7 +1093,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
       </div>
       <div class="g2" style="padding-top:12px">
         <div class="pc" onclick="go('pdp')"><span class="flag">50% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1508747703725-719777637510?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🧅</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Pyaaj (Onion) 450 g</div><span class="pwt">450 g ▾</span><div class="prow"><span class="prc">₹22</span><span class="mrp">₹45</span><span class="sv">SAVE ₹23</span></div></div>
-        <div class="pc" onclick="go('pdp')"><span class="flag">50% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🌿</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dhania (Coriander Leaves) 100 g</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">₹14</span><span class="mrp">₹28</span><span class="sv">SAVE ₹14</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">50% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🌿</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dhania (Coriander Leaves) 100 g</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">₹14</span><span class="mrp">₹28</span><span class="sv">SAVE ₹14</span></div></div>
         <div class="pc" onclick="go('pdp')"><span class="flag">50% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🫑</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Shimla Mirch (Capsicum) 2 pc</div><span class="pwt">250–300 g ▾</span><div class="prow"><span class="prc">₹25</span><span class="mrp">₹49</span><span class="sv">SAVE ₹24</span></div></div>
         <div class="pc" onclick="go('pdp')"><span class="flag gold">BOGO</span><div class="pv tC"><span class="pack" data-e="🍞" data-n="Milk Bread" data-s="Bakery Fresh · 400 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Sodhi's Milk Bread 400 g</div><span class="pwt">400 g ▾</span><div class="prow"><span class="prc">₹45</span><span class="mrp">₹90</span><span class="sv">1+1 FREE</span></div></div>
         <div class="pc" onclick="go('pdp')"><span class="flag">MEGA</span><div class="pv tY"><span class="pack" data-e="🍚" data-n="Rice Gold" data-s="Premium · 5 kg" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb">ADD</button></div><span class="eta sch"><i class="ic s12" data-i="truck"></i>TOMORROW 6 AM</span><div class="pnm">Sodhi's Rice 5 kg (Gold)</div><span class="pwt">5 kg ▾</span><div class="prow"><span class="prc">₹600</span><span class="mrp">₹775</span><span class="sv">SAVE ₹175</span></div></div>
