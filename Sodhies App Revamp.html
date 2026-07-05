@@ -22,11 +22,21 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;font-family:'Plus Jakarta Sans',-apple-system,sans-serif}
 body{background:radial-gradient(120% 90% at 50% 0%,#2B2723 0%,#171512 70%);color:var(--ink);min-height:100vh;padding:34px 16px 70px}
-.stage{display:flex;flex-direction:column;align-items:center;gap:22px}
-.stage>h1{color:#fff;font-size:19px;font-weight:800;letter-spacing:-.2px}
-.stage>h1 em{font-style:normal;color:#E88379}
-.stage>p{color:#98928A;font-size:12.5px;max-width:620px;text-align:center;line-height:1.6;margin-top:-12px}
-.picker{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:880px}
+.stage{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:64px;max-width:1280px;margin:0 auto;min-height:calc(100vh - 104px)}
+.intro{display:flex;flex-direction:column;align-items:flex-start;gap:22px;flex:0 1 560px;min-width:0}
+.intro h1{color:#fff;font-size:30px;font-weight:800;letter-spacing:-.4px;line-height:1.2}
+.intro h1 em{font-style:normal;color:#E88379}
+.intro>p{color:#98928A;font-size:14px;max-width:520px;text-align:left;line-height:1.65;margin-top:-8px}
+.phone-fit{flex:0 0 auto}
+@media (max-width:1023px){
+  .stage{flex-direction:column;gap:22px;min-height:0}
+  .intro{align-items:center;flex:0 1 auto}
+  .intro h1{font-size:19px;text-align:center}
+  .intro>p{text-align:center;font-size:12.5px}
+  .picker{justify-content:center}
+  .note{text-align:center}
+}
+.picker{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-start;max-width:880px}
 .picker button{background:rgba(255,255,255,.06);color:#C9C3BB;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:7px 14px;font-size:11.5px;font-weight:700;cursor:pointer;transition:.15s}
 .picker button:hover{background:rgba(255,255,255,.12)}
 .picker button.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:var(--sh-red)}
@@ -268,19 +278,22 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
 .stat{font-size:9.5px;font-weight:800;padding:4px 10px;border-radius:8px;letter-spacing:.3px}
 .stat.r{background:var(--red-soft);color:var(--red)}
 .stat.g{background:var(--green-soft);color:var(--green)}
-.note{color:#8B857D;font-size:11px;text-align:center;max-width:700px;line-height:1.7}
+.note{color:#8B857D;font-size:11px;text-align:left;max-width:520px;line-height:1.7}
 @media (max-width:460px){.phone{width:100%;height:80vh;border-radius:40px;padding:6px}.vp{border-radius:34px}}
 </style>
 </head>
 <body>
 <div class="stage">
+  <div class="intro">
   <h1>SODHI'S <em>·</em> Quick Commerce App — Visual Design v2</h1>
   <p>Full customer journey, clickable end-to-end. Jump to any screen with the chips, or tap through inside the phone.</p>
   <div class="picker" id="picker">
     <button data-s="splash" class="active">Splash</button><button data-s="login">Login</button><button data-s="otp">OTP</button><button data-s="success">Success</button><button data-s="home">Home</button><button data-s="categories">Categories</button><button data-s="listing">Product List</button><button data-s="searchsc">Search</button><button data-s="pdp">Product Detail</button><button data-s="offers">Offers</button><button data-s="cart">Cart</button><button data-s="address">Address</button><button data-s="payment">Payment</button><button data-s="confirm">Order Placed</button><button data-s="track">Tracking</button><button data-s="orders">My Orders</button><button data-s="account">Account</button>
   </div>
+  <p class="note">Sodhi's Super Market · Quick-commerce app design v2 · Product photos shown as styled placeholders — replace with photography in production.</p>
+  </div><!-- /intro -->
 
-  <div class="phone"><div class="vp" id="vp">
+  <div class="phone-fit"><div class="phone"><div class="vp" id="vp">
     <div class="island"></div>
 
     <!-- SPLASH -->
@@ -1038,9 +1051,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
 
-  </div><div class="glass"></div></div>
-
-  <p class="note">Sodhi's Super Market · Quick-commerce app design v2 · Product photos shown as styled placeholders — replace with photography in production.</p>
+  </div><div class="glass"></div></div></div><!-- /phone-fit -->
 </div>
 <script>
 const IC={
@@ -1112,6 +1123,22 @@ function ktab(el,key){
   document.querySelectorAll('#home .tabc').forEach(t=>t.classList.toggle('on',t.id==='tab-'+key));
 }
 paint();
+</script>
+<script>
+(function(){
+  var ph=document.querySelector('.phone'),wrap=document.querySelector('.phone-fit');
+  function fit(){
+    if(!ph||!wrap)return;
+    if(window.innerWidth<1024){ph.style.transform='';wrap.style.width='';wrap.style.height='';return;}
+    var s=Math.min(1,(window.innerHeight-90)/852);
+    ph.style.transform='scale('+s+')';
+    ph.style.transformOrigin='top left';
+    wrap.style.width=(400*s)+'px';
+    wrap.style.height=(852*s)+'px';
+  }
+  window.addEventListener('resize',fit);
+  fit();
+})();
 </script>
 </body>
 </html>
