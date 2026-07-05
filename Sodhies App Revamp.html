@@ -384,6 +384,64 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
 .g3 .pnm{font-size:10.3px;min-height:28px;-webkit-line-clamp:2}
 .g3 .addb{padding:4px 12px;font-size:11px;bottom:-11px}
 .g3 .prc{font-size:12.5px}
+/* ============ V4: hero banners, variant sheet, refined imagery, account ============ */
+@keyframes kenburns{from{transform:scale(1) translate(0,0)}to{transform:scale(1.14) translate(-2%,-2%)}}
+.hero{position:relative;flex:1;overflow:hidden;background:#3A1410;min-height:340px}
+.hero .hphoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kenburns 16s ease-in-out infinite alternate}
+.hero .hgrad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,8,5,.5) 0%,rgba(18,8,5,.05) 34%,rgba(58,12,7,.42) 66%,rgba(44,8,4,.9) 100%)}
+.hero .hlogo{position:absolute;top:50px;left:18px;z-index:4;filter:drop-shadow(0 8px 14px rgba(0,0,0,.4))}
+.hero .hskip{position:absolute;top:54px;right:16px;z-index:4;background:rgba(255,255,255,.94);box-shadow:var(--sh-sm)}
+.hero .hback{position:absolute;top:54px;left:16px;z-index:4;width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,.94);box-shadow:var(--sh-sm);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.hero .fbadge{position:absolute;right:18px;bottom:158px;background:var(--yellow);color:#4A3000;font-weight:800;font-size:12.5px;border-radius:14px;padding:10px 14px;box-shadow:0 12px 26px rgba(0,0,0,.4);animation:bob 3s 1s ease-in-out infinite;z-index:3;transform:rotate(3deg)}
+.hero .hcopy{position:absolute;left:20px;right:20px;bottom:18px;color:#fff;z-index:3}
+.hero .hcopy .pk{font-size:9.5px;font-weight:800;letter-spacing:1.7px;color:var(--yellow);animation:rise .6s .15s both}
+.hero .hcopy b.big{display:block;font-size:27px;font-weight:800;line-height:1.16;letter-spacing:-.5px;margin-top:7px;text-shadow:0 2px 14px rgba(0,0,0,.35);animation:rise .6s .3s both}
+.hero .hcopy>s{text-decoration:none;display:block;font-size:12px;font-weight:600;opacity:.94;margin-top:7px;line-height:1.5;animation:rise .6s .45s both}
+.hchips{display:flex;gap:7px;margin-top:13px;animation:rise .6s .6s both}
+.hchips span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);backdrop-filter:blur(4px);border-radius:16px;padding:6.5px 12px;font-size:10.5px;font-weight:700}
+/* refined product imagery */
+.pv .pimg{inset:5px;width:calc(100% - 10px);height:calc(100% - 10px);border-radius:10px;box-shadow:0 3px 9px rgba(27,20,12,.16);filter:saturate(1.07) contrast(1.02);transition:transform .35s ease}
+.pv:has(.pimg):after{display:none}
+.pv:has(.pimg){background:radial-gradient(130% 120% at 28% 12%,#fff 0%,#F4F1EA 80%)}
+.pc:hover .pimg{transform:scale(1.05)}
+/* sticky header stuck state */
+.hds.stuck{border-radius:0;box-shadow:0 8px 22px rgba(0,0,0,.28)}
+/* variant bottom sheet */
+@keyframes sheetup{from{transform:translateY(55%)}to{transform:none}}
+#vsheet{position:absolute;inset:0;z-index:65;display:none}
+#vsheet.on{display:block}
+.vs-dim{position:absolute;inset:0;background:rgba(16,10,8,.55);backdrop-filter:blur(1.5px);animation:fadein .22s}
+.vs{position:absolute;left:0;right:0;bottom:0;background:#F2F1ED;border-radius:26px 26px 0 0;padding:16px 14px 26px;animation:sheetup .32s cubic-bezier(.2,.9,.3,1);box-shadow:0 -14px 40px rgba(0,0,0,.3)}
+.vs .vclose{position:absolute;top:-48px;left:50%;transform:translateX(-50%);width:38px;height:38px;border-radius:50%;background:rgba(20,12,8,.6);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;backdrop-filter:blur(3px)}
+.vs .vt{font-size:15.5px;font-weight:800;letter-spacing:-.2px;padding:2px 4px 4px;display:block;line-height:1.35}
+.vrow{display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:10px 12px;margin-top:9px;box-shadow:var(--sh-sm);position:relative;border:1px solid var(--hairline)}
+.vrow.sel{border:1.5px solid var(--red)}
+.vrib{position:absolute;top:-6px;left:10px;background:linear-gradient(140deg,#2563EB,#1D4ED8);color:#fff;font-size:8.5px;font-weight:800;padding:3px 7px;border-radius:5px;letter-spacing:.3px;box-shadow:0 2px 6px rgba(37,99,235,.35)}
+.vrow .vim{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.vrow .vsz{font-size:13px;font-weight:800;width:46px;flex-shrink:0}
+.vrow .vpr{flex:1}
+.vrow .vpr b{font-size:14px;font-weight:800}
+.vrow .vpr .mrp{margin-left:5px}
+.vrow .vpr s.pk2{text-decoration:none;display:block;font-size:10px;color:var(--faint);font-weight:600;margin-top:1px}
+.vrow .addb,.vrow .mstp{position:static;box-shadow:none}
+.pwt.hasvar{color:var(--red);font-weight:700;cursor:pointer}
+/* account v2 */
+.qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:12px 16px 0}
+.qcard{background:#fff;border:1px solid var(--hairline);border-radius:16px;padding:14px 8px 12px;text-align:center;box-shadow:var(--sh-sm);cursor:pointer}
+.qcard i.ic{color:var(--ink)}
+.qcard b{display:block;font-size:10.5px;font-weight:700;margin-top:6px}
+.qcard s{text-decoration:none;display:block;font-size:9.5px;font-weight:800;color:var(--green);margin-top:1px}
+.slbl{font-size:10px;font-weight:800;letter-spacing:1.4px;color:var(--faint);padding:14px 20px 0;display:block}
+.pillval{margin-left:auto;background:var(--bg);border-radius:8px;font-size:10.5px;font-weight:700;color:var(--sub);padding:4px 9px}
+/* floating live-order card */
+.floatcard{position:sticky;bottom:86px;margin:14px 16px 8px;background:rgba(28,19,13,.95);color:#fff;border-radius:18px;padding:11px 12px;display:flex;align-items:center;gap:11px;z-index:39;box-shadow:0 14px 34px rgba(0,0,0,.38);backdrop-filter:blur(8px);animation:rise .5s both}
+.floatcard .fi{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.13);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.floatcard .ft{flex:1;min-width:0}
+.floatcard .ft b{display:block;font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.floatcard .ft s{text-decoration:none;font-size:10px;opacity:.8;font-weight:600;display:flex;align-items:center;gap:5px;margin-top:2px}
+.floatcard .ft s i{width:6px;height:6px;border-radius:50%;background:#4ADE80;animation:blinkdot 1.4s infinite;flex-shrink:0}
+.floatcard .fbtn{background:#fff;color:var(--ink);border-radius:11px;font-size:11px;font-weight:800;padding:9px 12px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.floatcard .fbtn.pay{background:var(--yellow);color:#4A3000}
 @media (max-width:460px){.phone{width:100%;height:80vh;border-radius:40px;padding:6px}.vp{border-radius:34px}}
 </style>
 </head>
@@ -436,26 +494,23 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- LOGIN -->
-    <div class="screen doodle" id="login">
-      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
-      <div style="display:flex;justify-content:flex-end;padding:8px 18px">
-        <button class="chip" onclick="go('home')" style="box-shadow:var(--sh-sm)">Skip <i class="ic s14" data-i="chev"></i></button>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px">
-        <div style="display:flex;justify-content:center">
-          <svg class="blogo" width="76" height="96" viewBox="0 0 100 128" style="filter:drop-shadow(0 10px 18px rgba(158,33,24,.28))">
-            <path d="M50 2 C60 11 88 5 94 13 C99 21 91 30 94 40 L94 88 C91 98 99 107 94 115 C88 123 60 117 50 126 C40 117 12 123 6 115 C1 107 9 98 6 88 L6 40 C9 30 1 21 6 13 C12 5 40 11 50 2 Z" fill="#C6291C"/>
-            <text x="50" y="60" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="55" font-weight="900" fill="#fff">S</text>
-            <text x="50" y="80" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="12" font-weight="800" fill="#fff" letter-spacing="1.5">SODHI'S<tspan font-size="5.5" dy="-6">®</tspan></text>
-            <text x="50" y="97" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="7.8" font-weight="700" fill="#fff" letter-spacing="2.6">SUPER MARKET</text>
-          </svg>
-        </div>
-        <div class="authpromo" style="background:linear-gradient(115deg,#E9604F,#C02A1E)">
-          <span class="pk">WELCOME OFFER</span>
-          <b class="big">Flat ₹50 off<br>your first order</b>
-          <s>Code <b style="color:var(--yellow)">SODHI50</b> · auto-applies on carts above ₹499</s>
-          <span class="pe">🎁</span>
-          <div class="authdots"><i class="on"></i><i></i><i></i></div>
+    <div class="screen" id="login" style="background:#2A1310">
+      <div class="hero">
+        <img class="hphoto" src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=900&q=70" loading="lazy" onerror="this.remove()" alt="">
+        <div class="hgrad"></div>
+        <div class="sbar lite" style="position:absolute;top:0;left:0;right:0;z-index:4"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+        <svg class="blogo hlogo" width="52" height="66" viewBox="0 0 100 128">
+          <path d="M50 2 C60 11 88 5 94 13 C99 21 91 30 94 40 L94 88 C91 98 99 107 94 115 C88 123 60 117 50 126 C40 117 12 123 6 115 C1 107 9 98 6 88 L6 40 C9 30 1 21 6 13 C12 5 40 11 50 2 Z" fill="#fff"/>
+          <text x="50" y="62" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="52" font-weight="900" fill="#C22B1F">S</text>
+          <text x="50" y="84" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="11" font-weight="800" fill="#C22B1F" letter-spacing="1.2">SODHI'S</text>
+        </svg>
+        <button class="chip hskip" onclick="go('home')">Skip <i class="ic s14" data-i="chev"></i></button>
+        <div class="fbadge">🎁 FLAT ₹50 OFF</div>
+        <div class="hcopy">
+          <span class="pk">WELCOME OFFER · FIRST ORDER</span>
+          <b class="big">Fresh groceries,<br>happier mornings.</b>
+          <s>Flat ₹50 off with code <b style="color:var(--yellow)">SODHI50</b> · on carts above ₹499</s>
+          <div class="hchips"><span>⚡ 20-min delivery</span><span>🥬 Farm fresh daily</span></div>
         </div>
       </div>
       <div style="background:#fff;border-radius:30px 30px 0 0;padding:12px 22px 32px;box-shadow:0 -12px 36px rgba(27,20,12,.1)">
@@ -473,24 +528,18 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- OTP -->
-    <div class="screen doodle" id="otp">
-      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
-      <div style="padding:8px 18px"><span class="thead" style="all:unset"><span style="width:36px;height:36px;border-radius:12px;background:#fff;box-shadow:var(--sh-sm);display:inline-flex;align-items:center;justify-content:center;cursor:pointer" onclick="go('login')"><i class="ic" data-i="back"></i></span></span></div>
-      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px">
-        <div style="display:flex;justify-content:center">
-          <svg class="blogo" width="70" height="88" viewBox="0 0 100 128" style="filter:drop-shadow(0 10px 18px rgba(158,33,24,.28))">
-            <path d="M50 2 C60 11 88 5 94 13 C99 21 91 30 94 40 L94 88 C91 98 99 107 94 115 C88 123 60 117 50 126 C40 117 12 123 6 115 C1 107 9 98 6 88 L6 40 C9 30 1 21 6 13 C12 5 40 11 50 2 Z" fill="#C6291C"/>
-            <text x="50" y="60" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="55" font-weight="900" fill="#fff">S</text>
-            <text x="50" y="80" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="12" font-weight="800" fill="#fff" letter-spacing="1.5">SODHI'S</text>
-            <text x="50" y="97" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="7.8" font-weight="700" fill="#fff" letter-spacing="2.6">SUPER MARKET</text>
-          </svg>
-        </div>
-        <div class="authpromo" style="background:linear-gradient(115deg,#3E7A94,#2C5A70)">
-          <span class="pk">SODHI'S PROMISE</span>
-          <b class="big">Free delivery<br>for your first month</b>
-          <s>On every order above ₹99 · zero hidden fees</s>
-          <span class="pe">🛵</span>
-          <div class="authdots"><i></i><i class="on"></i><i></i></div>
+    <div class="screen" id="otp" style="background:#12222B">
+      <div class="hero">
+        <img class="hphoto" src="https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=900&q=70" loading="lazy" onerror="this.remove()" alt="">
+        <div class="hgrad" style="background:linear-gradient(180deg,rgba(8,16,20,.5) 0%,rgba(8,16,20,.05) 34%,rgba(12,42,56,.45) 66%,rgba(8,32,44,.92) 100%)"></div>
+        <div class="sbar lite" style="position:absolute;top:0;left:0;right:0;z-index:4"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+        <span class="hback" onclick="go('login')"><i class="ic" data-i="back"></i></span>
+        <div class="fbadge" style="background:#fff;color:#2C5A70">🛵 FREE DELIVERY</div>
+        <div class="hcopy">
+          <span class="pk" style="color:#8FD8F2">SODHI'S PROMISE</span>
+          <b class="big">Delivered with a smile,<br>in 20 minutes.</b>
+          <s>Free delivery for your first month · every order above ₹99</s>
+          <div class="hchips"><span>🧊 Cold chain fresh</span><span>💯 No hidden fees</span></div>
         </div>
       </div>
       <div style="background:#fff;border-radius:30px 30px 0 0;padding:12px 22px 32px;box-shadow:0 -12px 36px rgba(27,20,12,.1)">
@@ -784,6 +833,12 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
         </div>
       </div>
 
+      <div class="floatcard">
+        <span class="fi">🛵</span>
+        <span class="ft"><b>Order #SOD-240193 on the way</b><s><i></i>Arriving in 12 mins · Payment pending</s></span>
+        <span class="fbtn pay" onclick="go('payment')">Pay ₹787</span>
+        <span class="fbtn" onclick="go('track')">Track</span>
+      </div>
       <div class="bnav">
         <a class="on"><i class="ic" data-i="home"></i>Home</a>
         <a onclick="go('categories')"><i class="ic" data-i="grid"></i>Categories</a>
@@ -917,6 +972,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
           <span class="chip" style="flex-direction:column;gap:1px;padding:9px 18px;border-radius:13px"><b style="font-size:12.5px">500 g</b><s style="text-decoration:none;font-size:10px;font-weight:600;color:var(--sub)">₹205</s></span>
           <span class="chip" style="flex-direction:column;gap:1px;padding:9px 18px;border-radius:13px"><b style="font-size:12.5px">1 kg</b><s style="text-decoration:none;font-size:10px;font-weight:600;color:var(--sub)">₹389</s></span>
         </div>
+        <span class="link" style="margin-top:10px" onclick="openVariant()">View all pack sizes <i class="ic s12" data-i="chev"></i></span>
         <div style="border-top:1px solid var(--hairline);margin-top:16px;padding-top:14px">
           <h3 style="font-size:14.5px;font-weight:800;letter-spacing:-.2px">Product Details</h3>
           <p style="font-size:12.5px;line-height:1.75;color:#57534D;margin-top:7px;font-weight:500">Enhance the flavor of your everyday cooking with Sodhi's Jeera (Cumin Seeds) — a kitchen essential known for its distinctive aroma and earthy taste. Carefully sourced and hygienically packed, perfect for tempering, seasoning, roasting, and fresh masalas.</p>
@@ -1229,27 +1285,46 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     <div class="screen" id="account">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span>My Account</div>
-      <div class="sect" style="display:flex;align-items:center;gap:13px">
-        <div style="width:54px;height:54px;border-radius:18px;background:linear-gradient(140deg,var(--red-3),var(--red-2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:800;box-shadow:var(--sh-red)">L</div>
-        <div style="flex:1"><b style="font-size:15.5px;font-weight:800;letter-spacing:-.2px">Lingraj</b><s style="display:block;text-decoration:none;font-size:11px;color:var(--sub);font-weight:600;margin-top:2px">+91 93442 54136 · lingraj@zopping.com</s></div>
-        <span class="link"><i class="ic s12" data-i="edit"></i>Edit</span>
+      <div style="padding:10px 20px 0">
+        <b style="font-size:24px;font-weight:800;letter-spacing:-.5px">Lingraj</b>
+        <div style="display:flex;gap:16px;margin-top:6px;font-size:12px;font-weight:600;color:var(--sub)">
+          <span style="display:flex;align-items:center;gap:5px"><i class="ic s14" data-i="phone"></i>+91 93442 54136</span>
+          <span style="display:flex;align-items:center;gap:5px"><i class="ic s14" data-i="gift"></i>15 Oct 1992</span>
+        </div>
       </div>
-      <div class="sect" style="display:flex;gap:0;background:linear-gradient(115deg,#E9604F,#C02A1E);color:#fff;border:none;box-shadow:var(--sh-red)">
-        <div style="flex:1"><s style="text-decoration:none;font-size:9.5px;font-weight:800;letter-spacing:1.2px;opacity:.85">SODHI'S WALLET</s><b style="display:block;font-size:20px;font-weight:800;margin-top:3px;letter-spacing:-.4px">₹120</b></div>
-        <div style="flex:1;border-left:1px solid rgba(255,255,255,.28);padding-left:14px"><s style="text-decoration:none;font-size:9.5px;font-weight:800;letter-spacing:1.2px;opacity:.85">SAVED THIS MONTH</s><b style="display:block;font-size:20px;font-weight:800;margin-top:3px;letter-spacing:-.4px">₹1,240</b></div>
+      <div class="qgrid">
+        <div class="qcard" onclick="go('payment')"><i class="ic" data-i="wallet"></i><b>Sodhi's Money</b><s>₹120</s></div>
+        <div class="qcard"><i class="ic" data-i="help"></i><b>Support</b><s>&nbsp;</s></div>
+        <div class="qcard" onclick="go('payment')"><i class="ic" data-i="card"></i><b>Payments</b><s>&nbsp;</s></div>
       </div>
-      <div class="sect">
-        <div class="mrow" onclick="go('orders')"><span class="mi"><i class="ic" data-i="box"></i></span>My Orders<i class="ic ar" data-i="chev"></i></div>
-        <div class="mrow" onclick="go('address')"><span class="mi"><i class="ic" data-i="pin"></i></span>Saved Addresses<i class="ic ar" data-i="chev"></i></div>
-        <div class="mrow"><span class="mi"><i class="ic" data-i="heart"></i></span>Wishlist<i class="ic ar" data-i="chev"></i></div>
-        <div class="mrow" onclick="go('offers')"><span class="mi"><i class="ic" data-i="ticket"></i></span>Coupons &amp; Offers<i class="ic ar" data-i="chev"></i></div>
-        <div class="mrow"><span class="mi"><i class="ic" data-i="card"></i></span>Payment Methods<i class="ic ar" data-i="chev"></i></div>
-        <div class="mrow"><span class="mi"><i class="ic" data-i="gift"></i></span>Refer &amp; Earn <span class="stat g" style="margin-left:2px">GET ₹100</span><i class="ic ar" data-i="chev"></i></div>
-        <div class="mrow"><span class="mi"><i class="ic" data-i="help"></i></span>Help &amp; Support<i class="ic ar" data-i="chev"></i></div>
-        <div class="mrow"><span class="mi"><i class="ic" data-i="doc"></i></span>Terms, Privacy &amp; FSSAI<i class="ic ar" data-i="chev"></i></div>
-        <div class="mrow" onclick="go('login')" style="color:var(--red)"><span class="mi"><i class="ic" data-i="out"></i></span>Log Out<i class="ic ar" data-i="chev"></i></div>
+      <div class="sect" style="display:flex;align-items:center;gap:10px;cursor:pointer">
+        <span class="mi" style="width:36px;height:36px;border-radius:12px;background:var(--red-soft);color:var(--red);display:flex;align-items:center;justify-content:center"><i class="ic" data-i="bolt"></i></span>
+        <b style="font-size:13px;font-weight:800">App Update Available</b>
+        <span class="pillval">v2.1.0</span><i class="ic ar" data-i="chev" style="color:#C6C1B9"></i>
       </div>
-      <p style="text-align:center;color:#B9B4AB;font-size:10.5px;font-weight:600;padding:4px 0 16px">Sodhi's Super Market · App v2.0 · Gurugram</p>
+      <div class="sect" style="display:flex;align-items:center;gap:10px;cursor:pointer">
+        <span class="mi" style="width:36px;height:36px;border-radius:12px;background:var(--bg);color:var(--sub);display:flex;align-items:center;justify-content:center"><i class="ic" data-i="star"></i></span>
+        <b style="font-size:13px;font-weight:800">Appearance</b>
+        <span class="pillval">Light ▾</span>
+      </div>
+      <s class="slbl">YOUR INFORMATION</s>
+      <div class="sect" style="margin-top:8px">
+        <div class="mrow" onclick="go('orders')"><span class="mi"><i class="ic" data-i="box"></i></span>Your orders<i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="heart"></i></span>Your wishlist<i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="doc"></i></span>Bookmarked recipes<i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow" onclick="go('address')"><span class="mi"><i class="ic" data-i="pin"></i></span>Address book<i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="card"></i></span>Payment methods<i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="doc"></i></span>GST details<i class="ic ar" data-i="chev"></i></div>
+      </div>
+      <s class="slbl">OFFERS &amp; MORE</s>
+      <div class="sect" style="margin-top:8px">
+        <div class="mrow" onclick="go('offers')"><span class="mi"><i class="ic" data-i="ticket"></i></span>Coupons &amp; offers<i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="gift"></i></span>Refer &amp; earn <span class="stat g" style="margin-left:2px">GET ₹100</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="help"></i></span>Help &amp; support<i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="doc"></i></span>Terms, privacy &amp; FSSAI<i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow" onclick="go('login')" style="color:var(--red)"><span class="mi"><i class="ic" data-i="out"></i></span>Log out<i class="ic ar" data-i="chev"></i></div>
+      </div>
+      <p style="text-align:center;color:#B9B4AB;font-size:10.5px;font-weight:600;padding:4px 0 16px">Sodhi's Super Market · App v2.1 · Gurugram</p>
       <div class="bnav">
         <a onclick="go('home')"><i class="ic" data-i="home"></i>Home</a>
         <a onclick="go('categories')"><i class="ic" data-i="grid"></i>Categories</a>
@@ -1260,6 +1335,36 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
 
+    <!-- VARIANT SHEET -->
+    <div id="vsheet">
+      <div class="vs-dim" onclick="closeVariant()"></div>
+      <div class="vs">
+        <span class="vclose" onclick="closeVariant()">✕</span>
+        <b class="vt">Sodhi's Jeera (Cumin Seeds) — Select Pack</b>
+        <div class="vrow">
+          <span class="vim tC">🫙</span><span class="vsz">100 g</span>
+          <span class="vpr"><b>₹47</b><span class="mrp">₹63</span><s class="pk2">₹470/kg</s></span>
+          <button class="addb">ADD</button>
+        </div>
+        <div class="vrow sel">
+          <span class="vrib">25% OFF</span>
+          <span class="vim tC">🫙</span><span class="vsz">250 g</span>
+          <span class="vpr"><b>₹109</b><span class="mrp">₹146</span><s class="pk2">₹436/kg · bestseller</s></span>
+          <span class="mstp"><i class="ic s12" data-i="minus"></i>1<i class="ic s12" data-i="plus"></i></span>
+        </div>
+        <div class="vrow">
+          <span class="vim tC">🫙</span><span class="vsz">500 g</span>
+          <span class="vpr"><b>₹205</b><span class="mrp">₹240</span><s class="pk2">₹410/kg</s></span>
+          <button class="addb">ADD</button>
+        </div>
+        <div class="vrow">
+          <span class="vrib" style="background:linear-gradient(140deg,#B06A22,#8F5313)">VALUE PACK</span>
+          <span class="vim tC">🫙</span><span class="vsz">1 kg</span>
+          <span class="vpr"><b>₹389</b><span class="mrp">₹460</span><s class="pk2">₹389/kg · best value</s></span>
+          <button class="addb">ADD</button>
+        </div>
+      </div>
+    </div>
   </div><div class="glass"></div></div></div><!-- /phone-fit -->
 </div>
 <script>
@@ -1355,6 +1460,23 @@ function ktab(el,key){
   var t=THEME[key]||THEME.grocery,h=document.getElementById('home');
   h.style.setProperty('--h1',t[0]);h.style.setProperty('--h2',t[1]);h.style.setProperty('--h3',t[2]);h.style.setProperty('--hAcc',t[3]);
 }
+/* variant bottom sheet */
+function openVariant(){var v=document.getElementById('vsheet');if(v)v.classList.add('on');}
+function closeVariant(){var v=document.getElementById('vsheet');if(v)v.classList.remove('on');}
+/* products with multiple pack sizes open the variant sheet */
+document.querySelectorAll('.pc').forEach(function(c){
+  var n=c.querySelector('.pnm'),w=c.querySelector('.pwt');
+  if(n&&w&&/jeera/i.test(n.textContent)){
+    w.classList.add('hasvar');
+    w.textContent=w.textContent.replace(' ▾','').trim()+' · 4 options ▾';
+    w.addEventListener('click',function(e){e.stopPropagation();e.preventDefault();openVariant();});
+  }
+});
+/* header condenses once you scroll (Blinkit-style) */
+(function(){
+  var hm=document.getElementById('home'),hds=document.querySelector('.hds');
+  if(hm&&hds)hm.addEventListener('scroll',function(){hds.classList.toggle('stuck',hm.scrollTop>70)});
+})();
 paint();
 </script>
 <script>
