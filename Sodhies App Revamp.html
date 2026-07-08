@@ -450,6 +450,10 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
 .qcard s{text-decoration:none;display:block;font-size:9.5px;font-weight:800;color:var(--green);margin-top:1px}
 .slbl{font-size:10px;font-weight:800;letter-spacing:1.4px;color:var(--faint);padding:14px 20px 0;display:block}
 .pillval{margin-left:auto;background:var(--bg);border-radius:8px;font-size:10.5px;font-weight:700;color:var(--sub);padding:4px 9px}
+/* per-item fulfilment source badges (Home V1) */
+.srcb{display:inline-flex;align-items:center;gap:4px;font-size:8.6px;font-weight:800;border-radius:6px;padding:3px 7px;width:fit-content;letter-spacing:.3px;white-space:nowrap}
+.srcb.fresh{color:#9E2118;background:#FBEDEB;border:1px solid #F3D2CD}
+.srcb.super{color:#1F6459;background:#E7F2EF;border:1px solid #C5DED7}
 /* vertical switcher (Fresh vs Supermarket) */
 .vswitch{display:flex;gap:5px;margin-top:12px;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.24);border-radius:17px;padding:4px;position:relative}
 .vsw{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 6px 7px;border-radius:13px;cursor:pointer;color:rgba(255,255,255,.88);text-align:center;transition:.15s}
@@ -477,7 +481,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
   <h1>SODHI'S <em>·</em> Quick Commerce App — Visual Design v2</h1>
   <p>Full customer journey, clickable end-to-end. Jump to any screen with the chips, or tap through inside the phone.</p>
   <div class="picker" id="picker">
-    <button data-s="splash" class="active">Splash</button><button data-s="login">Login</button><button data-s="otp">OTP</button><button data-s="success">Success</button><button data-s="home">Home</button><button data-s="categories">Categories</button><button data-s="listing">Product List</button><button data-s="brandlist">Own Brand</button><button data-s="searchsc">Search</button><button data-s="pdp">Product Detail</button><button data-s="offers">Offers</button><button data-s="cart">Cart</button><button data-s="address">Address</button><button data-s="payment">Payment</button><button data-s="confirm">Order Placed</button><button data-s="track">Tracking</button><button data-s="orders">My Orders</button><button data-s="account">Account</button>
+    <button data-s="splash" class="active">Splash</button><button data-s="login">Login</button><button data-s="otp">OTP</button><button data-s="success">Success</button><button data-s="home">Home</button><button data-s="homev1">Home V1</button><button data-s="categories">Categories</button><button data-s="listing">Product List</button><button data-s="brandlist">Own Brand</button><button data-s="searchsc">Search</button><button data-s="pdp">Product Detail</button><button data-s="offers">Offers</button><button data-s="cart">Cart</button><button data-s="address">Address</button><button data-s="payment">Payment</button><button data-s="confirm">Order Placed</button><button data-s="track">Tracking</button><button data-s="orders">My Orders</button><button data-s="account">Account</button>
   </div>
   <p class="note">Sodhi's Super Market · Quick-commerce app design v2 · Product photos shown as styled placeholders — replace with photography in production.</p>
   </div><!-- /intro -->
@@ -939,6 +943,72 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
         <span class="fbtn pay" onclick="go('payment')">Pay ₹787</span>
         <span class="fbtn" onclick="go('track')">Track</span>
       </div>
+      <div class="bnav">
+        <a class="on"><i class="ic" data-i="home"></i>Home</a>
+        <a onclick="go('categories')"><i class="ic" data-i="grid"></i>Categories</a>
+        <a onclick="go('offers')"><i class="ic" data-i="tag"></i>Offers</a>
+        <a onclick="go('cart')"><i class="ic" data-i="cart"></i>Cart<span class="bdg">3</span></a>
+        <a onclick="go('account')"><i class="ic" data-i="user"></i>Account</a>
+      </div>
+    </div>
+
+    <!-- HOME V1 · unified feed with per-item source badges -->
+    <div class="screen" id="homev1" style="--h1:#E9604F;--h2:#D5382B;--h3:#C02A1E;--hAcc:#D5382B">
+      <div class="hd">
+        <div class="sbar lite" style="padding:16px 10px 4px"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+        <div class="hd-top" style="padding-bottom:10px">
+          <div class="mins"><b>⚡20</b><s>MIN DELIVERY</s></div>
+          <div class="addr" onclick="go('address')">
+            <div class="l0">DELIVERING TO</div>
+            <div class="l1"><i class="ic s16" data-i="pin"></i>Home <i class="ic s14" data-i="down"></i></div>
+            <div class="l2">C-402, Orchid Residency, Sector 46, Gurugram</div>
+          </div>
+          <div class="hic wal" onclick="go('account')"><i class="ic s16" data-i="wallet"></i>₹120</div>
+          <div class="hic" onclick="go('account')"><i class="ic" data-i="user"></i></div>
+        </div>
+      </div>
+      <div class="hds" style="padding-bottom:14px">
+        <div class="srch" style="margin-top:0" onclick="go('searchsc')"><i class="ic" data-i="search"></i>Search across <b>15,000+ products</b><span class="s-r"><i class="ic" data-i="cam"></i><i class="ic" data-i="mic"></i></span></div>
+      </div>
+      <div class="vstrip"><span class="srcb fresh">⚡ SODHI'S FRESH</span> own brand · 20 min &nbsp;·&nbsp; <span class="srcb super">🛒 SUPERMARKET</span> full range · 4 hrs</div>
+
+      <div class="promos">
+        <div class="promo" style="background:linear-gradient(115deg,#E9604F,#C02A1E)" onclick="go('brandlist')">
+          <span class="pk">SODHI'S FRESH ⚡</span><b>Own brand,<br>at your door in <span style="color:var(--yellow)">20 min</span></b><s>800+ curated everyday essentials</s><span class="pe">🧺</span>
+        </div>
+        <div class="promo" style="background:linear-gradient(115deg,#2F7E71,#174E45)" onclick="go('listing')">
+          <span class="pk">SUPERMARKET 🛒</span><b>The full store,<br>home in <span style="color:var(--yellow)">4 hours</span></b><s>15,000+ products · slotted delivery</s><span class="pe">🛒</span>
+        </div>
+      </div>
+
+      <div class="shead"><span class="h2">Fresh in 20 minutes ⚡</span><span class="link" onclick="go('brandlist')">See all <i class="ic s12" data-i="chev"></i></span></div>
+      <div class="hsc">
+        <div class="pc" onclick="go('pdp')"><span class="flag gold">OWN BRAND</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 250 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="srcb fresh">⚡ SODHI'S FRESH · 20 MIN</span><div class="pnm">Sodhi's Jeera 250 gm</div><span class="pwt">250 g ▾</span><div class="prow"><span class="prc">₹109</span><span class="mrp">₹120</span><span class="sv">9% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">20% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍅</em><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="srcb fresh">⚡ SODHI'S FRESH · 20 MIN</span><div class="pnm">Tamatar (Tomato) Hybrid 500 g</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">₹24</span><span class="mrp">₹30</span><span class="sv">SAVE ₹6</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tB"><img class="pimg" src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥛</em><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="srcb fresh">⚡ SODHI'S FRESH · 20 MIN</span><div class="pnm">Fresh Toned Milk 500 ml</div><span class="pwt">500 ml ▾</span><div class="prow"><span class="prc">₹26</span><span class="mrp">₹33</span><span class="sv">SAVE ₹7</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag gold">BOGO</span><div class="pv tC"><span class="pack" data-e="🍞" data-n="Milk Bread" data-s="Bakery Fresh · 400 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="srcb fresh">⚡ SODHI'S FRESH · 20 MIN</span><div class="pnm">Sodhi's Milk Bread 400 g</div><span class="pwt">400 g ▾</span><div class="prow"><span class="prc">₹45</span><span class="mrp">₹90</span><span class="sv">1+1 FREE</span></div></div>
+      </div>
+
+      <div class="shead"><span class="h2">From the Supermarket 🛒</span><span class="link" onclick="go('listing')">See all <i class="ic s12" data-i="chev"></i></span></div>
+      <div class="hsc">
+        <div class="pc" onclick="go('pdp')"><span class="flag">17% OFF</span><div class="pv tO"><em>🌾</em><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="srcb super">🛒 SUPERMARKET · 4 HRS</span><div class="pnm">Aashirvaad Atta 10 kg</div><span class="pwt">10 kg ▾</span><div class="prow"><span class="prc">₹606</span><span class="mrp">₹738</span><span class="sv">SAVE ₹132</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tG"><em>🛢️</em><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="srcb super">🛒 SUPERMARKET · 4 HRS</span><div class="pnm">Fortune Sunflower Oil 5 L</div><span class="pwt">5 L ▾</span><div class="prow"><span class="prc">₹789</span><span class="mrp">₹925</span><span class="sv">SAVE ₹136</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">20% OFF</span><div class="pv tL"><em>🧷</em><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="srcb super">🛒 SUPERMARKET · 4 HRS</span><div class="pnm">Pampers Diapers M 42 pc</div><span class="pwt">42 pc ▾</span><div class="prow"><span class="prc">₹679</span><span class="mrp">₹849</span><span class="sv">SAVE ₹170</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tB"><em>🥤</em><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="srcb super">🛒 SUPERMARKET · 4 HRS</span><div class="pnm">Coca-Cola 750 ml × 12</div><span class="pwt">12 pc ▾</span><div class="prow"><span class="prc">₹420</span><span class="mrp">₹540</span><span class="sv">SAVE ₹120</span></div></div>
+      </div>
+
+      <div class="shead"><span class="h2">Bestsellers Near You</span><span class="link" onclick="go('listing')">See all <i class="ic s12" data-i="chev"></i></span></div>
+      <div class="g2" style="padding-top:2px">
+        <div class="pc" onclick="go('pdp')"><span class="flag gold">OWN BRAND</span><div class="pv tY"><span class="pack" data-e="🟡" data-n="Moong Dhuli" data-s="Dal · 500 g" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="srcb fresh">⚡ SODHI'S FRESH · 20 MIN</span><div class="pnm">Sodhi's Moong Dhuli Dal 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">₹78</span><span class="mrp">₹95</span><span class="sv">18% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">MEGA</span><div class="pv tY"><span class="pack" data-e="🍚" data-n="Rice Gold" data-s="Premium · 5 kg" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="srcb super">🛒 SUPERMARKET · 4 HRS</span><div class="pnm">Sodhi's Rice 5 kg (Gold)</div><span class="pwt">5 kg ▾</span><div class="prow"><span class="prc">₹600</span><span class="mrp">₹775</span><span class="sv">SAVE ₹175</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">20% OFF</span><div class="pv tY"><img class="pimg" src="https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥚</em><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="srcb fresh">⚡ SODHI'S FRESH · 20 MIN</span><div class="pnm">Farm Eggs Brown 6 pc</div><span class="pwt">6 pc ▾</span><div class="prow"><span class="prc">₹48</span><span class="mrp">₹60</span><span class="sv">SAVE ₹12</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tY"><em>🍟</em><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="srcb super">🛒 SUPERMARKET · 4 HRS</span><div class="pnm">Lay's Magic Masala 90 g</div><span class="pwt">90 g ▾</span><div class="prow"><span class="prc">₹40</span><span class="mrp">₹50</span><span class="sv">SAVE ₹10</span></div></div>
+      </div>
+
+      <div class="sect" style="display:flex;gap:10px;align-items:center;margin-top:8px">
+        <i class="ic" data-i="cart" style="color:var(--red)"></i><s style="text-decoration:none;font-size:11.5px;font-weight:700;color:#57534D;line-height:1.55">Mix both in one cart — we auto-split it: ⚡ Fresh items ride out in minutes, 🛒 Supermarket items follow in your 4-hr slot.</s>
+      </div>
+
       <div class="bnav">
         <a class="on"><i class="ic" data-i="home"></i>Home</a>
         <a onclick="go('categories')"><i class="ic" data-i="grid"></i>Categories</a>
