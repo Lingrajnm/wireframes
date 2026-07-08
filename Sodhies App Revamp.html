@@ -450,6 +450,15 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
 .qcard s{text-decoration:none;display:block;font-size:9.5px;font-weight:800;color:var(--green);margin-top:1px}
 .slbl{font-size:10px;font-weight:800;letter-spacing:1.4px;color:var(--faint);padding:14px 20px 0;display:block}
 .pillval{margin-left:auto;background:var(--bg);border-radius:8px;font-size:10.5px;font-weight:700;color:var(--sub);padding:4px 9px}
+/* vertical switcher (Fresh vs Supermarket) */
+.vswitch{display:flex;gap:5px;margin-top:12px;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.24);border-radius:17px;padding:4px;position:relative}
+.vsw{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 6px 7px;border-radius:13px;cursor:pointer;color:rgba(255,255,255,.88);text-align:center;transition:.15s}
+.vsw b{font-size:12.5px;font-weight:800;display:flex;align-items:center;gap:5px;line-height:1}
+.vsw s{text-decoration:none;font-size:8.6px;font-weight:800;opacity:.75;letter-spacing:.5px}
+.vsw.on{background:#fff;color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.vsw.on s{color:var(--sub);opacity:1}
+.vstrip{display:flex;align-items:center;gap:7px;margin:12px 16px 0;background:#fff;border:1px solid var(--hairline);border-radius:12px;padding:9px 13px;font-size:10.5px;font-weight:700;color:#57534D;box-shadow:var(--sh-sm);line-height:1.5}
+.vstrip b{color:var(--ink)}
 /* floating live-order card */
 .floatcard{position:sticky;bottom:86px;margin:14px 16px 8px;background:rgba(28,19,13,.95);color:#fff;border-radius:18px;padding:11px 12px;display:flex;align-items:center;gap:11px;z-index:39;box-shadow:0 14px 34px rgba(0,0,0,.38);backdrop-filter:blur(8px);animation:rise .5s both}
 .floatcard .fi{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.13);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
@@ -627,18 +636,24 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
           <div class="hic wal" onclick="go('account')"><i class="ic s16" data-i="wallet"></i>₹120</div>
           <div class="hic" onclick="go('account')"><i class="ic" data-i="user"></i></div>
         </div>
+        <div class="vswitch" id="vswitch">
+          <div class="vsw on" onclick="vert('fresh')"><b>⚡ Sodhi's Fresh</b><s>OWN BRAND · 20 MINS</s></div>
+          <div class="vsw" onclick="vert('super')"><b>🛒 Supermarket</b><s>15,000+ ITEMS · 4 HRS</s></div>
+        </div>
       </div>
       <div class="hds">
         <div class="srch" onclick="go('searchsc')"><i class="ic" data-i="search"></i>Search for “<b>sodhi's jeera</b>”<span class="s-r"><i class="ic" data-i="cam"></i><i class="ic" data-i="mic"></i></span></div>
         <div class="ktabs" id="ktabs">
-          <div class="ktab on" onclick="ktab(this,'grocery')"><span class="ke">🏪</span>Grocery</div>
-          <div class="ktab" onclick="ktab(this,'fresh')"><span class="ke">🥬</span>Fresh</div>
-          <div class="ktab" onclick="ktab(this,'baby')"><span class="ke">🍼</span>Baby Care</div>
-          <div class="ktab" onclick="ktab(this,'beauty')"><span class="ke">💄</span>Beauty</div>
-          <div class="ktab" onclick="ktab(this,'drinks')"><span class="ke">🥤</span>Drinks</div>
-          <div class="ktab" onclick="ktab(this,'snacks')"><span class="ke">🍿</span>Snacks</div>
+          <div class="ktab on" data-v="fresh" onclick="ktab(this,'grocery')"><span class="ke">🌾</span>Staples</div>
+          <div class="ktab" data-v="fresh" onclick="ktab(this,'fresh')"><span class="ke">🥬</span>Fresh</div>
+          <div class="ktab" data-v="super" onclick="ktab(this,'super')"><span class="ke">🛒</span>All</div>
+          <div class="ktab" data-v="super" onclick="ktab(this,'baby')"><span class="ke">🍼</span>Baby Care</div>
+          <div class="ktab" data-v="super" onclick="ktab(this,'beauty')"><span class="ke">💄</span>Beauty</div>
+          <div class="ktab" data-v="super" onclick="ktab(this,'drinks')"><span class="ke">🥤</span>Drinks</div>
+          <div class="ktab" data-v="super" onclick="ktab(this,'snacks')"><span class="ke">🍿</span>Snacks</div>
         </div>
       </div>
+      <div class="vstrip" id="vstrip">⚡ <b>Sodhi's Fresh</b>&nbsp;· 800+ curated own-brand essentials · dark store 1.2 km away</div>
 
       <div class="tabc on" id="tab-grocery">
       <div class="tiles">
@@ -867,6 +882,54 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
           <div class="pc" onclick="go('pdp')"><div class="pv tR"><em>🍪</em><button class="addb">ADD</button></div><div class="pnm">Hide &amp; Seek 200 g</div><div class="prow"><span class="prc">₹45</span><span class="mrp">₹90</span></div></div>
           <div class="pc" onclick="go('pdp')"><div class="pv tG"><em>🍿</em><button class="addb">ADD</button></div><div class="pnm">Act II Popcorn 3-pack</div><div class="prow"><span class="prc">₹90</span><span class="mrp">₹105</span></div></div>
           <div class="pc" onclick="go('pdp')"><div class="pv tB"><em>🧇</em><button class="addb">ADD</button></div><div class="pnm">Karachi Fruit Biscuit</div><div class="prow"><span class="prc">₹120</span><span class="mrp">₹140</span></div></div>
+        </div>
+      </div>
+
+      <!-- SUPERMARKET TAB -->
+      <div class="tabc" id="tab-super">
+        <div style="margin:14px 16px 0;border-radius:18px;background:linear-gradient(115deg,#1F6459,#123E37);color:#fff;padding:16px 18px;position:relative;overflow:hidden;box-shadow:var(--sh-md)">
+          <span style="position:absolute;right:-8px;bottom:-14px;font-size:62px;transform:rotate(-8deg);opacity:.9">🛒</span>
+          <s style="text-decoration:none;font-size:9.5px;font-weight:800;letter-spacing:1.5px;color:#F6C445">SODHI'S SUPERMARKET · SECTOR 29</s>
+          <b style="display:block;font-size:16.5px;font-weight:800;margin-top:4px;letter-spacing:-.2px;line-height:1.3">15,000+ products.<br>The full store, home in 4 hrs.</b>
+        </div>
+        <div class="sect">
+          <h4><i class="ic s16" data-i="clock" style="color:#1F6459"></i>Choose your delivery slot</h4>
+          <div class="dtype">
+            <div class="dopt on" style="border-color:#1F6459;background:linear-gradient(160deg,#fff,#EAF4F1)"><span class="rdo on" style="border-color:#1F6459;background:radial-gradient(circle,#1F6459 0 4.5px,#fff 5px)"></span><b>Today, 2–6 PM</b><s>Next available · FREE</s></div>
+            <div class="dopt"><span class="rdo"></span><b>Today, 6–10 PM</b><s>Evening · FREE</s></div>
+          </div>
+        </div>
+        <div class="shead"><span class="h2">Shop the full store</span><span class="link" onclick="go('categories')">All categories <i class="ic s12" data-i="chev"></i></span></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px;padding:2px 16px 4px">
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tG" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🥬</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700">Fruits &amp; Veggies</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tY" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🍚</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700">Atta, Rice &amp; Dals</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tB" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🥛</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700">Dairy &amp; Breakfast</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tR" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🥩</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700">Fresh Meat</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tL" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🧴</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700">Personal Care</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tG" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🧹</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700">Household</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tO" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🐶</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700">Pet Care</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tC" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">✈️</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700">Imported</b></div>
+        </div>
+        <div class="promos">
+          <div class="promo" style="background:linear-gradient(115deg,#C0392B,#8E241A)" onclick="go('offers')">
+            <span class="pk">BRAND WEEK</span><b>Coca-Cola <span style="color:var(--yellow)">2+1 Free</span></b><s>On 750 ml · full range in stock</s><span class="pe">🥤</span>
+          </div>
+          <div class="promo" style="background:linear-gradient(115deg,#3E7A94,#2C5A70)" onclick="go('offers')">
+            <span class="pk">HOME CARE FEST</span><b>P&amp;G · upto <span style="color:var(--yellow)">40% off</span></b><s>Ariel, Vicks, Whisper &amp; more</s><span class="pe">🧺</span>
+          </div>
+          <div class="promo" style="background:linear-gradient(115deg,#7A5C9E,#5A3E7E)" onclick="go('offers')">
+            <span class="pk">LITTLE ONES</span><b>Baby brands <span style="color:var(--yellow)">mega sale</span></b><s>Pampers, Cerelac, Himalaya</s><span class="pe">🍼</span>
+          </div>
+        </div>
+        <div class="shead"><span class="h2">Big packs, big savings</span><span class="link" onclick="go('listing')">See all <i class="ic s12" data-i="chev"></i></span></div>
+        <div class="hsc">
+          <div class="pc" onclick="go('pdp')"><span class="flag">MEGA</span><div class="pv tY"><span class="pack" data-e="🍚" data-n="Rice Gold" data-s="Premium · 5 kg" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb">ADD</button></div><span class="eta sch"><i class="ic s12" data-i="truck"></i>IN 4 HRS</span><div class="pnm">Sodhi's Rice 5 kg (Gold)</div><span class="pwt">5 kg ▾</span><div class="prow"><span class="prc">₹600</span><span class="mrp">₹775</span><span class="sv">SAVE ₹175</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tO"><em>🌾</em><button class="addb">ADD</button></div><span class="eta sch"><i class="ic s12" data-i="truck"></i>IN 4 HRS</span><div class="pnm">Aashirvaad Atta 10 kg</div><span class="pwt">10 kg ▾</span><div class="prow"><span class="prc">₹606</span><span class="mrp">₹738</span><span class="sv">17% OFF</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tG"><em>🛢️</em><button class="addb">ADD</button></div><span class="eta sch"><i class="ic s12" data-i="truck"></i>IN 4 HRS</span><div class="pnm">Fortune Sunflower Oil 5 L</div><span class="pwt">5 L ▾</span><div class="prow"><span class="prc">₹789</span><span class="mrp">₹925</span><span class="sv">SAVE ₹136</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tB"><em>💧</em><button class="addb">ADD</button></div><span class="eta sch"><i class="ic s12" data-i="truck"></i>IN 4 HRS</span><div class="pnm">Bisleri Water 1 L × 12</div><span class="pwt">12 pc ▾</span><div class="prow"><span class="prc">₹198</span><span class="mrp">₹240</span><span class="sv">SAVE ₹42</span></div></div>
+        </div>
+        <div class="sect" style="background:linear-gradient(140deg,#EFF6F4,#E2EFEB);border-color:#C5DED7;display:flex;gap:10px;align-items:center;margin-top:4px">
+          <i class="ic" data-i="truck" style="color:#1F6459"></i><s style="text-decoration:none;font-size:11.5px;font-weight:700;color:#1F5449;line-height:1.55">Full-store orders are picked at <b>Sodhi's Supermarket, Sector 29</b> and delivered in your chosen 4-hour slot · FREE above ₹499</s>
         </div>
       </div>
 
@@ -1552,6 +1615,7 @@ document.querySelectorAll('#picker button').forEach(b=>b.addEventListener('click
 var THEME={
   grocery:['#E9604F','#D5382B','#C02A1E','#D5382B'],
   fresh:['#57A86A','#37904F','#26763C','#2E8B47'],
+  super:['#3E9C8C','#2F7E71','#1F6459','#2F7E71'],
   baby:['#9F7FC9','#8461B4','#6C4E99','#7E5BAE'],
   beauty:['#E387A7','#D3648C','#B94E74','#C75981'],
   drinks:['#6E88C9','#5470B4','#44599C','#4E67AC'],
@@ -1564,6 +1628,27 @@ function ktab(el,key){
   var t=THEME[key]||THEME.grocery,h=document.getElementById('home');
   h.style.setProperty('--h1',t[0]);h.style.setProperty('--h2',t[1]);h.style.setProperty('--h3',t[2]);h.style.setProperty('--hAcc',t[3]);
 }
+/* two business verticals: Sodhi's Fresh vs Sodhi's Supermarket */
+var VERT={
+  fresh:{tab:'grocery',mins:'⚡20',sub:'MIN DELIVERY',strip:'⚡ <b>Sodhi\'s Fresh</b>&nbsp;· 800+ curated own-brand essentials · dark store 1.2 km away'},
+  super:{tab:'super',mins:'🚚4',sub:'HRS DELIVERY',strip:'🛒 <b>Sodhi\'s Supermarket</b>&nbsp;· 15,000+ products · picked at Sector 29 · slotted 4-hr delivery'}
+};
+function vert(v){
+  var d=VERT[v]||VERT.fresh;
+  var sw=document.querySelectorAll('#vswitch .vsw');
+  if(sw.length===2){sw[0].classList.toggle('on',v==='fresh');sw[1].classList.toggle('on',v==='super');}
+  var mb=document.querySelector('.mins b'),ms=document.querySelector('.mins s');
+  if(mb)mb.textContent=d.mins; if(ms)ms.textContent=d.sub;
+  var st=document.getElementById('vstrip'); if(st)st.innerHTML=d.strip;
+  var first=null;
+  document.querySelectorAll('#ktabs .ktab').forEach(function(t){
+    var show=(t.dataset.v===v);
+    t.style.display=show?'':'none';
+    if(show&&!first)first=t;
+  });
+  if(first)ktab(first,d.tab);
+}
+vert('fresh');
 /* cart delivery-type toggle */
 function dtype(m){
   var c=document.getElementById('dopt-comb'),x=document.getElementById('dopt-multi');
