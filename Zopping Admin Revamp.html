@@ -5963,7 +5963,7 @@ function renderFilled(scroll){
         ['Offers Management','Run 10+ types of promotions — bulk purchases, product bundling, BOGO and more.',0,['U','M'],['Marketing']],
         ['Reports and Analytics','In-depth reports covering sales, operations, inventory and catalogue performance.',0,['U'],['Analytics']],
         ['Abandoned Cart','Remind customers to complete their purchase after abandoning a cart.',0,['I'],['Marketing','Customer Management']],
-        ['Facebook Analytics','Insert Facebook Pixel to measure, target and promote your store.',0,['I'],['Analytics','External Integration']],
+        ['Facebook Analytics','Insert Facebook Pixel to measure, target and promote your store.',0,['U','C'],['Analytics','External Integration']],
         ['Shipping and Courier','Integrate with 3rd party courier services like ShipRocket and Dunzo.',0,['U','C'],['Delivery','External Integration']],
         ['Customer Wallet Support','Set up a wallet system and let customers recharge and pay with wallet balance.',0,['U','C'],['Payments','Customer Management']],
         ['Personalized Search Results','Personalise search results based on each customer purchase history.',1,['P'],['Marketing','Catalogue']],
@@ -6001,10 +6001,15 @@ function renderFilled(scroll){
       const iconOf=n=>{const m={'Order Gating':'ti-shield-check','Pricing Tier':'ti-tag','Global Nomenclature':'ti-arrows-exchange','Dynamic Hero Banner':'ti-photo','Order Accept & Reject With Hop':'ti-package-export','Sales Location Mapping':'ti-map-pin','B2B Management':'ti-building','MIS Report':'ti-chart-bar','Endless Aisle':'ti-device-tablet','Inventory Count':'ti-clipboard-list','VIP Membership Plan':'ti-crown','Rider Earnings & Incentives':'ti-motorbike','Facebook SDK':'ti-brand-facebook','Customer Wishlist':'ti-heart','Customer Sign Up':'ti-user-plus','OneHashCal Integration':'ti-calendar','TidyCal Integration':'ti-calendar-event','Customer Credit Support':'ti-credit-card','Third Party Integration':'ti-arrows-right-left','Keyword History':'ti-history','Google Tag Manager':'ti-tag','Trending Searches':'ti-trending-up','Notify Me':'ti-bell','InstagramFeed':'ti-brand-instagram','NewsLetter Subscription':'ti-mail','User Activity Logs':'ti-activity','Whatmore':'ti-video','OMS and WMS Management':'ti-truck','Product Bundles':'ti-box-multiple','Recipe Page Generator':'ti-chef-hat','Support for Free Delivery':'ti-package-export','Digital Products':'ti-download','Subscription Products':'ti-repeat','Low Stock Alerts':'ti-alert-triangle','Product Restrictions':'ti-lock','Ticket Management':'ti-ticket','Hub Trip Support':'ti-route','Referral Management':'ti-share','Google Merchant Center':'ti-shopping-cart','Unique Coupon Generator':'ti-discount','Marketplace':'ti-store','Reviews and Ratings':'ti-star','Customer Groups':'ti-users-group','Leave Management':'ti-calendar-off','Marketing Banners':'ti-ad','Offers Management':'ti-percentage','Reports and Analytics':'ti-report-analytics','Abandoned Cart':'ti-shopping-cart-off','Facebook Analytics':'ti-brand-facebook','Shipping and Courier':'ti-truck-delivery','Customer Wallet Support':'ti-wallet','Personalized Search Results':'ti-search','Multiple And Partial Order Picking':'ti-packages','Password Policy':'ti-lock-password','Delivery Slot Charges':'ti-currency-dollar','Website Pages Scheduling':'ti-calendar','Multiple Languages Support':'ti-language','Pre-order Support':'ti-clock','Bulk-order Support':'ti-clipboard-list','Slot Capacity Set-up':'ti-calendar-stats','Stock Buffer Set-up':'ti-package','Search Results Control':'ti-search','Tags For Customer Segmentation':'ti-tags','Order Returns Support':'ti-arrow-back-up','Delivery Slot Set-up':'ti-clock-2','Custom Fields':'ti-forms','SEO Optimization':'ti-world-search','Stock Management':'ti-chart-line','Online Payment':'ti-credit-card','Sold-By-Weight Product Support':'ti-scale','Tawk.to Integration':'ti-message-circle','Marketing Campaigns':'ti-speakerphone','Delivery Support':'ti-truck','Google Analytics':'ti-chart-dots','Product Substitution':'ti-arrows-exchange','Delivery Area Setup':'ti-map','Product Tag Support':'ti-tag','Pick Pack Support':'ti-package','Product Variant Support':'ti-color-swatch','Multi User Support':'ti-users','Brand Support':'ti-certificate'};return m[n]||'ti-puzzle';};
       const iconColor=n=>{const p=[['#dbeafe','#1d4ed8'],['#dcfce7','#15803d'],['#fce7f3','#be185d'],['#e0e7ff','#4338ca'],['#ffedd5','#c2410c'],['#d1fae5','#065f46'],['#fef3c7','#92400e'],['#ede9fe','#6d28d9'],['#fee2e2','#b91c1c'],['#f0f9ff','#0369a1'],['#fef9c3','#854d0e'],['#ecfdf5','#047857']];let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))%p.length;return p[Math.abs(h)%p.length];};
 
+      const CAT_NAV={'Delivery':'delivery','Catalogue':'catalogue','Marketing':'marketing','Analytics':'analytics','Online Store':'web-config','Payments':'payments','Customer Management':'customers','Staff Management':'users','External Integration':'ext'};
+      const CAT_LABEL={'Delivery':'Delivery','Catalogue':'Catalogue','Marketing':'Marketing','Analytics':'Reports & Analytics','Online Store':'Online Store','Payments':'Payments','Customer Management':'Customers','Staff Management':'Staff','External Integration':'Integrations'};
+
       const card=e=>{
         const [bg,fg]=iconColor(e[0]);
         const isInst=e[3].includes('U');
         const isPrem=e[2]&&!isInst;
+        const primaryCat=e[4][0]||'';
+        const navId=CAT_NAV[primaryCat]||'';
         const mkBtn=t=>{
           if(t==='I') return `<button style="padding:9px 18px;background:#0f172a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px"><i class="ti ti-plug" style="font-size:13px"></i>Install</button>`;
           if(t==='U') return `<button style="padding:9px 16px;background:#fff;color:#64748b;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer">Uninstall</button>`;
@@ -6013,7 +6018,9 @@ function renderFilled(scroll){
           if(t==='P') return `<button style="padding:9px 16px;background:#fffbeb;color:#b45309;border:1.5px solid #fde68a;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px"><i class="ti ti-crown" style="font-size:13px"></i>Upgrade</button>`;
           return '';
         };
-        const catBadge=e[4][0]?`<span style="font-size:11px;font-weight:600;color:#64748b;background:#f1f5f9;padding:3px 9px;border-radius:6px">${e[4][0]}</span>`:'';
+        const viewBtn=isInst&&navId?`<button onclick="gotoPage('${navId}')" style="margin-left:auto;padding:9px 14px;background:transparent;color:#16a34a;border:1.5px solid #86efac;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px"><i class="ti ti-arrow-right" style="font-size:13px"></i>View</button>`:'';
+        const catBadge=primaryCat?`<span style="font-size:11px;font-weight:600;color:#64748b;background:#f1f5f9;padding:3px 9px;border-radius:6px">${primaryCat}</span>`:'';
+        const locationRow=`<div style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:#94a3b8;margin-top:10px"><i class="ti ti-map-pin" style="font-size:12px"></i>Admin → ${e[4].map(c=>CAT_LABEL[c]||c).join(' · ')}</div>`;
         return `<div style="background:#fff;border:1.5px solid ${isInst?'#86efac':'#e2e8f0'};border-radius:14px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.04);position:relative;transition:box-shadow .15s" onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='0 1px 6px rgba(0,0,0,.04)'">
           ${isInst?`<div style="position:absolute;top:0;left:0;right:0;height:3px;background:#16a34a;border-radius:14px 14px 0 0"></div>`:''}
           ${isInst?`<div style="position:absolute;top:12px;right:12px;background:#f0fdf4;color:#16a34a;border:1px solid #86efac;border-radius:20px;font-size:11px;font-weight:700;padding:3px 9px;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-check" style="font-size:10px"></i>Installed</div>`:''}
@@ -6026,8 +6033,9 @@ function renderFilled(scroll){
               <div><div style="font-size:14.5px;font-weight:700;color:#0f172a;line-height:1.3;margin-bottom:4px">${e[0]}</div>${catBadge}</div>
             </div>
             <div style="font-size:13px;color:#64748b;line-height:1.6;min-height:52px">${e[1]}</div>
+            ${locationRow}
           </div>
-          <div style="padding:12px 18px;border-top:1px solid #f1f5f9;background:#fafbfc;display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-top:auto">${e[3].map(mkBtn).join('')}</div>
+          <div style="padding:12px 18px;border-top:1px solid #f1f5f9;background:#fafbfc;display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-top:auto">${e[3].map(mkBtn).join('')}${viewBtn}</div>
         </div>`;
       };
 
