@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TechSmith &harr; Zopping Platform — Integration Design Document</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+<style>
+  :root{
+    --green:#4AB819;
+    --green-dark:#358a10;
+    --ink:#1f2430;
+    --muted:#5b6472;
+    --line:#e3e7ec;
+    --bg-soft:#f6f8f7;
+    --code-bg:#0f1720;
+    --code-ink:#d8e2ea;
+    --warn-bg:#fff7e6;
+    --warn-line:#f0c36d;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:0; background:#fff; color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55; font-size:15.5px;
+  }
+  .wrap{max-width:960px; margin:0 auto; padding:48px 32px 100px;}
+  .cover{
+    border-bottom:4px solid var(--green);
+    padding-bottom:28px; margin-bottom:40px;
+  }
+  .cover .kicker{
+    color:var(--green-dark); font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; font-size:12.5px; margin-bottom:10px;
+  }
+  .cover h1{font-size:32px; margin:0 0 10px; line-height:1.25;}
+  .cover .sub{color:var(--muted); font-size:16px; margin-bottom:18px;}
+  .meta-table{border-collapse:collapse; font-size:13.5px; color:var(--muted);}
+  .meta-table td{padding:3px 14px 3px 0;}
+  .meta-table td:first-child{font-weight:600; color:var(--ink);}
+  h2{
+    font-size:22px; margin:52px 0 6px; padding-bottom:8px;
+    border-bottom:2px solid var(--line); color:var(--ink);
+    scroll-margin-top:20px;
+  }
+  h2 .num{color:var(--green-dark); margin-right:8px;}
+  h3{font-size:17px; margin:28px 0 8px; color:var(--ink);}
+  h4{font-size:14.5px; margin:20px 0 6px; color:var(--muted); text-transform:uppercase; letter-spacing:.03em;}
+  p{margin:8px 0 12px;}
+  ul,ol{margin:8px 0 14px; padding-left:22px;}
+  li{margin:4px 0;}
+  code{
+    background:var(--bg-soft); border:1px solid var(--line); border-radius:4px;
+    padding:1px 6px; font-family:"SF Mono",Consolas,Menlo,monospace; font-size:13px;
+  }
+  pre{
+    background:var(--code-bg); color:var(--code-ink); border-radius:8px;
+    padding:16px 18px; overflow-x:auto; font-size:13px; line-height:1.6;
+    font-family:"SF Mono",Consolas,Menlo,monospace;
+  }
+  pre code{background:none; border:none; padding:0; color:inherit;}
+  table{border-collapse:collapse; width:100%; margin:12px 0 20px; font-size:13.8px;}
+  th,td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top;}
+  th{background:var(--bg-soft); font-weight:700;}
+  tr:nth-child(even) td{background:#fbfcfc;}
+  .badge{
+    display:inline-block; font-size:11px; font-weight:700; padding:2px 7px;
+    border-radius:4px; color:#fff; letter-spacing:.02em;
+  }
+  .GET{background:#2b7de9;} .POST{background:#4AB819;} .PUT{background:#e08a1e;} .DELETE{background:#d4433a;}
+  .diagram{
+    background:var(--bg-soft); border:1px solid var(--line); border-radius:10px;
+    padding:20px; margin:14px 0 24px; overflow-x:auto;
+    opacity:1; transform:translateY(0); transition:opacity .6s ease, transform .6s ease;
+  }
+  .diagram.pre-reveal{opacity:0; transform:translateY(18px);}
+  .diagram .cap{font-size:12.5px; color:var(--muted); margin-top:10px; text-align:center;}
+
+  /* animated, colorful mermaid rendering */
+  .mermaid .messageLine0, .mermaid .messageLine1, .mermaid .flowchart-link{
+    stroke-dasharray:6,4 !important;
+    animation:flowdash 1.3s linear infinite;
+  }
+  @keyframes flowdash{ to{ stroke-dashoffset:-20; } }
+  .mermaid .actor{ filter:drop-shadow(0 1px 2px rgba(15,23,32,.12)); }
+  .mermaid text{ font-weight:500; }
+
+  /* domain-grouped endpoint reference cards */
+  .domain-card{
+    border:1px solid var(--line); border-radius:10px; margin:16px 0; overflow:hidden;
+    box-shadow:0 1px 4px rgba(15,23,32,.05);
+  }
+  .domain-card .dc-head{
+    padding:10px 18px; font-weight:700; color:#fff; font-size:14px;
+    letter-spacing:.02em; display:flex; align-items:center; gap:8px;
+  }
+  .domain-card table{margin:0; font-size:13.5px;}
+  .domain-card th{background:#fbfcfc;}
+  .domain-card td:first-child, .domain-card th:first-child{width:90px;}
+  .domain-card td:nth-child(2), .domain-card th:nth-child(2){width:auto; font-family:"SF Mono",Consolas,Menlo,monospace; font-size:12.8px;}
+  .callout{
+    background:var(--warn-bg); border:1px solid var(--warn-line); border-left:4px solid #d99a1f;
+    border-radius:6px; padding:12px 16px; margin:14px 0;
+  }
+  .callout strong{color:#8a5a0a;}
+  .note{
+    background:#eef6ff; border-left:4px solid #2b7de9; border-radius:6px;
+    padding:12px 16px; margin:14px 0; font-size:14.5px;
+  }
+  .flowgrid{display:flex; gap:14px; flex-wrap:wrap; margin:16px 0;}
+  .flowcard{
+    flex:1 1 200px; border:1px solid var(--line); border-radius:8px; padding:14px 16px;
+    background:#fff;
+  }
+  .flowcard .dir{font-size:11px; font-weight:700; color:var(--green-dark); text-transform:uppercase;}
+  .flowcard h4{margin-top:2px;}
+  .toc{background:var(--bg-soft); border:1px solid var(--line); border-radius:10px; padding:20px 26px; margin-bottom:10px;}
+  .toc ol{margin:6px 0 0; padding-left:20px; columns:2; column-gap:32px;}
+  .toc li{margin:5px 0; break-inside:avoid;}
+  .toc a{color:var(--ink); text-decoration:none;}
+  .toc a:hover{color:var(--green-dark); text-decoration:underline;}
+  footer{margin-top:60px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:12.5px;}
+  @media print{ .wrap{max-width:100%;} h2{page-break-after:avoid;} .diagram{page-break-inside:avoid;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="cover">
+    <div class="kicker">Integration Design Document · Draft v0.1</div>
+    <h1>TechSmith &harr; Zopping Platform Integration</h1>
+    <div class="sub">Product Master, Inventory, Customer &amp; Order Fulfillment sync between TechSmith (offline POS/ERP) and Zopping (online commerce platform)</div>
+    <table class="meta-table">
+      <tr><td>Prepared for</td><td>Lingraj (lingraj@zopping.com)</td></tr>
+      <tr><td>Date</td><td>22 July 2026</td></tr>
+      <tr><td>Source</td><td>zopping.com/developers (Platform API — backend gateway)</td></tr>
+      <tr><td>Status</td><td>Draft — items marked <span style="color:#8a5a0a;font-weight:700;">Open</span> need confirmation with the Zopping integrations team</td></tr>
+    </table>
+  </div>
+
+  <div class="toc">
+    <strong>Contents</strong>
+    <ol>
+      <li><a href="#overview">Overview &amp; scope</a></li>
+      <li><a href="#architecture">Integration architecture</a></li>
+      <li><a href="#auth">Authentication &amp; environment</a></li>
+      <li><a href="#extensions">Extensions required</a></li>
+      <li><a href="#product">Product master sync</a></li>
+      <li><a href="#inventory">Inventory sync (stock &amp; price)</a></li>
+      <li><a href="#customer">Customer sync</a></li>
+      <li><a href="#orders">Order fulfillment lifecycle</a></li>
+      <li><a href="#returns">Returns &amp; reverse logistics</a></li>
+      <li><a href="#events">Event catalog &amp; webhook subscription</a></li>
+      <li><a href="#reliability">Idempotency &amp; error handling</a></li>
+      <li><a href="#open">Open items to confirm with Zopping</a></li>
+    </ol>
+  </div>
+
+  <h2 id="overview"><span class="num">1.</span>Overview &amp; scope</h2>
+  <p>TechSmith (offline POS/ERP) is being integrated with Zopping as a channel plugin so both sides share one catalog, one stock pool, one customer base and one order pipeline. Four flows are in scope:</p>
+
+  <div class="flowgrid">
+    <div class="flowcard">
+      <div class="dir">TechSmith &rarr; Zopping</div>
+      <h4>Product master</h4>
+      <p style="margin:0;font-size:13.8px;">Create new products, update existing ones, toggle active/inactive.</p>
+    </div>
+    <div class="flowcard">
+      <div class="dir">TechSmith &rarr; Zopping</div>
+      <h4>Inventory</h4>
+      <p style="margin:0;font-size:13.8px;">Push stock and price on a fixed interval.</p>
+    </div>
+    <div class="flowcard">
+      <div class="dir">TechSmith &rarr; Zopping</div>
+      <h4>Customer</h4>
+      <p style="margin:0;font-size:13.8px;">Create/update customers registered offline.</p>
+    </div>
+    <div class="flowcard">
+      <div class="dir">Zopping &harr; TechSmith</div>
+      <h4>Orders</h4>
+      <p style="margin:0;font-size:13.8px;">Zopping pushes online orders to TechSmith; TechSmith reserves stock, packs, invoices; Zopping owns delivery and returns and reports status back.</p>
+    </div>
+  </div>
+
+  <h2 id="architecture"><span class="num">2.</span>Integration architecture</h2>
+  <p>One Platform API, backend gateway <code>zopping.com/api/&lt;service&gt;/&lt;resource&gt;</code>, authenticated by partner token, scoped to <code>organizationId</code> (+ <code>storeId</code>). TechSmith calls it directly for product/inventory/customer; for orders the direction reverses — Zopping pushes orders out, TechSmith pushes pack/invoice status back.</p>
+
+  <div class="diagram pre-reveal">
+    <pre class="mermaid">
+graph LR
+  TS["🏬 TechSmith<br/>Offline POS / ERP"]
+  ZP["🛒 Zopping Platform<br/>Online Commerce"]
+
+  TS -- "① Product master" --> ZP
+  TS -- "② Inventory: stock &amp; price" --> ZP
+  TS -- "③ Customer" --> ZP
+  ZP -- "④ Orders · delivery · returns" --> TS
+
+  style TS fill:#eaf6e3,stroke:#4AB819,stroke-width:2.5px,color:#1f2430,font-weight:bold
+  style ZP fill:#e8f1fc,stroke:#2b7de9,stroke-width:2.5px,color:#1f2430,font-weight:bold
+  linkStyle 0 stroke:#4AB819,stroke-width:3px
+  linkStyle 1 stroke:#4AB819,stroke-width:3px
+  linkStyle 2 stroke:#4AB819,stroke-width:3px
+  linkStyle 3 stroke:#2b7de9,stroke-width:3px
+    </pre>
+    <div class="cap">Fig. 1 — High-level integration architecture: four flows between TechSmith and Zopping's Platform API</div>
+  </div>
+
+  <h2 id="auth"><span class="num">3.</span>Authentication &amp; environment</h2>
+  <ul>
+    <li><strong>Credential:</strong> partner Developer Token — <code>Authorization: Bearer $ZOPPING_TOKEN</code> on every call.</li>
+    <li><strong>Scope:</strong> every request carries <code>organizationId</code>, plus <code>storeId</code> where store-scoped.</li>
+    <li><strong>RBAC:</strong> endpoints need explicit grant to TechSmith's token — confirm during onboarding.</li>
+    <li><strong>Environments:</strong> confirm sandbox vs. production credentials separately.</li>
+  </ul>
+
+  <h2 id="extensions"><span class="num">4.</span>Extensions required</h2>
+  <p>Zopping ships many capabilities as per-organization <strong>extensions</strong> that gate whether an endpoint or field behaves as expected. <strong>Zopping's team installs and manages these for the org</strong> as part of onboarding — no setup action needed on TechSmith's side.</p>
+  <div class="note">For reference, this integration touches: <code>MultiStoreSupport</code>, <code>MultiVariantSupport</code>, <code>EntityMetaData</code>, <code>OrderReturns</code>, <code>DeliverySlots</code>/<code>DeliveryAreaSupport</code>, <code>OnlinePaymentSupport</code>. TechSmith can verify current status anytime with <code>GET /api/account-service/extension?organizationId=&lt;org-id&gt;&amp;status=ENABLED</code>.</div>
+
+  <h2 id="product"><span class="num">5.</span>Product master sync</h2>
+  <p><strong>TechSmith &rarr; Zopping.</strong> TechSmith creates and updates products; active/inactive is a <code>status</code> change (<code>ENABLED</code>/<code>HIDDEN</code>), not a delete. Look up by <code>clientItemId</code> before writing — never re-<code>POST</code> the same SKU.</p>
+
+  <div class="diagram pre-reveal">
+    <pre class="mermaid">
+%%{init: {"themeVariables": {"actorBkg":"#ffffff"}}}%%
+sequenceDiagram
+  participant T as 🏬 TechSmith
+  participant Z as 🛒 Zopping (Catalog Service)
+
+  rect rgb(234, 246, 227)
+  Note over T,Z: One-time setup (idempotent)
+  T->>Z: POST /api/catalogue-service/brand
+  T->>Z: POST /api/catalogue-service/category
+  end
+
+  rect rgb(232, 241, 252)
+  Note over T,Z: New product
+  T->>Z: POST /api/catalogue-service/product<br/>{clientItemId, brandId, primaryCategoryId, variants[]}
+  Z-->>T: ✅ 201 Created {productId}
+  end
+
+  rect rgb(255, 244, 214)
+  Note over T,Z: Update existing product
+  T->>Z: GET /api/catalogue-service/product?clientItemId=SKU-123
+  Z-->>T: 200 {productId, ...}
+  T->>Z: PUT /api/catalogue-service/product/{productId}<br/>{...changed fields}
+  Z-->>T: ✅ 200 OK
+  end
+
+  rect rgb(252, 232, 232)
+  Note over T,Z: Deactivate / reactivate
+  T->>Z: PUT /api/catalogue-service/product/{productId} {status: HIDDEN|ENABLED}
+  Z-->>T: ✅ 200 OK
+  end
+    </pre>
+    <div class="cap">Fig. 2 — Product master create / update / activate-deactivate</div>
+  </div>
+
+  <table>
+    <tr><th>Call</th><th>Method / path</th><th>Notes</th></tr>
+    <tr><td>Create brand</td><td><span class="badge POST">POST</span> <code>/api/catalogue-service/brand</code></td><td>Look up by name first — idempotent create</td></tr>
+    <tr><td>Create category</td><td><span class="badge POST">POST</span> <code>/api/catalogue-service/category</code></td><td>Same idempotency pattern</td></tr>
+    <tr><td>Create product (+ variants)</td><td><span class="badge POST">POST</span> <code>/api/catalogue-service/product</code></td><td>Store SKU in <code>clientItemId</code>; set <code>hasVariants</code></td></tr>
+    <tr><td>Read / reconcile</td><td><span class="badge GET">GET</span> <code>/api/catalogue-service/product?organizationId=..&amp;storeId=..</code></td><td>Returns <code>storeSpecificData</code> (live price/stock) with a store context</td></tr>
+    <tr><td>Update / activate-deactivate</td><td><span class="badge PUT">PUT</span> <code>/api/catalogue-service/product/{id}</code></td><td><code>status: ENABLED | HIDDEN</code></td></tr>
+  </table>
+
+  <div class="note">Alternative: a named partner-connector surface (<code>/api/partner-integrations/products/create|update|delete</code>) exists too — confirm with Zopping which one to build against (see <a href="#open">Open items</a>).</div>
+
+  <h2 id="inventory"><span class="num">6.</span>Inventory sync (stock &amp; price)</h2>
+  <p><strong>TechSmith &rarr; Zopping, on an interval.</strong> Price/stock are per-store, on an <em>item</em> (<code>productId</code> + <code>storeId</code>) — always via the Inventory API, never Catalog. Use <code>stockDelta</code> when TechSmith only knows the change, not the absolute count.</p>
+
+  <div class="diagram pre-reveal">
+    <pre class="mermaid">
+sequenceDiagram
+  participant S as ⏱️ TechSmith Scheduler
+  participant T as 🏬 TechSmith Core
+  participant Z as 🛒 Zopping (Inventory Service)
+
+  rect rgb(232, 241, 252)
+  loop Every N minutes
+    S->>T: Trigger interval sync
+    T->>Z: POST /api/inventory-service/item<br/>{productId, storeId, stock or stockDelta, mrp, discount, status}
+    Z-->>T: ✅ 200 OK
+  end
+  end
+
+  rect rgb(234, 246, 227)
+  opt Reconciliation
+    T->>Z: GET /api/inventory-service/inventory-log?productId=..&storeId=..
+    Z-->>T: 📋 audit trail of stock movements
+  end
+  end
+    </pre>
+    <div class="cap">Fig. 3 — Interval-based stock &amp; price push</div>
+  </div>
+
+  <table>
+    <tr><th>Call</th><th>Method / path</th><th>Notes</th></tr>
+    <tr><td>Upsert price &amp; stock</td><td><span class="badge POST">POST</span> <code>/api/inventory-service/item</code></td><td>Absolute <code>stock</code>, or relative <code>stockDelta</code>; <code>status: ENABLED|HIDDEN</code></td></tr>
+    <tr><td>Read current</td><td><span class="badge GET">GET</span> <code>/api/inventory-service/item?productId=..&amp;storeId=..</code></td><td>For pre-push comparison / diffing</td></tr>
+    <tr><td>Audit trail</td><td><span class="badge GET">GET</span> <code>/api/inventory-service/inventory-log</code></td><td>Reconcile TechSmith's ledger against Zopping's</td></tr>
+  </table>
+
+  <h2 id="customer"><span class="num">7.</span>Customer sync</h2>
+  <p><strong>TechSmith &rarr; Zopping.</strong> A customer registered offline is pushed to Zopping's Customer Service. Look up by <code>phone</code>/<code>email</code>/<code>clientId</code> first — create if new, update if found. Include lat/lng on the address for delivery-zone resolution.</p>
+
+  <div class="diagram pre-reveal">
+    <pre class="mermaid">
+sequenceDiagram
+  participant Cu as 🧑 Offline Customer
+  participant T as 🏬 TechSmith
+  participant Z as 🛒 Zopping (Customer Service)
+
+  Cu->>T: Registers in-store
+  T->>Z: GET /api/customer-service/customer?phone=...
+
+  rect rgb(234, 246, 227)
+  alt Not found
+    T->>Z: POST /api/customer-service/customer<br/>{name, phone, email, clientId}
+    Z-->>T: ✅ 201 {customerId}
+    T->>Z: POST /api/customer-service/address {customerId, address, city, pincode, lat/lng}
+    Z-->>T: ✅ 201 OK
+  else Already exists
+    T->>Z: PUT /api/customer-service/customer/{id}<br/>{...changed fields}
+    Z-->>T: ✅ 200 OK
+  end
+  end
+    </pre>
+    <div class="cap">Fig. 4 — Offline customer create / update</div>
+  </div>
+
+  <table>
+    <tr><th>Call</th><th>Method / path</th><th>Notes</th></tr>
+    <tr><td>Look up</td><td><span class="badge GET">GET</span> <code>/api/customer-service/customer?phone=..</code></td><td>Also filterable by <code>email</code>, <code>clientId</code></td></tr>
+    <tr><td>Create</td><td><span class="badge POST">POST</span> <code>/api/customer-service/customer</code></td><td>Nest an address in the same call if available</td></tr>
+    <tr><td>Update</td><td><span class="badge PUT">PUT</span> <code>/api/customer-service/customer/{id}</code></td><td></td></tr>
+    <tr><td>Add address</td><td><span class="badge POST">POST</span> <code>/api/customer-service/address</code></td><td>Include coordinates for delivery-zone resolution</td></tr>
+    <tr><td>Tag customer</td><td><span class="badge POST">POST</span> <code>/api/customer-service/customer/{id}/tag</code></td><td>Optional — e.g. flag TechSmith walk-ins for segmentation</td></tr>
+  </table>
+
+  <h2 id="orders"><span class="num">8.</span>Order fulfillment lifecycle</h2>
+  <p>The core bidirectional flow: an online order lives in Zopping; TechSmith reserves stock, picks, packs and invoices it; Zopping then owns delivery and reports status back throughout.</p>
+
+  <div class="diagram pre-reveal">
+    <pre class="mermaid">
+sequenceDiagram
+  participant Cu as 🧑 Online Customer
+  participant Z as 🛒 Zopping (Order Service)
+  participant L as 🚚 Zopping Logistics / 3PL
+  participant T as 🏬 TechSmith
+
+  rect rgb(232, 241, 252)
+  Cu->>Z: Checkout / place order
+  Z-->>Z: 🔔 ORDER_CREATE fires
+  Z->>T: Push order (event integration) — items, amount, address, slot
+  Note over T: (backstop) GET /order-service/order?status=CONFIRMED
+  end
+
+  rect rgb(234, 246, 227)
+  T-->>T: 🔒 Reserve stock — block offline sale of these units
+  T-->>T: 📦 Pick &amp; pack, generate invoice
+  T->>Z: PUT /order-service/order/{id} {status: PACKED}
+  T->>Z: 🧾 Share invoice reference (mechanism: open item)
+  Z-->>T: ✅ 200 OK
+  end
+
+  rect rgb(255, 244, 214)
+  Z->>L: Hand off packed order (courier eligibility + dispatch, or own-fleet trip)
+  L-->>Z: 🚚 ORDER_DISPATCH
+  Z-->>T: 🔔 ORDER_STATUS_UPDATE (DISPATCHED)
+  L-->>Z: 🏠 ORDER_COMPLETE
+  Z-->>T: 🔔 ORDER_STATUS_UPDATE (DELIVERED)
+  end
+    </pre>
+    <div class="cap">Fig. 5 — Online order: place &rarr; reserve &rarr; pack/invoice &rarr; dispatch &rarr; deliver</div>
+  </div>
+
+  <table>
+    <tr><th>Call</th><th>Method / path</th><th>Notes</th></tr>
+    <tr><td>Poll new orders (backstop)</td><td><span class="badge GET">GET</span> <code>/api/order-service/order?status=CONFIRMED&amp;limit=50</code></td><td>Page with <code>offset</code>/<code>limit</code>; dedupe on <code>referenceNumber</code></td></tr>
+    <tr><td>Read order detail</td><td><span class="badge GET">GET</span> <code>/api/order-service/order/{id}</code></td><td>Items, amount, <code>paymentStatus</code>, address, slot</td></tr>
+    <tr><td>Advance status (e.g. Packed)</td><td><span class="badge PUT">PUT</span> <code>/api/order-service/order/{id}</code></td><td>Statuses are forward-only in practice</td></tr>
+    <tr><td>Record payment (COD)</td><td><span class="badge POST">POST</span> <code>/api/order-service/order/{id}/payment</code></td><td>If TechSmith collects cash on handover</td></tr>
+    <tr><td>Pull invoice</td><td><span class="badge GET">GET</span> <code>/api/order-service/invoice?orderReferenceNumber=..</code></td><td>Zopping-generated invoice — confirm interplay with TechSmith's own invoice (open item)</td></tr>
+    <tr><td>Courier eligibility / dispatch</td><td><span class="badge GET">GET</span> <code>/api/logistics-service/courier-eligibility</code> · <span class="badge POST">POST</span> <code>/api/logistics-service/courier</code> or <code>/shipment</code></td><td>Zopping-side; visibility only for TechSmith</td></tr>
+  </table>
+
+  <h2 id="returns"><span class="num">9.</span>Returns &amp; reverse logistics</h2>
+  <p><strong>Zopping-owned, status shared with TechSmith.</strong> Zopping arranges the reverse pickup and keeps TechSmith informed so stock can be reconciled once it's physically back.</p>
+
+  <div class="diagram pre-reveal">
+    <pre class="mermaid">
+sequenceDiagram
+  participant Cu as 🧑 Customer
+  participant Z as 🛒 Zopping (Order + Logistics)
+  participant T as 🏬 TechSmith
+
+  rect rgb(252, 232, 232)
+  Cu->>Z: Initiates return (storefront / support)
+  Z->>Z: POST /logistics-service/reverse-shipment<br/>{items, source=customer address, destination=store}
+  Z-->>T: 🔔 ORDER_STATUS_UPDATE (return initiated)
+  end
+
+  rect rgb(255, 244, 214)
+  Note over Z: 🚚 Courier collects item from customer
+  Z-->>T: 🔔 ORDER_STATUS_UPDATE (in transit / returned)
+  end
+
+  rect rgb(234, 246, 227)
+  T-->>T: ✅ Physically receive item, restock, reconcile inventory
+  end
+    </pre>
+    <div class="cap">Fig. 6 — Reverse shipment (return) and status handoff</div>
+  </div>
+
+  <table>
+    <tr><th>Call</th><th>Method / path</th><th>Notes</th></tr>
+    <tr><td>Create reverse shipment</td><td><span class="badge POST">POST</span> <code>/api/logistics-service/reverse-shipment</code></td><td>Requires the <code>OrderReturns</code> extension; <code>sourceAddress</code> = customer, <code>destinationAddress</code> = store</td></tr>
+    <tr><td>List / track reverse shipments</td><td><span class="badge GET">GET</span> <code>/api/logistics-service/reverse-shipment</code></td><td>Filter by status</td></tr>
+    <tr><td>Status pushed to TechSmith</td><td>Event: <code>ORDER_STATUS_UPDATE</code></td><td>Same event channel as forward-order status</td></tr>
+  </table>
+
+  <h2 id="events"><span class="num">10.</span>Event catalog &amp; webhook subscription</h2>
+  <p><strong>Push, not poll:</strong> subscribe once via <code>POST /api/partner-integrations/event-integrations</code> and react as events fire; keep a low-frequency poll only as a backstop. Zopping must provision a delivery template pointed at TechSmith's webhook.</p>
+  <table>
+    <tr><th>Domain</th><th>Events</th></tr>
+    <tr><td>Orders</td><td><code>ORDER_CREATE</code>, <code>ORDER_STATUS_UPDATE</code>, <code>ORDER_PACK</code>, <code>ORDER_DISPATCH</code>, <code>ORDER_COMPLETE</code>, <code>ORDER_CANCEL</code></td></tr>
+    <tr><td>Inventory</td><td><code>INVENTORY_UPDATE</code></td></tr>
+    <tr><td>Customers</td><td><code>CUSTOMER_CREATE</code>, <code>CUSTOMER_BASIC_EDIT</code></td></tr>
+    <tr><td>Products</td><td><code>PRODUCT_CREATE</code>, <code>PRODUCT_UPDATE</code>, <code>PRODUCT_DELETE</code></td></tr>
+  </table>
+
+  <h2 id="reliability"><span class="num">11.</span>Idempotency &amp; error handling</h2>
+  <ul>
+    <li><strong>Map ids, don't mirror them</strong> — <code>clientId</code>/<code>clientItemId</code> on products/customers, <code>referenceNumber</code> on orders. Look up, then <code>PUT</code>; never re-<code>POST</code>.</li>
+    <li><strong>Dedupe events</strong> on event id / <code>referenceNumber</code> — treat redelivery as a no-op.</li>
+    <li><strong>Statuses are forward-only</strong> — don't move an order backwards from TechSmith's side.</li>
+    <li><strong>Reconcile inventory</strong> periodically against <code>/inventory-service/inventory-log</code> to catch drift.</li>
+  </ul>
+
+  <h2 id="open"><span class="num">12.</span>Open items to confirm with Zopping</h2>
+  <ol>
+    <li><strong>Invoice hand-off</strong> — how TechSmith's own invoice (number/URL/PDF) reaches Zopping; likely <code>metaData</code>, not yet a first-class field.</li>
+    <li><strong>Ingestion surface</strong> — direct Catalog/Customer APIs, or a named partner-connector under <code>/api/partner-integrations/…</code>?</li>
+    <li><strong>Event template</strong> — Zopping needs to provision delivery to TechSmith's webhook before go-live.</li>
+    <li><strong>Offline stock reservation</strong> — purely internal to TechSmith, or reflected back as a Zopping-side hold?</li>
+    <li><strong>Extensions &amp; environments</strong> — confirm what's enabled for the org, plus sandbox access and rate limits.</li>
+  </ol>
+
+  <footer>
+    Source: <a href="https://zopping.com/developers">zopping.com/developers</a>. Draft — verify endpoint shapes and open items with Zopping's integrations team before implementation.
+  </footer>
+
+</div>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: "base",
+    securityLevel: "loose",
+    themeVariables: {
+      primaryColor: "#eaf6e3",
+      primaryBorderColor: "#4AB819",
+      primaryTextColor: "#1f2430",
+      lineColor: "#8a93a3",
+      fontFamily: "-apple-system,Segoe UI,Roboto,sans-serif",
+      actorBkg: "#ffffff",
+      actorBorder: "#4AB819",
+      actorTextColor: "#1f2430",
+      actorLineColor: "#c9d6cf",
+      signalColor: "#2b7de9",
+      signalTextColor: "#1f2430",
+      labelBoxBkgColor: "#4AB819",
+      labelBoxBorderColor: "#358a10",
+      labelTextColor: "#ffffff",
+      loopTextColor: "#358a10",
+      noteBkgColor: "#fff4d6",
+      noteBorderColor: "#e0b23a",
+      noteTextColor: "#5b4406",
+      activationBkgColor: "#dceee0",
+      activationBorderColor: "#4AB819",
+      sequenceNumberColor: "#ffffff"
+    }
+  });
+
+  // Fade/slide each diagram in as it scrolls into view
+  window.addEventListener("load", function () {
+    var targets = document.querySelectorAll(".diagram.pre-reveal");
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach(function (el) { el.classList.remove("pre-reveal"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove("pre-reveal");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    targets.forEach(function (el) { io.observe(el); });
+  });
+</script>
+</body>
+</html>
