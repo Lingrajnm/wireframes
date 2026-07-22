@@ -70,7 +70,6 @@
 </style>
 </head>
 <body>
-
 <div class="header">
   <div class="logo-wrap">
     <img class="logo-img" src="https://zopping.com/assets/images/Zopping.svg" alt="Zopping" />
@@ -84,18 +83,15 @@
     </a>
   </div>
 </div>
-
 <div class="hero">
   <div class="hero-title">Product <span>Wireframes</span></div>
   <div class="hero-sub">Interactive HTML wireframes for Zopping's OMS, ops flows, and product features. Click any card to open.</div>
 </div>
-
 <div class="stats-row">
-  <div class="stat-chip">&#128193; Total: <strong id="totalCount">7</strong></div>
+  <div class="stat-chip">&#128193; Total: <strong id="totalCount">8</strong></div>
   <div class="stat-chip">&#128336; Last updated: <strong>Jul 2026</strong></div>
   <div class="stat-chip">&#128279; <strong><a href="https://lingrajnm.github.io/wireframes/" style="color:inherit;text-decoration:none">lingrajnm.github.io/wireframes</a></strong></div>
 </div>
-
 <div class="filter-bar">
   <input class="search-box" type="text" placeholder="Search wireframes..." id="searchBox" oninput="filterCards()">
   <button class="filter-btn active" onclick="filterTag('all',this)">All</button>
@@ -106,9 +102,7 @@
   <button class="filter-btn" onclick="filterTag('marketing',this)">Marketing</button>
   <button class="filter-btn" onclick="filterTag('app',this)">App</button>
 </div>
-
 <div class="grid" id="cardGrid">
-
   <a class="card" href="Sodhies App Revamp.html" data-title="Sodhies App Revamp — Quick Commerce Customer App" data-tags="app client store" data-counter="sodhies-app-revamp">
     <div class="card-preview preview-red">
       <div class="preview-dots"></div>
@@ -129,7 +123,26 @@
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-
+  <a class="card" href="TechSmith-Zopping-Integration-Design.html" data-title="TechSmith — Zopping Integration Design" data-tags="client ops oms">
+    <div class="card-preview preview-blue">
+      <div class="preview-dots"></div>
+      <div class="card-preview-inner">
+        <div class="preview-icon">&#128268;</div>
+        <div class="preview-badge tag-client-pill">Client &middot; Integration Spec</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-title">TechSmith — Zopping Integration Design</div>
+      <div class="card-desc">Design doc for TechSmith (offline POS/ERP) as a Zopping channel plugin &mdash; product master, inventory, customer sync, and the full order/return lifecycle, with sequence diagrams and open items.</div>
+    </div>
+    <div class="card-footer">
+      <span class="tag tag-client-pill">Client</span>
+      <span class="tag tag-ops-pill">Ops</span>
+      <span class="tag tag-oms-pill">OMS</span>
+      <span class="card-date">Jul 2026</span>
+      <div class="card-arrow">&rarr;</div>
+    </div>
+  </a>
   <a class="card" href="zopping-order-flow.html" data-title="Zopping Order Flow" data-tags="oms store ops" data-counter="zopping-order-flow">
     <div class="card-preview preview-purple">
       <div class="preview-dots"></div>
@@ -150,7 +163,6 @@
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-
   <a class="card" href="urban_platter_onboarding.html" data-title="Urban Platter Integration Onboarding" data-tags="client ops" data-counter="urban-platter-onboarding">
     <div class="card-preview preview-green">
       <div class="preview-dots"></div>
@@ -170,7 +182,6 @@
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-
   <a class="card" href="zopping-demo-combined.html" data-title="Book a Demo — Lead Collection Form" data-tags="marketing store">
     <div class="card-preview preview-teal">
       <div class="preview-dots"></div>
@@ -190,8 +201,6 @@
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-
-
   <a class="card" href="org_daily_report.html" data-title="Org Daily Report" data-tags="ops store">
     <div class="card-preview preview-amber">
       <div class="preview-dots"></div>
@@ -211,8 +220,6 @@
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-
-
   <a class="card" href="store_daily_report.html" data-title="Store Daily Report" data-tags="store ops">
     <div class="card-preview preview-green">
       <div class="preview-dots"></div>
@@ -232,8 +239,6 @@
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-
-
   <a class="card" href="Zopping Admin Revamp.html" data-title="Zopping Admin Revamp" data-tags="store oms ops">
     <div class="card-preview preview-purple">
       <div class="preview-dots"></div>
@@ -254,19 +259,15 @@
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-
   <div class="card-add">
     <div class="add-icon">&#43;</div>
     <div class="add-text">Add Wireframe</div>
     <div class="add-sub">Upload a new .html file to the GitHub repo to add it here</div>
   </div>
-
 </div>
-
 <div class="footer">
   <a href="https://github.com/lingrajnm/wireframes" target="_blank">github.com/lingrajnm/wireframes</a> &middot; Zopping Product Team
 </div>
-
 <script>
   let activeTag = 'all';
   function filterTag(tag, btn) {
@@ -289,9 +290,7 @@
     document.getElementById('totalCount').textContent = visible;
   }
 </script>
-
 <script data-goatcounter="https://lingraj.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-
 <script>
   async function loadViewCounts() {
     const cards = document.querySelectorAll('.card[data-counter]');
