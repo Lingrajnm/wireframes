@@ -30,7 +30,7 @@
   .filter-btn:hover { border-color: #c4b5fd; color: #5c54f0; }
   .filter-btn.active { background: #f0eeff; border-color: #c4b5fd; color: #5c54f0; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 0 40px 60px; max-width: 1100px; margin: 0 auto; }
-  .card { background: #fff; border: 1px solid #e0e4f0; border-radius: 14px; overflow: hidden; transition: all 0.25s; text-decoration: none; color: inherit; display: flex; flex-direction: column; box-shadow: 0 1px 4px rgba(30,34,64,0.05); }
+  .card { background: #fff; border: 1px solid #e0e4f0; border-radius: 14px; overflow: hidden; transition: all 0.25s; text-decoration: none; color: inherit; display: flex; flex-direction: column; box-shadow: 0 1px 4px rgba(30,34,64,0.05); cursor: pointer; }
   .card:hover { border-color: #a78bfa; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(92,84,240,0.12); }
   .card-preview { height: 160px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-bottom: 1px solid #e8eaf0; }
   .preview-purple { background: linear-gradient(135deg, #f0eeff 0%, #e8eaf8 100%); }
@@ -55,6 +55,7 @@
   .card-desc { font-size: 12px; color: #8890b5; line-height: 1.6; flex: 1; }
   .card-footer { padding: 12px 20px; border-top: 1px solid #f0f2f9; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .lock-pill { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; display: inline-flex; align-items: center; gap: 4px; }
   .card-date { font-size: 10px; color: #c0c8dc; }
   .view-chip { display:inline-flex; align-items:center; gap:3px; font-size:10px; font-weight:600; color:#8890b5; background:#f0f2f9; border:1px solid #e0e4f0; border-radius:10px; padding:2px 8px; margin-left:auto; }
   .view-chip svg { opacity:0.6; }
@@ -67,6 +68,25 @@
   .footer { text-align: center; padding: 20px; font-size: 11px; color: #c0c8dc; border-top: 1px solid #e0e4f0; background: #fff; }
   .footer a { color: #9ba3c5; text-decoration: none; }
   .empty-state { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #c0c8dc; font-size: 14px; }
+
+  /* Password modal */
+  .pw-overlay { position: fixed; inset: 0; background: rgba(30,34,64,0.45); backdrop-filter: blur(2px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+  .pw-overlay.open { display: flex; }
+  .pw-modal { background: #fff; border-radius: 16px; padding: 28px 26px; width: 100%; max-width: 340px; box-shadow: 0 20px 50px rgba(30,34,64,0.25); animation: pwIn 0.18s ease; }
+  @keyframes pwIn { from { opacity:0; transform: translateY(8px) scale(0.98);} to { opacity:1; transform: translateY(0) scale(1);} }
+  .pw-modal.shake { animation: pwShake 0.35s; }
+  @keyframes pwShake { 10%,90%{transform:translateX(-2px);} 20%,80%{transform:translateX(4px);} 30%,50%,70%{transform:translateX(-6px);} 40%,60%{transform:translateX(6px);} }
+  .pw-icon { width: 40px; height: 40px; border-radius: 10px; background: #f0eeff; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 14px; }
+  .pw-title { font-size: 15px; font-weight: 700; color: #1e2240; margin-bottom: 4px; }
+  .pw-sub { font-size: 12px; color: #8890b5; margin-bottom: 16px; line-height: 1.5; }
+  .pw-input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #e0e4f0; font-size: 14px; outline: none; margin-bottom: 8px; }
+  .pw-input:focus { border-color: #a78bfa; }
+  .pw-error { font-size: 12px; color: #dc2626; min-height: 16px; margin-bottom: 8px; }
+  .pw-actions { display: flex; gap: 8px; margin-top: 8px; }
+  .pw-btn { flex: 1; padding: 9px 0; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid #e0e4f0; background: #fff; color: #6b7299; }
+  .pw-btn.primary { background: #5c54f0; border-color: #5c54f0; color: #fff; }
+  .pw-btn.primary:hover { background: #4b44d6; }
+  .pw-btn:hover { background: #f0f2f9; }
 </style>
 </head>
 <body>
@@ -103,7 +123,7 @@
   <button class="filter-btn" onclick="filterTag('app',this)">App</button>
 </div>
 <div class="grid" id="cardGrid">
-  <a class="card" href="Sodhies App Revamp.html" data-title="Sodhies App Revamp — Quick Commerce Customer App" data-tags="app client store" data-counter="sodhies-app-revamp">
+  <a class="card" href="Sodhies App Revamp.html" data-title="Sodhies App Revamp — Quick Commerce Customer App" data-tags="app client store" data-counter="sodhies-app-revamp" data-pw-hash="a2cb15f8a2a73565a1a7f9338d4af172ebcd90440b435f8cf865feec13c3eb4b">
     <div class="card-preview preview-red">
       <div class="preview-dots"></div>
       <div class="card-preview-inner">
@@ -119,11 +139,12 @@
       <span class="tag tag-app-pill">App</span>
       <span class="tag tag-client-pill">Client</span>
       <span class="tag tag-store-pill">Store</span>
+      <span class="lock-pill">&#128274; Locked</span>
       <span class="view-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span class="vc-num">—</span></span><span class="card-date">Jul 2026</span>
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-  <a class="card" href="TechSmith-Zopping-Integration-Design.html" data-title="TechSmith — Zopping Integration Design" data-tags="client ops oms">
+  <a class="card" href="TechSmith-Zopping-Integration-Design.html" data-title="TechSmith — Zopping Integration Design" data-tags="client ops oms" data-pw-hash="a43181c86e4483d533fb443ad1f2b3213b128ffbcee6d8b4b420bd7cd2d8ed91">
     <div class="card-preview preview-blue">
       <div class="preview-dots"></div>
       <div class="card-preview-inner">
@@ -139,11 +160,12 @@
       <span class="tag tag-client-pill">Client</span>
       <span class="tag tag-ops-pill">Ops</span>
       <span class="tag tag-oms-pill">OMS</span>
+      <span class="lock-pill">&#128274; Locked</span>
       <span class="card-date">Jul 2026</span>
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-  <a class="card" href="zopping-order-flow.html" data-title="Zopping Order Flow" data-tags="oms store ops" data-counter="zopping-order-flow">
+  <a class="card" href="zopping-order-flow.html" data-title="Zopping Order Flow" data-tags="oms store ops" data-counter="zopping-order-flow" data-pw-hash="1e4e891c639991d47878f49b8bc3cd2b54dd366cb222d105d3666734ca508ec7">
     <div class="card-preview preview-purple">
       <div class="preview-dots"></div>
       <div class="card-preview-inner">
@@ -159,11 +181,12 @@
       <span class="tag tag-oms-pill">OMS</span>
       <span class="tag tag-store-pill">Store</span>
       <span class="tag tag-ops-pill">Ops</span>
+      <span class="lock-pill">&#128274; Locked</span>
       <span class="view-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span class="vc-num">—</span></span><span class="card-date">Jun 2026</span>
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-  <a class="card" href="urban_platter_onboarding.html" data-title="Urban Platter Integration Onboarding" data-tags="client ops" data-counter="urban-platter-onboarding">
+  <a class="card" href="urban_platter_onboarding.html" data-title="Urban Platter Integration Onboarding" data-tags="client ops" data-counter="urban-platter-onboarding" data-pw-hash="ed91b0b361a7740e7d2dfb364aab4fdd35f52f13db47b88096406ce1b3f83dbc">
     <div class="card-preview preview-green">
       <div class="preview-dots"></div>
       <div class="card-preview-inner">
@@ -178,11 +201,12 @@
     <div class="card-footer">
       <span class="tag tag-client-pill">Client</span>
       <span class="tag tag-ops-pill">Ops</span>
+      <span class="lock-pill">&#128274; Locked</span>
       <span class="card-date">Jun 2026</span>
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-  <a class="card" href="zopping-demo-combined.html" data-title="Book a Demo — Lead Collection Form" data-tags="marketing store">
+  <a class="card" href="zopping-demo-combined.html" data-title="Book a Demo — Lead Collection Form" data-tags="marketing store" data-pw-hash="5265345a5000db1cbb571150db413f96afb022c27270af586adf674539ea98d5">
     <div class="card-preview preview-teal">
       <div class="preview-dots"></div>
       <div class="card-preview-inner">
@@ -197,11 +221,12 @@
     <div class="card-footer">
       <span class="tag tag-mktg-pill">Marketing</span>
       <span class="tag tag-store-pill">Store</span>
+      <span class="lock-pill">&#128274; Locked</span>
       <span class="card-date">Jun 2026</span>
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-  <a class="card" href="org_daily_report.html" data-title="Org Daily Report" data-tags="ops store">
+  <a class="card" href="org_daily_report.html" data-title="Org Daily Report" data-tags="ops store" data-pw-hash="f2c4fadb438f9ee5a291d588676453431fe11673f4fb9a00bc999157872dbbca">
     <div class="card-preview preview-amber">
       <div class="preview-dots"></div>
       <div class="card-preview-inner">
@@ -216,11 +241,12 @@
     <div class="card-footer">
       <span class="tag tag-ops-pill">Ops</span>
       <span class="tag tag-store-pill">Store</span>
+      <span class="lock-pill">&#128274; Locked</span>
       <span class="view-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span class="vc-num">—</span></span><span class="card-date">Jun 2026</span>
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-  <a class="card" href="store_daily_report.html" data-title="Store Daily Report" data-tags="store ops">
+  <a class="card" href="store_daily_report.html" data-title="Store Daily Report" data-tags="store ops" data-pw-hash="3adac7271062a2efee40ad5a2772b2d725136c52fbdf7cc75ddc180fcd9542b5">
     <div class="card-preview preview-green">
       <div class="preview-dots"></div>
       <div class="card-preview-inner">
@@ -235,11 +261,12 @@
     <div class="card-footer">
       <span class="tag tag-store-pill">Store</span>
       <span class="tag tag-ops-pill">Ops</span>
+      <span class="lock-pill">&#128274; Locked</span>
       <span class="card-date">Jun 2026</span>
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-  <a class="card" href="Zopping Admin Revamp.html" data-title="Zopping Admin Revamp" data-tags="store oms ops">
+  <a class="card" href="Zopping Admin Revamp.html" data-title="Zopping Admin Revamp" data-tags="store oms ops" data-pw-hash="31f41df2da230b5580940fddee58026c337a385ab34a8220b5eb2f9e8e516d88">
     <div class="card-preview preview-purple">
       <div class="preview-dots"></div>
       <div class="card-preview-inner">
@@ -255,11 +282,12 @@
       <span class="tag tag-store-pill">Store</span>
       <span class="tag tag-oms-pill">OMS</span>
       <span class="tag tag-ops-pill">Ops</span>
+      <span class="lock-pill">&#128274; Locked</span>
       <span class="card-date">Jun 2026</span>
       <div class="card-arrow">&rarr;</div>
     </div>
   </a>
-  <a class="card" href="tamimi-mobile-app.html" data-title="Tamimi Markets App Revamp — Customer App" data-tags="app client store" data-counter="tamimi-markets-app-revamp">
+  <a class="card" href="tamimi-mobile-app.html" data-title="Tamimi Markets App Revamp — Customer App" data-tags="app client store" data-counter="tamimi-markets-app-revamp" data-pw-hash="f9d6299d75b3dffccbfb85584012b5d8c1fa968e46405c891bbf557df089dff0">
     <div class="card-preview preview-red">
       <div class="preview-dots"></div>
       <div class="card-preview-inner">
@@ -275,6 +303,7 @@
       <span class="tag tag-app-pill">App</span>
       <span class="tag tag-client-pill">Client</span>
       <span class="tag tag-store-pill">Store</span>
+      <span class="lock-pill">&#128274; Locked</span>
       <span class="view-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span class="vc-num">—</span></span><span class="card-date">Jul 2026</span>
       <div class="card-arrow">&rarr;</div>
     </div>
@@ -288,6 +317,22 @@
 <div class="footer">
   <a href="https://github.com/lingrajnm/wireframes" target="_blank">github.com/lingrajnm/wireframes</a> &middot; Zopping Product Team
 </div>
+
+<!-- Password gate modal -->
+<div class="pw-overlay" id="pwOverlay">
+  <div class="pw-modal" id="pwModal">
+    <div class="pw-icon">&#128274;</div>
+    <div class="pw-title" id="pwCardTitle">Protected wireframe</div>
+    <div class="pw-sub">Enter the password for this card to continue.</div>
+    <input type="password" class="pw-input" id="pwInput" placeholder="Password" autocomplete="off">
+    <div class="pw-error" id="pwError"></div>
+    <div class="pw-actions">
+      <button class="pw-btn" id="pwCancel">Cancel</button>
+      <button class="pw-btn primary" id="pwSubmit">Unlock</button>
+    </div>
+  </div>
+</div>
+
 <script>
   let activeTag = 'all';
   function filterTag(tag, btn) {
@@ -328,5 +373,76 @@
   }
   loadViewCounts();
 </script>
+
+<!-- Per-card password gate. NOTE: this is a client-side soft gate only —
+     the hashes below are visible in page source, so this deters casual
+     browsing but is not real security. -->
+<script>
+(function () {
+  const UNLOCK_KEY_PREFIX = 'wf_unlocked_';
+  const overlay = document.getElementById('pwOverlay');
+  const modal = document.getElementById('pwModal');
+  const titleEl = document.getElementById('pwCardTitle');
+  const input = document.getElementById('pwInput');
+  const errorEl = document.getElementById('pwError');
+  const submitBtn = document.getElementById('pwSubmit');
+  const cancelBtn = document.getElementById('pwCancel');
+
+  let pendingCard = null;
+
+  async function sha256Hex(text) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function openModal(card) {
+    pendingCard = card;
+    titleEl.textContent = card.dataset.title;
+    input.value = '';
+    errorEl.textContent = '';
+    overlay.classList.add('open');
+    setTimeout(() => input.focus(), 50);
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    pendingCard = null;
+  }
+
+  async function attemptUnlock() {
+    if (!pendingCard) return;
+    const hash = await sha256Hex(input.value);
+    if (hash === pendingCard.dataset.pwHash) {
+      sessionStorage.setItem(UNLOCK_KEY_PREFIX + pendingCard.dataset.pwHash, '1');
+      const href = pendingCard.getAttribute('href');
+      closeModal();
+      window.location.href = href;
+    } else {
+      errorEl.textContent = 'Incorrect password. Try again.';
+      modal.classList.remove('shake');
+      void modal.offsetWidth; // restart animation
+      modal.classList.add('shake');
+      input.value = '';
+      input.focus();
+    }
+  }
+
+  document.querySelectorAll('.card[data-pw-hash]').forEach(card => {
+    card.addEventListener('click', function (e) {
+      const hash = card.dataset.pwHash;
+      if (sessionStorage.getItem(UNLOCK_KEY_PREFIX + hash) === '1') return; // already unlocked this session
+      e.preventDefault();
+      openModal(card);
+    });
+  });
+
+  submitBtn.addEventListener('click', attemptUnlock);
+  cancelBtn.addEventListener('click', closeModal);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') attemptUnlock(); });
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal(); });
+})();
+</script>
+
 </body>
 </html>

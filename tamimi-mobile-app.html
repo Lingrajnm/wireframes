@@ -307,6 +307,48 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
 </style>
 </head>
 <body>
+<div id="wfLockOverlay" style="position:fixed;inset:0;z-index:2147483647;background:#f0f2f9;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <div style="background:#fff;border-radius:16px;padding:28px 26px;width:100%;max-width:340px;box-shadow:0 20px 50px rgba(30,34,64,0.25);box-sizing:border-box;">
+    <div style="width:40px;height:40px;border-radius:10px;background:#f0eeff;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px;">&#128274;</div>
+    <div style="font-size:15px;font-weight:700;color:#1e2240;margin-bottom:4px;">Protected wireframe</div>
+    <div style="font-size:12px;color:#8890b5;margin-bottom:16px;line-height:1.5;">Enter the password for this page to continue.</div>
+    <input type="password" id="wfLockInput" placeholder="Password" autocomplete="off" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid #e0e4f0;font-size:14px;outline:none;margin-bottom:8px;box-sizing:border-box;">
+    <div id="wfLockError" style="font-size:12px;color:#dc2626;min-height:16px;margin-bottom:8px;"></div>
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <a href="index.html" style="flex:1;padding:9px 0;border-radius:8px;font-size:13px;font-weight:600;border:1px solid #e0e4f0;background:#fff;color:#6b7299;text-align:center;text-decoration:none;box-sizing:border-box;">Back</a>
+      <button id="wfLockSubmit" style="flex:1;padding:9px 0;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #5c54f0;background:#5c54f0;color:#fff;">Unlock</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var PAGE_HASH = "f9d6299d75b3dffccbfb85584012b5d8c1fa968e46405c891bbf557df089dff0";
+  var UNLOCK_KEY = 'wf_unlocked_' + PAGE_HASH;
+  if (sessionStorage.getItem(UNLOCK_KEY) === '1') { document.getElementById('wfLockOverlay').remove(); return; }
+  document.documentElement.style.overflow = 'hidden';
+  async function sha256Hex(text) {
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+  }
+  function unlock() {
+    document.documentElement.style.overflow = '';
+    var overlay = document.getElementById('wfLockOverlay');
+    if (overlay) overlay.remove();
+  }
+  async function attempt() {
+    var input = document.getElementById('wfLockInput');
+    var hash = await sha256Hex(input.value);
+    if (hash === PAGE_HASH) { sessionStorage.setItem(UNLOCK_KEY, '1'); unlock(); }
+    else {
+      document.getElementById('wfLockError').textContent = 'Incorrect password. Try again.';
+      input.value = ''; input.focus();
+    }
+  }
+  document.getElementById('wfLockSubmit').addEventListener('click', attempt);
+  document.getElementById('wfLockInput').addEventListener('keydown', function (e) { if (e.key === 'Enter') attempt(); });
+})();
+</script>
+
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="tamimi-wordmark" viewBox="0 0 188 53">
