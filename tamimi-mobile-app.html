@@ -22,11 +22,12 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;font-family:'Plus Jakarta Sans',-apple-system,sans-serif}
 body{background:radial-gradient(120% 90% at 50% 0%,#2B2723 0%,#171512 70%);color:var(--ink);min-height:100vh;padding:34px 16px 70px}
-.stage{display:flex;flex-direction:column;align-items:center;gap:22px}
-.stage>h1{color:#fff;font-size:19px;font-weight:800;letter-spacing:-.2px}
-.stage>h1 em{font-style:normal;color:#E88379}
-.stage>p{color:#98928A;font-size:12.5px;max-width:620px;text-align:center;line-height:1.6;margin-top:-12px}
-.picker{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:880px}
+.stage{display:flex;flex-direction:row;align-items:center;justify-content:center;flex-wrap:wrap;gap:64px;min-height:100vh;padding:40px}
+.stage-left{display:flex;flex-direction:column;align-items:flex-start;gap:22px;max-width:640px}
+.stage-left>h1{color:#fff;font-size:30px;font-weight:800;letter-spacing:-.3px;line-height:1.25}
+.stage-left>h1 em{font-style:normal;color:#E88379}
+.stage-left>p{color:#98928A;font-size:14px;max-width:560px;text-align:left;line-height:1.6}
+.picker{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-start;max-width:600px}
 .picker button{background:rgba(255,255,255,.06);color:#C9C3BB;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:7px 14px;font-size:11.5px;font-weight:700;cursor:pointer;transition:.15s}
 .picker button:hover{background:rgba(255,255,255,.12)}
 .picker button.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:var(--sh-red)}
@@ -37,10 +38,24 @@ i.ic svg{width:100%;height:100%}
 i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width:24px;height:24px} i.ic.s12{width:12px;height:12px}
 
 /* ============ PHONE ============ */
-.phone{width:400px;height:852px;background:#050505;border-radius:56px;padding:9px;position:relative;box-shadow:0 0 0 1.5px #3A362F,0 44px 90px rgba(0,0,0,.65),0 12px 30px rgba(0,0,0,.5)}
+.phone{width:400px;height:852px;background:#050505;border-radius:56px;padding:9px;position:relative;box-shadow:0 0 0 1.5px #3A362F,0 44px 90px rgba(0,0,0,.65),0 12px 30px rgba(0,0,0,.5);flex-shrink:0}
 .phone .glass{position:absolute;inset:0;border-radius:56px;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.08) 0%,transparent 22%);z-index:80}
 .vp{position:relative;width:100%;height:100%;border-radius:47px;overflow:hidden;background:var(--bg)}
 .island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:110px;height:28px;background:#050505;border-radius:16px;z-index:70}
+.punch{position:absolute;top:16px;left:50%;transform:translateX(-50%);width:13px;height:13px;background:#050505;border-radius:50%;z-index:70;box-shadow:inset 0 0 0 2px #201E1B}
+
+/* ============ STAGE: TWO DEVICE FRAMES SIDE BY SIDE ============ */
+.stage-phones{display:flex;flex-direction:row;align-items:flex-start;gap:44px;flex-wrap:wrap}
+.phone-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+.dev-label{color:#C9C3BB;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 16px}
+.phone.ios .punch{display:none}
+.phone.android .island{display:none}
+.phone.android{border-radius:34px}
+.phone.android .glass{border-radius:34px}
+.phone.android .vp{border-radius:22px}
+.phone.android .sbar{padding-top:20px}
+@media (max-width:900px){.stage-phones{justify-content:center}}
+@media (max-width:460px){.phone-wrap{transform:scale(.82);margin:-70px -34px}}
 .screen{position:absolute;inset:0;display:none;flex-direction:column;overflow-y:auto;overflow-x:hidden;background:var(--bg);scrollbar-width:none}
 .screen::-webkit-scrollbar{display:none}
 .screen.on{display:flex;animation:fadein .28s ease}
@@ -270,7 +285,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
 .stat{font-size:9.5px;font-weight:800;padding:4px 10px;border-radius:8px;letter-spacing:.3px}
 .stat.r{background:var(--red-soft);color:var(--red)}
 .stat.g{background:var(--green-soft);color:var(--green)}
-.note{color:#8B857D;font-size:11px;text-align:center;max-width:700px;line-height:1.7}
+.note{color:#8B857D;font-size:11px;text-align:left;max-width:560px;line-height:1.7}
 @media (max-width:460px){.phone{width:100%;height:80vh;border-radius:40px;padding:6px}.vp{border-radius:34px}}
 
 /* ============ RTL MIRROR (Arabic) ============ */
@@ -395,17 +410,23 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
   </defs>
 </svg>
 <div class="stage">
+  <div class="stage-left">
   <h1>TAMIMI MARKETS <em>·</em> Quick Commerce App — Visual Design v2</h1>
   <p>Full customer journey, clickable end-to-end. Jump to any screen with the chips, or tap through inside the phone.</p>
   <div class="picker" id="picker">
     <button data-s="splash" class="active">Splash</button><button data-s="login">Login</button><button data-s="otp">OTP</button><button data-s="success">Success</button><button data-s="home">Home</button><button data-s="categories">Categories</button><button data-s="listing">Product List</button><button data-s="searchsc">Search</button><button data-s="pdp">Product Detail</button><button data-s="offers">Offers</button><button data-s="cart">Cart</button><button data-s="address">Address</button><button data-s="payment">Payment</button><button data-s="confirm">Order Placed</button><button data-s="track">Tracking</button><button data-s="orders">My Orders</button><button data-s="account">Account</button>
   </div>
+  <p class="note">Tamimi Super Market · Quick-commerce app design v2 · Product photos shown as styled placeholders — replace with photography in production.</p>
+  </div>
 
-  <div class="phone"><div class="vp" id="vp">
-    <div class="island"></div>
+  <div class="stage-phones">
+    <div class="phone-wrap">
+      <div class="dev-label">iOS</div>
+  <div class="phone ios"><div class="vp" id="vp">
+    <div class="island"></div><div class="punch"></div>
 
     <!-- SPLASH -->
-    <div class="screen on" id="splash" style="background:radial-gradient(130% 70% at 50% -8%,#F0584A 0%,#EC2225 45%,#96110D 100%);color:#fff">
+    <div class="screen on" id="splash" data-screen="splash" style="background:radial-gradient(130% 70% at 50% -8%,#F0584A 0%,#EC2225 45%,#96110D 100%);color:#fff">
       <div style="position:absolute;inset:0;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22190%22 height=%22190%22><g fill=%22none%22 stroke=%22rgba(255,255,255,.1)%22 stroke-width=%221.5%22 stroke-linecap=%22round%22><circle cx=%2234%22 cy=%2230%22 r=%2211%22/><path d=%22M95 22c9 0 14 7 14 13s-5 13-14 13-14-7-14-13 5-13 14-13z%22/><path d=%22M152 62l10 17h-20z%22/><path d=%22M40 112c0 10 8 17 17 17s17-7 17-17%22/><rect x=%22115%22 y=%22115%22 width=%2228%22 height=%2221%22 rx=%224%22/><path d=%22M20 158c6-8 15-8 21 0%22/></g></svg>')"></div>
       <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:46px 30px 0;position:relative">
         <div class="blogo" style="background:#fff;border-radius:22px;padding:22px 26px;display:inline-flex;align-items:center;justify-content:center">
@@ -431,7 +452,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- LOGIN -->
-    <div class="screen doodle" id="login">
+    <div class="screen doodle" id="login" data-screen="login">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div style="display:flex;justify-content:flex-end;padding:8px 18px">
         <button class="chip" onclick="go('home')" style="box-shadow:var(--sh-sm)">Skip <i class="ic s14" data-i="chev"></i></button>
@@ -454,7 +475,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- OTP -->
-    <div class="screen doodle" id="otp">
+    <div class="screen doodle" id="otp" data-screen="otp">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div style="padding:8px 18px"><span class="thead" style="all:unset"><span style="width:36px;height:36px;border-radius:12px;background:#fff;box-shadow:var(--sh-sm);display:inline-flex;align-items:center;justify-content:center;cursor:pointer" onclick="go('login')"><i class="ic" data-i="back"></i></span></span></div>
       <div style="flex:1;display:flex;align-items:center;justify-content:center">
@@ -471,7 +492,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- SUCCESS -->
-    <div class="screen" id="success" style="background:linear-gradient(180deg,#fff 0%,#F4FBF5 100%)">
+    <div class="screen" id="success" data-screen="success" style="background:linear-gradient(180deg,#fff 0%,#F4FBF5 100%)">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="cwr">
         <span style="position:absolute;top:24%;left:20%;width:9px;height:9px;border-radius:2px;background:#F6C445;transform:rotate(18deg)"></span>
@@ -486,7 +507,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
 <!-- HOME -->
-    <div class="screen" id="home">
+    <div class="screen" id="home" data-screen="home">
       <div class="hd">
         <div class="sbar lite" style="padding:16px 10px 4px"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
         <div class="hd-top">
@@ -495,7 +516,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
             <div class="l1"><i class="ic s16" data-i="pin"></i>Home <i class="ic s14" data-i="down"></i></div>
             <div class="l2">Bldg 7842, Prince Turki St, Al Ulaya, Al Khobar</div>
           </div>
-          <div class="hic" id="langBtn" onclick="toggleLang()" style="width:auto;min-width:36px;padding:0 10px;font-size:11.5px;font-weight:800;letter-spacing:.2px">AR</div>
+          <div class="hic lang-btn" id="langBtn" onclick="toggleLang()" style="width:auto;min-width:36px;padding:0 10px;font-size:11.5px;font-weight:800;letter-spacing:.2px">AR</div>
           <div class="hic" onclick="go('offers')"><i class="ic" data-i="ticket"></i></div>
           <div class="hic" onclick="go('account')"><i class="ic" data-i="user"></i></div>
         </div>
@@ -510,7 +531,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
         </div>
       </div>
 
-      <div class="tabc on" id="tab-grocery">
+      <div class="tabc on" id="tab-grocery" data-tab="grocery">
       <div class="tiles">
         <div class="tile wide" style="background:linear-gradient(115deg,#B7D8A6,#8FBF7C)" onclick="go('listing')"><b data-i18n="tile.freshVeggies.t">Fresh Veggies</b><s data-i18n="tile.freshVeggies.s">Farm to home, before 10 am</s><span class="go"><i class="ic s16" data-i="chev" style="color:#4C7A3C"></i></span><span class="em">🥬🍅🫑</span></div>
         <div class="tile" style="background:linear-gradient(150deg,#F6C889,#EFA84F);min-height:150px" onclick="go('listing')"><b data-i18n="tile.freshFruits.t">Fresh Fruits</b><s data-i18n="tile.freshFruits.s">32 items on deal</s><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🍎🍍</span></div>
@@ -599,7 +620,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
       </div><!-- /tab-grocery -->
 
       <!-- FRESH TAB -->
-      <div class="tabc" id="tab-fresh">
+      <div class="tabc" id="tab-fresh" data-tab="fresh">
         <div class="tiles">
           <div class="tile wide" style="background:linear-gradient(115deg,#B7D8A6,#8FBF7C)" onclick="go('listing')"><b data-i18n="tile.farmFresh.t">Farm Fresh, Every Morning</b><s data-i18n="tile.farmFresh.s">Harvested &lt; 24 hrs ago · 120+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#4C7A3C"></i></span><span class="em">🥬🍓</span></div>
           <div class="tile" style="background:linear-gradient(150deg,#F6C889,#EFA84F)" onclick="go('listing')"><b data-i18n="tile.cutSprouts.t">Cut &amp; Sprouts</b><s data-i18n="tile.cutSprouts.s">Ready to cook</s><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🥗</span></div>
@@ -618,7 +639,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
       </div>
 
       <!-- BABY CARE TAB -->
-      <div class="tabc" id="tab-baby">
+      <div class="tabc" id="tab-baby" data-tab="baby">
         <div class="tiles">
           <div class="tile wide" style="background:linear-gradient(115deg,#D9C9EE,#BBA3DE)" onclick="go('listing')"><b data-i18n="tile.babyEverything.t">Everything for Baby</b><s data-i18n="tile.babyEverything.s">Certified &amp; gentle · 400+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#6C4E99"></i></span><span class="em">🍼🧸</span></div>
           <div class="tile" style="background:linear-gradient(150deg,#BCDCE8,#93C2D6)" onclick="go('listing')"><b data-i18n="tile.diapersWipes">Diapers &amp; Wipes</b><span class="go"><i class="ic s16" data-i="chev" style="color:#3E7A94"></i></span><span class="em">🧷</span></div>
@@ -637,7 +658,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
       </div>
 
       <!-- BEAUTY TAB -->
-      <div class="tabc" id="tab-beauty">
+      <div class="tabc" id="tab-beauty" data-tab="beauty">
         <div class="tiles">
           <div class="tile wide" style="background:linear-gradient(115deg,#F0B9C8,#DE8BA5)" onclick="go('listing')"><b data-i18n="tile.beautyCosmetics.t">Beauty &amp; Cosmetics</b><s data-i18n="tile.beautyCosmetics.s">Skincare, makeup &amp; more · 900+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#A34D6B"></i></span><span class="em">💄✨</span></div>
           <div class="tile" style="background:linear-gradient(150deg,#D9C9EE,#BBA3DE)" onclick="go('listing')"><b data-i18n="tile.skincare">Skincare</b><span class="go"><i class="ic s16" data-i="chev" style="color:#6C4E99"></i></span><span class="em">🧴</span></div>
@@ -653,7 +674,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
       </div>
 
       <!-- DRINKS TAB -->
-      <div class="tabc" id="tab-drinks">
+      <div class="tabc" id="tab-drinks" data-tab="drinks">
         <div class="tiles">
           <div class="tile wide" style="background:linear-gradient(115deg,#9DB3E8,#6E88C9)" onclick="go('listing')"><b data-i18n="tile.chilledReady.t">Chilled &amp; Ready</b><s data-i18n="tile.chilledReady.s">Delivered cold from our fridge · 350+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#44599C"></i></span><span class="em">🥤🧊</span></div>
           <div class="tile" style="background:linear-gradient(150deg,#F6C889,#EFA84F)" onclick="go('listing')"><b data-i18n="tile.juices">Juices</b><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🧃</span></div>
@@ -669,7 +690,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
       </div>
 
       <!-- SNACKS TAB -->
-      <div class="tabc" id="tab-snacks">
+      <div class="tabc" id="tab-snacks" data-tab="snacks">
         <div class="tiles">
           <div class="tile wide" style="background:linear-gradient(115deg,#F2B368,#D98A3D)" onclick="go('listing')"><b data-i18n="tile.snackOClock.t">Snack O'Clock</b><s data-i18n="tile.snackOClock.s">Chips, namkeen &amp; sweets · 600+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🍿🍫</span></div>
           <div class="tile" style="background:linear-gradient(150deg,#D9C9EE,#BBA3DE)" onclick="go('listing')"><b data-i18n="tile.chocolates">Chocolates</b><span class="go"><i class="ic s16" data-i="chev" style="color:#6C4E99"></i></span><span class="em">🍫</span></div>
@@ -694,7 +715,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- CATEGORIES -->
-    <div class="screen" id="categories">
+    <div class="screen" id="categories" data-screen="categories">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.allCategories">All Categories</span><span class="rt"><span class="bk" onclick="go('searchsc')"><i class="ic" data-i="search"></i></span></span></div>
       <div style="padding:8px 16px 20px;flex:1">
@@ -738,7 +759,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- LISTING -->
-    <div class="screen" id="listing">
+    <div class="screen" id="listing" data-screen="listing">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="thead"><span class="bk" onclick="go('categories')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.fruitsVeg">Fruits &amp; Vegetables</span><span class="rt"><span class="bk" onclick="go('searchsc')"><i class="ic" data-i="search"></i></span></span></div>
       <div class="ltools"><b><span data-i18n="listing.productsCount">50 Products</span> <s data-i18n="listing.deliveredIn">· delivered in 20 mins</s></b>
@@ -775,7 +796,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- SEARCH -->
-    <div class="screen" id="searchsc">
+    <div class="screen" id="searchsc" data-screen="searchsc">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="thead" style="gap:9px"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span>
         <div class="srch" style="margin:0;flex:1;box-shadow:none;border:1.4px solid var(--red);padding:10px 13px"><i class="ic" data-i="search" style="color:var(--red)"></i><b>jeera</b><i class="ic s16" data-i="x" style="margin-left:auto;color:var(--faint)"></i></div>
@@ -794,7 +815,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- PDP -->
-    <div class="screen" id="pdp">
+    <div class="screen" id="pdp" data-screen="pdp">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="thead"><span class="bk" onclick="go('listing')"><i class="ic" data-i="back"></i></span><span style="font-size:13px;color:var(--sub);font-weight:600" data-i18n="pdp.categoryLabel">Masala &amp; Spices</span><span class="rt"><span class="bk"><i class="ic" data-i="heart"></i></span><span class="bk"><i class="ic" data-i="share"></i></span></span></div>
       <div class="card" style="margin:10px 16px 0;padding:18px;position:relative">
@@ -840,7 +861,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
       </div>
     </div>
 <!-- OFFERS -->
-    <div class="screen" id="offers">
+    <div class="screen" id="offers" data-screen="offers">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.offers">Offers</span><span class="rt"><span class="bk" onclick="go('searchsc')"><i class="ic" data-i="search"></i></span></span></div>
       <div style="margin:12px 16px 4px;border-radius:20px;background:linear-gradient(115deg,#F0584A,#C81E1B);color:#fff;padding:20px 18px;position:relative;overflow:hidden;box-shadow:var(--sh-md)">
@@ -876,7 +897,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- CART -->
-    <div class="screen" id="cart">
+    <div class="screen" id="cart" data-screen="cart">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.myCart">My Cart</span><span class="rt"><span class="cap" style="align-self:center">3 items · saving SAR 236</span></span></div>
       <div class="warn"><i class="ic s16" data-i="clock"></i>Add items worth <b>SAR 22</b> more to reach the SAR 199 minimum cart value</div>
@@ -952,7 +973,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- ADDRESS -->
-    <div class="screen" id="address">
+    <div class="screen" id="address" data-screen="address">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="thead"><span class="bk" onclick="go('cart')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.selectAddress">Select Delivery Address</span></div>
       <div class="sect" style="border:1.4px dashed var(--red);background:linear-gradient(140deg,#fff,var(--red-soft));display:flex;align-items:center;gap:11px;cursor:pointer">
@@ -982,7 +1003,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- PAYMENT -->
-    <div class="screen" id="payment">
+    <div class="screen" id="payment" data-screen="payment">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="thead"><span class="bk" onclick="go('address')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.payment">Payment</span><span class="rt"><span class="cap" style="align-self:center">🔒 Secured by HyperPay</span></span></div>
       <div class="sect" style="background:linear-gradient(140deg,#F2FAF3,#E9F6EC);border-color:#CEE9D5;display:flex;gap:10px;align-items:center">
@@ -1017,7 +1038,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- CONFIRM -->
-    <div class="screen" id="confirm" style="background:linear-gradient(180deg,#fff 0%,#F4FBF5 100%)">
+    <div class="screen" id="confirm" data-screen="confirm" style="background:linear-gradient(180deg,#fff 0%,#F4FBF5 100%)">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="cwr" style="gap:12px">
         <span style="position:absolute;top:16%;left:20%;width:9px;height:9px;border-radius:2px;background:#F6C445;transform:rotate(18deg)"></span>
@@ -1037,7 +1058,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- TRACK -->
-    <div class="screen" id="track">
+    <div class="screen" id="track" data-screen="track">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="thead"><span class="bk" onclick="go('orders')"><i class="ic" data-i="back"></i></span>Order #TAM-240193<span class="rt"><span class="bk"><i class="ic" data-i="help"></i></span></span></div>
       <div style="margin:10px 16px 0;border-radius:20px;overflow:hidden;position:relative;height:200px;flex-shrink:0;box-shadow:var(--sh-md)">
@@ -1077,7 +1098,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- ORDERS -->
-    <div class="screen" id="orders">
+    <div class="screen" id="orders" data-screen="orders">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="thead"><span class="bk" onclick="go('account')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.myOrders">My Orders</span></div>
       <div class="sect" style="cursor:pointer" onclick="go('track')">
@@ -1116,7 +1137,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     </div>
 
     <!-- ACCOUNT -->
-    <div class="screen" id="account">
+    <div class="screen" id="account" data-screen="account">
       <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
       <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.myAccount">My Account</span></div>
       <div class="sect" style="display:flex;align-items:center;gap:13px">
@@ -1137,7 +1158,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
         <div class="mrow"><span class="mi"><i class="ic" data-i="gift"></i></span><span data-i18n="acct.referEarn">Refer &amp; Earn</span> <span class="stat g" style="margin-left:2px">GET SAR 100</span><i class="ic ar" data-i="chev"></i></div>
         <div class="mrow"><span class="mi"><i class="ic" data-i="help"></i></span><span data-i18n="acct.help">Help &amp; Support</span><i class="ic ar" data-i="chev"></i></div>
         <div class="mrow"><span class="mi"><i class="ic" data-i="doc"></i></span><span data-i18n="acct.terms">Terms, Privacy &amp; FSSAI</span><i class="ic ar" data-i="chev"></i></div>
-        <div class="mrow" onclick="toggleLang()"><span class="mi"><i class="ic" data-i="globe"></i></span><span data-i18n="acct.language">App Language</span><span class="cap" id="langLabelAccount" style="margin-left:4px">English</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow" onclick="toggleLang()"><span class="mi"><i class="ic" data-i="globe"></i></span><span data-i18n="acct.language">App Language</span><span class="cap lang-label-account" id="langLabelAccount" style="margin-left:4px">English</span><i class="ic ar" data-i="chev"></i></div>
         <div class="mrow" onclick="go('login')" style="color:var(--red)"><span class="mi"><i class="ic" data-i="out"></i></span><span data-i18n="acct.logout">Log Out</span><i class="ic ar" data-i="chev"></i></div>
       </div>
       <p style="text-align:center;color:#B9B4AB;font-size:10.5px;font-weight:600;padding:4px 0 16px" data-i18n="acct.footer">Tamimi Super Market · App v2.0 · Al Khobar</p>
@@ -1152,8 +1173,762 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
 
 
   </div><div class="glass"></div></div>
+    </div>
+    <div class="phone-wrap">
+      <div class="dev-label">Android</div>
+  <div class="phone android"><div class="vp">
+    <div class="island"></div><div class="punch"></div>
 
-  <p class="note">Tamimi Super Market · Quick-commerce app design v2 · Product photos shown as styled placeholders — replace with photography in production.</p>
+    <!-- SPLASH -->
+    <div class="screen on" data-screen="splash" style="background:radial-gradient(130% 70% at 50% -8%,#F0584A 0%,#EC2225 45%,#96110D 100%);color:#fff">
+      <div style="position:absolute;inset:0;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22190%22 height=%22190%22><g fill=%22none%22 stroke=%22rgba(255,255,255,.1)%22 stroke-width=%221.5%22 stroke-linecap=%22round%22><circle cx=%2234%22 cy=%2230%22 r=%2211%22/><path d=%22M95 22c9 0 14 7 14 13s-5 13-14 13-14-7-14-13 5-13 14-13z%22/><path d=%22M152 62l10 17h-20z%22/><path d=%22M40 112c0 10 8 17 17 17s17-7 17-17%22/><rect x=%22115%22 y=%22115%22 width=%2228%22 height=%2221%22 rx=%224%22/><path d=%22M20 158c6-8 15-8 21 0%22/></g></svg>')"></div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:46px 30px 0;position:relative">
+        <div class="blogo" style="background:#fff;border-radius:22px;padding:22px 26px;display:inline-flex;align-items:center;justify-content:center">
+          <svg width="178" height="50" viewBox="0 0 188 53"><use href="#tamimi-wordmark" xlink:href="#tamimi-wordmark"></use></svg>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:18px;font-weight:600;letter-spacing:.1px;opacity:.95" data-i18n="splash.line1">Everything you need,</div>
+          <div style="font-family:Caveat,cursive;font-size:34px;color:var(--yellow);margin-top:-2px;text-shadow:0 2px 8px rgba(0,0,0,.18)" data-i18n="splash.line2">delivered with care!</div>
+        </div>
+        <div style="position:relative;margin-top:2px">
+          <span style="font-size:92px;line-height:1;filter:drop-shadow(0 18px 16px rgba(60,5,0,.4))">🧺</span>
+          <span style="position:absolute;top:-14px;left:-38px;font-size:30px;transform:rotate(-14deg);filter:drop-shadow(0 6px 6px rgba(60,5,0,.3))">🥬</span>
+          <span style="position:absolute;top:-22px;right:-34px;font-size:28px;transform:rotate(12deg);filter:drop-shadow(0 6px 6px rgba(60,5,0,.3))">🍅</span>
+          <span style="position:absolute;top:-34px;left:24px;font-size:24px;transform:rotate(-5deg);filter:drop-shadow(0 6px 6px rgba(60,5,0,.3))">🥛</span>
+        </div>
+      </div>
+      <div style="position:relative;background:#fff;color:var(--ink);border-radius:34px 34px 0 0;padding:22px 8px 30px;display:flex;text-align:center;box-shadow:0 -12px 40px rgba(60,5,0,.3)">
+        <div style="flex:1;border-right:1px solid var(--hairline);padding:0 6px"><i class="ic s24" data-i="star" style="color:var(--red)"></i><b style="font-size:11.5px;display:block;margin-top:6px;line-height:1.35" data-i18n="splash.trust">Quality<br>You Trust</b></div>
+        <div style="flex:1;border-right:1px solid var(--hairline);padding:0 6px"><i class="ic s24" data-i="store" style="color:var(--red)"></i><b style="font-size:11.5px;display:block;margin-top:6px;line-height:1.35" data-i18n="splash.products">15,000+<br>Products</b></div>
+        <div style="flex:1;padding:0 6px"><i class="ic s24" data-i="bolt" style="color:var(--red)"></i><b style="font-size:11.5px;display:block;margin-top:6px;line-height:1.35" data-i18n="splash.delivery">Delivery in<br>20 Minutes</b></div>
+      </div>
+      <div style="position:absolute;inset:0;cursor:pointer" onclick="go('login')" title="Tap to continue"></div>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="screen doodle" data-screen="login">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div style="display:flex;justify-content:flex-end;padding:8px 18px">
+        <button class="chip" onclick="go('home')" style="box-shadow:var(--sh-sm)">Skip <i class="ic s14" data-i="chev"></i></button>
+      </div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center">
+        <svg class="blogo" width="220" height="62" viewBox="0 0 188 53" style="filter:drop-shadow(0 10px 18px rgba(158,33,24,.2))"><use href="#tamimi-wordmark" xlink:href="#tamimi-wordmark"></use></svg>
+      </div>
+      <div style="background:#fff;border-radius:30px 30px 0 0;padding:12px 22px 32px;box-shadow:0 -12px 36px rgba(27,20,12,.1)">
+        <div style="width:40px;height:4.5px;background:#E8E4DD;border-radius:3px;margin:0 auto 18px"></div>
+        <h2 style="font-size:22px;font-weight:800;letter-spacing:-.4px" data-i18n="login.title">Login to Tamimi Markets</h2>
+        <p class="cap" style="margin-top:4px" data-i18n="login.subtitle">Groceries at your door in 20 minutes ⚡</p>
+        <label class="flb" data-i18n="login.phoneLabel">Phone number</label>
+        <div style="display:flex;gap:8px">
+          <div class="inp" style="width:66px;text-align:center;flex-shrink:0;color:var(--sub)">+966</div>
+          <input class="inp" value="55 123 4567">
+        </div>
+        <button class="btn" style="margin-top:18px" onclick="go('otp')"><span data-i18n="login.requestOtp">Request OTP</span> <i class="ic s16" data-i="chev"></i></button>
+        <p style="text-align:center;font-size:10.5px;color:var(--faint);margin-top:16px;font-weight:600"><span data-i18n="login.terms">By signing in, you agree to our <b style="color:var(--red)">terms &amp; conditions</b></span></p>
+      </div>
+    </div>
+
+    <!-- OTP -->
+    <div class="screen doodle" data-screen="otp">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div style="padding:8px 18px"><span class="thead" style="all:unset"><span style="width:36px;height:36px;border-radius:12px;background:#fff;box-shadow:var(--sh-sm);display:inline-flex;align-items:center;justify-content:center;cursor:pointer" onclick="go('login')"><i class="ic" data-i="back"></i></span></span></div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center">
+        <svg class="blogo" width="188" height="53" viewBox="0 0 188 53" style="filter:drop-shadow(0 10px 18px rgba(158,33,24,.2))"><use href="#tamimi-wordmark" xlink:href="#tamimi-wordmark"></use></svg>
+      </div>
+      <div style="background:#fff;border-radius:30px 30px 0 0;padding:12px 22px 32px;box-shadow:0 -12px 36px rgba(27,20,12,.1)">
+        <div style="width:40px;height:4.5px;background:#E8E4DD;border-radius:3px;margin:0 auto 18px"></div>
+        <h2 style="font-size:22px;font-weight:800;letter-spacing:-.4px" data-i18n="otp.title">Verify OTP</h2>
+        <p class="cap" style="margin-top:5px;line-height:1.6">We've sent a 4-digit code to <b style="color:var(--ink)">+966 55 123 4567</b> &nbsp;<b style="color:var(--red);cursor:pointer" onclick="go('login')">Change</b></p>
+        <div class="otp" style="margin-top:18px"><b>7</b><b>4</b><b>2</b><b class="f"></b></div>
+        <div class="hrow" style="margin-top:15px;font-size:11.5px;font-weight:700"><span style="color:var(--sub);display:flex;align-items:center;gap:5px"><i class="ic s14" data-i="clock"></i>Auto-reading SMS · 00:24</span><span style="color:var(--red);cursor:pointer" data-i18n="otp.resend">Resend OTP</span></div>
+        <button class="btn" style="margin-top:18px" onclick="go('success')"><span data-i18n="otp.verifyContinue">Verify &amp; Continue</span></button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="screen" data-screen="success" style="background:linear-gradient(180deg,#fff 0%,#F4FBF5 100%)">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="cwr">
+        <span style="position:absolute;top:24%;left:20%;width:9px;height:9px;border-radius:2px;background:#F6C445;transform:rotate(18deg)"></span>
+        <span style="position:absolute;top:19%;right:24%;width:8px;height:8px;border-radius:50%;background:#E88379"></span>
+        <span style="position:absolute;top:31%;right:16%;width:7px;height:7px;border-radius:2px;background:#7CC98F;transform:rotate(-14deg)"></span>
+        <span style="position:absolute;top:34%;left:13%;width:6px;height:6px;border-radius:50%;background:#9DB3E8"></span>
+        <div class="seal"><i class="ic" data-i="check" style="width:40px;height:40px"></i></div>
+        <h2 style="font-size:22px;font-weight:800;letter-spacing:-.4px" data-i18n="success.title">Sign-in successful</h2>
+        <p class="cap" style="font-size:13px;margin-top:-6px;line-height:1.6">Welcome to Tamimi Markets, Lingraj!<br>Your mobile number has been verified.</p>
+        <button class="btn" style="max-width:300px" onclick="go('home')"><span data-i18n="success.goHome">Go to Homepage</span></button>
+      </div>
+    </div>
+
+<!-- HOME -->
+    <div class="screen" data-screen="home">
+      <div class="hd">
+        <div class="sbar lite" style="padding:16px 10px 4px"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+        <div class="hd-top">
+          <div class="mins"><b>20</b><s>MINS</s><s>DELIVERY</s></div>
+          <div class="addr" onclick="go('address')">
+            <div class="l1"><i class="ic s16" data-i="pin"></i>Home <i class="ic s14" data-i="down"></i></div>
+            <div class="l2">Bldg 7842, Prince Turki St, Al Ulaya, Al Khobar</div>
+          </div>
+          <div class="hic lang-btn" onclick="toggleLang()" style="width:auto;min-width:36px;padding:0 10px;font-size:11.5px;font-weight:800;letter-spacing:.2px">AR</div>
+          <div class="hic" onclick="go('offers')"><i class="ic" data-i="ticket"></i></div>
+          <div class="hic" onclick="go('account')"><i class="ic" data-i="user"></i></div>
+        </div>
+        <div class="srch" onclick="go('searchsc')"><i class="ic" data-i="search"></i>Search for “<b>tamimi jeera</b>”<i class="ic mic" data-i="mic"></i></div>
+        <div class="ktabs">
+          <div class="ktab on" onclick="ktab(this,'grocery')"><span class="ke">🏪</span><span data-i18n="ktab.grocery">Grocery</span></div>
+          <div class="ktab" onclick="ktab(this,'fresh')"><span class="ke">🥬</span><span data-i18n="ktab.fresh">Fresh</span></div>
+          <div class="ktab" onclick="ktab(this,'baby')"><span class="ke">🍼</span><span data-i18n="ktab.baby">Baby Care</span></div>
+          <div class="ktab" onclick="ktab(this,'beauty')"><span class="ke">💄</span><span data-i18n="ktab.beauty">Beauty</span></div>
+          <div class="ktab" onclick="ktab(this,'drinks')"><span class="ke">🥤</span><span data-i18n="ktab.drinks">Drinks</span></div>
+          <div class="ktab" onclick="ktab(this,'snacks')"><span class="ke">🍿</span><span data-i18n="ktab.snacks">Snacks</span></div>
+        </div>
+      </div>
+
+      <div class="tabc on" data-tab="grocery">
+      <div class="tiles">
+        <div class="tile wide" style="background:linear-gradient(115deg,#B7D8A6,#8FBF7C)" onclick="go('listing')"><b data-i18n="tile.freshVeggies.t">Fresh Veggies</b><s data-i18n="tile.freshVeggies.s">Farm to home, before 10 am</s><span class="go"><i class="ic s16" data-i="chev" style="color:#4C7A3C"></i></span><span class="em">🥬🍅🫑</span></div>
+        <div class="tile" style="background:linear-gradient(150deg,#F6C889,#EFA84F);min-height:150px" onclick="go('listing')"><b data-i18n="tile.freshFruits.t">Fresh Fruits</b><s data-i18n="tile.freshFruits.s">32 items on deal</s><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🍎🍍</span></div>
+        <div class="tile" style="background:linear-gradient(150deg,#BCDCE8,#93C2D6);min-height:150px" onclick="go('listing')"><b data-i18n="tile.everydayFresh.t">Everyday Fresh</b><s data-i18n="tile.everydayFresh.s">Milk, eggs &amp; bread</s><span class="go"><i class="ic s16" data-i="chev" style="color:#3E7A94"></i></span><span class="em">🥛🥚</span></div>
+        <div class="tile" style="background:linear-gradient(150deg,#C3D2F3,#9DB3E8)" onclick="go('listing')"><b data-i18n="tile.drinksBev">Drinks &amp; Beverages</b><span class="go"><i class="ic s16" data-i="chev" style="color:#44599C"></i></span><span class="em">🥤</span></div>
+        <div class="tile" style="background:linear-gradient(150deg,#D9C9EE,#BBA3DE)" onclick="go('listing')"><b data-i18n="tile.babyCare">Baby Care</b><span class="go"><i class="ic s16" data-i="chev" style="color:#6C4E99"></i></span><span class="em">🍼</span></div>
+      </div>
+
+      <div class="seg"><b><span data-i18n="seg.stockUp">Stock Up &amp; Save!</span><br><s data-i18n="seg.unbeatable">Unbeatable Grocery Deals</s></b></div>
+      <div class="dealgrid">
+        <div class="deal" onclick="go('listing')"><div class="dt" data-i18n="deal.dairyBreakfast">Dairy &amp;<br>Breakfast</div><div class="dv"><em>🥛</em><em>🧈</em></div><div class="df" data-i18n="deal.upto20">UPTO 20% OFF</div></div>
+        <div class="deal" onclick="go('listing')"><div class="dt" data-i18n="deal.freshVeggies2">Fresh<br>Veggies</div><div class="dv"><em>🥦</em><em>🥕</em></div><div class="df" data-i18n="deal.farmToHome">FARM TO HOME</div></div>
+        <div class="deal" onclick="go('listing')"><div class="dt" data-i18n="deal.freshBakery">Fresh<br>Bakery</div><div class="dv"><em>🍞</em><em>🥐</em></div><div class="df" data-i18n="deal.freshEveryday">FRESH EVERYDAY</div></div>
+        <div class="deal" onclick="go('listing')"><div class="dt" data-i18n="deal.ricePulses">Rice &amp;<br>Pulses</div><div class="dv"><em>🍚</em><em>🫘</em></div><div class="df" data-i18n="deal.trustedBrand2">TRUSTED BRAND</div></div>
+        <div class="deal" onclick="go('listing')"><div class="dt" data-i18n="deal.coldDrinks">Cold Drinks<br>&amp; Juices</div><div class="dv"><em>🥤</em><em>🧃</em></div><div class="df" data-i18n="deal.chilledReady2">CHILLED &amp; READY</div></div>
+        <div class="deal" onclick="go('offers')"><div class="dt" data-i18n="deal.todaysOffers">Today's<br>Offers</div><div class="dv"><em>🏷️</em><em>⚡</em></div><div class="df" data-i18n="deal.upto50">UPTO 50% OFF</div></div>
+      </div>
+
+      <div class="promos">
+        <div class="promo" style="background:linear-gradient(115deg,#F0584A,#C81E1B)" onclick="go('offers')">
+          <span class="pk" data-i18n="promo.todayOnly">TODAY ONLY</span><b data-i18n="promo.bogo.b">Buy 1 Get 1 <span style="color:var(--yellow)">Free</span></b><s data-i18n="promo.bogo.s">Fresh favourites at double the value</s><span class="pe">🍅</span>
+        </div>
+        <div class="promo" style="background:linear-gradient(115deg,#3E7A94,#2C5A70)" onclick="go('cart')">
+          <span class="pk" data-i18n="promo.firstOrder.pk">FIRST ORDER</span><b data-i18n="promo.firstOrder.b">Flat SAR 50 off <span style="color:var(--yellow)">· TAMIMI50</span></b><s data-i18n="promo.firstOrder.s">On carts above SAR 499 · auto-applies</s><span class="pe">🎟️</span>
+        </div>
+        <div class="promo" style="background:linear-gradient(115deg,#7A5C9E,#5A3E7E)" onclick="go('listing')">
+          <span class="pk" data-i18n="promo.newArrivals.pk">NEW ARRIVALS</span><b data-i18n="promo.newArrivals.b">Imported Range <span style="color:var(--yellow)">is here</span></b><s data-i18n="promo.newArrivals.s">Curated picks from across the world</s><span class="pe">✈️</span>
+        </div>
+      </div>
+
+      <div style="margin:14px 16px 4px;border-radius:18px;background:linear-gradient(115deg,#2E1F14,#4A2E1A);color:#fff;padding:16px 18px;position:relative;overflow:hidden;box-shadow:var(--sh-md)">
+        <span style="position:absolute;right:-6px;bottom:-10px;font-size:64px;transform:rotate(-8deg);opacity:.9">🥜</span>
+        <s style="text-decoration:none;font-size:9.5px;font-weight:800;letter-spacing:1.5px;color:#F6C445" data-i18n="pantry.label">TAMIMI TRUSTED BRAND</s>
+        <b style="display:block;font-size:16.5px;font-weight:800;margin-top:4px;letter-spacing:-.2px" data-i18n="pantry.title">Pantry staples, packed<br>by our own hands.</b>
+        <span class="chip" style="margin-top:10px;background:#fff;border:none;color:#4A2E1A;font-weight:800" onclick="go('listing')"><span data-i18n="pantry.explore">Explore the range</span> <i class="ic s14" data-i="chev"></i></span>
+      </div>
+
+      <div class="shead"><span class="h2" data-i18n="sec.trustedBrand">Tamimi Trusted Brand</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+      <div class="hsc">
+        <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 250 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Jeera 250 gm</div><span class="pwt">250 g ▾</span><div class="prow"><span class="prc">SAR 109</span><span class="mrp">SAR 120</span><span class="sv">9% OFF</span></div></div>
+        <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tR"><span class="pack" data-e="🫘" data-n="Rajma Chitra" data-s="Premium · 500 g" data-c1="#8E3B2E" data-c2="#F6E6DF"></span><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Rajma Chitra 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">SAR 95</span><span class="mrp">SAR 120</span><span class="sv">21% OFF</span></div></div>
+        <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tL"><span class="pack" data-e="⚪" data-n="Phool Makhana" data-s="Fox Nuts · 100 g" data-c1="#7A5C9E" data-c2="#EFE8F6"></span><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Phool Makhana 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 135</span><span class="mrp">SAR 160</span><span class="sv">16% OFF</span></div></div>
+        <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tY"><span class="pack" data-e="🟡" data-n="Moong Dhuli" data-s="Dal · 500 g" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Moong Dhuli Dal 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">SAR 78</span><span class="mrp">SAR 95</span><span class="sv">18% OFF</span></div></div>
+      </div>
+
+      <div class="shead" style="padding-top:6px"><span class="h2" data-i18n="sec.freshVeg">Fresh Vegetables</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+      <div class="hsc">
+        <div class="pc"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🫑</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Shimla Mirch (Capsicum) 2 pc</div><span class="pwt">250–300 g ▾</span><div class="prow"><span class="prc">SAR 32</span><span class="mrp">SAR 49</span><span class="sv">SAVE SAR 17</span></div></div>
+        <div class="pc"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🌿</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dhania (Coriander Leaves) 100 g</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 18</span><span class="mrp">SAR 28</span><span class="sv">SAVE SAR 10</span></div></div>
+        <div class="pc"><span class="flag">20% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍅</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamatar (Tomato) Hybrid 500 g</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">SAR 24</span><span class="mrp">SAR 30</span><span class="sv">SAVE SAR 6</span></div></div>
+        <div class="pc"><span class="flag">25% OFF</span><div class="pv tO"><img class="pimg" src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥔</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Potato (Aloo) 950 g – 1 kg</div><span class="pwt">1 kg ▾</span><div class="prow"><span class="prc">SAR 34</span><span class="mrp">SAR 46</span><span class="sv">SAVE SAR 12</span></div></div>
+      </div>
+
+      <div class="shead" style="padding-top:6px"><span class="h2" data-i18n="sec.freshFruits">Fresh Fruits</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+      <div class="hsc">
+        <div class="pc"><span class="flag">15% OFF</span><div class="pv tY"><img class="pimg" src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍌</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Kela (Banana) Robusta 6 pc</div><span class="pwt">6 pc ▾</span><div class="prow"><span class="prc">SAR 42</span><span class="mrp">SAR 49</span><span class="sv">SAVE SAR 7</span></div></div>
+        <div class="pc"><span class="flag">20% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍎</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Seb (Apple) Shimla 4 pc</div><span class="pwt">4 pc ▾</span><div class="prow"><span class="prc">SAR 96</span><span class="mrp">SAR 120</span><span class="sv">SAVE SAR 24</span></div></div>
+        <div class="pc"><div class="pv tO"><img class="pimg" src="https://images.unsplash.com/photo-1547514701-42782101795e?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍊</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Santra (Orange) Nagpur 1 kg</div><span class="pwt">1 kg ▾</span><div class="prow"><span class="prc">SAR 74</span><span class="mrp">SAR 89</span><span class="sv">SAVE SAR 15</span></div></div>
+        <div class="pc"><span class="flag">EXOTIC</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1585059895524-72359e06133a?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥝</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Kiwi Green Imported 3 pc</div><span class="pwt">3 pc ▾</span><div class="prow"><span class="prc">SAR 99</span><span class="mrp">SAR 135</span><span class="sv">SAVE SAR 36</span></div></div>
+      </div>
+
+      <div class="spot">
+        <div class="sp" style="background:linear-gradient(150deg,#6E88C9,#44599C)" onclick="go('listing')"><b data-i18n="spot.imported.t">Imported<br>Range</b><s data-i18n="spot.imported.s">From across the world</s><span class="em">✈️</span></div>
+        <div class="sp" style="background:linear-gradient(150deg,#D98A3D,#B06A22)" onclick="go('listing')"><b data-i18n="spot.party.t">Party<br>Essentials</b><s data-i18n="spot.party.s">Snacks, drinks &amp; more</s><span class="em">🎉</span></div>
+      </div>
+
+      <div class="shead"><span class="h2" data-i18n="sec.bestsellers">Bestsellers Near You</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+      <div class="g2" style="padding-top:2px">
+        <div class="pc" onclick="go('pdp')"><span class="flag gold">OWN BRAND</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 250 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Jeera 250 gm</div><span class="pwt">250 g ▾</span><div class="prow"><span class="prc">SAR 109</span><span class="mrp">SAR 120</span><span class="sv">9% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tB"><img class="pimg" src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥛</em><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Fresh Toned Milk 500 ml</div><span class="pwt">500 ml ▾</span><div class="prow"><span class="prc">SAR 26</span><span class="mrp">SAR 33</span><span class="sv">SAVE SAR 7</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">20% OFF</span><div class="pv tY"><img class="pimg" src="https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥚</em><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Farm Eggs Brown 6 pc</div><span class="pwt">6 pc ▾</span><div class="prow"><span class="prc">SAR 48</span><span class="mrp">SAR 60</span><span class="sv">SAVE SAR 12</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag gold">BOGO</span><div class="pv tC"><span class="pack" data-e="🍞" data-n="Milk Bread" data-s="Bakery Fresh · 400 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Milk Bread 400 g</div><span class="pwt">400 g ▾</span><div class="prow"><span class="prc">SAR 45</span><span class="mrp">SAR 90</span><span class="sv">1+1 FREE</span></div></div>
+      </div>
+
+      <div class="trust">
+        <div><i class="ic" data-i="bolt"></i><b data-i18n="trust.delivery">20-Minute<br>Delivery</b></div>
+        <div><i class="ic" data-i="star"></i><b data-i18n="trust.quality">Quality<br>You Trust</b></div>
+        <div><i class="ic" data-i="store"></i><b data-i18n="trust.products">15,000+<br>Products</b></div>
+        <div><i class="ic" data-i="wallet"></i><b data-i18n="trust.savings">Guilt-free<br>Savings</b></div>
+      </div>
+
+      <div class="hnote">
+        <div class="cv" data-i18n="hnote.cv">Al Khobar's own<br>supermarket ♥</div>
+        <s style="text-transform:none;letter-spacing:.2px;font-weight:600;line-height:1.6;max-width:260px;margin:8px auto 0;font-size:11px"><span data-i18n="hnote.line">The supermarket of choice for Saudis and expatriates! Enjoy our best deals, online and in stores.</span></s>
+      </div>
+      </div><!-- /tab-grocery -->
+
+      <!-- FRESH TAB -->
+      <div class="tabc" data-tab="fresh">
+        <div class="tiles">
+          <div class="tile wide" style="background:linear-gradient(115deg,#B7D8A6,#8FBF7C)" onclick="go('listing')"><b data-i18n="tile.farmFresh.t">Farm Fresh, Every Morning</b><s data-i18n="tile.farmFresh.s">Harvested &lt; 24 hrs ago · 120+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#4C7A3C"></i></span><span class="em">🥬🍓</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#F6C889,#EFA84F)" onclick="go('listing')"><b data-i18n="tile.cutSprouts.t">Cut &amp; Sprouts</b><s data-i18n="tile.cutSprouts.s">Ready to cook</s><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🥗</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#BCDCE8,#93C2D6)" onclick="go('listing')"><b data-i18n="tile.exotics.t">Exotics</b><s data-i18n="tile.exotics.s">Imported picks</s><span class="go"><i class="ic s16" data-i="chev" style="color:#3E7A94"></i></span><span class="em">🥑</span></div>
+        </div>
+        <div class="shead"><span class="h2" data-i18n="sec.todaysHarvest">Today's Harvest</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+        <div class="hsc">
+          <div class="pc" onclick="go('pdp')"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥦</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Broccoli Fresh 250–300 g</div><span class="pwt">1 pc ▾</span><div class="prow"><span class="prc">SAR 45</span><span class="mrp">SAR 69</span><span class="sv">SAVE SAR 24</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">FRESH</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥬</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Palak (Spinach) 250 g</div><span class="pwt">250 g ▾</span><div class="prow"><span class="prc">SAR 22</span><span class="mrp">SAR 30</span><span class="sv">SAVE SAR 8</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">COMBO</span><div class="pv tO"><img class="pimg" src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🧺</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Weekly Veggie Basket 12 items</div><span class="pwt">~3 kg ▾</span><div class="prow"><span class="prc">SAR 299</span><span class="mrp">SAR 410</span><span class="sv">SAVE SAR 111</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">EXOTIC</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1585059895524-72359e06133a?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥝</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Kiwi Green Imported 3 pc</div><span class="pwt">3 pc ▾</span><div class="prow"><span class="prc">SAR 99</span><span class="mrp">SAR 135</span><span class="sv">SAVE SAR 36</span></div></div>
+        </div>
+        <div class="sect" style="background:linear-gradient(140deg,#F2FAF3,#E9F6EC);border-color:#CEE9D5;display:flex;gap:10px;align-items:center;margin-top:4px">
+          <i class="ic" data-i="check" style="color:var(--green)"></i><s style="text-decoration:none;font-size:11.5px;font-weight:700;color:#2C6B36;line-height:1.55"><span data-i18n="fresh.promise">Not fresh? Full refund, no questions asked — <b>Tamimi Freshness Promise</b></span></s>
+        </div>
+      </div>
+
+      <!-- BABY CARE TAB -->
+      <div class="tabc" data-tab="baby">
+        <div class="tiles">
+          <div class="tile wide" style="background:linear-gradient(115deg,#D9C9EE,#BBA3DE)" onclick="go('listing')"><b data-i18n="tile.babyEverything.t">Everything for Baby</b><s data-i18n="tile.babyEverything.s">Certified &amp; gentle · 400+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#6C4E99"></i></span><span class="em">🍼🧸</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#BCDCE8,#93C2D6)" onclick="go('listing')"><b data-i18n="tile.diapersWipes">Diapers &amp; Wipes</b><span class="go"><i class="ic s16" data-i="chev" style="color:#3E7A94"></i></span><span class="em">🧷</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#F6C889,#EFA84F)" onclick="go('listing')"><b data-i18n="tile.babyFood">Baby Food</b><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🥣</span></div>
+        </div>
+        <div class="shead"><span class="h2" data-i18n="sec.parentsFav">Parents' Favourites</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+        <div class="hsc">
+          <div class="pc" onclick="go('pdp')"><span class="flag">20% OFF</span><div class="pv tL"><em>🧷</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Pampers Diapers M 42 pc</div><span class="pwt">42 pc ▾</span><div class="prow"><span class="prc">SAR 679</span><span class="mrp">SAR 849</span><span class="sv">SAVE SAR 170</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tB"><em>🥣</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Cerelac Wheat Apple 300 g</div><span class="pwt">300 g ▾</span><div class="prow"><span class="prc">SAR 285</span><span class="mrp">SAR 305</span><span class="sv">SAVE SAR 20</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">BOGO</span><div class="pv tL"><em>🧻</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Himalaya Baby Wipes 72 pc</div><span class="pwt">72 pc ▾</span><div class="prow"><span class="prc">SAR 199</span><span class="mrp">SAR 398</span><span class="sv">1+1 FREE</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tY"><em>🧴</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Johnson's Baby Lotion 200 ml</div><span class="pwt">200 ml ▾</span><div class="prow"><span class="prc">SAR 210</span><span class="mrp">SAR 240</span><span class="sv">SAVE SAR 30</span></div></div>
+        </div>
+        <div class="sect" style="display:flex;gap:10px;align-items:center;margin-top:4px">
+          <i class="ic" data-i="star" style="color:#C8890D"></i><s style="text-decoration:none;font-size:11.5px;font-weight:700;color:#57534D;line-height:1.55"><span data-i18n="baby.cert">All baby products are <b>FSSAI / BIS certified</b> and checked for expiry before dispatch</span></s>
+        </div>
+      </div>
+
+      <!-- BEAUTY TAB -->
+      <div class="tabc" data-tab="beauty">
+        <div class="tiles">
+          <div class="tile wide" style="background:linear-gradient(115deg,#F0B9C8,#DE8BA5)" onclick="go('listing')"><b data-i18n="tile.beautyCosmetics.t">Beauty &amp; Cosmetics</b><s data-i18n="tile.beautyCosmetics.s">Skincare, makeup &amp; more · 900+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#A34D6B"></i></span><span class="em">💄✨</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#D9C9EE,#BBA3DE)" onclick="go('listing')"><b data-i18n="tile.skincare">Skincare</b><span class="go"><i class="ic s16" data-i="chev" style="color:#6C4E99"></i></span><span class="em">🧴</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#BCDCE8,#93C2D6)" onclick="go('listing')"><b data-i18n="tile.bathBody">Bath &amp; Body</b><span class="go"><i class="ic s16" data-i="chev" style="color:#3E7A94"></i></span><span class="em">🧼</span></div>
+        </div>
+        <div class="shead"><span class="h2" data-i18n="sec.trendingBeauty">Trending in Beauty</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+        <div class="hsc">
+          <div class="pc" onclick="go('pdp')"><span class="flag">30% OFF</span><div class="pv tR"><em>💄</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Lakmé Lip Love Crimson 3.5 g</div><span class="pwt">3.5 g ▾</span><div class="prow"><span class="prc">SAR 209</span><span class="mrp">SAR 299</span><span class="sv">SAVE SAR 90</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tB"><em>🧴</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Nivea Soft Cream 100 ml</div><span class="pwt">100 ml ▾</span><div class="prow"><span class="prc">SAR 165</span><span class="mrp">SAR 199</span><span class="sv">SAVE SAR 34</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">NEW</span><div class="pv tL"><em>🧖</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Mamaearth Ubtan Face Wash 100 ml</div><span class="pwt">100 ml ▾</span><div class="prow"><span class="prc">SAR 237</span><span class="mrp">SAR 259</span><span class="sv">SAVE SAR 22</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tY"><em>🧼</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dove Cream Bar Soap 3×100 g</div><span class="pwt">3 pc ▾</span><div class="prow"><span class="prc">SAR 165</span><span class="mrp">SAR 210</span><span class="sv">SAVE SAR 45</span></div></div>
+        </div>
+      </div>
+
+      <!-- DRINKS TAB -->
+      <div class="tabc" data-tab="drinks">
+        <div class="tiles">
+          <div class="tile wide" style="background:linear-gradient(115deg,#9DB3E8,#6E88C9)" onclick="go('listing')"><b data-i18n="tile.chilledReady.t">Chilled &amp; Ready</b><s data-i18n="tile.chilledReady.s">Delivered cold from our fridge · 350+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#44599C"></i></span><span class="em">🥤🧊</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#F6C889,#EFA84F)" onclick="go('listing')"><b data-i18n="tile.juices">Juices</b><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🧃</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#B7D8A6,#8FBF7C)" onclick="go('listing')"><b data-i18n="tile.teaCoffee">Tea &amp; Coffee</b><span class="go"><i class="ic s16" data-i="chev" style="color:#4C7A3C"></i></span><span class="em">☕</span></div>
+        </div>
+        <div class="shead"><span class="h2" data-i18n="sec.beatHeat">Beat the Heat</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+        <div class="hsc">
+          <div class="pc" onclick="go('pdp')"><span class="flag">CHILLED</span><div class="pv tB"><em>🥤</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Coca-Cola 750 ml</div><span class="pwt">750 ml ▾</span><div class="prow"><span class="prc">SAR 40</span><span class="mrp">SAR 45</span><span class="sv">SAVE SAR 5</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tO"><em>🧃</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Real Mixed Fruit Juice 1 L</div><span class="pwt">1 L ▾</span><div class="prow"><span class="prc">SAR 105</span><span class="mrp">SAR 125</span><span class="sv">SAVE SAR 20</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">FRESH</span><div class="pv tB"><img class="pimg" src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥛</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Cold Coffee Shake 300 ml</div><span class="pwt">300 ml ▾</span><div class="prow"><span class="prc">SAR 75</span><span class="mrp">SAR 90</span><span class="sv">SAVE SAR 15</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tG"><em>💧</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Bisleri Water 1 L × 6</div><span class="pwt">6 pc ▾</span><div class="prow"><span class="prc">SAR 108</span><span class="mrp">SAR 120</span><span class="sv">SAVE SAR 12</span></div></div>
+        </div>
+      </div>
+
+      <!-- SNACKS TAB -->
+      <div class="tabc" data-tab="snacks">
+        <div class="tiles">
+          <div class="tile wide" style="background:linear-gradient(115deg,#F2B368,#D98A3D)" onclick="go('listing')"><b data-i18n="tile.snackOClock.t">Snack O'Clock</b><s data-i18n="tile.snackOClock.s">Chips, namkeen &amp; sweets · 600+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🍿🍫</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#D9C9EE,#BBA3DE)" onclick="go('listing')"><b data-i18n="tile.chocolates">Chocolates</b><span class="go"><i class="ic s16" data-i="chev" style="color:#6C4E99"></i></span><span class="em">🍫</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#F0B9C8,#DE8BA5)" onclick="go('listing')"><b data-i18n="tile.biscuits">Biscuits</b><span class="go"><i class="ic s16" data-i="chev" style="color:#A34D6B"></i></span><span class="em">🍪</span></div>
+        </div>
+        <div class="shead"><span class="h2" data-i18n="sec.mostMunched">Most Munched</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+        <div class="hsc">
+          <div class="pc" onclick="go('pdp')"><span class="flag">20% OFF</span><div class="pv tY"><em>🍟</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Lay's India's Magic Masala 90 g</div><span class="pwt">90 g ▾</span><div class="prow"><span class="prc">SAR 40</span><span class="mrp">SAR 50</span><span class="sv">SAVE SAR 10</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag gold">OWN BRAND</span><div class="pv tO"><span class="pack" data-e="🥨" data-n="Mix Namkeen" data-s="Classic · 350 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Mix Namkeen 350 g</div><span class="pwt">350 g ▾</span><div class="prow"><span class="prc">SAR 99</span><span class="mrp">SAR 130</span><span class="sv">SAVE SAR 31</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tL"><em>🍫</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dairy Milk Silk 150 g</div><span class="pwt">150 g ▾</span><div class="prow"><span class="prc">SAR 172</span><span class="mrp">SAR 190</span><span class="sv">SAVE SAR 18</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">BOGO</span><div class="pv tR"><em>🍪</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Hide &amp; Seek Chocolate 200 g</div><span class="pwt">200 g ▾</span><div class="prow"><span class="prc">SAR 45</span><span class="mrp">SAR 90</span><span class="sv">1+1 FREE</span></div></div>
+        </div>
+      </div>
+
+      <div class="bnav">
+        <a class="on"><i class="ic" data-i="home"></i><span data-i18n="nav.home">Home</span></a>
+        <a onclick="go('categories')"><i class="ic" data-i="grid"></i><span data-i18n="nav.categories">Categories</span></a>
+        <a onclick="go('offers')"><i class="ic" data-i="tag"></i><span data-i18n="nav.offers">Offers</span></a>
+        <a onclick="go('cart')"><i class="ic" data-i="cart"></i><span data-i18n="nav.cart">Cart</span><span class="bdg">3</span></a>
+        <a onclick="go('account')"><i class="ic" data-i="user"></i><span data-i18n="nav.account">Account</span></a>
+      </div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="screen" data-screen="categories">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.allCategories">All Categories</span><span class="rt"><span class="bk" onclick="go('searchsc')"><i class="ic" data-i="search"></i></span></span></div>
+      <div style="padding:8px 16px 20px;flex:1">
+        <div class="shead" style="padding:10px 0 10px"><span class="h2" data-i18n="cat.groceryKitchen">Grocery &amp; Kitchen</span></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px">
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tG" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🥬</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.fruitsVeg2">Fruits &amp; Vegetables</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tY" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🍚</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.riceAttaDals">Rice, Atta &amp; Dals</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tC" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🫙</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.masalaSpices">Masala &amp; Spices</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tO" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🛢️</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.oilGhee">Oil &amp; Ghee</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tB" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🥛</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.dairyBreakfast2">Dairy &amp; Breakfast</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tC" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🍞</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.freshBakery2">Fresh Bakery</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tR" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🥩</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.freshMeat">Fresh Meat</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tB" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🧊</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.frozenFood">Frozen Food</b></div>
+        </div>
+        <div class="shead" style="padding:18px 0 10px"><span class="h2" data-i18n="cat.snacksDrinks">Snacks &amp; Drinks</span></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px">
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tY" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🍿</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.snacksNamkeen">Snacks &amp; Namkeen</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tB" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🥤</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.coldDrinksJuices">Cold Drinks &amp; Juices</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tL" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🍫</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.chocolatesSweets">Chocolates &amp; Sweets</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tC" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">☕</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.teaCoffeeMore">Tea, Coffee &amp; More</b></div>
+        </div>
+        <div class="shead" style="padding:18px 0 10px"><span class="h2" data-i18n="cat.householdPersonal">Household &amp; Personal Care</span></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px">
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tB" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🧴</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.bathBody2">Bath &amp; Body</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tL" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">💄</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.beautyCosmetics2">Beauty &amp; Cosmetics</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tG" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🧹</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.cleaningEssentials">Cleaning Essentials</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tL" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🍼</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.babyCare2">Baby Care</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tO" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🐶</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.petCare">Pet Care</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tY" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🍳</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.kitchenware">Kitchenware</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tB" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">💊</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.pharmaWellness">Pharma &amp; Wellness</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tC" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">✈️</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.importedRange">Imported Range</b></div>
+        </div>
+      </div>
+      <div class="bnav">
+        <a onclick="go('home')"><i class="ic" data-i="home"></i><span data-i18n="nav.home">Home</span></a>
+        <a class="on"><i class="ic" data-i="grid"></i><span data-i18n="nav.categories">Categories</span></a>
+        <a onclick="go('offers')"><i class="ic" data-i="tag"></i><span data-i18n="nav.offers">Offers</span></a>
+        <a onclick="go('cart')"><i class="ic" data-i="cart"></i><span data-i18n="nav.cart">Cart</span><span class="bdg">3</span></a>
+        <a onclick="go('account')"><i class="ic" data-i="user"></i><span data-i18n="nav.account">Account</span></a>
+      </div>
+    </div>
+
+    <!-- LISTING -->
+    <div class="screen" data-screen="listing">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('categories')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.fruitsVeg">Fruits &amp; Vegetables</span><span class="rt"><span class="bk" onclick="go('searchsc')"><i class="ic" data-i="search"></i></span></span></div>
+      <div class="ltools"><b><span data-i18n="listing.productsCount">50 Products</span> <s data-i18n="listing.deliveredIn">· delivered in 20 mins</s></b>
+        <div style="display:flex;gap:7px"><button class="tbtn"><i class="ic s14" data-i="filter"></i><span data-i18n="listing.filter">Filter</span></button><button class="tbtn"><i class="ic s14" data-i="sort"></i><span data-i18n="listing.sort">Sort</span></button></div>
+      </div>
+      <div class="lbody">
+        <div class="rail">
+          <div class="ri on"><span class="re">🧺</span><span data-i18n="rail.fruitsVeggies">Fruits &amp; Veggies</span></div>
+          <div class="ri"><span class="re">🥗</span><span data-i18n="rail.freshlyCut">Freshly Cut</span></div>
+          <div class="ri"><span class="re">🥝</span><span data-i18n="rail.exoticFruits">Exotic Fruits</span></div>
+          <div class="ri"><span class="re">🥑</span><span data-i18n="rail.exoticVeggies">Exotic Veggies</span></div>
+          <div class="ri"><span class="re">🥕</span><span data-i18n="rail.vegetables">Vegetables</span></div>
+          <div class="ri"><span class="re">🍎</span><span data-i18n="rail.fruits">Fruits</span></div>
+          <div class="ri"><span class="re">🌿</span><span data-i18n="rail.herbs">Herbs</span></div>
+        </div>
+        <div class="lgrid">
+          <div class="pc"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1568584711075-3d021a7c3ca3?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥦</em><span class="stp"><i class="ic s12" data-i="minus"></i>1<i class="ic s12" data-i="plus"></i></span></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Phool Gobhi (Cauliflower) 450–550 g</div><span class="pwt">1 pc ▾</span><div class="prow"><span class="prc">SAR 32</span><span class="mrp">SAR 49</span><span class="sv">SAVE SAR 17</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🫑</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Shimla Mirch (Capsicum) Green 2 pc</div><span class="pwt">250–300 g ▾</span><div class="prow"><span class="prc">SAR 32</span><span class="mrp">SAR 49</span><span class="sv">SAVE SAR 17</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🌿</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dhania (Coriander Leaves) 100 g</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 18</span><span class="mrp">SAR 28</span><span class="sv">SAVE SAR 10</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">30% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥒</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Lauki (Bottle Gourd) 1 pc 450–600 g</div><span class="pwt">1 pc ▾</span><div class="prow"><span class="prc">SAR 26</span><span class="mrp">SAR 38</span><span class="sv">SAVE SAR 12</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">35% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1508747703725-719777637510?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🧅</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Pyaaj (Onion) 450 g</div><span class="pwt">450 g ▾</span><div class="prow"><span class="prc">SAR 29</span><span class="mrp">SAR 45</span><span class="sv">SAVE SAR 16</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">25% OFF</span><div class="pv tO"><img class="pimg" src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥔</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Potato (Aloo) 950 g – 1 kg</div><span class="pwt">1 kg ▾</span><div class="prow"><span class="prc">SAR 34</span><span class="mrp">SAR 46</span><span class="sv">SAVE SAR 12</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">20% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍅</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamatar (Tomato) Hybrid 500 g</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">SAR 24</span><span class="mrp">SAR 30</span><span class="sv">SAVE SAR 6</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">15% OFF</span><div class="pv tY"><img class="pimg" src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍌</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Kela (Banana) Robusta 6 pc</div><span class="pwt">6 pc ▾</span><div class="prow"><span class="prc">SAR 42</span><span class="mrp">SAR 49</span><span class="sv">SAVE SAR 7</span></div></div>
+        </div>
+      </div>
+      <div class="bnav">
+        <a onclick="go('home')"><i class="ic" data-i="home"></i><span data-i18n="nav.home">Home</span></a>
+        <a class="on"><i class="ic" data-i="grid"></i><span data-i18n="nav.categories">Categories</span></a>
+        <a onclick="go('offers')"><i class="ic" data-i="tag"></i><span data-i18n="nav.offers">Offers</span></a>
+        <a onclick="go('cart')"><i class="ic" data-i="cart"></i><span data-i18n="nav.cart">Cart</span><span class="bdg">3</span></a>
+        <a onclick="go('account')"><i class="ic" data-i="user"></i><span data-i18n="nav.account">Account</span></a>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="screen" data-screen="searchsc">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead" style="gap:9px"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span>
+        <div class="srch" style="margin:0;flex:1;box-shadow:none;border:1.4px solid var(--red);padding:10px 13px"><i class="ic" data-i="search" style="color:var(--red)"></i><b>jeera</b><i class="ic s16" data-i="x" style="margin-left:auto;color:var(--faint)"></i></div>
+      </div>
+      <div class="shead" style="padding-top:14px"><span class="h2" data-i18n="search.recentSearches">Recent Searches</span><span class="link" data-i18n="search.clearAll">Clear all</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;padding:2px 16px 6px">
+        <span class="chip">atta 5kg</span><span class="chip">amul butter</span><span class="chip">maggi</span><span class="chip">paneer</span><span class="chip">cold coffee</span>
+      </div>
+      <div class="shead"><span class="h2"><span data-i18n="search.resultsFor">Results for</span> “jeera” <s style="text-decoration:none;color:var(--sub);font-weight:600;font-size:11.5px">· 6 items</s></span></div>
+      <div class="g2">
+        <div class="pc" onclick="go('pdp')"><span class="flag gold">OWN BRAND</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 250 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Jeera 250 gm</div><span class="pwt">250 g ▾</span><div class="prow"><span class="prc">SAR 109</span><span class="mrp">SAR 120</span><span class="sv">9% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tC"><em>🫙</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Catch Jeera Whole 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 65</span><span class="mrp">SAR 68</span><span class="sv">4% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">25% OFF</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 100 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Jeera 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 47</span><span class="mrp">SAR 63</span><span class="sv">SAVE SAR 16</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tB"><em>🥤</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Jeera Masala Soda 250 ml</div><span class="pwt">250 ml ▾</span><div class="prow"><span class="prc">SAR 20</span><span class="mrp">SAR 25</span><span class="sv">SAVE SAR 5</span></div></div>
+      </div>
+    </div>
+
+    <!-- PDP -->
+    <div class="screen" data-screen="pdp">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('listing')"><i class="ic" data-i="back"></i></span><span style="font-size:13px;color:var(--sub);font-weight:600" data-i18n="pdp.categoryLabel">Masala &amp; Spices</span><span class="rt"><span class="bk"><i class="ic" data-i="heart"></i></span><span class="bk"><i class="ic" data-i="share"></i></span></span></div>
+      <div class="card" style="margin:10px 16px 0;padding:18px;position:relative">
+        <span class="flag gold" style="top:14px;border-radius:8px;left:14px;position:absolute">TAMIMI TRUSTED BRAND</span>
+        <div class="pv tC" style="height:262px;margin:14px 0 0"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 250 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span></div>
+        <div style="display:flex;gap:5px;justify-content:center;margin-top:10px"><i style="width:16px;height:5px;border-radius:3px;background:var(--red)"></i><i style="width:5px;height:5px;border-radius:3px;background:#DCD7CE"></i><i style="width:5px;height:5px;border-radius:3px;background:#DCD7CE"></i><i style="width:5px;height:5px;border-radius:3px;background:#DCD7CE"></i></div>
+      </div>
+      <div style="display:flex;gap:8px;padding:10px 16px 0">
+        <div class="card" style="flex:1;height:58px;display:flex;align-items:center;justify-content:center;font-size:26px;border:1.5px solid var(--red);border-radius:14px">🫙</div>
+        <div class="card" style="flex:1;height:58px;display:flex;align-items:center;justify-content:center;font-size:26px;border-radius:14px;cursor:pointer">🌱</div>
+        <div class="card" style="flex:1;height:58px;display:flex;align-items:center;justify-content:center;font-size:26px;border-radius:14px;cursor:pointer">🍛</div>
+        <div class="card" style="flex:1;height:58px;display:flex;align-items:center;justify-content:center;font-size:26px;border-radius:14px;cursor:pointer">📦</div>
+      </div>
+      <div class="card" style="margin:10px 16px 96px;padding:18px">
+        <h2 style="font-size:18px;font-weight:800;letter-spacing:-.3px">Tamimi Jeera 250gm</h2>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:5px"><i class="ic s14" data-i="star" style="color:#E3A82B"></i><b style="font-size:12px">4.6</b><span class="cap">(1,240 ratings)</span><span class="cap" style="margin-left:auto;display:flex;align-items:center;gap:4px;color:#5E93A8;font-weight:800"><i class="ic s12" data-i="bolt"></i><span data-i18n="pdp.deliveredIn20">DELIVERED IN 20 MINS</span></span></div>
+        <div style="margin-top:10px;display:flex;align-items:baseline;gap:8px"><span style="font-size:22px;font-weight:800;letter-spacing:-.4px">SAR 109</span><span class="mrp" style="font-size:13px">SAR 120</span><span class="sv" style="font-size:10.5px;margin-left:0">9% OFF</span><span class="cap" style="margin-left:auto" data-i18n="pdp.inclTaxes">Incl. of all taxes</span></div>
+        <div style="display:flex;gap:9px;margin:15px 0 3px">
+          <span class="chip on" style="flex-direction:column;gap:1px;padding:9px 18px;border-radius:13px"><b style="font-size:12.5px">250 g</b><s style="text-decoration:none;font-size:10px;font-weight:600">SAR 109</s></span>
+          <span class="chip" style="flex-direction:column;gap:1px;padding:9px 18px;border-radius:13px"><b style="font-size:12.5px">500 g</b><s style="text-decoration:none;font-size:10px;font-weight:600;color:var(--sub)">SAR 205</s></span>
+          <span class="chip" style="flex-direction:column;gap:1px;padding:9px 18px;border-radius:13px"><b style="font-size:12.5px">1 kg</b><s style="text-decoration:none;font-size:10px;font-weight:600;color:var(--sub)">SAR 389</s></span>
+        </div>
+        <div style="border-top:1px solid var(--hairline);margin-top:16px;padding-top:14px">
+          <h3 style="font-size:14.5px;font-weight:800;letter-spacing:-.2px" data-i18n="pdp.productDetails">Product Details</h3>
+          <p style="font-size:12.5px;line-height:1.75;color:#57534D;margin-top:7px;font-weight:500" data-i18n="pdp.description">Enhance the flavor of your everyday cooking with Tamimi Jeera (Cumin Seeds) — a kitchen essential known for its distinctive aroma and earthy taste. Carefully sourced and hygienically packed, perfect for tempering, seasoning, roasting, and fresh masalas.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px">
+          <div style="background:var(--bg);border-radius:12px;padding:11px"><span class="cap" style="letter-spacing:.5px;font-size:9.5px" data-i18n="pdp.shelfLife">SHELF LIFE</span><b style="display:block;font-size:12px;margin-top:2px">9 months</b></div>
+          <div style="background:var(--bg);border-radius:12px;padding:11px"><span class="cap" style="letter-spacing:.5px;font-size:9.5px" data-i18n="pdp.origin">ORIGIN</span><b style="display:block;font-size:12px;margin-top:2px">India</b></div>
+          <div style="background:var(--bg);border-radius:12px;padding:11px"><span class="cap" style="letter-spacing:.5px;font-size:9.5px">FSSAI</span><b style="display:block;font-size:12px;margin-top:2px">10012043001355</b></div>
+          <div style="background:var(--bg);border-radius:12px;padding:11px"><span class="cap" style="letter-spacing:.5px;font-size:9.5px" data-i18n="pdp.returns">RETURNS</span><b style="display:block;font-size:12px;margin-top:2px">48 hrs, unopened</b></div>
+        </div>
+        <div class="shead" style="padding:18px 0 10px"><span class="h2" data-i18n="sec.similarProducts">Similar Products</span></div>
+        <div class="hsc" style="padding:0 0 6px;margin:0 -4px">
+          <div class="pc"><div class="pv tC"><em>🫙</em><button class="addb">ADD</button></div><div class="pnm">Catch Jeera Whole 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 65</span><span class="mrp">SAR 68</span></div></div>
+          <div class="pc"><div class="pv tR"><span class="pack" data-e="🌶️" data-n="Mirch Powder" data-s="Chilli · 100 g" data-c1="#D2231F" data-c2="#FAE4E0"></span><button class="addb">ADD</button></div><div class="pnm">Tamimi Mirch Powder 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 52</span><span class="mrp">SAR 60</span></div></div>
+          <div class="pc"><div class="pv tO"><span class="pack" data-e="🟠" data-n="Haldi Powder" data-s="Turmeric · 100 g" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb">ADD</button></div><div class="pnm">Tamimi Haldi Powder 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 38</span><span class="mrp">SAR 45</span></div></div>
+        </div>
+      </div>
+      <div style="position:sticky;bottom:0;margin-top:auto;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);padding:13px 16px 24px;display:flex;gap:12px;align-items:center;z-index:40;flex-shrink:0;box-shadow:0 -10px 30px rgba(27,20,12,.1);border-radius:24px 24px 0 0">
+        <div style="position:relative;width:48px;height:48px;border-radius:14px;background:var(--red-soft);display:flex;align-items:center;justify-content:center;color:var(--red);cursor:pointer" onclick="go('cart')"><i class="ic" data-i="cart"></i><span class="bdg" style="position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;font-size:9px;font-weight:800;border-radius:8px;padding:2px 6px;border:1.5px solid #fff">3</span></div>
+        <button class="btn" style="flex:1" onclick="go('cart')"><span data-i18n="pdp.addToCart">Add To Cart</span> · SAR 109</button>
+      </div>
+    </div>
+<!-- OFFERS -->
+    <div class="screen" data-screen="offers">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.offers">Offers</span><span class="rt"><span class="bk" onclick="go('searchsc')"><i class="ic" data-i="search"></i></span></span></div>
+      <div style="margin:12px 16px 4px;border-radius:20px;background:linear-gradient(115deg,#F0584A,#C81E1B);color:#fff;padding:20px 18px;position:relative;overflow:hidden;box-shadow:var(--sh-md)">
+        <div style="position:absolute;right:-14px;top:-14px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.1)"></div>
+        <div style="position:absolute;right:26px;bottom:-24px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.08)"></div>
+        <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%) rotate(-6deg);font-size:52px;filter:drop-shadow(0 8px 8px rgba(60,5,0,.3))">🍅🥛</span>
+        <s style="text-decoration:none;font-size:9.5px;font-weight:800;letter-spacing:1.5px;color:var(--yellow)" data-i18n="offers.todayOnlyEnds">TODAY ONLY · ENDS 11:59 PM</s>
+        <b style="display:block;font-size:24px;font-weight:800;letter-spacing:-.5px;margin-top:5px;line-height:1.1" data-i18n="promo.bogo.b">Buy 1 Get 1 <span style="color:var(--yellow)">Free</span></b>
+        <s style="text-decoration:none;font-size:11.5px;font-weight:600;opacity:.9;display:block;margin-top:5px" data-i18n="promo.bogo.s">Fresh favourites at double the value</s>
+        <div style="display:flex;gap:5px;margin-top:14px"><i style="width:16px;height:5px;border-radius:3px;background:#fff"></i><i style="width:5px;height:5px;border-radius:3px;background:rgba(255,255,255,.45)"></i><i style="width:5px;height:5px;border-radius:3px;background:rgba(255,255,255,.45)"></i><i style="width:5px;height:5px;border-radius:3px;background:rgba(255,255,255,.45)"></i></div>
+      </div>
+      <div style="display:flex;gap:8px;overflow-x:auto;padding:12px 16px 4px;scrollbar-width:none">
+        <span class="chip on"><i class="ic s14" data-i="ticket"></i><span data-i18n="offers.upto50">Upto 50% off</span></span>
+        <span class="chip">➊+➊ <span data-i18n="offers.bogo">BOGO</span></span>
+        <span class="chip"><i class="ic s14" data-i="star"></i><span data-i18n="offers.megaDeals">Mega Deals</span></span>
+        <span class="chip"><i class="ic s14" data-i="bolt"></i><span data-i18n="offers.flashSale">Flash Sale</span></span>
+      </div>
+      <div class="g2" style="padding-top:12px">
+        <div class="pc" onclick="go('pdp')"><span class="flag">50% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1508747703725-719777637510?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🧅</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Pyaaj (Onion) 450 g</div><span class="pwt">450 g ▾</span><div class="prow"><span class="prc">SAR 22</span><span class="mrp">SAR 45</span><span class="sv">SAVE SAR 23</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">50% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🌿</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dhania (Coriander Leaves) 100 g</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 14</span><span class="mrp">SAR 28</span><span class="sv">SAVE SAR 14</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">50% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🫑</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Shimla Mirch (Capsicum) 2 pc</div><span class="pwt">250–300 g ▾</span><div class="prow"><span class="prc">SAR 25</span><span class="mrp">SAR 49</span><span class="sv">SAVE SAR 24</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag gold">BOGO</span><div class="pv tC"><span class="pack" data-e="🍞" data-n="Milk Bread" data-s="Bakery Fresh · 400 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Milk Bread 400 g</div><span class="pwt">400 g ▾</span><div class="prow"><span class="prc">SAR 45</span><span class="mrp">SAR 90</span><span class="sv">1+1 FREE</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">MEGA</span><div class="pv tY"><span class="pack" data-e="🍚" data-n="Rice Gold" data-s="Premium · 5 kg" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Rice 5 kg (Gold)</div><span class="pwt">5 kg ▾</span><div class="prow"><span class="prc">SAR 600</span><span class="mrp">SAR 775</span><span class="sv">SAVE SAR 175</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">FLASH</span><div class="pv tO"><span class="pack" data-e="🥜" data-n="Badam" data-s="American · 500 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Badam American 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">SAR 489</span><span class="mrp">SAR 650</span><span class="sv">SAVE SAR 161</span></div></div>
+      </div>
+      <div class="bnav">
+        <a onclick="go('home')"><i class="ic" data-i="home"></i><span data-i18n="nav.home">Home</span></a>
+        <a onclick="go('categories')"><i class="ic" data-i="grid"></i><span data-i18n="nav.categories">Categories</span></a>
+        <a class="on"><i class="ic" data-i="tag"></i><span data-i18n="nav.offers">Offers</span></a>
+        <a onclick="go('cart')"><i class="ic" data-i="cart"></i><span data-i18n="nav.cart">Cart</span><span class="bdg">3</span></a>
+        <a onclick="go('account')"><i class="ic" data-i="user"></i><span data-i18n="nav.account">Account</span></a>
+      </div>
+    </div>
+
+    <!-- CART -->
+    <div class="screen" data-screen="cart">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.myCart">My Cart</span><span class="rt"><span class="cap" style="align-self:center">3 items · saving SAR 236</span></span></div>
+      <div class="warn"><i class="ic s16" data-i="clock"></i>Add items worth <b>SAR 22</b> more to reach the SAR 199 minimum cart value</div>
+
+      <div class="sect">
+        <h4 data-i18n="cart.deliveryType">Delivery Type</h4>
+        <div class="dtype">
+          <div class="dopt"><span class="rdo"></span><b data-i18n="cart.combined.t">Combined</b><s data-i18n="cart.combined.s">All together · 20 mins</s></div>
+          <div class="dopt on"><span class="rdo"></span><b data-i18n="cart.multiDelivery.t">Multi-Delivery ⚡</b><s data-i18n="cart.multiDelivery.s">Fastest first · from 5 mins</s></div>
+        </div>
+      </div>
+
+      <div class="sect">
+        <div class="hrow" style="margin-bottom:4px"><h4 style="margin:0"><i class="ic s16" data-i="bolt" style="color:#E3A82B"></i><span data-i18n="cart.deliveredIn5">Delivered in 5 mins</span></h4><span class="cap">2 items · Delivery 1</span></div>
+        <div class="ci">
+          <div class="cim tC"><em>🫙</em></div>
+          <div class="nm"><b>Tamimi Jeera 250gm</b><s>250 g</s><span class="offer-badge"><i class="ic s12" data-i="check"></i>Special Offer Applied</span></div>
+          <span class="mstp"><i class="ic s12" data-i="minus"></i>1<i class="ic s12" data-i="plus"></i></span>
+          <div class="pr"><b>SAR 109</b><s>SAR 146</s></div>
+        </div>
+        <div class="ci">
+          <div class="cim tY"><em>🫘</em></div>
+          <div class="nm"><b>Tamimi Black Chana 500gm</b><s>500 g</s></div>
+          <span class="mstp"><i class="ic s12" data-i="minus"></i>1<i class="ic s12" data-i="plus"></i></span>
+          <div class="pr"><b>SAR 69</b><s>SAR 93</s></div>
+        </div>
+        <div class="ci" style="background:linear-gradient(140deg,#FDF7F0,#FBEFE4);border-radius:14px;padding:11px;border:1px dashed #EBCDA8;margin-top:4px">
+          <div class="cim" style="background:#fff"><em>🫙</em></div>
+          <div class="nm"><b>Catch Jeera Whole 100gm</b><s>Swap to Tamimi Jeera &amp; save SAR 18</s></div>
+          <button class="addb" style="position:static;box-shadow:none" data-i18n="cart.swap">SWAP</button>
+        </div>
+        <div class="swl"><i></i><span data-i18n="cart.swapSave">Swap and Save</span><i></i></div>
+      </div>
+
+      <div class="sect">
+        <div class="hrow" style="margin-bottom:4px"><h4 style="margin:0"><i class="ic s16" data-i="truck" style="color:var(--sub)"></i><span data-i18n="cart.deliveredIn20">Delivered in 20 mins</span></h4><span class="cap">1 item · Delivery 2</span></div>
+        <div class="ci">
+          <div class="cim tY"><em>🍚</em></div>
+          <div class="nm"><b>Tamimi Rice 5kg (Gold)</b><s>5 kg</s></div>
+          <span class="mstp"><i class="ic s12" data-i="minus"></i>1<i class="ic s12" data-i="plus"></i></span>
+          <div class="pr"><b>SAR 600</b><s>SAR 775</s></div>
+        </div>
+      </div>
+
+      <div class="sect">
+        <div class="hrow" style="border:1.4px dashed #E7B9B3;border-radius:13px;padding:12px 13px;background:linear-gradient(140deg,#fff,var(--red-soft));cursor:pointer">
+          <span style="font-size:12px;font-weight:800;color:var(--red);display:flex;align-items:center;gap:8px"><i class="ic s16" data-i="ticket"></i>TAMIMI50 · Flat SAR 50 off above SAR 499</span>
+          <b style="color:var(--red);font-size:12px" data-i18n="cart.apply">APPLY</b>
+        </div>
+      </div>
+
+      <div class="sect bill">
+        <h4 data-i18n="cart.billDetails">Bill Details</h4>
+        <div class="r"><span data-i18n="cart.itemTotal">Item total (3 items)</span><b>SAR 778</b></div>
+        <div class="r"><span data-i18n="cart.savedMrp">Saved on MRP</span><span class="fr">− SAR 236</span></div>
+        <div class="r"><span data-i18n="cart.deliveryFee">Delivery fee</span> <s class="mrp">SAR 35</s><span class="fr" data-i18n="cart.free">FREE</span></div>
+        <div class="r"><span data-i18n="cart.handling">Handling charge</span><b>SAR 9</b></div>
+        <div class="r tot"><span data-i18n="cart.toPay">To Pay</span><span>SAR 787</span></div>
+        <div style="margin-top:10px;background:var(--green-soft);color:var(--green);font-size:11px;font-weight:800;border-radius:10px;padding:9px 12px;text-align:center">🎉 You're saving SAR 236 on this order</div>
+      </div>
+
+      <div class="shead"><span class="h2" data-i18n="sec.alsoBought">Also Bought</span></div>
+      <div class="hsc" style="padding-bottom:14px">
+        <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tL"><span class="pack" data-e="⚪" data-n="Phool Makhana" data-s="Fox Nuts · 100 g" data-c1="#7A5C9E" data-c2="#EFE8F6"></span><button class="addb">ADD</button></div><div class="pnm">Tamimi Phool Makhana 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 135</span><span class="mrp">SAR 160</span></div></div>
+        <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tO"><span class="pack" data-e="🥜" data-n="Badam" data-s="American · 500 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb">ADD</button></div><div class="pnm">Tamimi Badam American 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">SAR 489</span><span class="mrp">SAR 650</span></div></div>
+        <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tC"><span class="pack" data-e="🌰" data-n="Kaju W320" data-s="Cashews · 500 g" data-c1="#A97C42" data-c2="#F7F1E5"></span><button class="addb">ADD</button></div><div class="pnm">Tamimi Kaju W320 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">SAR 560</span><span class="mrp">SAR 720</span></div></div>
+      </div>
+
+      <div class="paybar">
+        <div class="tt"><b>SAR 787</b><s>3 items · saving SAR 236</s></div>
+        <button onclick="go('address')"><span data-i18n="cart.proceedPay">Proceed to Pay</span> <i class="ic s16" data-i="chev"></i></button>
+      </div>
+    </div>
+
+    <!-- ADDRESS -->
+    <div class="screen" data-screen="address">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('cart')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.selectAddress">Select Delivery Address</span></div>
+      <div class="sect" style="border:1.4px dashed var(--red);background:linear-gradient(140deg,#fff,var(--red-soft));display:flex;align-items:center;gap:11px;cursor:pointer">
+        <span style="width:36px;height:36px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;color:var(--red);box-shadow:var(--sh-sm)"><i class="ic" data-i="plus"></i></span>
+        <b style="color:var(--red);font-size:13.5px;font-weight:800" data-i18n="addr.addNew">Add New Address</b>
+        <i class="ic" data-i="chev" style="margin-left:auto;color:var(--red)"></i>
+      </div>
+      <div class="sect" style="border:1.5px solid var(--red);position:relative">
+        <span class="rdo on" style="position:absolute;top:15px;right:15px"></span>
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:32px;height:32px;border-radius:10px;background:var(--red-soft);color:var(--red);display:flex;align-items:center;justify-content:center"><i class="ic s16" data-i="home"></i></span><b style="font-size:13.5px;font-weight:800" data-i18n="addr.home">Home</b><span class="stat g" data-i18n="addr.default">DEFAULT</span></div>
+        <p style="font-size:12px;color:#57534D;line-height:1.65;margin-top:9px;font-weight:500">Bldg 7842, Apartment 12, Prince Turki St, Al Ulaya District, Al Khobar 34424, Kingdom of Saudi Arabia</p>
+        <p class="cap" style="margin-top:4px">Lingraj · +966 55 123 4567</p>
+        <div style="display:flex;gap:16px;margin-top:11px"><span class="link"><i class="ic s12" data-i="edit"></i><span data-i18n="addr.edit">Edit</span></span><span class="link" style="color:var(--sub)"><i class="ic s12" data-i="x"></i><span data-i18n="addr.delete">Delete</span></span></div>
+      </div>
+      <div class="sect">
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:32px;height:32px;border-radius:10px;background:var(--bg);color:var(--sub);display:flex;align-items:center;justify-content:center"><i class="ic s16" data-i="store"></i></span><b style="font-size:13.5px;font-weight:800" data-i18n="addr.office">Office</b><span class="rdo" style="position:static;margin-left:auto"></span></div>
+        <p style="font-size:12px;color:#57534D;line-height:1.65;margin-top:9px;font-weight:500">4th Floor, Office 402, King Fahd Rd, Al Aqrabiyah District, Al Khobar 34625, Kingdom of Saudi Arabia</p>
+        <div style="display:flex;gap:16px;margin-top:11px"><span class="link"><i class="ic s12" data-i="edit"></i><span data-i18n="addr.edit">Edit</span></span><span class="link" style="color:var(--sub)"><i class="ic s12" data-i="x"></i><span data-i18n="addr.delete">Delete</span></span></div>
+      </div>
+      <div class="sect" style="background:linear-gradient(140deg,#FFFDF3,#FBF3D9);display:flex;gap:10px;align-items:center;border-color:#F0E3B4">
+        <i class="ic" data-i="bolt" style="color:#C8890D"></i><s style="text-decoration:none;font-size:11.5px;font-weight:700;color:#7A5C00;line-height:1.55">Deliverable in <b>20 mins</b> to Home — from Tamimi Al Khobar dark store, 1.2 km away</s>
+      </div>
+      <div style="margin-top:auto"></div>
+      <div style="padding:13px 16px 24px;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-radius:24px 24px 0 0;box-shadow:0 -10px 30px rgba(27,20,12,.1)">
+        <button class="btn" onclick="go('payment')"><span data-i18n="addr.deliverHere">Deliver Here</span> <i class="ic s16" data-i="chev"></i></button>
+      </div>
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="screen" data-screen="payment">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('address')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.payment">Payment</span><span class="rt"><span class="cap" style="align-self:center">🔒 Secured by HyperPay</span></span></div>
+      <div class="sect" style="background:linear-gradient(140deg,#F2FAF3,#E9F6EC);border-color:#CEE9D5;display:flex;gap:10px;align-items:center">
+        <i class="ic" data-i="check" style="color:var(--green)"></i><s style="text-decoration:none;font-size:11.5px;font-weight:700;color:#2C6B36;line-height:1.55">To pay <b>SAR 787</b> · Delivering to <b>Home</b> in 20 mins ⚡</s>
+      </div>
+      <div class="sect">
+        <h4 data-i18n="pay.quickPay">Quick Pay · Recommended</h4>
+        <div class="mrow" style="border-bottom:1px solid var(--hairline)"><span class="mi" style="background:#000;color:#fff"><i class="ic s16" data-i="bolt"></i></span>Apple Pay<span class="rdo on" style="position:static;margin-left:auto"></span></div>
+        <div class="mrow"><span class="mi" style="background:#EDF5F8;color:#1A63B5"><i class="ic s16" data-i="card"></i></span>mada Pay<span class="rdo" style="position:static;margin-left:auto"></span></div>
+        <button style="margin-top:12px;width:100%;background:#000;color:#fff;border:none;border-radius:12px;padding:13px;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer" onclick="go('confirm')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="#fff"><path d="M16.365 1.43c0 1.14-.493 2.19-1.29 2.99-.97.97-2.31 1.68-3.4 1.59-.14-1.09.46-2.24 1.24-3.03.86-.9 2.32-1.58 3.45-1.55zm4.03 16.68c-.42.98-.93 1.94-1.62 2.85-.94 1.26-1.92 2.5-3.44 2.53-1.48.03-1.96-.87-3.66-.87-1.7 0-2.24.85-3.64.9-1.46.05-2.58-1.36-3.53-2.61-1.9-2.53-3.36-7.15-1.4-10.28.97-1.55 2.71-2.53 4.6-2.56 1.44-.03 2.8.97 3.68.97.87 0 2.52-1.2 4.25-1.02.72.03 2.74.29 4.04 2.18-.1.06-2.41 1.4-2.39 4.19.02 3.34 2.93 4.45 2.96 4.46-.02.09-.46 1.57-1.85 3.12z"/></svg>
+          Pay with Apple Pay
+        </button>
+      </div>
+      <div class="sect">
+        <h4 data-i18n="pay.cards">Cards</h4>
+        <div class="mrow" style="border-bottom:1px solid var(--hairline)"><span class="mi"><i class="ic" data-i="card"></i></span>mada Debit Card ····4523<i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="card"></i></span>Visa Credit Card ····1187<i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="plus"></i></span><span data-i18n="pay.cardsAdd">Add new card</span><i class="ic ar" data-i="chev"></i></div>
+      </div>
+      <div class="sect">
+        <h4 data-i18n="pay.moreOptions">More Options</h4>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="wallet"></i></span>Tamimi Wallet <span class="cap" style="margin-left:4px">· Balance SAR 120</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="cash"></i></span><span data-i18n="pay.cashOnDelivery">Cash on Delivery</span><i class="ic ar" data-i="chev"></i></div>
+      </div>
+      <p class="cap" style="text-align:center;margin:2px 0 4px">🔒 <span data-i18n="pay.securityNote">All payments processed securely via HyperPay</span></p>
+      <div style="margin-top:auto"></div>
+      <div class="paybar">
+        <div class="tt"><b>SAR 787</b><s>Apple Pay</s></div>
+        <button onclick="go('confirm')"><span data-i18n="pay.payNow">Pay Now</span> <i class="ic s16" data-i="chev"></i></button>
+      </div>
+    </div>
+
+    <!-- CONFIRM -->
+    <div class="screen" data-screen="confirm" style="background:linear-gradient(180deg,#fff 0%,#F4FBF5 100%)">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="cwr" style="gap:12px">
+        <span style="position:absolute;top:16%;left:20%;width:9px;height:9px;border-radius:2px;background:#F6C445;transform:rotate(18deg)"></span>
+        <span style="position:absolute;top:12%;right:24%;width:8px;height:8px;border-radius:50%;background:#E88379"></span>
+        <span style="position:absolute;top:23%;right:15%;width:7px;height:7px;border-radius:2px;background:#7CC98F;transform:rotate(-14deg)"></span>
+        <span style="position:absolute;top:26%;left:13%;width:6px;height:6px;border-radius:50%;background:#9DB3E8"></span>
+        <div class="seal"><i class="ic" data-i="check" style="width:40px;height:40px"></i></div>
+        <h2 style="font-size:22px;font-weight:800;letter-spacing:-.4px" data-i18n="confirm.orderPlaced">Order Placed!</h2>
+        <p class="cap" style="font-size:12.5px;line-height:1.7;margin-top:-4px">Order <b style="color:var(--ink)">#TAM-240193</b> · SAR 787 paid via Apple Pay<br><span data-i18n="confirm.arriving">Arriving at Home in</span> <b style="color:var(--red)">20 mins</b> ⚡</p>
+        <div class="card" style="width:100%;padding:14px 16px;text-align:left">
+          <div class="hrow"><div style="display:flex;gap:6px;font-size:22px"><em style="font-style:normal">🫙</em><em style="font-style:normal">🫘</em><em style="font-style:normal">🍚</em></div><span class="cap"><b style="color:var(--ink)">3 items</b> · SAR 787</span></div>
+          <div class="hrow" style="margin-top:9px;padding-top:9px;border-top:1px solid var(--hairline)"><span class="cap" style="display:flex;align-items:center;gap:5px"><i class="ic s12" data-i="store"></i>Tamimi Al Khobar dark store</span><span class="cap">1.2 km away</span></div>
+        </div>
+        <button class="btn" style="max-width:300px" onclick="go('track')"><span data-i18n="confirm.trackOrder">Track Order Live</span></button>
+        <span class="link" style="font-size:13px" onclick="go('home')"><span data-i18n="confirm.continueShopping">Continue Shopping</span></span>
+      </div>
+    </div>
+
+    <!-- TRACK -->
+    <div class="screen" data-screen="track">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('orders')"><i class="ic" data-i="back"></i></span>Order #TAM-240193<span class="rt"><span class="bk"><i class="ic" data-i="help"></i></span></span></div>
+      <div style="margin:10px 16px 0;border-radius:20px;overflow:hidden;position:relative;height:200px;flex-shrink:0;box-shadow:var(--sh-md)">
+        <svg width="100%" height="100%" viewBox="0 0 368 200" preserveAspectRatio="none">
+          <rect width="368" height="200" fill="#EAEFE4"/>
+          <circle cx="60" cy="40" r="34" fill="#DCE8D2"/><circle cx="320" cy="170" r="44" fill="#DCE8D2"/>
+          <path d="M250 0 C240 30 260 45 300 42 L368 38 L368 0 Z" fill="#CBDEEA"/>
+          <path d="M0 66 H368 M0 138 H368 M96 0 V200 M208 0 V200 M296 0 V200" stroke="#fff" stroke-width="13"/>
+          <path d="M0 66 H368 M0 138 H368 M96 0 V200 M208 0 V200 M296 0 V200" stroke="#E3E0D6" stroke-width="1.4" stroke-dasharray="6 6"/>
+          <path id="rt" d="M62 158 C130 148 160 96 208 84 C248 74 268 56 306 46" stroke="#EC2225" stroke-width="4" stroke-dasharray="9 7" fill="none" stroke-linecap="round" style="animation:dash 1.2s linear infinite"/>
+          <circle cx="306" cy="46" r="8" fill="#2E9E4C" stroke="#fff" stroke-width="2.5"/>
+        </svg>
+        <style>@keyframes dash{to{stroke-dashoffset:-16}}</style>
+        <span style="position:absolute;left:36px;top:118px;width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 12px rgba(0,0,0,.2)">🛵</span>
+        <span style="position:absolute;right:44px;top:12px;width:34px;height:34px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 12px rgba(0,0,0,.18)">🏠</span>
+        <div style="position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.96);border-radius:12px;padding:9px 13px;font-size:12px;font-weight:800;box-shadow:0 4px 14px rgba(0,0,0,.14);display:flex;align-items:center;gap:6px"><i class="ic s14" data-i="bolt" style="color:var(--red)"></i>Arriving in <span style="color:var(--red)">12 mins</span></div>
+      </div>
+      <div class="sect" style="display:flex;align-items:center;gap:12px">
+        <div style="width:46px;height:46px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:24px;border:2px solid #fff;box-shadow:var(--sh-sm)">🧑</div>
+        <div style="flex:1"><b style="font-size:13.5px;font-weight:800">Ravinder Kumar</b><s style="display:block;text-decoration:none;font-size:11px;color:var(--sub);font-weight:600;margin-top:1px"><span data-i18n="track.deliveryPartner">Delivery Partner</span> · <b style="color:#C8890D">★ 4.9</b></s></div>
+        <span style="width:40px;height:40px;border-radius:14px;background:var(--green-soft);color:var(--green);display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="ic" data-i="phone"></i></span>
+      </div>
+      <div class="sect tl">
+        <h4 style="margin-bottom:15px" data-i18n="track.orderStatus">Order Status</h4>
+        <div class="st done"><span class="dot"><i class="ic s12" data-i="check"></i></span><div><b data-i18n="track.orderConfirmed.t">Order Confirmed</b><s>09:40 am · Payment received SAR 787</s></div></div>
+        <div class="st done"><span class="dot"><i class="ic s12" data-i="check"></i></span><div><b data-i18n="track.packedAt.t">Packed at Al Khobar store</b><s>09:44 am · 3 items · Quality checked</s></div></div>
+        <div class="st now"><span class="dot"><i class="ic s12" data-i="truck"></i></span><div><b data-i18n="track.outForDelivery.t">Out for Delivery</b><s>Ravinder picked up your order · 1.2 km away</s></div></div>
+        <div class="st"><span class="dot"></span><div><b data-i18n="track.delivered.t">Delivered</b><s>ETA 10:00 am · Leave at door: OFF</s></div></div>
+      </div>
+      <div class="sect bill" style="margin-bottom:18px">
+        <h4>3 Items · SAR 787</h4>
+        <div class="r"><span>Tamimi Jeera 250gm × 1</span><b>SAR 109</b></div>
+        <div class="r"><span>Tamimi Black Chana 500gm × 1</span><b>SAR 69</b></div>
+        <div class="r"><span>Tamimi Rice 5kg Gold × 1</span><b>SAR 600</b></div>
+        <div class="r tot"><span data-i18n="track.paidViaApplePay">Paid via Apple Pay</span><span>SAR 787</span></div>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="screen" data-screen="orders">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('account')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.myOrders">My Orders</span></div>
+      <div class="sect" style="cursor:pointer" onclick="go('track')">
+        <div class="hrow"><b style="font-size:13.5px;font-weight:800">#TAM-240193</b><span class="stat r" data-i18n="orders.onTheWay">ON THE WAY ⚡</span></div>
+        <span class="cap" style="display:block;margin-top:5px">Today, 09:40 am · 3 items · SAR 787</span>
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <span class="cim tC" style="width:40px;height:40px;font-size:20px"><em>🫙</em></span>
+          <span class="cim tY" style="width:40px;height:40px;font-size:20px"><em>🫘</em></span>
+          <span class="cim tY" style="width:40px;height:40px;font-size:20px"><em>🍚</em></span>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:13px;padding-top:11px;border-top:1px solid var(--hairline)"><span class="link"><span data-i18n="orders.trackLive">Track Live</span> <i class="ic s12" data-i="chev"></i></span><span class="link" style="color:var(--sub)" data-i18n="orders.help">Help</span></div>
+      </div>
+      <div class="sect">
+        <div class="hrow"><b style="font-size:13.5px;font-weight:800">#TAM-239104</b><span class="stat g">DELIVERED IN 18 MINS</span></div>
+        <span class="cap" style="display:block;margin-top:5px">Mon, 29 Jun · 12 items · SAR 1,432</span>
+        <div style="display:flex;gap:6px;margin-top:10px;align-items:center">
+          <span class="cim tB" style="width:40px;height:40px;font-size:20px"><em>🥛</em></span>
+          <span class="cim tC" style="width:40px;height:40px;font-size:20px"><em>🍞</em></span>
+          <span class="cim tY" style="width:40px;height:40px;font-size:20px"><em>🥚</em></span>
+          <span class="cim tG" style="width:40px;height:40px;font-size:20px"><em>🥦</em></span>
+          <span class="cap" style="font-weight:800">+8 more</span>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:13px;padding-top:11px;border-top:1px solid var(--hairline)"><span class="link"><span data-i18n="orders.reorder">Reorder</span> <i class="ic s12" data-i="chev"></i></span><span class="link" style="color:#C8890D"><span data-i18n="orders.rate">Rate</span> ★★★★★</span></div>
+      </div>
+      <div class="sect">
+        <div class="hrow"><b style="font-size:13.5px;font-weight:800">#TAM-237871</b><span class="stat g">DELIVERED IN 22 MINS</span></div>
+        <span class="cap" style="display:block;margin-top:5px">Fri, 26 Jun · 5 items · SAR 618</span>
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <span class="cim tC" style="width:40px;height:40px;font-size:20px"><em>🫙</em></span>
+          <span class="cim tR" style="width:40px;height:40px;font-size:20px"><em>🧅</em></span>
+          <span class="cim tO" style="width:40px;height:40px;font-size:20px"><em>🥔</em></span>
+          <span class="cim tR" style="width:40px;height:40px;font-size:20px"><em>🍅</em></span>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:13px;padding-top:11px;border-top:1px solid var(--hairline)"><span class="link"><span data-i18n="orders.reorder">Reorder</span> <i class="ic s12" data-i="chev"></i></span><span class="link" style="color:var(--sub)"><i class="ic s12" data-i="doc"></i><span data-i18n="orders.invoice">Invoice</span></span></div>
+      </div>
+    </div>
+
+    <!-- ACCOUNT -->
+    <div class="screen" data-screen="account">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.myAccount">My Account</span></div>
+      <div class="sect" style="display:flex;align-items:center;gap:13px">
+        <div style="width:54px;height:54px;border-radius:18px;background:linear-gradient(140deg,var(--red-3),var(--red-2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:800;box-shadow:var(--sh-red)">L</div>
+        <div style="flex:1"><b style="font-size:15.5px;font-weight:800;letter-spacing:-.2px">Lingraj</b><s style="display:block;text-decoration:none;font-size:11px;color:var(--sub);font-weight:600;margin-top:2px">+966 55 123 4567 · lingraj@zopping.com</s></div>
+        <span class="link"><i class="ic s12" data-i="edit"></i><span data-i18n="addr.edit">Edit</span></span>
+      </div>
+      <div class="sect" style="display:flex;gap:0;background:linear-gradient(115deg,#F0584A,#C81E1B);color:#fff;border:none;box-shadow:var(--sh-red)">
+        <div style="flex:1"><s style="text-decoration:none;font-size:9.5px;font-weight:800;letter-spacing:1.2px;opacity:.85" data-i18n="acct.walletLabel">TAMIMI WALLET</s><b style="display:block;font-size:20px;font-weight:800;margin-top:3px;letter-spacing:-.4px">SAR 120</b></div>
+        <div style="flex:1;border-left:1px solid rgba(255,255,255,.28);padding-left:14px"><s style="text-decoration:none;font-size:9.5px;font-weight:800;letter-spacing:1.2px;opacity:.85" data-i18n="acct.savedThisMonth">SAVED THIS MONTH</s><b style="display:block;font-size:20px;font-weight:800;margin-top:3px;letter-spacing:-.4px">SAR 1,240</b></div>
+      </div>
+      <div class="sect">
+        <div class="mrow" onclick="go('orders')"><span class="mi"><i class="ic" data-i="box"></i></span><span data-i18n="acct.myOrders">My Orders</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow" onclick="go('address')"><span class="mi"><i class="ic" data-i="pin"></i></span><span data-i18n="acct.savedAddresses">Saved Addresses</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="heart"></i></span><span data-i18n="acct.wishlist">Wishlist</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow" onclick="go('offers')"><span class="mi"><i class="ic" data-i="ticket"></i></span><span data-i18n="acct.coupons">Coupons &amp; Offers</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="card"></i></span><span data-i18n="acct.paymentMethods">Payment Methods</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="gift"></i></span><span data-i18n="acct.referEarn">Refer &amp; Earn</span> <span class="stat g" style="margin-left:2px">GET SAR 100</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="help"></i></span><span data-i18n="acct.help">Help &amp; Support</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="doc"></i></span><span data-i18n="acct.terms">Terms, Privacy &amp; FSSAI</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow" onclick="toggleLang()"><span class="mi"><i class="ic" data-i="globe"></i></span><span data-i18n="acct.language">App Language</span><span class="cap lang-label-account" style="margin-left:4px">English</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow" onclick="go('login')" style="color:var(--red)"><span class="mi"><i class="ic" data-i="out"></i></span><span data-i18n="acct.logout">Log Out</span><i class="ic ar" data-i="chev"></i></div>
+      </div>
+      <p style="text-align:center;color:#B9B4AB;font-size:10.5px;font-weight:600;padding:4px 0 16px" data-i18n="acct.footer">Tamimi Super Market · App v2.0 · Al Khobar</p>
+      <div class="bnav">
+        <a onclick="go('home')"><i class="ic" data-i="home"></i><span data-i18n="nav.home">Home</span></a>
+        <a onclick="go('categories')"><i class="ic" data-i="grid"></i><span data-i18n="nav.categories">Categories</span></a>
+        <a onclick="go('offers')"><i class="ic" data-i="tag"></i><span data-i18n="nav.offers">Offers</span></a>
+        <a onclick="go('cart')"><i class="ic" data-i="cart"></i><span data-i18n="nav.cart">Cart</span><span class="bdg">3</span></a>
+        <a class="on"><i class="ic" data-i="user"></i><span data-i18n="nav.account">Account</span></a>
+      </div>
+    </div>
+
+
+  </div><div class="glass"></div></div>
+    </div>
+  </div>
 </div>
 <script>
 const IC={
@@ -1216,14 +1991,15 @@ function paint(){
   document.querySelectorAll('.pack').forEach(p=>{if(!p.dataset.done){p.innerHTML=packSVG(p.dataset);p.dataset.done=1}});document.querySelectorAll('i.ic').forEach(e=>{if(!e.dataset.done&&IC[e.dataset.i]){e.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+IC[e.dataset.i]+'</svg>';e.dataset.done=1}})}
 function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
-  var el=document.getElementById(id); if(el){el.classList.add('on');el.scrollTop=0;}
+  document.querySelectorAll('.screen[data-screen="'+id+'"]').forEach(el=>{el.classList.add('on');el.scrollTop=0;});
   document.querySelectorAll('#picker button').forEach(b=>b.classList.toggle('active',b.dataset.s===id));
 }
 document.querySelectorAll('#picker button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
 function ktab(el,key){
-  document.querySelectorAll('#ktabs .ktab').forEach(t=>t.classList.remove('on'));
+  const home=el.closest('.screen');
+  home.querySelectorAll('.ktabs .ktab').forEach(t=>t.classList.remove('on'));
   el.classList.add('on');
-  document.querySelectorAll('#home .tabc').forEach(t=>t.classList.toggle('on',t.id==='tab-'+key));
+  home.querySelectorAll('.tabc').forEach(t=>t.classList.toggle('on',t.dataset.tab===key));
 }
 
 /* ============ EN / AR LANGUAGE TOGGLE ============ */
@@ -1622,12 +2398,9 @@ function applyLang(lang){
     const val=(I18N[lang]&&I18N[lang][key])||(I18N.en[key]);
     if(val!==undefined){el.innerHTML=val;el.setAttribute('dir',rtl?'rtl':'ltr');}
   });
-  const vp=document.getElementById('vp');
-  if(vp) vp.setAttribute('dir',rtl?'rtl':'ltr');
-  const btn=document.getElementById('langBtn');
-  if(btn) btn.textContent=rtl?'EN':'AR';
-  const acctLbl=document.getElementById('langLabelAccount');
-  if(acctLbl) acctLbl.textContent=rtl?'العربية':'English';
+  document.querySelectorAll('.vp').forEach(vp=>vp.setAttribute('dir',rtl?'rtl':'ltr'));
+  document.querySelectorAll('.lang-btn').forEach(btn=>btn.textContent=rtl?'EN':'AR');
+  document.querySelectorAll('.lang-label-account').forEach(lbl=>lbl.textContent=rtl?'العربية':'English');
 }
 function toggleLang(){ applyLang(LANG==='en'?'ar':'en'); }
 paint();
