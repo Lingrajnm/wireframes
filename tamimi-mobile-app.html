@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tamimi Markets — Mobile App · Visual Design v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@900&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+/* ============ DESIGN TOKENS ============ */
+:root{
+  --red:#EC2225; --red-2:#C81E1B; --red-3:#F0584A; --red-deep:#A81613;
+  --red-soft:#FDEAE9; --red-soft-2:#FBD4D2;
+  --ink:#231F20; --sub:#7A756E; --faint:#ABA69E;
+  --bg:#F6F5F2; --card:#FFFFFF; --line:#EDEAE4; --hairline:#F0EDE7;
+  --cream:#FAF6EE; --yellow:#F6C445; --green:#2E9E4C; --green-soft:#E9F6EC;
+  --t-green:#E3F0DC; --t-orange:#FBE9D2; --t-blue:#DFEDF3; --t-lav:#ECE4F6; --t-yellow:#FAF0D4; --t-rose:#FAE4E0; --t-cream:#F7F1E5;
+  --sh-sm:0 1px 2px rgba(27,20,12,.05),0 2px 8px rgba(27,20,12,.05);
+  --sh-md:0 2px 6px rgba(27,20,12,.06),0 10px 28px rgba(27,20,12,.09);
+  --sh-red:0 6px 18px rgba(213,56,43,.32);
+  --r-sm:10px; --r-md:14px; --r-lg:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;font-family:'Plus Jakarta Sans',-apple-system,sans-serif}
+body{background:radial-gradient(120% 90% at 50% 0%,#2B2723 0%,#171512 70%);color:var(--ink);min-height:100vh;padding:34px 16px 70px}
+.stage{display:flex;flex-direction:column;align-items:center;gap:22px}
+.stage>h1{color:#fff;font-size:19px;font-weight:800;letter-spacing:-.2px}
+.stage>h1 em{font-style:normal;color:#E88379}
+.stage>p{color:#98928A;font-size:12.5px;max-width:620px;text-align:center;line-height:1.6;margin-top:-12px}
+.picker{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:880px}
+.picker button{background:rgba(255,255,255,.06);color:#C9C3BB;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:7px 14px;font-size:11.5px;font-weight:700;cursor:pointer;transition:.15s}
+.picker button:hover{background:rgba(255,255,255,.12)}
+.picker button.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:var(--sh-red)}
+
+/* ============ ICONS ============ */
+i.ic{display:inline-flex;width:20px;height:20px;flex-shrink:0}
+i.ic svg{width:100%;height:100%}
+i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width:24px;height:24px} i.ic.s12{width:12px;height:12px}
+
+/* ============ PHONE ============ */
+.phone{width:400px;height:852px;background:#050505;border-radius:56px;padding:9px;position:relative;box-shadow:0 0 0 1.5px #3A362F,0 44px 90px rgba(0,0,0,.65),0 12px 30px rgba(0,0,0,.5)}
+.phone .glass{position:absolute;inset:0;border-radius:56px;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.08) 0%,transparent 22%);z-index:80}
+.vp{position:relative;width:100%;height:100%;border-radius:47px;overflow:hidden;background:var(--bg)}
+.island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:110px;height:28px;background:#050505;border-radius:16px;z-index:70}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;overflow-y:auto;overflow-x:hidden;background:var(--bg);scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.screen.on{display:flex;animation:fadein .28s ease}
+.screen>*{flex-shrink:0}
+.tabc{display:none}
+.tabc.on{display:block;animation:fadein .25s ease}
+@keyframes fadein{from{opacity:.4;transform:scale(.985)}to{opacity:1;transform:none}}
+.sbar{display:flex;justify-content:space-between;align-items:center;padding:16px 26px 4px;font-size:13px;font-weight:700;flex-shrink:0;letter-spacing:.2px}
+.sbar .r{display:flex;gap:5px;align-items:center;font-size:11px}
+.sbar.lite{color:#fff}
+
+/* ============ SHARED ============ */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(140deg,var(--red-3),var(--red-2));color:#fff;border:none;border-radius:14px;font-weight:800;font-size:14.5px;cursor:pointer;padding:15px;width:100%;box-shadow:var(--sh-red);letter-spacing:.1px}
+.btn:active{transform:scale(.985)}
+.btn.lite{background:#fff;color:var(--red);box-shadow:var(--sh-sm);border:1.5px solid var(--red-soft-2)}
+.card{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sh-sm);border:1px solid var(--hairline)}
+.hrow{display:flex;align-items:center;justify-content:space-between}
+.h2{font-size:15.5px;font-weight:800;letter-spacing:-.2px}
+.link{color:var(--red);font-weight:800;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:2px}
+.cap{font-size:11px;font-weight:600;color:var(--sub)}
+.doodle{background-color:var(--cream);background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="170" height="170"><g fill="none" stroke="%23EADFCB" stroke-width="1.4" stroke-linecap="round"><circle cx="30" cy="28" r="10"/><path d="M30 18v-5M26 20l-3-4M34 20l3-4"/><path d="M85 20c8 0 13 6 13 12s-5 12-13 12-13-6-13-12 5-12 13-12z"/><path d="M138 55l9 16h-18z"/><path d="M35 100c0 9 7 16 16 16s16-7 16-16"/><rect x="105" y="105" width="26" height="19" rx="4"/><path d="M108 105v-6h20v6"/><path d="M18 140c5-7 14-7 19 0"/><circle cx="150" cy="145" r="8"/></g></svg>')}
+
+/* logo badge */
+.blogo{filter:drop-shadow(0 16px 26px rgba(84,10,4,.35))}
+
+/* pills / chips */
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:20px;padding:8px 14px;font-size:12px;font-weight:700;white-space:nowrap;color:#4E4A45;cursor:pointer}
+.chip.on{border:1.4px solid var(--red);color:var(--red);background:var(--red-soft)}
+
+/* ============ PRODUCT CARD ============ */
+.pc{background:#fff;border-radius:16px;padding:8px 10px 12px;position:relative;display:flex;flex-direction:column;box-shadow:var(--sh-sm);border:1px solid var(--hairline);min-width:146px;width:146px;flex-shrink:0}
+.pv{position:relative;height:104px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.pv em{font-style:normal;font-size:46px;line-height:1;filter:drop-shadow(0 10px 12px rgba(48,18,6,.22));transform:rotate(-3deg)}
+.pv:after{content:'';position:absolute;left:18%;right:18%;bottom:7px;height:7px;background:radial-gradient(50% 100% at 50% 50%,rgba(48,18,6,.14),transparent 70%);border-radius:50%}
+.pv .pimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;z-index:1}
+.pv .addb,.pv .stp{z-index:3}
+.pv .pack{display:flex;height:96%;align-items:center;justify-content:center;transform:rotate(-2deg)}
+.pv .pack svg{height:100%;filter:drop-shadow(0 6px 8px rgba(48,18,6,.16))}
+.pv:has(.pack):after{display:none}
+.tG{background:radial-gradient(130% 120% at 28% 12%,#fff 0%,var(--t-green) 80%)}
+.tO{background:radial-gradient(130% 120% at 28% 12%,#fff 0%,var(--t-orange) 80%)}
+.tB{background:radial-gradient(130% 120% at 28% 12%,#fff 0%,var(--t-blue) 80%)}
+.tL{background:radial-gradient(130% 120% at 28% 12%,#fff 0%,var(--t-lav) 80%)}
+.tY{background:radial-gradient(130% 120% at 28% 12%,#fff 0%,var(--t-yellow) 80%)}
+.tR{background:radial-gradient(130% 120% at 28% 12%,#fff 0%,var(--t-rose) 80%)}
+.tC{background:radial-gradient(130% 120% at 28% 12%,#fff 0%,var(--t-cream) 80%)}
+.addb{position:absolute;right:6px;bottom:-13px;background:#fff;border:1.5px solid var(--red);color:var(--red);border-radius:10px;font-weight:800;font-size:12.5px;letter-spacing:.4px;padding:6px 17px;cursor:pointer;box-shadow:0 4px 12px rgba(213,56,43,.22);transition:.15s}
+.addb:hover{background:var(--red);color:#fff}
+.stp{position:absolute;right:6px;bottom:-13px;background:linear-gradient(140deg,var(--red-3),var(--red-2));color:#fff;border-radius:10px;font-weight:800;font-size:12.5px;padding:6px 10px;display:flex;align-items:center;gap:9px;box-shadow:0 4px 12px rgba(213,56,43,.35)}
+.eta{display:inline-flex;align-items:center;gap:3px;font-size:9.5px;font-weight:800;color:#5E93A8;background:#EDF5F8;border-radius:6px;padding:2.5px 6px;width:fit-content}
+.pnm{font-size:12px;font-weight:700;line-height:1.4;letter-spacing:-.1px;margin:5px 0 2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:33px}
+.pwt{font-size:11px;font-weight:600;color:var(--faint)}
+.prow{display:flex;align-items:center;gap:6px;margin-top:6px}
+.prc{font-size:14px;font-weight:800;letter-spacing:-.2px}
+.mrp{font-size:11px;font-weight:600;color:var(--faint);text-decoration:line-through}
+.sv{margin-left:auto;font-size:9.5px;font-weight:800;color:var(--green);background:var(--green-soft);border-radius:6px;padding:2.5px 6px}
+.flag{position:absolute;top:8px;left:0;background:linear-gradient(140deg,#D2231F,#A81613);color:#fff;font-size:9px;font-weight:800;letter-spacing:.4px;padding:4px 9px 4px 8px;border-radius:0 8px 8px 0;z-index:2;box-shadow:0 2px 6px rgba(158,33,24,.3)}
+.flag.gold{background:linear-gradient(140deg,#E3A82B,#C8890D)}
+.hsc{display:flex;gap:10px;overflow-x:auto;padding:6px 16px 16px;scrollbar-width:none}
+.hsc::-webkit-scrollbar{display:none}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:6px 16px 16px}
+.g2 .pc{width:auto;min-width:0}
+
+/* ============ HOME HEADER ============ */
+.hd{background:linear-gradient(158deg,#F0584A 0%,#EC2225 52%,#C81E1B 100%);padding:0 16px 0;color:#fff;flex-shrink:0;border-radius:0 0 26px 26px;position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(158,33,24,.22)}
+.hd:before{content:'';position:absolute;inset:0;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="190" height="190"><g fill="none" stroke="rgba(255,255,255,.09)" stroke-width="1.5" stroke-linecap="round"><circle cx="34" cy="30" r="11"/><path d="M95 22c9 0 14 7 14 13s-5 13-14 13-14-7-14-13 5-13 14-13z"/><path d="M152 62l10 17h-20z"/><path d="M40 112c0 10 8 17 17 17s17-7 17-17"/><rect x="115" y="115" width="28" height="21" rx="4"/><path d="M20 158c6-8 15-8 21 0"/></g></svg>');pointer-events:none}
+.hd>*{position:relative}
+.hd-top{display:flex;align-items:center;gap:11px;padding-top:8px}
+.mins{background:linear-gradient(150deg,#FBD25E,#F0B429);color:#4A3000;border-radius:12px;padding:6px 9px 5px;text-align:center;font-weight:800;line-height:1;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 4px 10px rgba(0,0,0,.18)}
+.mins b{display:block;font-size:16px;letter-spacing:-.5px}
+.mins s{display:block;font-size:6.3px;text-decoration:none;letter-spacing:.9px;margin-top:2px}
+.addr{flex:1;cursor:pointer;min-width:0}
+.addr .l1{font-size:14.5px;font-weight:800;display:flex;align-items:center;gap:4px;letter-spacing:-.1px}
+.addr .l2{font-size:11px;font-weight:600;opacity:.85;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hic{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;backdrop-filter:blur(4px)}
+.srch{margin-top:13px;background:#fff;border-radius:14px;padding:12.5px 14px;display:flex;align-items:center;gap:9px;color:var(--faint);font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 6px 18px rgba(122,17,9,.25)}
+.srch b{color:#55514B;font-weight:700}
+.srch .mic{margin-left:auto;color:var(--red)}
+.ktabs{display:flex;gap:4px;margin-top:14px;overflow-x:auto;scrollbar-width:none;padding-bottom:0}
+.ktabs::-webkit-scrollbar{display:none}
+.ktab{min-width:76px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:11px 6px 13px;border-radius:16px 16px 0 0;font-size:10.5px;font-weight:700;color:rgba(255,255,255,.92);text-align:center;line-height:1.2;cursor:pointer}
+.ktab .ke{font-size:21px;line-height:1;filter:drop-shadow(0 3px 4px rgba(0,0,0,.2))}
+.ktab.on{background:var(--bg);color:var(--red);font-weight:800}
+
+/* tiles */
+.tiles{padding:14px 16px 4px;display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.tile{border-radius:18px;padding:15px 15px 13px;position:relative;min-height:96px;cursor:pointer;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--sh-sm);transition:transform .15s}
+.tile:hover{transform:translateY(-2px)}
+.tile:before{content:'';position:absolute;inset:0;background:radial-gradient(90% 90% at 85% 100%,rgba(255,255,255,.35),transparent 55%)}
+.tile.wide{grid-column:1/3;min-height:88px}
+.tile b{font-size:15px;font-weight:800;letter-spacing:-.2px;position:relative;line-height:1.25}
+.tile s{text-decoration:none;font-size:10.5px;font-weight:700;opacity:.75;position:relative;margin-top:2px}
+.tile .go{position:absolute;left:15px;bottom:13px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,.12)}
+.tile .em{position:absolute;right:8px;bottom:2px;font-size:44px;line-height:1;filter:drop-shadow(0 8px 10px rgba(30,20,5,.25));transform:rotate(-4deg)}
+.tile.wide .em{font-size:52px;right:14px;bottom:4px}
+
+/* deal category cards (3-up) */
+.dealgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:10px 16px 6px}
+.deal{background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--sh-sm);border:1px solid var(--hairline);cursor:pointer;display:flex;flex-direction:column;transition:transform .15s}
+.deal:hover{transform:translateY(-2px)}
+.deal .dt{font-size:11px;font-weight:800;color:var(--red);text-align:center;padding:11px 6px 2px;line-height:1.3;letter-spacing:-.1px}
+.deal .dv{height:62px;display:flex;align-items:center;justify-content:center;font-size:30px;gap:2px}
+.deal .dv em{font-style:normal;filter:drop-shadow(0 6px 7px rgba(48,18,6,.2))}
+.deal .df{background:linear-gradient(140deg,var(--red-3),var(--red-2));color:#fff;font-size:9.5px;font-weight:800;text-align:center;padding:8px 4px;letter-spacing:.4px;margin-top:auto}
+/* promo banners */
+.promos{display:flex;gap:10px;overflow-x:auto;padding:14px 16px 4px;scrollbar-width:none}
+.promos::-webkit-scrollbar{display:none}
+.promo{min-width:284px;border-radius:18px;padding:16px 18px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--sh-md);flex-shrink:0;cursor:pointer}
+.promo:before{content:'';position:absolute;right:-18px;top:-24px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.12)}
+.promo .pk{font-size:8.5px;font-weight:800;letter-spacing:1.4px;color:var(--yellow)}
+.promo b{display:block;font-size:17px;font-weight:800;letter-spacing:-.3px;margin-top:4px;line-height:1.2;position:relative}
+.promo s{text-decoration:none;font-size:10.5px;font-weight:600;opacity:.88;display:block;margin-top:4px;position:relative}
+.promo .pe{position:absolute;right:12px;bottom:8px;font-size:38px;transform:rotate(-6deg);filter:drop-shadow(0 8px 8px rgba(0,0,0,.25))}
+/* spotlight tiles */
+.spot{display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:8px 16px 4px}
+.spot .sp{border-radius:18px;padding:15px;min-height:104px;position:relative;overflow:hidden;cursor:pointer;box-shadow:var(--sh-sm);color:#fff}
+.spot .sp:before{content:'';position:absolute;inset:0;background:radial-gradient(90% 90% at 85% 100%,rgba(255,255,255,.28),transparent 55%)}
+.spot .sp b{font-size:14px;font-weight:800;letter-spacing:-.2px;position:relative;line-height:1.3;display:block}
+.spot .sp s{text-decoration:none;font-size:10px;font-weight:700;opacity:.85;position:relative;display:block;margin-top:3px}
+.spot .sp .em{position:absolute;right:8px;bottom:4px;font-size:38px;filter:drop-shadow(0 8px 9px rgba(30,20,5,.28));transform:rotate(-5deg)}
+/* trust strip */
+.trust{display:flex;gap:8px;padding:10px 16px 4px}
+.trust div{flex:1;background:#fff;border:1px solid var(--hairline);border-radius:14px;padding:12px 8px;text-align:center;box-shadow:var(--sh-sm)}
+.trust div i.ic{color:var(--red)}
+.trust b{display:block;font-size:10px;font-weight:800;margin-top:5px;line-height:1.35}
+/* home footer note */
+.hnote{padding:26px 24px 30px;text-align:center}
+.hnote .cv{font-family:Caveat,cursive;font-size:27px;color:#C9C2B6;line-height:1.15}
+.hnote s{text-decoration:none;display:block;font-size:10px;font-weight:700;color:#C6C0B6;letter-spacing:1.6px;margin-top:8px}
+/* section */
+.seg{display:flex;align-items:center;gap:10px;padding:20px 16px 4px}
+.seg:before,.seg:after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,#DCD7CE)}
+.seg:after{background:linear-gradient(90deg,#DCD7CE,transparent)}
+.seg b{font-size:15px;font-weight:800;letter-spacing:-.2px;text-align:center;line-height:1.4}
+.seg b s{text-decoration:none;color:var(--red)}
+.shead{display:flex;align-items:baseline;justify-content:space-between;padding:16px 16px 8px}
+.shead .h2{position:relative;padding-left:11px}
+.shead .h2:before{content:'';position:absolute;left:0;top:2px;bottom:2px;width:3.5px;border-radius:2px;background:linear-gradient(var(--red-3),var(--red-2))}
+
+/* bottom nav */
+.bnav{position:sticky;bottom:0;margin-top:auto;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-top:1px solid var(--hairline);display:flex;padding:10px 6px 22px;z-index:40;flex-shrink:0;box-shadow:0 -8px 24px rgba(27,20,12,.06)}
+.bnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9.8px;font-weight:700;color:#A19C94;cursor:pointer;position:relative}
+.bnav a.on{color:var(--red);font-weight:800}
+.bnav a.on:before{content:'';position:absolute;top:-10px;width:26px;height:3px;border-radius:0 0 3px 3px;background:var(--red)}
+.bnav .bdg{position:absolute;top:-5px;right:calc(50% - 20px);background:var(--red);color:#fff;font-size:8.5px;font-weight:800;border-radius:8px;padding:1.5px 5px;border:1.5px solid #fff}
+
+/* list screens */
+.thead{background:rgba(255,255,255,.92);backdrop-filter:blur(10px);padding:10px 16px 12px;display:flex;align-items:center;gap:12px;font-size:16.5px;font-weight:800;letter-spacing:-.2px;position:sticky;top:0;z-index:30;flex-shrink:0;border-bottom:1px solid var(--hairline)}
+.thead .bk{width:34px;height:34px;border-radius:12px;background:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.thead .rt{margin-left:auto;display:flex;gap:8px}
+.thead .rt .bk{background:var(--bg)}
+.ltools{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 8px}
+.ltools b{font-size:14.5px;font-weight:800}
+.ltools b s{text-decoration:none;color:var(--sub);font-weight:600;font-size:11.5px}
+.tbtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:11px;padding:8px 13px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:var(--sh-sm)}
+.lbody{display:flex;flex:1;align-items:stretch}
+.rail{width:84px;background:#fff;padding:10px 6px;display:flex;flex-direction:column;gap:2px;flex-shrink:0;border-right:1px solid var(--hairline)}
+.ri{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:9.6px;font-weight:600;text-align:center;padding:10px 3px;border-radius:12px;color:#6E6A63;line-height:1.25;cursor:pointer;position:relative}
+.ri .re{width:40px;height:40px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:20px}
+.ri.on{color:var(--red);font-weight:800;background:var(--red-soft)}
+.ri.on:before{content:'';position:absolute;left:-6px;top:14px;bottom:14px;width:3.5px;border-radius:0 3px 3px 0;background:var(--red)}
+.lgrid{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:4px 10px 16px;align-content:start}
+.lgrid .pc{width:auto;min-width:0}
+
+/* cart & sections */
+.sect{background:#fff;border-radius:var(--r-lg);margin:6px 16px;padding:15px 16px;box-shadow:var(--sh-sm);border:1px solid var(--hairline)}
+.sect h4{font-size:14px;font-weight:800;letter-spacing:-.15px;margin-bottom:11px;display:flex;align-items:center;gap:7px}
+.warn{background:linear-gradient(140deg,#FDEAE9,#F9E3E0);color:var(--red-deep);font-size:12px;font-weight:700;border-radius:14px;padding:12px 14px;margin:12px 16px 4px;display:flex;gap:9px;align-items:center;border:1px solid #F3D2CD}
+.dtype{display:flex;gap:10px}
+.dopt{flex:1;border:1.4px solid var(--line);border-radius:14px;padding:12px;cursor:pointer;position:relative;background:#fff}
+.dopt.on{border-color:var(--red);background:linear-gradient(160deg,#fff,var(--red-soft))}
+.dopt b{display:block;font-size:12.5px;font-weight:800}
+.dopt s{text-decoration:none;font-size:10.5px;color:var(--sub);font-weight:600;margin-top:2px;display:block}
+.rdo{position:absolute;top:11px;right:11px;width:16px;height:16px;border:1.6px solid #CFCBC3;border-radius:50%;background:#fff}
+.dopt.on .rdo,.rdo.on{border-color:var(--red);background:radial-gradient(circle,var(--red) 0 4.5px,#fff 5px)}
+.ci{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--hairline)}
+.ci:last-child{border-bottom:none}
+.cim{width:54px;height:54px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:27px;flex-shrink:0}
+.cim em{font-style:normal;filter:drop-shadow(0 5px 6px rgba(48,18,6,.2))}
+.ci .nm{flex:1;min-width:0}
+.ci .nm b{font-size:12.5px;font-weight:800;display:block;line-height:1.35;letter-spacing:-.1px}
+.ci .nm s{text-decoration:none;font-size:10.5px;color:var(--faint);font-weight:600}
+.ci .nm em{font-style:normal;color:var(--red);font-size:10px;font-weight:800;display:block;margin-top:1px}
+.offer-badge{display:inline-flex;align-items:center;gap:4px;background:var(--green-soft);color:var(--green);font-size:9.5px;font-weight:800;letter-spacing:.1px;border-radius:7px;padding:3px 8px 3px 6px;margin-top:5px;width:fit-content}
+.offer-badge i.ic{color:var(--green)}
+.ci .pr{text-align:right}
+.ci .pr b{display:block;font-size:13.5px;font-weight:800}
+.ci .pr s{font-size:10.5px;color:var(--faint)}
+.mstp{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(140deg,var(--red-3),var(--red-2));color:#fff;border-radius:9px;font-weight:800;font-size:12px;padding:6px 10px;box-shadow:0 3px 8px rgba(213,56,43,.3)}
+.swl{display:flex;align-items:center;gap:10px;color:var(--red);font-weight:800;font-size:11.5px;justify-content:center;padding:9px 0 1px}
+.swl i{flex:1;border-top:1.6px dashed #EBB9B3;font-style:normal}
+.paybar{position:sticky;bottom:0;margin-top:auto;background:linear-gradient(140deg,var(--red-3),var(--red-2));color:#fff;display:flex;align-items:center;justify-content:space-between;padding:14px 16px 24px;border-radius:24px 24px 0 0;z-index:40;flex-shrink:0;box-shadow:0 -10px 30px rgba(158,33,24,.3)}
+.paybar .tt b{display:block;font-size:19px;font-weight:800;letter-spacing:-.3px}
+.paybar .tt s{text-decoration:none;font-size:10.5px;font-weight:600;opacity:.88}
+.paybar button{background:#fff;color:var(--red);border:none;border-radius:12px;padding:13px 20px;font-weight:800;font-size:13.5px;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.bill .r{display:flex;justify-content:space-between;font-size:12.5px;padding:4.5px 0;color:#57534D;font-weight:600}
+.bill .r b{font-weight:700;color:#57534D}
+.bill .r.tot{border-top:1.4px dashed #E2DED6;margin-top:8px;padding-top:11px;font-weight:800;color:var(--ink);font-size:14px}
+.bill .fr{color:var(--green);font-weight:800}
+
+/* misc components */
+.cwr{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 32px;text-align:center;gap:14px;position:relative}
+.seal{width:92px;height:92px;background:linear-gradient(150deg,#43B463,#2E9E4C);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 14px 34px rgba(46,158,76,.35);position:relative}
+.seal:before{content:'';position:absolute;inset:-11px;border-radius:50%;border:1.6px dashed #A7DCB5}
+.inp{width:100%;border:1.4px solid var(--line);border-radius:13px;padding:14px 15px;font-size:14px;background:#fff;color:var(--ink);font-weight:600;outline:none}
+.inp:focus{border-color:var(--red)}
+.inp::placeholder{color:#C0BBB2;font-weight:500}
+.flb{font-size:12.5px;font-weight:700;margin:16px 0 8px;display:block;text-align:left;color:#57534D}
+.otp{display:flex;gap:10px;justify-content:center}
+.otp b{width:54px;height:58px;border:1.4px solid var(--line);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:800;background:#fff}
+.otp b.f{border:1.6px solid var(--red);box-shadow:0 0 0 3.5px var(--red-soft)}
+.tl .st{display:flex;gap:13px;position:relative;padding-bottom:22px}
+.tl .st:last-child{padding-bottom:0}
+.tl .st:before{content:'';position:absolute;left:10px;top:24px;bottom:2px;width:2px;background:#E8E4DD}
+.tl .st.done:before{background:#BBDFC4}
+.tl .st:last-child:before{display:none}
+.tl .dot{width:21px;height:21px;border-radius:50%;background:#E8E4DD;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1}
+.tl .st.done .dot{background:var(--green)}
+.tl .st.now .dot{background:var(--red);box-shadow:0 0 0 4.5px var(--red-soft-2);animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 4.5px var(--red-soft-2)}50%{box-shadow:0 0 0 7px var(--red-soft)}}
+.tl .st b{font-size:13px;font-weight:800;display:block;letter-spacing:-.1px}
+.tl .st s{text-decoration:none;font-size:11px;color:var(--sub);font-weight:600;line-height:1.5}
+.mrow{display:flex;align-items:center;gap:12px;padding:13px 2px;border-bottom:1px solid var(--hairline);font-size:13px;font-weight:700;cursor:pointer}
+.mrow:last-child{border-bottom:none}
+.mrow .mi{width:36px;height:36px;border-radius:12px;background:var(--red-soft);color:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mrow .ar{margin-left:auto;color:#C6C1B9}
+.stat{font-size:9.5px;font-weight:800;padding:4px 10px;border-radius:8px;letter-spacing:.3px}
+.stat.r{background:var(--red-soft);color:var(--red)}
+.stat.g{background:var(--green-soft);color:var(--green)}
+.note{color:#8B857D;font-size:11px;text-align:center;max-width:700px;line-height:1.7}
+@media (max-width:460px){.phone{width:100%;height:80vh;border-radius:40px;padding:6px}.vp{border-radius:34px}}
+
+/* ============ RTL MIRROR (Arabic) ============ */
+[dir="rtl"]{text-align:right}
+[dir="rtl"] .flag{left:auto;right:0;border-radius:8px 0 0 8px}
+[dir="rtl"] .addb{right:auto;left:6px}
+[dir="rtl"] .stp{right:auto;left:6px}
+[dir="rtl"] .sv{margin-left:0;margin-right:auto}
+[dir="rtl"] .srch .mic{margin-left:0;margin-right:auto}
+[dir="rtl"] .tile .go{left:auto;right:15px}
+[dir="rtl"] .tile .em{right:auto;left:8px}
+[dir="rtl"] .tile.wide .em{right:auto;left:14px}
+[dir="rtl"] .promo:before{right:auto;left:-18px}
+[dir="rtl"] .promo .pe{right:auto;left:12px}
+[dir="rtl"] .spot .sp .em{right:auto;left:8px}
+[dir="rtl"] .shead .h2{padding-left:0;padding-right:11px}
+[dir="rtl"] .shead .h2:before{left:auto;right:0}
+[dir="rtl"] .rail{border-right:none;border-left:1px solid var(--hairline)}
+[dir="rtl"] .ri.on:before{left:auto;right:-6px;border-radius:3px 0 0 3px}
+[dir="rtl"] .flb{text-align:right}
+[dir="rtl"] .tl .st:before{left:auto;right:10px}
+[dir="rtl"] .ci .pr{text-align:left}
+[dir="rtl"] .thead .rt{margin-left:0;margin-right:auto}
+[dir="rtl"] .mrow .ar{margin-left:0;margin-right:auto}
+[dir="rtl"] .rdo{right:auto;left:11px}
+[dir="rtl"] .otp{direction:ltr}
+[dir="rtl"] [style*="margin-left:auto"]{margin-left:0 !important;margin-right:auto !important}
+[dir="rtl"] [style*="border-right:1px solid var(--hairline)"]{border-right:none !important;border-left:1px solid var(--hairline) !important}
+[dir="rtl"] .bdg[style*="right:-5px"]{right:auto !important;left:-5px !important}
+[dir="rtl"] .flag.gold[style*="left:14px"]{left:auto !important;right:14px !important}
+[dir="rtl"] .rdo[style*="right:15px"]{right:auto !important;left:15px !important}
+[dir="rtl"] i.ic[data-i="chev"] svg,[dir="rtl"] i.ic[data-i="back"] svg,[dir="rtl"] i.ic[data-i="check"] svg{transform:scaleX(-1)}
+[dir="rtl"] .cap[style*="margin-left:auto"],[dir="rtl"] .cim,[dir="rtl"] .pr{unicode-bidi:isolate}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="tamimi-wordmark" viewBox="0 0 188 53">
+        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g>
+                <path d="M59.3847,40.0738 C59.5577,39.9508 59.7157,39.8288 59.8837,39.7228 C61.4647,38.7288 63.4537,38.9098 64.8257,40.1708 C65.0757,40.4008 65.0707,40.3928 65.3497,40.1818 C66.5137,39.3018 67.8167,38.9398 69.2677,39.1418 C70.5917,39.3258 71.6767,39.9528 72.5227,40.9708 C73.2727,41.8738 73.6867,42.9268 73.6957,44.1118 C73.7097,46.1628 73.7077,48.2148 73.7177,50.2658 C73.7197,50.7968 73.5817,51.2558 73.1617,51.6168 C72.6277,52.0778 71.7387,52.0588 71.2247,51.5678 C70.8807,51.2388 70.7277,50.8398 70.7277,50.3728 C70.7277,48.2878 70.7197,46.2038 70.7317,44.1198 C70.7357,43.4028 70.4847,42.8258 69.9067,42.4038 C69.4197,42.0468 68.8707,41.9218 68.2737,42.0408 C67.5387,42.1888 67.0217,42.6138 66.7357,43.3038 C66.6627,43.4808 66.6197,43.6818 66.6187,43.8718 C66.6117,46.0658 66.6147,48.2588 66.6147,50.4518 C66.6147,51.0858 66.2427,51.6518 65.6517,51.8638 C64.8017,52.1678 63.8917,51.6958 63.6837,50.7978 C63.6547,50.6718 63.6417,50.5398 63.6417,50.4098 C63.6387,48.2988 63.6247,46.1868 63.6447,44.0758 C63.6587,42.5738 62.3317,41.9488 61.3097,42.0958 C60.5267,42.2088 59.9567,42.6298 59.6257,43.3508 C59.5647,43.4848 59.5357,43.6448 59.5357,43.7918 C59.5307,45.9858 59.5337,48.1778 59.5307,50.3718 C59.5307,51.0628 59.2137,51.5608 58.5877,51.8558 C58.1317,52.0708 57.4267,51.9308 57.0397,51.5698 C56.7047,51.2578 56.5467,50.8738 56.5467,50.4258 C56.5437,47.2038 56.5417,43.9818 56.5477,40.7608 C56.5487,39.9408 57.1027,39.3248 57.9147,39.2468 C58.4967,39.1908 58.9557,39.4438 59.2877,39.9238 C59.3217,39.9708 59.3507,40.0208 59.3847,40.0738" fill="#231F20"></path>
+                <path d="M93.3456,40.0821 C93.8526,39.6451 94.4076,39.3631 95.0266,39.2071 C95.5656,39.0721 96.1106,39.0481 96.6586,39.1381 C97.5406,39.2841 98.2966,39.6771 98.9266,40.3111 C99.0076,40.3931 99.0676,40.3791 99.1476,40.3101 C99.5856,39.9291 100.0816,39.6421 100.6216,39.4331 C101.3046,39.1691 102.0116,39.0581 102.7436,39.0951 C103.7826,39.1471 104.7156,39.4851 105.5516,40.0981 C106.2186,40.5871 106.7336,41.2061 107.1056,41.9451 C107.5086,42.7431 107.6636,43.5891 107.6586,44.4781 C107.6476,46.4761 107.6546,48.4731 107.6556,50.4701 C107.6566,51.5601 106.5206,52.2841 105.5396,51.8081 C104.9816,51.5381 104.6906,51.0751 104.6886,50.4541 C104.6826,48.3421 104.6826,46.2301 104.6856,44.1191 C104.6856,43.5411 104.5296,43.0281 104.1096,42.6171 C103.7436,42.2601 103.3066,42.0341 102.7956,42.0071 C101.8326,41.9561 101.1386,42.3821 100.7046,43.2411 C100.5296,43.5881 100.5586,43.9581 100.5616,44.3271 C100.5616,44.3861 100.5696,44.4461 100.5696,44.5061 C100.5706,46.4591 100.5696,48.4131 100.5706,50.3671 C100.5716,50.9941 100.3236,51.4841 99.7646,51.7841 C99.0396,52.1741 98.1616,51.8731 97.7826,51.1911 C97.6346,50.9261 97.5866,50.6441 97.5866,50.3491 C97.5856,48.4111 97.5906,46.4741 97.5816,44.5361 C97.5796,44.1651 97.5696,43.7851 97.4926,43.4241 C97.3526,42.7631 96.8606,42.3971 96.2606,42.1941 C95.5026,41.9371 94.7866,42.0691 94.1616,42.5771 C93.7106,42.9441 93.4626,43.4111 93.4656,44.0171 C93.4766,46.1931 93.4756,48.3701 93.4706,50.5471 C93.4686,51.3271 92.7006,52.0091 91.9136,51.9561 C91.0986,51.9001 90.5006,51.2561 90.5016,50.4391 C90.5016,47.2231 90.5016,44.0071 90.5016,40.7901 C90.5016,39.9241 91.0676,39.2931 91.9316,39.2441 C92.4486,39.2141 92.8806,39.4281 93.1916,39.8561 C93.2416,39.9241 93.2866,39.9961 93.3456,40.0821" fill="#231F20"></path>
+                <path d="M29.7582,45.5963 C29.7582,43.9963 29.7582,42.3963 29.7582,40.7973 C29.7582,40.1953 30.0062,39.7283 30.5312,39.4243 C31.2072,39.0313 32.1292,39.2793 32.5172,39.9593 C32.5772,40.0643 32.6122,40.0773 32.7092,39.9983 C33.3012,39.5103 33.9842,39.2133 34.7422,39.1203 C35.9142,38.9783 36.9672,39.2793 37.8822,40.0373 C37.9782,40.1163 38.0752,40.1953 38.1582,40.2873 C38.2472,40.3883 38.3192,40.3893 38.4182,40.3033 C38.8532,39.9263 39.3432,39.6393 39.8802,39.4343 C40.7342,39.1063 41.6132,39.0093 42.5202,39.1463 C43.3672,39.2753 44.1372,39.5903 44.8222,40.1033 C45.8522,40.8743 46.5182,41.8893 46.7852,43.1493 C46.8672,43.5333 46.9102,43.9333 46.9122,44.3273 C46.9252,46.3573 46.9182,48.3873 46.9182,50.4163 C46.9182,51.1163 46.5622,51.6383 45.9632,51.8583 C45.0662,52.1893 44.1742,51.6533 43.9822,50.7723 C43.9552,50.6513 43.9462,50.5253 43.9462,50.4003 C43.9442,48.3003 43.9392,46.1993 43.9462,44.0983 C43.9502,43.1113 43.4192,42.4683 42.6622,42.1513 C41.5742,41.6953 40.2802,42.2783 39.9042,43.3973 C39.8322,43.6133 39.8232,43.8563 39.8202,44.0873 C39.8122,44.5443 39.8342,45.0013 39.8342,45.4583 C39.8372,47.1123 39.8362,48.7663 39.8352,50.4213 C39.8352,51.2313 39.2582,51.8703 38.4612,51.9483 C37.6172,52.0313 36.8582,51.3383 36.8582,50.4853 C36.8582,48.4113 36.8582,46.3383 36.8582,44.2653 C36.8582,43.9053 36.8342,43.5473 36.6932,43.2093 C36.4742,42.6863 36.0532,42.3833 35.5422,42.2013 C34.5282,41.8423 33.4452,42.2543 32.9052,43.1893 C32.7642,43.4333 32.7282,43.7023 32.7282,43.9753 C32.7262,46.1573 32.7292,48.3393 32.7302,50.5213 C32.7312,51.4463 31.7572,52.1563 30.8642,51.9063 C30.2372,51.7303 29.7532,51.1313 29.7562,50.4123 C29.7632,48.8073 29.7582,47.2013 29.7582,45.5963" fill="#231F20"></path>
+                <path d="M23.3583,45.5885 C23.3563,43.6195 21.7483,42.0245 19.7573,42.0305 C17.8163,42.0375 16.2383,43.6095 16.2083,45.5385 C16.1763,47.5705 17.7843,49.1945 19.8033,49.1835 C21.8163,49.1725 23.3613,47.5495 23.3583,45.5885 M23.4993,40.1355 C23.6433,39.9605 23.7663,39.7805 23.9183,39.6305 C24.4563,39.0965 25.4023,39.1165 25.9343,39.6545 C26.2483,39.9735 26.3943,40.3485 26.3933,40.7955 C26.3903,44.0265 26.3923,47.2595 26.3913,50.4915 C26.3903,51.1395 25.9383,51.6935 25.3443,51.8855 C24.6833,52.0985 23.9073,51.7905 23.5813,51.1425 C23.5693,51.1195 23.5493,51.0995 23.5223,51.0635 C22.4863,51.7475 21.3593,52.1555 20.0893,52.2025 C20.1353,52.2135 20.1593,52.2195 20.2283,52.2365 L19.3813,52.2365 C19.3793,52.2325 19.3793,52.2285 19.3783,52.2235 C19.4043,52.2185 19.4323,52.2135 19.4593,52.2085 C16.5483,51.9315 14.4653,50.4765 13.5283,47.6975 C12.6443,45.0725 13.2943,42.7045 15.2893,40.7665 C16.3913,39.6965 17.7513,39.1305 19.2883,39.0155 C20.8243,38.9015 22.2293,39.2935 23.4993,40.1355" fill="#231F20"></path>
+                <g transform="translate(110.000000, 38.245800)">
+                    <path d="M7.2353,3.7856 C5.2383,3.7626 3.6803,5.3446 3.6203,7.2346 C3.5553,9.2716 5.1413,10.9136 7.1443,10.9376 C9.1693,10.9606 10.7443,9.3826 10.7733,7.3816 C10.8013,5.4206 9.2013,3.8096 7.2353,3.7856 M10.9483,12.8156 C10.7933,12.9076 10.6543,12.9886 10.5173,13.0716 C9.8763,13.4606 9.1803,13.7036 8.4513,13.8556 C8.2293,13.9026 8.0003,13.9206 7.7733,13.9406 C7.4853,13.9666 7.1913,14.0246 6.9093,13.9896 C6.3763,13.9226 5.8443,13.8246 5.3243,13.6946 C4.6513,13.5266 4.0393,13.2106 3.4663,12.8196 C2.4263,12.1106 1.6563,11.1756 1.1453,10.0286 C0.7993,9.2526 0.6163,8.4366 0.5873,7.5856 C0.5483,6.4516 0.7753,5.3686 1.2963,4.3666 C2.0623,2.8916 3.2183,1.8276 4.7713,1.2086 C5.8343,0.7856 6.9353,0.6586 8.0643,0.8066 C9.0543,0.9356 9.9763,1.2696 10.8073,1.8326 C10.9023,1.8976 10.9533,1.8946 11.0083,1.7866 C11.3063,1.2026 11.9473,0.9246 12.5383,1.0086 C13.2563,1.1106 13.8043,1.7456 13.8043,2.4946 C13.8033,5.7226 13.8033,8.9486 13.8033,12.1756 C13.8043,12.8866 13.4043,13.4386 12.7223,13.6476 C12.0773,13.8466 11.3733,13.5566 11.0313,12.9666 C11.0073,12.9246 10.9843,12.8816 10.9483,12.8156" fill="#231F20"></path>
+                </g>
+                <path d="M158.6073,44.1056 C158.4363,43.7286 158.2283,43.4146 157.9713,43.1326 C157.5293,42.6476 156.9883,42.3156 156.3603,42.1386 C155.9013,42.0096 155.4253,41.9866 154.9553,42.0696 C154.3163,42.1826 153.7533,42.4576 153.2683,42.8956 C152.7763,43.3396 152.4223,43.8736 152.2423,44.5076 C151.8433,45.9096 152.1393,47.1486 153.2053,48.1566 C153.9273,48.8396 154.8083,49.1416 155.8103,49.1016 C156.2963,49.0826 156.7763,49.0456 157.2273,48.8596 C157.4743,48.7576 157.7023,48.6056 157.9313,48.4616 C158.2023,48.2916 158.4693,48.1156 158.8003,48.0856 C159.4293,48.0286 159.9923,48.3906 160.2233,49.0206 C160.3993,49.4986 160.3213,49.9276 159.9483,50.3026 C159.2683,50.9866 158.4663,51.4686 157.5483,51.7436 C156.5433,52.0456 155.5183,52.1236 154.4743,51.9536 C152.9633,51.7076 151.7293,50.9836 150.7433,49.8276 C150.2453,49.2446 149.8863,48.5786 149.6363,47.8536 C149.2653,46.7796 149.1683,45.6786 149.3383,44.5586 C149.5603,43.1036 150.1793,41.8396 151.2393,40.8096 C151.9133,40.1536 152.6983,39.6746 153.6023,39.3876 C154.5243,39.0956 155.4583,39.0146 156.4153,39.1576 C157.6613,39.3436 158.7473,39.8586 159.6843,40.7016 C160.3993,41.3446 160.9443,42.1076 161.3073,42.9916 C161.6323,43.7836 161.8583,44.6076 161.7973,45.4766 C161.7463,46.2166 161.3643,46.7336 160.6543,46.9776 C160.4943,47.0326 160.3133,47.0436 160.1413,47.0436 C158.1333,47.0486 156.1253,47.0466 154.1173,47.0456 C153.5053,47.0456 153.0183,46.8116 152.7163,46.2636 C152.2903,45.4886 152.7033,44.4186 153.6103,44.1836 C153.7553,44.1466 153.9083,44.1186 154.0573,44.1186 C155.5153,44.1136 156.9743,44.1156 158.4323,44.1146 C158.4803,44.1146 158.5273,44.1096 158.6073,44.1056" fill="#231F20"></path>
+                <path d="M180.7973,39.0465 C182.0363,39.0285 182.8723,39.1635 183.6663,39.5105 C184.4523,39.8545 185.1303,40.3385 185.6173,41.0565 C185.8633,41.4205 186.0063,41.8195 185.9493,42.2705 C185.9053,42.6145 185.7263,42.8825 185.4953,43.1315 C185.0843,43.5745 184.0853,43.8525 183.4323,43.1985 C183.0843,42.8505 182.7143,42.5195 182.2703,42.2855 C181.9253,42.1045 181.5603,42.0095 181.1773,42.0065 C180.7493,42.0035 180.3193,42.0365 179.9093,42.1815 C179.5743,42.2995 179.3133,42.4865 179.2743,42.8815 C179.2333,43.3045 179.3523,43.5585 179.7583,43.6955 C180.2083,43.8485 180.6713,43.9695 181.1373,44.0605 C182.0573,44.2395 182.9873,44.3735 183.8623,44.7265 C184.6443,45.0415 185.3163,45.5015 185.7373,46.2605 C185.9953,46.7245 186.1163,47.2275 186.1533,47.7525 C186.1993,48.4105 186.1273,49.0535 185.8643,49.6665 C185.5583,50.3775 185.0613,50.9215 184.4083,51.3285 C183.6663,51.7895 182.8483,52.0075 181.9883,52.1205 C181.0133,52.2485 180.0543,52.1615 179.1103,51.9305 C178.2503,51.7195 177.4173,51.4235 176.6983,50.8805 C176.2613,50.5495 175.9073,50.1505 175.7763,49.6005 C175.6603,49.1085 175.6993,48.6075 175.9673,48.1855 C176.1023,47.9735 176.3883,47.8375 176.6303,47.7155 C177.0823,47.4885 177.5243,47.5975 177.9253,47.8625 C178.2733,48.0925 178.6013,48.3535 178.9403,48.5995 C179.4543,48.9735 180.0453,49.1415 180.6663,49.2145 C181.1423,49.2705 181.6193,49.2765 182.0903,49.1555 C182.4023,49.0765 182.7033,48.9635 182.8653,48.6655 C183.0873,48.2575 182.9203,47.8025 182.4443,47.6155 C182.0443,47.4595 181.6193,47.3495 181.1953,47.2725 C180.2243,47.0935 179.2443,46.9565 178.3353,46.5475 C177.5793,46.2085 176.9513,45.7155 176.5623,44.9635 C176.3233,44.5005 176.2033,44.0025 176.1573,43.4865 C176.0863,42.6945 176.2283,41.9415 176.6013,41.2355 C177.0603,40.3675 177.7903,39.8135 178.6883,39.4645 C179.4863,39.1555 180.3233,39.0565 180.7973,39.0465" fill="#231F20"></path>
+                <path d="M140.6615,43.6959 C140.7715,43.6559 140.8685,43.6289 140.9575,43.5869 C141.8675,43.1699 142.6365,42.5729 143.2355,41.7689 C143.5055,41.4069 143.7215,41.0119 143.8475,40.5739 C143.9985,40.0459 144.2775,39.6179 144.8025,39.3879 C145.7865,38.9569 146.7495,39.6889 146.8105,40.6149 C146.8555,41.3009 146.5915,41.8989 146.2515,42.4679 C145.8135,43.2039 145.2805,43.8669 144.6735,44.4699 C144.4165,44.7239 144.1455,44.9639 143.8615,45.2299 C144.0415,45.3859 144.1785,45.4999 144.3085,45.6189 C144.8275,46.0899 145.3625,46.5429 145.8545,47.0389 C146.4425,47.6309 146.8425,48.3479 147.0505,49.1579 C147.1775,49.6529 147.2635,50.1599 147.1915,50.6739 C147.1035,51.3079 146.6645,51.7709 146.0885,51.8059 C145.4375,51.8469 144.8745,51.5949 144.5395,50.9379 C144.4095,50.6829 144.3325,50.4009 144.2155,50.1389 C143.9655,49.5809 143.6425,49.0709 143.2275,48.6159 C142.7295,48.0709 142.1565,47.6359 141.4715,47.3609 C141.2185,47.2579 140.9525,47.1869 140.6735,47.0959 C140.6635,47.1649 140.6545,47.1989 140.6545,47.2339 C140.6535,48.3109 140.6575,49.3889 140.6525,50.4669 C140.6485,51.3879 139.7965,52.1099 138.8935,51.9319 C138.1715,51.7909 137.6805,51.2109 137.6805,50.4869 C137.6785,46.5789 137.6795,42.6719 137.6785,38.7639 C137.6785,38.1429 138.0685,37.5919 138.6695,37.3739 C139.2455,37.1649 139.9205,37.3539 140.3055,37.8289 C140.5395,38.1179 140.6535,38.4489 140.6535,38.8189 C140.6545,40.4029 140.6535,41.9869 140.6535,43.5699 C140.6535,43.6009 140.6575,43.6329 140.6615,43.6959" fill="#231F20"></path>
+                <path d="M165.6147,39.295 C165.6147,39.027 165.6057,38.768 165.6167,38.509 C165.6287,38.245 165.6227,37.972 165.6887,37.719 C165.8307,37.173 166.2027,36.851 166.7507,36.697 C167.4697,36.496 168.2577,36.951 168.4917,37.622 C168.5437,37.769 168.5767,37.928 168.5827,38.083 C168.5967,38.43 168.5877,38.779 168.5877,39.127 L168.5877,39.293 L169.6637,39.293 C170.4797,39.293 171.2957,39.292 172.1127,39.293 C172.5597,39.293 172.9547,39.422 173.2757,39.75 C174.0047,40.495 173.7727,41.779 172.7287,42.173 C172.5307,42.248 172.3047,42.275 172.0917,42.276 C170.9647,42.286 169.8387,42.281 168.7127,42.277 C168.6077,42.276 168.5847,42.306 168.5857,42.406 C168.5887,44.148 168.5757,45.889 168.5937,47.63 C168.6017,48.342 169.0547,49.043 169.8647,49.156 C170.1827,49.201 170.5157,49.251 170.8297,49.207 C171.1147,49.167 171.3877,49.012 171.6597,48.893 C171.9537,48.764 172.2447,48.63 172.5737,48.629 C173.1267,48.627 173.5657,48.978 173.6737,49.523 C173.8107,50.213 173.5777,50.783 173.0597,51.237 C172.5367,51.695 171.8927,51.883 171.2267,52.011 C170.3117,52.187 169.3967,52.21 168.5017,51.931 C167.5107,51.623 166.7667,50.992 166.2817,50.069 C165.9567,49.448 165.7527,48.787 165.6887,48.087 C165.6527,47.688 165.6197,47.286 165.6177,46.885 C165.6097,45.427 165.6147,43.969 165.6147,42.51 C165.6147,42.28 165.6147,42.275 165.3897,42.28 C164.9487,42.289 164.5437,42.205 164.1867,41.92 C163.7717,41.588 163.5567,40.858 163.7277,40.355 C163.8987,39.855 164.2247,39.51 164.7247,39.367 C164.9737,39.296 165.2497,39.316 165.5137,39.295 C165.5387,39.294 165.5647,39.295 165.6147,39.295" fill="#231F20"></path>
+                <path d="M6.1054,45.0763 C6.1054,45.9523 6.0694,46.8303 6.1164,47.7033 C6.1564,48.4303 6.5704,49.0213 7.3844,49.1623 C7.6754,49.2133 7.9844,49.2563 8.2714,49.2123 C8.5734,49.1663 8.8634,49.0253 9.1494,48.9033 C9.4604,48.7703 9.7634,48.6313 10.1114,48.6283 C10.7434,48.6223 11.1744,49.1273 11.2144,49.7083 C11.2724,50.5303 10.8724,51.1073 10.1894,51.5093 C9.6444,51.8313 9.0404,51.9703 8.4184,52.0593 C7.8654,52.1383 7.3164,52.1653 6.7624,52.0903 C5.8774,51.9693 5.0924,51.6353 4.4614,50.9903 C3.9744,50.4933 3.6614,49.8913 3.4434,49.2323 C3.1744,48.4163 3.1244,47.5763 3.1244,46.7273 C3.1254,45.3023 3.1254,43.8763 3.1304,42.4513 C3.1304,42.3143 3.0904,42.2723 2.9534,42.2773 C2.4564,42.2983 1.9964,42.2093 1.6184,41.8413 C1.1174,41.3513 1.0354,40.5213 1.4384,39.9463 C1.7714,39.4703 2.2404,39.2923 2.7974,39.2923 C3.1274,39.2923 3.1244,39.2923 3.1274,38.9573 C3.1304,38.6153 3.1204,38.2713 3.1514,37.9313 C3.2324,37.0203 4.2534,36.4103 5.1114,36.7353 C5.6674,36.9453 6.1194,37.5023 6.0964,38.1853 C6.0854,38.5123 6.0984,38.8383 6.0924,39.1653 C6.0904,39.2733 6.1194,39.2943 6.2314,39.2943 C7.3794,39.2883 8.5284,39.2853 9.6764,39.2953 C10.3554,39.3013 10.8654,39.6183 11.1114,40.2523 C11.4904,41.2243 10.7984,42.2203 9.8654,42.2533 C8.6644,42.2963 7.4614,42.2773 6.2594,42.2773 C6.1324,42.2773 6.0894,42.2943 6.0904,42.4323 C6.0974,43.3133 6.0934,44.1953 6.0934,45.0763 L6.1054,45.0763 Z" fill="#231F20"></path>
+                <path d="M126.9545,45.588 C126.9545,43.994 126.9535,42.4 126.9545,40.805 C126.9555,40.109 127.3085,39.571 127.9115,39.339 C128.5925,39.077 129.3275,39.327 129.7145,39.966 C129.7845,40.081 129.8395,40.082 129.9465,40.03 C130.3105,39.852 130.6705,39.66 131.0485,39.515 C131.6875,39.271 132.3605,39.237 133.0385,39.273 C133.4945,39.297 133.9155,39.425 134.2685,39.719 C134.8525,40.205 135.1795,40.814 135.0235,41.588 C134.9445,41.979 134.6575,42.24 134.3075,42.427 C133.8855,42.651 133.4365,42.658 132.9745,42.637 C132.5415,42.617 132.1005,42.595 131.6745,42.656 C131.0395,42.747 130.5735,43.119 130.2935,43.702 C130.0625,44.182 129.9395,44.689 129.9405,45.225 C129.9435,46.912 129.9385,48.598 129.9425,50.285 C129.9445,50.798 129.8125,51.249 129.4095,51.595 C128.5475,52.334 127.2585,51.877 127.0025,50.807 C126.9695,50.666 126.9565,50.517 126.9565,50.371 C126.9535,48.776 126.9545,47.182 126.9545,45.588" fill="#231F20"></path>
+                <path d="M50.349,45.5704 C50.349,43.9814 50.352,42.3924 50.347,40.8044 C50.346,40.2124 50.573,39.7534 51.08,39.4434 C51.625,39.1104 52.366,39.1954 52.831,39.6294 C53.165,39.9414 53.319,40.3224 53.319,40.7724 C53.32,43.9984 53.32,47.2244 53.319,50.4514 C53.318,51.3904 52.481,52.1044 51.562,51.9334 C50.88,51.8064 50.347,51.2144 50.348,50.4664 C50.351,48.8344 50.349,47.2024 50.349,45.5704" fill="#231F20"></path>
+                <path d="M80.0903,45.6056 C80.0903,47.2596 80.1013,48.9146 80.0843,50.5686 C80.0783,51.1156 79.7053,51.6766 79.0323,51.8856 C78.3433,52.1006 77.6733,51.7686 77.3563,51.2696 C77.1883,51.0066 77.1163,50.7186 77.1163,50.4056 C77.1183,47.2226 77.1203,44.0386 77.1153,40.8546 C77.1143,40.3146 77.2873,39.8676 77.7213,39.5346 C78.4913,38.9416 79.6543,39.2736 79.9793,40.1896 C80.0483,40.3826 80.0803,40.5996 80.0813,40.8056 C80.0893,42.4056 80.0853,44.0056 80.0853,45.6056 L80.0903,45.6056 Z" fill="#231F20"></path>
+                <path d="M76.9657,37.1456 C76.9627,36.2326 77.6577,35.4816 78.6227,35.4836 C79.5267,35.4856 80.2237,36.2086 80.2447,37.0806 C80.2677,38.0116 79.5557,38.7496 78.6277,38.7736 C77.7247,38.7966 76.9737,38.0446 76.9657,37.1456" fill="#231F20"></path>
+                <path d="M53.4711,37.1827 C53.4361,38.0907 52.6981,38.7927 51.8001,38.7677 C50.8171,38.7417 50.1591,37.9547 50.1881,37.0917 C50.2211,36.1067 50.9981,35.4547 51.8711,35.4857 C52.8701,35.5207 53.4881,36.3097 53.4711,37.1827" fill="#231F20"></path>
+                <path d="M91.2582,35.7345 C91.2582,35.7345 92.5782,35.4625 93.2532,34.4365 C93.4782,34.0935 93.6312,33.6685 93.6402,33.1405 C93.9122,30.8275 91.5982,29.8755 90.3482,28.4935 C90.0422,28.1435 89.7522,27.7535 89.5052,27.3155 C88.4692,25.7935 88.4692,23.6165 89.2852,21.9835 C90.5102,19.8065 93.2312,19.1265 95.5452,19.2615 C94.2182,19.5675 93.1972,20.4865 93.0002,21.6725 C92.9342,22.0685 92.9592,22.4935 93.0952,22.9355 C93.3672,23.6165 93.7762,24.1605 94.3202,24.7045 C96.2252,26.0655 97.8582,27.6985 98.1302,30.0115 C98.2662,31.7805 97.4492,33.5495 95.9912,34.4995 C95.6542,34.7595 95.2622,34.9975 94.8082,35.1935 C93.8992,35.5875 92.7382,35.8175 91.2582,35.7345" fill="#EC2225"></path>
+                <polygon fill="#EC2225" points="104.071 28.8268 186.915 28.8268 186.915 26.0648 104.071 26.0648"></polygon>
+                <polygon fill="#EC2225" points="0.024 28.8668 82.55 28.8668 82.55 26.0648 0.024 26.0648"></polygon>
+                <path d="M185.1889,1.4371 L186.5239,1.4541 L187.2009,0.0001 L184.8919,0.0001 C183.0529,0.1151 183.1159,1.4051 183.2199,1.9301 L182.4589,1.9301 L182.4589,3.2401 L187.2009,3.2401 L187.2009,1.9301 L184.9829,1.9301 C184.7319,1.5611 185.1889,1.4371 185.1889,1.4371" fill="#EC2225"></path>
+                <polygon fill="#EC2225" points="183.684 14.7258 186.746 14.7258 186.746 4.0218 183.684 4.0218"></polygon>
+                <path d="M140.6742,12.0728 C140.6742,12.0728 137.7712,12.5498 137.3182,10.7808 C137.3182,10.7808 137.1362,9.0568 140.6742,9.0108 L140.6742,12.0728 Z M177.9122,12.0958 L175.1912,12.0958 L175.1912,7.3328 L172.2882,7.3328 L172.2882,12.0958 L169.6112,12.0958 L169.6112,7.3328 L166.7092,7.3328 L166.7092,12.0958 L143.3962,12.0958 L143.3962,6.5038 C140.2662,6.3998 134.4152,7.1978 134.3242,11.1428 C134.2342,15.0898 140.4932,14.7718 140.4932,14.7718 C140.9462,17.2208 137.3182,16.8578 137.3182,16.8578 L137.3182,19.0348 C143.2142,19.5338 143.3962,14.7778 143.3962,14.7778 L143.3962,14.7258 L166.7092,14.7258 L169.6112,14.7258 L172.2882,14.7258 L175.1912,14.7258 L177.9122,14.7258 L180.8152,14.7258 L180.8152,12.0958 L180.8152,7.3328 L177.9122,7.3328 L177.9122,12.0958 Z" fill="#EC2225"></path>
+                <polygon fill="#EC2225" points="127.748 14.7718 130.696 14.7718 130.696 2.9338 127.748 2.9338"></polygon>
+                <path d="M121.0805,12.2091 C121.0805,12.2091 118.1775,12.6851 117.7245,10.9171 C117.7245,10.9171 117.5425,9.1931 121.0805,9.1471 L121.0805,12.2091 Z M115.0025,10.5991 C114.3675,15.4981 120.9445,14.7541 120.9445,14.7541 C120.3995,16.2341 115.7055,16.3141 115.7055,16.3141 C110.6025,16.5861 110.3305,12.7761 110.3305,12.7761 L107.3825,12.7761 C108.8795,19.1711 115.7735,18.4001 115.7735,18.4001 C123.8475,18.3101 124.0285,14.5001 124.0285,14.5001 L124.0285,6.5621 C124.0285,6.5621 115.6375,5.7001 115.0025,10.5991 Z" fill="#EC2225"></path>
+                <path d="M8.0634,16.7227 C7.2554,16.7227 6.6004,17.2787 6.6004,17.9647 C6.6004,18.6497 7.2554,19.2057 8.0634,19.2057 C8.8714,19.2057 9.5254,18.6497 9.5254,17.9647 C9.5254,17.2787 8.8714,16.7227 8.0634,16.7227" fill="#EC2225"></path>
+                <path d="M4.3212,16.7227 C3.5132,16.7227 2.8592,17.2787 2.8592,17.9647 C2.8592,18.6497 3.5132,19.2057 4.3212,19.2057 C5.1292,19.2057 5.7842,18.6497 5.7842,17.9647 C5.7842,17.2787 5.1292,16.7227 4.3212,16.7227" fill="#EC2225"></path>
+                <path d="M122.0614,5.4171 C122.8694,5.4171 123.5234,4.8611 123.5234,4.1751 C123.5234,3.4891 122.8694,2.9341 122.0614,2.9341 C121.2534,2.9341 120.5984,3.4891 120.5984,4.1751 C120.5984,4.8611 121.2534,5.4171 122.0614,5.4171" fill="#EC2225"></path>
+                <path d="M118.3193,5.4171 C119.1273,5.4171 119.7823,4.8611 119.7823,4.1751 C119.7823,3.4891 119.1273,2.9341 118.3193,2.9341 C117.5113,2.9341 116.8563,3.4891 116.8563,4.1751 C116.8563,4.8611 117.5113,5.4171 118.3193,5.4171" fill="#EC2225"></path>
+                <path d="M48.5497,15.753 C47.7417,15.753 47.0867,16.309 47.0867,16.995 C47.0867,17.68 47.7417,18.236 48.5497,18.236 C49.3577,18.236 50.0117,17.68 50.0117,16.995 C50.0117,16.309 49.3577,15.753 48.5497,15.753" fill="#EC2225"></path>
+                <path d="M44.8075,15.753 C43.9995,15.753 43.3455,16.309 43.3455,16.995 C43.3455,17.68 43.9995,18.236 44.8075,18.236 C45.6155,18.236 46.2705,17.68 46.2705,16.995 C46.2705,16.309 45.6155,15.753 44.8075,15.753" fill="#EC2225"></path>
+                <path d="M81.0873,5.8253 C81.8953,5.8253 82.5503,5.2693 82.5503,4.5833 C82.5503,3.8983 81.8953,3.3423 81.0873,3.3423 C80.2793,3.3423 79.6243,3.8983 79.6243,4.5833 C79.6243,5.2693 80.2793,5.8253 81.0873,5.8253" fill="#EC2225"></path>
+                <path d="M77.3451,5.8253 C78.1531,5.8253 78.8081,5.2693 78.8081,4.5833 C78.8081,3.8983 78.1531,3.3423 77.3451,3.3423 C76.5371,3.3423 75.8831,3.8983 75.8831,4.5833 C75.8831,5.2693 76.5371,5.8253 77.3451,5.8253" fill="#EC2225"></path>
+                <path d="M61.7548,10.6695 C62.0718,8.8325 65.1338,9.0825 65.1338,9.0825 L65.1338,12.0955 L63.3278,12.0955 C62.4418,11.9575 61.5958,11.5885 61.7548,10.6695 Z M27.0928,10.7405 C27.4108,8.9035 30.4728,9.1525 30.4728,9.1525 L30.4728,12.0955 L28.3088,12.0955 C27.5688,11.9165 26.9558,11.5345 27.0928,10.7405 Z M90.1018,12.0955 L80.5768,12.0955 L80.5768,7.2535 L77.6508,7.2535 L77.6508,12.0955 L68.0368,12.0955 L68.0368,6.4285 C58.2978,6.2415 58.8888,11.2665 59.0528,12.0955 L48.1588,12.0955 L48.1588,7.2875 L45.1988,7.2875 L45.1988,12.0955 L33.3758,12.0955 L33.3758,6.4995 C23.8828,6.3165 24.2048,11.0855 24.3788,12.0955 L17.5778,12.0955 L12.7468,6.0185 C12.7468,6.0185 11.5218,4.6345 9.6398,5.6325 C7.7568,6.6305 6.4638,7.2425 6.4638,7.2425 C6.4638,7.2425 3.7198,8.9205 6.7138,10.8935 C7.8658,11.6525 8.4048,12.0045 8.6338,12.1515 C8.8818,12.3945 9.7068,13.3645 7.5528,13.8195 C5.0808,14.3405 3.2898,13.4795 3.1078,12.2765 C2.9268,11.0755 3.1078,10.8255 3.1078,10.8255 L0.0458,10.8025 C0.0458,10.8025 -0.6342,14.3635 3.2548,15.7925 C7.1448,17.2205 11.4768,14.9535 11.9068,13.8195 C11.9068,13.8195 12.6778,12.4815 11.6348,11.5055 C10.5918,10.5305 9.0048,9.2155 9.0048,9.2155 C9.0048,9.2155 8.5008,9.0345 9.2538,8.5355 C10.0068,8.0365 10.2968,7.8095 10.7738,8.1725 C11.2498,8.5355 15.9218,14.7715 15.9218,14.7715 L17.6678,14.7545 L24.5308,14.7545 L33.3758,14.7545 L45.1988,14.7545 L48.1588,14.7545 L90.1018,14.7545 L93.0268,14.7545 L93.0268,12.0955 L93.0268,2.9675 L90.1018,2.9675 L90.1018,12.0955 Z" fill="#EC2225"></path>
+                <polygon fill="#EC2225" points="97.109 14.7548 100.035 14.7548 100.035 2.9678 97.109 2.9678"></polygon>
+            </g>
+        </g>
+    </symbol>
+  </defs>
+</svg>
+<div class="stage">
+  <h1>TAMIMI MARKETS <em>·</em> Quick Commerce App — Visual Design v2</h1>
+  <p>Full customer journey, clickable end-to-end. Jump to any screen with the chips, or tap through inside the phone.</p>
+  <div class="picker" id="picker">
+    <button data-s="splash" class="active">Splash</button><button data-s="login">Login</button><button data-s="otp">OTP</button><button data-s="success">Success</button><button data-s="home">Home</button><button data-s="categories">Categories</button><button data-s="listing">Product List</button><button data-s="searchsc">Search</button><button data-s="pdp">Product Detail</button><button data-s="offers">Offers</button><button data-s="cart">Cart</button><button data-s="address">Address</button><button data-s="payment">Payment</button><button data-s="confirm">Order Placed</button><button data-s="track">Tracking</button><button data-s="orders">My Orders</button><button data-s="account">Account</button>
+  </div>
+
+  <div class="phone"><div class="vp" id="vp">
+    <div class="island"></div>
+
+    <!-- SPLASH -->
+    <div class="screen on" id="splash" style="background:radial-gradient(130% 70% at 50% -8%,#F0584A 0%,#EC2225 45%,#96110D 100%);color:#fff">
+      <div style="position:absolute;inset:0;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22190%22 height=%22190%22><g fill=%22none%22 stroke=%22rgba(255,255,255,.1)%22 stroke-width=%221.5%22 stroke-linecap=%22round%22><circle cx=%2234%22 cy=%2230%22 r=%2211%22/><path d=%22M95 22c9 0 14 7 14 13s-5 13-14 13-14-7-14-13 5-13 14-13z%22/><path d=%22M152 62l10 17h-20z%22/><path d=%22M40 112c0 10 8 17 17 17s17-7 17-17%22/><rect x=%22115%22 y=%22115%22 width=%2228%22 height=%2221%22 rx=%224%22/><path d=%22M20 158c6-8 15-8 21 0%22/></g></svg>')"></div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:46px 30px 0;position:relative">
+        <div class="blogo" style="background:#fff;border-radius:22px;padding:22px 26px;display:inline-flex;align-items:center;justify-content:center">
+          <svg width="178" height="50" viewBox="0 0 188 53"><use href="#tamimi-wordmark" xlink:href="#tamimi-wordmark"></use></svg>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:18px;font-weight:600;letter-spacing:.1px;opacity:.95" data-i18n="splash.line1">Everything you need,</div>
+          <div style="font-family:Caveat,cursive;font-size:34px;color:var(--yellow);margin-top:-2px;text-shadow:0 2px 8px rgba(0,0,0,.18)" data-i18n="splash.line2">delivered with care!</div>
+        </div>
+        <div style="position:relative;margin-top:2px">
+          <span style="font-size:92px;line-height:1;filter:drop-shadow(0 18px 16px rgba(60,5,0,.4))">🧺</span>
+          <span style="position:absolute;top:-14px;left:-38px;font-size:30px;transform:rotate(-14deg);filter:drop-shadow(0 6px 6px rgba(60,5,0,.3))">🥬</span>
+          <span style="position:absolute;top:-22px;right:-34px;font-size:28px;transform:rotate(12deg);filter:drop-shadow(0 6px 6px rgba(60,5,0,.3))">🍅</span>
+          <span style="position:absolute;top:-34px;left:24px;font-size:24px;transform:rotate(-5deg);filter:drop-shadow(0 6px 6px rgba(60,5,0,.3))">🥛</span>
+        </div>
+      </div>
+      <div style="position:relative;background:#fff;color:var(--ink);border-radius:34px 34px 0 0;padding:22px 8px 30px;display:flex;text-align:center;box-shadow:0 -12px 40px rgba(60,5,0,.3)">
+        <div style="flex:1;border-right:1px solid var(--hairline);padding:0 6px"><i class="ic s24" data-i="star" style="color:var(--red)"></i><b style="font-size:11.5px;display:block;margin-top:6px;line-height:1.35" data-i18n="splash.trust">Quality<br>You Trust</b></div>
+        <div style="flex:1;border-right:1px solid var(--hairline);padding:0 6px"><i class="ic s24" data-i="store" style="color:var(--red)"></i><b style="font-size:11.5px;display:block;margin-top:6px;line-height:1.35" data-i18n="splash.products">15,000+<br>Products</b></div>
+        <div style="flex:1;padding:0 6px"><i class="ic s24" data-i="bolt" style="color:var(--red)"></i><b style="font-size:11.5px;display:block;margin-top:6px;line-height:1.35" data-i18n="splash.delivery">Delivery in<br>20 Minutes</b></div>
+      </div>
+      <div style="position:absolute;inset:0;cursor:pointer" onclick="go('login')" title="Tap to continue"></div>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="screen doodle" id="login">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div style="display:flex;justify-content:flex-end;padding:8px 18px">
+        <button class="chip" onclick="go('home')" style="box-shadow:var(--sh-sm)">Skip <i class="ic s14" data-i="chev"></i></button>
+      </div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center">
+        <svg class="blogo" width="220" height="62" viewBox="0 0 188 53" style="filter:drop-shadow(0 10px 18px rgba(158,33,24,.2))"><use href="#tamimi-wordmark" xlink:href="#tamimi-wordmark"></use></svg>
+      </div>
+      <div style="background:#fff;border-radius:30px 30px 0 0;padding:12px 22px 32px;box-shadow:0 -12px 36px rgba(27,20,12,.1)">
+        <div style="width:40px;height:4.5px;background:#E8E4DD;border-radius:3px;margin:0 auto 18px"></div>
+        <h2 style="font-size:22px;font-weight:800;letter-spacing:-.4px" data-i18n="login.title">Login to Tamimi Markets</h2>
+        <p class="cap" style="margin-top:4px" data-i18n="login.subtitle">Groceries at your door in 20 minutes ⚡</p>
+        <label class="flb" data-i18n="login.phoneLabel">Phone number</label>
+        <div style="display:flex;gap:8px">
+          <div class="inp" style="width:66px;text-align:center;flex-shrink:0;color:var(--sub)">+966</div>
+          <input class="inp" value="55 123 4567">
+        </div>
+        <button class="btn" style="margin-top:18px" onclick="go('otp')"><span data-i18n="login.requestOtp">Request OTP</span> <i class="ic s16" data-i="chev"></i></button>
+        <p style="text-align:center;font-size:10.5px;color:var(--faint);margin-top:16px;font-weight:600"><span data-i18n="login.terms">By signing in, you agree to our <b style="color:var(--red)">terms &amp; conditions</b></span></p>
+      </div>
+    </div>
+
+    <!-- OTP -->
+    <div class="screen doodle" id="otp">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div style="padding:8px 18px"><span class="thead" style="all:unset"><span style="width:36px;height:36px;border-radius:12px;background:#fff;box-shadow:var(--sh-sm);display:inline-flex;align-items:center;justify-content:center;cursor:pointer" onclick="go('login')"><i class="ic" data-i="back"></i></span></span></div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center">
+        <svg class="blogo" width="188" height="53" viewBox="0 0 188 53" style="filter:drop-shadow(0 10px 18px rgba(158,33,24,.2))"><use href="#tamimi-wordmark" xlink:href="#tamimi-wordmark"></use></svg>
+      </div>
+      <div style="background:#fff;border-radius:30px 30px 0 0;padding:12px 22px 32px;box-shadow:0 -12px 36px rgba(27,20,12,.1)">
+        <div style="width:40px;height:4.5px;background:#E8E4DD;border-radius:3px;margin:0 auto 18px"></div>
+        <h2 style="font-size:22px;font-weight:800;letter-spacing:-.4px" data-i18n="otp.title">Verify OTP</h2>
+        <p class="cap" style="margin-top:5px;line-height:1.6">We've sent a 4-digit code to <b style="color:var(--ink)">+966 55 123 4567</b> &nbsp;<b style="color:var(--red);cursor:pointer" onclick="go('login')">Change</b></p>
+        <div class="otp" style="margin-top:18px"><b>7</b><b>4</b><b>2</b><b class="f"></b></div>
+        <div class="hrow" style="margin-top:15px;font-size:11.5px;font-weight:700"><span style="color:var(--sub);display:flex;align-items:center;gap:5px"><i class="ic s14" data-i="clock"></i>Auto-reading SMS · 00:24</span><span style="color:var(--red);cursor:pointer" data-i18n="otp.resend">Resend OTP</span></div>
+        <button class="btn" style="margin-top:18px" onclick="go('success')"><span data-i18n="otp.verifyContinue">Verify &amp; Continue</span></button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="screen" id="success" style="background:linear-gradient(180deg,#fff 0%,#F4FBF5 100%)">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="cwr">
+        <span style="position:absolute;top:24%;left:20%;width:9px;height:9px;border-radius:2px;background:#F6C445;transform:rotate(18deg)"></span>
+        <span style="position:absolute;top:19%;right:24%;width:8px;height:8px;border-radius:50%;background:#E88379"></span>
+        <span style="position:absolute;top:31%;right:16%;width:7px;height:7px;border-radius:2px;background:#7CC98F;transform:rotate(-14deg)"></span>
+        <span style="position:absolute;top:34%;left:13%;width:6px;height:6px;border-radius:50%;background:#9DB3E8"></span>
+        <div class="seal"><i class="ic" data-i="check" style="width:40px;height:40px"></i></div>
+        <h2 style="font-size:22px;font-weight:800;letter-spacing:-.4px" data-i18n="success.title">Sign-in successful</h2>
+        <p class="cap" style="font-size:13px;margin-top:-6px;line-height:1.6">Welcome to Tamimi Markets, Lingraj!<br>Your mobile number has been verified.</p>
+        <button class="btn" style="max-width:300px" onclick="go('home')"><span data-i18n="success.goHome">Go to Homepage</span></button>
+      </div>
+    </div>
+
+<!-- HOME -->
+    <div class="screen" id="home">
+      <div class="hd">
+        <div class="sbar lite" style="padding:16px 10px 4px"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+        <div class="hd-top">
+          <div class="mins"><b>20</b><s>MINS</s><s>DELIVERY</s></div>
+          <div class="addr" onclick="go('address')">
+            <div class="l1"><i class="ic s16" data-i="pin"></i>Home <i class="ic s14" data-i="down"></i></div>
+            <div class="l2">Bldg 7842, Prince Turki St, Al Ulaya, Al Khobar</div>
+          </div>
+          <div class="hic" id="langBtn" onclick="toggleLang()" style="width:auto;min-width:36px;padding:0 10px;font-size:11.5px;font-weight:800;letter-spacing:.2px">AR</div>
+          <div class="hic" onclick="go('offers')"><i class="ic" data-i="ticket"></i></div>
+          <div class="hic" onclick="go('account')"><i class="ic" data-i="user"></i></div>
+        </div>
+        <div class="srch" onclick="go('searchsc')"><i class="ic" data-i="search"></i>Search for “<b>tamimi jeera</b>”<i class="ic mic" data-i="mic"></i></div>
+        <div class="ktabs" id="ktabs">
+          <div class="ktab on" onclick="ktab(this,'grocery')"><span class="ke">🏪</span><span data-i18n="ktab.grocery">Grocery</span></div>
+          <div class="ktab" onclick="ktab(this,'fresh')"><span class="ke">🥬</span><span data-i18n="ktab.fresh">Fresh</span></div>
+          <div class="ktab" onclick="ktab(this,'baby')"><span class="ke">🍼</span><span data-i18n="ktab.baby">Baby Care</span></div>
+          <div class="ktab" onclick="ktab(this,'beauty')"><span class="ke">💄</span><span data-i18n="ktab.beauty">Beauty</span></div>
+          <div class="ktab" onclick="ktab(this,'drinks')"><span class="ke">🥤</span><span data-i18n="ktab.drinks">Drinks</span></div>
+          <div class="ktab" onclick="ktab(this,'snacks')"><span class="ke">🍿</span><span data-i18n="ktab.snacks">Snacks</span></div>
+        </div>
+      </div>
+
+      <div class="tabc on" id="tab-grocery">
+      <div class="tiles">
+        <div class="tile wide" style="background:linear-gradient(115deg,#B7D8A6,#8FBF7C)" onclick="go('listing')"><b data-i18n="tile.freshVeggies.t">Fresh Veggies</b><s data-i18n="tile.freshVeggies.s">Farm to home, before 10 am</s><span class="go"><i class="ic s16" data-i="chev" style="color:#4C7A3C"></i></span><span class="em">🥬🍅🫑</span></div>
+        <div class="tile" style="background:linear-gradient(150deg,#F6C889,#EFA84F);min-height:150px" onclick="go('listing')"><b data-i18n="tile.freshFruits.t">Fresh Fruits</b><s data-i18n="tile.freshFruits.s">32 items on deal</s><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🍎🍍</span></div>
+        <div class="tile" style="background:linear-gradient(150deg,#BCDCE8,#93C2D6);min-height:150px" onclick="go('listing')"><b data-i18n="tile.everydayFresh.t">Everyday Fresh</b><s data-i18n="tile.everydayFresh.s">Milk, eggs &amp; bread</s><span class="go"><i class="ic s16" data-i="chev" style="color:#3E7A94"></i></span><span class="em">🥛🥚</span></div>
+        <div class="tile" style="background:linear-gradient(150deg,#C3D2F3,#9DB3E8)" onclick="go('listing')"><b data-i18n="tile.drinksBev">Drinks &amp; Beverages</b><span class="go"><i class="ic s16" data-i="chev" style="color:#44599C"></i></span><span class="em">🥤</span></div>
+        <div class="tile" style="background:linear-gradient(150deg,#D9C9EE,#BBA3DE)" onclick="go('listing')"><b data-i18n="tile.babyCare">Baby Care</b><span class="go"><i class="ic s16" data-i="chev" style="color:#6C4E99"></i></span><span class="em">🍼</span></div>
+      </div>
+
+      <div class="seg"><b><span data-i18n="seg.stockUp">Stock Up &amp; Save!</span><br><s data-i18n="seg.unbeatable">Unbeatable Grocery Deals</s></b></div>
+      <div class="dealgrid">
+        <div class="deal" onclick="go('listing')"><div class="dt" data-i18n="deal.dairyBreakfast">Dairy &amp;<br>Breakfast</div><div class="dv"><em>🥛</em><em>🧈</em></div><div class="df" data-i18n="deal.upto20">UPTO 20% OFF</div></div>
+        <div class="deal" onclick="go('listing')"><div class="dt" data-i18n="deal.freshVeggies2">Fresh<br>Veggies</div><div class="dv"><em>🥦</em><em>🥕</em></div><div class="df" data-i18n="deal.farmToHome">FARM TO HOME</div></div>
+        <div class="deal" onclick="go('listing')"><div class="dt" data-i18n="deal.freshBakery">Fresh<br>Bakery</div><div class="dv"><em>🍞</em><em>🥐</em></div><div class="df" data-i18n="deal.freshEveryday">FRESH EVERYDAY</div></div>
+        <div class="deal" onclick="go('listing')"><div class="dt" data-i18n="deal.ricePulses">Rice &amp;<br>Pulses</div><div class="dv"><em>🍚</em><em>🫘</em></div><div class="df" data-i18n="deal.trustedBrand2">TRUSTED BRAND</div></div>
+        <div class="deal" onclick="go('listing')"><div class="dt" data-i18n="deal.coldDrinks">Cold Drinks<br>&amp; Juices</div><div class="dv"><em>🥤</em><em>🧃</em></div><div class="df" data-i18n="deal.chilledReady2">CHILLED &amp; READY</div></div>
+        <div class="deal" onclick="go('offers')"><div class="dt" data-i18n="deal.todaysOffers">Today's<br>Offers</div><div class="dv"><em>🏷️</em><em>⚡</em></div><div class="df" data-i18n="deal.upto50">UPTO 50% OFF</div></div>
+      </div>
+
+      <div class="promos">
+        <div class="promo" style="background:linear-gradient(115deg,#F0584A,#C81E1B)" onclick="go('offers')">
+          <span class="pk" data-i18n="promo.todayOnly">TODAY ONLY</span><b data-i18n="promo.bogo.b">Buy 1 Get 1 <span style="color:var(--yellow)">Free</span></b><s data-i18n="promo.bogo.s">Fresh favourites at double the value</s><span class="pe">🍅</span>
+        </div>
+        <div class="promo" style="background:linear-gradient(115deg,#3E7A94,#2C5A70)" onclick="go('cart')">
+          <span class="pk" data-i18n="promo.firstOrder.pk">FIRST ORDER</span><b data-i18n="promo.firstOrder.b">Flat SAR 50 off <span style="color:var(--yellow)">· TAMIMI50</span></b><s data-i18n="promo.firstOrder.s">On carts above SAR 499 · auto-applies</s><span class="pe">🎟️</span>
+        </div>
+        <div class="promo" style="background:linear-gradient(115deg,#7A5C9E,#5A3E7E)" onclick="go('listing')">
+          <span class="pk" data-i18n="promo.newArrivals.pk">NEW ARRIVALS</span><b data-i18n="promo.newArrivals.b">Imported Range <span style="color:var(--yellow)">is here</span></b><s data-i18n="promo.newArrivals.s">Curated picks from across the world</s><span class="pe">✈️</span>
+        </div>
+      </div>
+
+      <div style="margin:14px 16px 4px;border-radius:18px;background:linear-gradient(115deg,#2E1F14,#4A2E1A);color:#fff;padding:16px 18px;position:relative;overflow:hidden;box-shadow:var(--sh-md)">
+        <span style="position:absolute;right:-6px;bottom:-10px;font-size:64px;transform:rotate(-8deg);opacity:.9">🥜</span>
+        <s style="text-decoration:none;font-size:9.5px;font-weight:800;letter-spacing:1.5px;color:#F6C445" data-i18n="pantry.label">TAMIMI TRUSTED BRAND</s>
+        <b style="display:block;font-size:16.5px;font-weight:800;margin-top:4px;letter-spacing:-.2px" data-i18n="pantry.title">Pantry staples, packed<br>by our own hands.</b>
+        <span class="chip" style="margin-top:10px;background:#fff;border:none;color:#4A2E1A;font-weight:800" onclick="go('listing')"><span data-i18n="pantry.explore">Explore the range</span> <i class="ic s14" data-i="chev"></i></span>
+      </div>
+
+      <div class="shead"><span class="h2" data-i18n="sec.trustedBrand">Tamimi Trusted Brand</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+      <div class="hsc">
+        <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 250 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Jeera 250 gm</div><span class="pwt">250 g ▾</span><div class="prow"><span class="prc">SAR 109</span><span class="mrp">SAR 120</span><span class="sv">9% OFF</span></div></div>
+        <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tR"><span class="pack" data-e="🫘" data-n="Rajma Chitra" data-s="Premium · 500 g" data-c1="#8E3B2E" data-c2="#F6E6DF"></span><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Rajma Chitra 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">SAR 95</span><span class="mrp">SAR 120</span><span class="sv">21% OFF</span></div></div>
+        <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tL"><span class="pack" data-e="⚪" data-n="Phool Makhana" data-s="Fox Nuts · 100 g" data-c1="#7A5C9E" data-c2="#EFE8F6"></span><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Phool Makhana 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 135</span><span class="mrp">SAR 160</span><span class="sv">16% OFF</span></div></div>
+        <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tY"><span class="pack" data-e="🟡" data-n="Moong Dhuli" data-s="Dal · 500 g" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Moong Dhuli Dal 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">SAR 78</span><span class="mrp">SAR 95</span><span class="sv">18% OFF</span></div></div>
+      </div>
+
+      <div class="shead" style="padding-top:6px"><span class="h2" data-i18n="sec.freshVeg">Fresh Vegetables</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+      <div class="hsc">
+        <div class="pc"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🫑</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Shimla Mirch (Capsicum) 2 pc</div><span class="pwt">250–300 g ▾</span><div class="prow"><span class="prc">SAR 32</span><span class="mrp">SAR 49</span><span class="sv">SAVE SAR 17</span></div></div>
+        <div class="pc"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🌿</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dhania (Coriander Leaves) 100 g</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 18</span><span class="mrp">SAR 28</span><span class="sv">SAVE SAR 10</span></div></div>
+        <div class="pc"><span class="flag">20% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍅</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamatar (Tomato) Hybrid 500 g</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">SAR 24</span><span class="mrp">SAR 30</span><span class="sv">SAVE SAR 6</span></div></div>
+        <div class="pc"><span class="flag">25% OFF</span><div class="pv tO"><img class="pimg" src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥔</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Potato (Aloo) 950 g – 1 kg</div><span class="pwt">1 kg ▾</span><div class="prow"><span class="prc">SAR 34</span><span class="mrp">SAR 46</span><span class="sv">SAVE SAR 12</span></div></div>
+      </div>
+
+      <div class="shead" style="padding-top:6px"><span class="h2" data-i18n="sec.freshFruits">Fresh Fruits</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+      <div class="hsc">
+        <div class="pc"><span class="flag">15% OFF</span><div class="pv tY"><img class="pimg" src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍌</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Kela (Banana) Robusta 6 pc</div><span class="pwt">6 pc ▾</span><div class="prow"><span class="prc">SAR 42</span><span class="mrp">SAR 49</span><span class="sv">SAVE SAR 7</span></div></div>
+        <div class="pc"><span class="flag">20% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍎</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Seb (Apple) Shimla 4 pc</div><span class="pwt">4 pc ▾</span><div class="prow"><span class="prc">SAR 96</span><span class="mrp">SAR 120</span><span class="sv">SAVE SAR 24</span></div></div>
+        <div class="pc"><div class="pv tO"><img class="pimg" src="https://images.unsplash.com/photo-1547514701-42782101795e?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍊</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Santra (Orange) Nagpur 1 kg</div><span class="pwt">1 kg ▾</span><div class="prow"><span class="prc">SAR 74</span><span class="mrp">SAR 89</span><span class="sv">SAVE SAR 15</span></div></div>
+        <div class="pc"><span class="flag">EXOTIC</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1585059895524-72359e06133a?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥝</em><button class="addb" onclick="go('pdp')">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Kiwi Green Imported 3 pc</div><span class="pwt">3 pc ▾</span><div class="prow"><span class="prc">SAR 99</span><span class="mrp">SAR 135</span><span class="sv">SAVE SAR 36</span></div></div>
+      </div>
+
+      <div class="spot">
+        <div class="sp" style="background:linear-gradient(150deg,#6E88C9,#44599C)" onclick="go('listing')"><b data-i18n="spot.imported.t">Imported<br>Range</b><s data-i18n="spot.imported.s">From across the world</s><span class="em">✈️</span></div>
+        <div class="sp" style="background:linear-gradient(150deg,#D98A3D,#B06A22)" onclick="go('listing')"><b data-i18n="spot.party.t">Party<br>Essentials</b><s data-i18n="spot.party.s">Snacks, drinks &amp; more</s><span class="em">🎉</span></div>
+      </div>
+
+      <div class="shead"><span class="h2" data-i18n="sec.bestsellers">Bestsellers Near You</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+      <div class="g2" style="padding-top:2px">
+        <div class="pc" onclick="go('pdp')"><span class="flag gold">OWN BRAND</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 250 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Jeera 250 gm</div><span class="pwt">250 g ▾</span><div class="prow"><span class="prc">SAR 109</span><span class="mrp">SAR 120</span><span class="sv">9% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tB"><img class="pimg" src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥛</em><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Fresh Toned Milk 500 ml</div><span class="pwt">500 ml ▾</span><div class="prow"><span class="prc">SAR 26</span><span class="mrp">SAR 33</span><span class="sv">SAVE SAR 7</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">20% OFF</span><div class="pv tY"><img class="pimg" src="https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥚</em><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Farm Eggs Brown 6 pc</div><span class="pwt">6 pc ▾</span><div class="prow"><span class="prc">SAR 48</span><span class="mrp">SAR 60</span><span class="sv">SAVE SAR 12</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag gold">BOGO</span><div class="pv tC"><span class="pack" data-e="🍞" data-n="Milk Bread" data-s="Bakery Fresh · 400 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb" onclick="event.stopPropagation()">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Milk Bread 400 g</div><span class="pwt">400 g ▾</span><div class="prow"><span class="prc">SAR 45</span><span class="mrp">SAR 90</span><span class="sv">1+1 FREE</span></div></div>
+      </div>
+
+      <div class="trust">
+        <div><i class="ic" data-i="bolt"></i><b data-i18n="trust.delivery">20-Minute<br>Delivery</b></div>
+        <div><i class="ic" data-i="star"></i><b data-i18n="trust.quality">Quality<br>You Trust</b></div>
+        <div><i class="ic" data-i="store"></i><b data-i18n="trust.products">15,000+<br>Products</b></div>
+        <div><i class="ic" data-i="wallet"></i><b data-i18n="trust.savings">Guilt-free<br>Savings</b></div>
+      </div>
+
+      <div class="hnote">
+        <div class="cv" data-i18n="hnote.cv">Al Khobar's own<br>supermarket ♥</div>
+        <s style="text-transform:none;letter-spacing:.2px;font-weight:600;line-height:1.6;max-width:260px;margin:8px auto 0;font-size:11px"><span data-i18n="hnote.line">The supermarket of choice for Saudis and expatriates! Enjoy our best deals, online and in stores.</span></s>
+      </div>
+      </div><!-- /tab-grocery -->
+
+      <!-- FRESH TAB -->
+      <div class="tabc" id="tab-fresh">
+        <div class="tiles">
+          <div class="tile wide" style="background:linear-gradient(115deg,#B7D8A6,#8FBF7C)" onclick="go('listing')"><b data-i18n="tile.farmFresh.t">Farm Fresh, Every Morning</b><s data-i18n="tile.farmFresh.s">Harvested &lt; 24 hrs ago · 120+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#4C7A3C"></i></span><span class="em">🥬🍓</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#F6C889,#EFA84F)" onclick="go('listing')"><b data-i18n="tile.cutSprouts.t">Cut &amp; Sprouts</b><s data-i18n="tile.cutSprouts.s">Ready to cook</s><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🥗</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#BCDCE8,#93C2D6)" onclick="go('listing')"><b data-i18n="tile.exotics.t">Exotics</b><s data-i18n="tile.exotics.s">Imported picks</s><span class="go"><i class="ic s16" data-i="chev" style="color:#3E7A94"></i></span><span class="em">🥑</span></div>
+        </div>
+        <div class="shead"><span class="h2" data-i18n="sec.todaysHarvest">Today's Harvest</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+        <div class="hsc">
+          <div class="pc" onclick="go('pdp')"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥦</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Broccoli Fresh 250–300 g</div><span class="pwt">1 pc ▾</span><div class="prow"><span class="prc">SAR 45</span><span class="mrp">SAR 69</span><span class="sv">SAVE SAR 24</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">FRESH</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥬</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Palak (Spinach) 250 g</div><span class="pwt">250 g ▾</span><div class="prow"><span class="prc">SAR 22</span><span class="mrp">SAR 30</span><span class="sv">SAVE SAR 8</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">COMBO</span><div class="pv tO"><img class="pimg" src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🧺</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Weekly Veggie Basket 12 items</div><span class="pwt">~3 kg ▾</span><div class="prow"><span class="prc">SAR 299</span><span class="mrp">SAR 410</span><span class="sv">SAVE SAR 111</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">EXOTIC</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1585059895524-72359e06133a?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥝</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Kiwi Green Imported 3 pc</div><span class="pwt">3 pc ▾</span><div class="prow"><span class="prc">SAR 99</span><span class="mrp">SAR 135</span><span class="sv">SAVE SAR 36</span></div></div>
+        </div>
+        <div class="sect" style="background:linear-gradient(140deg,#F2FAF3,#E9F6EC);border-color:#CEE9D5;display:flex;gap:10px;align-items:center;margin-top:4px">
+          <i class="ic" data-i="check" style="color:var(--green)"></i><s style="text-decoration:none;font-size:11.5px;font-weight:700;color:#2C6B36;line-height:1.55"><span data-i18n="fresh.promise">Not fresh? Full refund, no questions asked — <b>Tamimi Freshness Promise</b></span></s>
+        </div>
+      </div>
+
+      <!-- BABY CARE TAB -->
+      <div class="tabc" id="tab-baby">
+        <div class="tiles">
+          <div class="tile wide" style="background:linear-gradient(115deg,#D9C9EE,#BBA3DE)" onclick="go('listing')"><b data-i18n="tile.babyEverything.t">Everything for Baby</b><s data-i18n="tile.babyEverything.s">Certified &amp; gentle · 400+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#6C4E99"></i></span><span class="em">🍼🧸</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#BCDCE8,#93C2D6)" onclick="go('listing')"><b data-i18n="tile.diapersWipes">Diapers &amp; Wipes</b><span class="go"><i class="ic s16" data-i="chev" style="color:#3E7A94"></i></span><span class="em">🧷</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#F6C889,#EFA84F)" onclick="go('listing')"><b data-i18n="tile.babyFood">Baby Food</b><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🥣</span></div>
+        </div>
+        <div class="shead"><span class="h2" data-i18n="sec.parentsFav">Parents' Favourites</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+        <div class="hsc">
+          <div class="pc" onclick="go('pdp')"><span class="flag">20% OFF</span><div class="pv tL"><em>🧷</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Pampers Diapers M 42 pc</div><span class="pwt">42 pc ▾</span><div class="prow"><span class="prc">SAR 679</span><span class="mrp">SAR 849</span><span class="sv">SAVE SAR 170</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tB"><em>🥣</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Cerelac Wheat Apple 300 g</div><span class="pwt">300 g ▾</span><div class="prow"><span class="prc">SAR 285</span><span class="mrp">SAR 305</span><span class="sv">SAVE SAR 20</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">BOGO</span><div class="pv tL"><em>🧻</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Himalaya Baby Wipes 72 pc</div><span class="pwt">72 pc ▾</span><div class="prow"><span class="prc">SAR 199</span><span class="mrp">SAR 398</span><span class="sv">1+1 FREE</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tY"><em>🧴</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Johnson's Baby Lotion 200 ml</div><span class="pwt">200 ml ▾</span><div class="prow"><span class="prc">SAR 210</span><span class="mrp">SAR 240</span><span class="sv">SAVE SAR 30</span></div></div>
+        </div>
+        <div class="sect" style="display:flex;gap:10px;align-items:center;margin-top:4px">
+          <i class="ic" data-i="star" style="color:#C8890D"></i><s style="text-decoration:none;font-size:11.5px;font-weight:700;color:#57534D;line-height:1.55"><span data-i18n="baby.cert">All baby products are <b>FSSAI / BIS certified</b> and checked for expiry before dispatch</span></s>
+        </div>
+      </div>
+
+      <!-- BEAUTY TAB -->
+      <div class="tabc" id="tab-beauty">
+        <div class="tiles">
+          <div class="tile wide" style="background:linear-gradient(115deg,#F0B9C8,#DE8BA5)" onclick="go('listing')"><b data-i18n="tile.beautyCosmetics.t">Beauty &amp; Cosmetics</b><s data-i18n="tile.beautyCosmetics.s">Skincare, makeup &amp; more · 900+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#A34D6B"></i></span><span class="em">💄✨</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#D9C9EE,#BBA3DE)" onclick="go('listing')"><b data-i18n="tile.skincare">Skincare</b><span class="go"><i class="ic s16" data-i="chev" style="color:#6C4E99"></i></span><span class="em">🧴</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#BCDCE8,#93C2D6)" onclick="go('listing')"><b data-i18n="tile.bathBody">Bath &amp; Body</b><span class="go"><i class="ic s16" data-i="chev" style="color:#3E7A94"></i></span><span class="em">🧼</span></div>
+        </div>
+        <div class="shead"><span class="h2" data-i18n="sec.trendingBeauty">Trending in Beauty</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+        <div class="hsc">
+          <div class="pc" onclick="go('pdp')"><span class="flag">30% OFF</span><div class="pv tR"><em>💄</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Lakmé Lip Love Crimson 3.5 g</div><span class="pwt">3.5 g ▾</span><div class="prow"><span class="prc">SAR 209</span><span class="mrp">SAR 299</span><span class="sv">SAVE SAR 90</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tB"><em>🧴</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Nivea Soft Cream 100 ml</div><span class="pwt">100 ml ▾</span><div class="prow"><span class="prc">SAR 165</span><span class="mrp">SAR 199</span><span class="sv">SAVE SAR 34</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">NEW</span><div class="pv tL"><em>🧖</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Mamaearth Ubtan Face Wash 100 ml</div><span class="pwt">100 ml ▾</span><div class="prow"><span class="prc">SAR 237</span><span class="mrp">SAR 259</span><span class="sv">SAVE SAR 22</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tY"><em>🧼</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dove Cream Bar Soap 3×100 g</div><span class="pwt">3 pc ▾</span><div class="prow"><span class="prc">SAR 165</span><span class="mrp">SAR 210</span><span class="sv">SAVE SAR 45</span></div></div>
+        </div>
+      </div>
+
+      <!-- DRINKS TAB -->
+      <div class="tabc" id="tab-drinks">
+        <div class="tiles">
+          <div class="tile wide" style="background:linear-gradient(115deg,#9DB3E8,#6E88C9)" onclick="go('listing')"><b data-i18n="tile.chilledReady.t">Chilled &amp; Ready</b><s data-i18n="tile.chilledReady.s">Delivered cold from our fridge · 350+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#44599C"></i></span><span class="em">🥤🧊</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#F6C889,#EFA84F)" onclick="go('listing')"><b data-i18n="tile.juices">Juices</b><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🧃</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#B7D8A6,#8FBF7C)" onclick="go('listing')"><b data-i18n="tile.teaCoffee">Tea &amp; Coffee</b><span class="go"><i class="ic s16" data-i="chev" style="color:#4C7A3C"></i></span><span class="em">☕</span></div>
+        </div>
+        <div class="shead"><span class="h2" data-i18n="sec.beatHeat">Beat the Heat</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+        <div class="hsc">
+          <div class="pc" onclick="go('pdp')"><span class="flag">CHILLED</span><div class="pv tB"><em>🥤</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Coca-Cola 750 ml</div><span class="pwt">750 ml ▾</span><div class="prow"><span class="prc">SAR 40</span><span class="mrp">SAR 45</span><span class="sv">SAVE SAR 5</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tO"><em>🧃</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Real Mixed Fruit Juice 1 L</div><span class="pwt">1 L ▾</span><div class="prow"><span class="prc">SAR 105</span><span class="mrp">SAR 125</span><span class="sv">SAVE SAR 20</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">FRESH</span><div class="pv tB"><img class="pimg" src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥛</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Cold Coffee Shake 300 ml</div><span class="pwt">300 ml ▾</span><div class="prow"><span class="prc">SAR 75</span><span class="mrp">SAR 90</span><span class="sv">SAVE SAR 15</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tG"><em>💧</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Bisleri Water 1 L × 6</div><span class="pwt">6 pc ▾</span><div class="prow"><span class="prc">SAR 108</span><span class="mrp">SAR 120</span><span class="sv">SAVE SAR 12</span></div></div>
+        </div>
+      </div>
+
+      <!-- SNACKS TAB -->
+      <div class="tabc" id="tab-snacks">
+        <div class="tiles">
+          <div class="tile wide" style="background:linear-gradient(115deg,#F2B368,#D98A3D)" onclick="go('listing')"><b data-i18n="tile.snackOClock.t">Snack O'Clock</b><s data-i18n="tile.snackOClock.s">Chips, namkeen &amp; sweets · 600+ items</s><span class="go"><i class="ic s16" data-i="chev" style="color:#9A6614"></i></span><span class="em">🍿🍫</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#D9C9EE,#BBA3DE)" onclick="go('listing')"><b data-i18n="tile.chocolates">Chocolates</b><span class="go"><i class="ic s16" data-i="chev" style="color:#6C4E99"></i></span><span class="em">🍫</span></div>
+          <div class="tile" style="background:linear-gradient(150deg,#F0B9C8,#DE8BA5)" onclick="go('listing')"><b data-i18n="tile.biscuits">Biscuits</b><span class="go"><i class="ic s16" data-i="chev" style="color:#A34D6B"></i></span><span class="em">🍪</span></div>
+        </div>
+        <div class="shead"><span class="h2" data-i18n="sec.mostMunched">Most Munched</span><span class="link" onclick="go('listing')"><span data-i18n="lbl.seeAll">See all</span> <i class="ic s12" data-i="chev"></i></span></div>
+        <div class="hsc">
+          <div class="pc" onclick="go('pdp')"><span class="flag">20% OFF</span><div class="pv tY"><em>🍟</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Lay's India's Magic Masala 90 g</div><span class="pwt">90 g ▾</span><div class="prow"><span class="prc">SAR 40</span><span class="mrp">SAR 50</span><span class="sv">SAVE SAR 10</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag gold">OWN BRAND</span><div class="pv tO"><span class="pack" data-e="🥨" data-n="Mix Namkeen" data-s="Classic · 350 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Mix Namkeen 350 g</div><span class="pwt">350 g ▾</span><div class="prow"><span class="prc">SAR 99</span><span class="mrp">SAR 130</span><span class="sv">SAVE SAR 31</span></div></div>
+          <div class="pc" onclick="go('pdp')"><div class="pv tL"><em>🍫</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dairy Milk Silk 150 g</div><span class="pwt">150 g ▾</span><div class="prow"><span class="prc">SAR 172</span><span class="mrp">SAR 190</span><span class="sv">SAVE SAR 18</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">BOGO</span><div class="pv tR"><em>🍪</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Hide &amp; Seek Chocolate 200 g</div><span class="pwt">200 g ▾</span><div class="prow"><span class="prc">SAR 45</span><span class="mrp">SAR 90</span><span class="sv">1+1 FREE</span></div></div>
+        </div>
+      </div>
+
+      <div class="bnav">
+        <a class="on"><i class="ic" data-i="home"></i><span data-i18n="nav.home">Home</span></a>
+        <a onclick="go('categories')"><i class="ic" data-i="grid"></i><span data-i18n="nav.categories">Categories</span></a>
+        <a onclick="go('offers')"><i class="ic" data-i="tag"></i><span data-i18n="nav.offers">Offers</span></a>
+        <a onclick="go('cart')"><i class="ic" data-i="cart"></i><span data-i18n="nav.cart">Cart</span><span class="bdg">3</span></a>
+        <a onclick="go('account')"><i class="ic" data-i="user"></i><span data-i18n="nav.account">Account</span></a>
+      </div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="screen" id="categories">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.allCategories">All Categories</span><span class="rt"><span class="bk" onclick="go('searchsc')"><i class="ic" data-i="search"></i></span></span></div>
+      <div style="padding:8px 16px 20px;flex:1">
+        <div class="shead" style="padding:10px 0 10px"><span class="h2" data-i18n="cat.groceryKitchen">Grocery &amp; Kitchen</span></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px">
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tG" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🥬</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.fruitsVeg2">Fruits &amp; Vegetables</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tY" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🍚</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.riceAttaDals">Rice, Atta &amp; Dals</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tC" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🫙</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.masalaSpices">Masala &amp; Spices</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tO" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🛢️</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.oilGhee">Oil &amp; Ghee</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tB" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🥛</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.dairyBreakfast2">Dairy &amp; Breakfast</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tC" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🍞</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.freshBakery2">Fresh Bakery</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tR" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🥩</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.freshMeat">Fresh Meat</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tB" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🧊</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.frozenFood">Frozen Food</b></div>
+        </div>
+        <div class="shead" style="padding:18px 0 10px"><span class="h2" data-i18n="cat.snacksDrinks">Snacks &amp; Drinks</span></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px">
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tY" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🍿</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.snacksNamkeen">Snacks &amp; Namkeen</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tB" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🥤</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.coldDrinksJuices">Cold Drinks &amp; Juices</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tL" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🍫</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.chocolatesSweets">Chocolates &amp; Sweets</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tC" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">☕</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.teaCoffeeMore">Tea, Coffee &amp; More</b></div>
+        </div>
+        <div class="shead" style="padding:18px 0 10px"><span class="h2" data-i18n="cat.householdPersonal">Household &amp; Personal Care</span></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px">
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tB" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🧴</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.bathBody2">Bath &amp; Body</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tL" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">💄</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.beautyCosmetics2">Beauty &amp; Cosmetics</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tG" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🧹</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.cleaningEssentials">Cleaning Essentials</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tL" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🍼</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.babyCare2">Baby Care</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tO" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🐶</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.petCare">Pet Care</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tY" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">🍳</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.kitchenware">Kitchenware</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tB" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">💊</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.pharmaWellness">Pharma &amp; Wellness</b></div>
+          <div class="card" style="padding:12px 4px 10px;text-align:center;cursor:pointer;border-radius:16px" onclick="go('listing')"><div class="pv tC" style="height:46px;margin:0 6px 6px;border-radius:10px"><em style="font-size:24px">✈️</em></div><b style="font-size:10px;line-height:1.3;display:block;font-weight:700" data-i18n="cat.importedRange">Imported Range</b></div>
+        </div>
+      </div>
+      <div class="bnav">
+        <a onclick="go('home')"><i class="ic" data-i="home"></i><span data-i18n="nav.home">Home</span></a>
+        <a class="on"><i class="ic" data-i="grid"></i><span data-i18n="nav.categories">Categories</span></a>
+        <a onclick="go('offers')"><i class="ic" data-i="tag"></i><span data-i18n="nav.offers">Offers</span></a>
+        <a onclick="go('cart')"><i class="ic" data-i="cart"></i><span data-i18n="nav.cart">Cart</span><span class="bdg">3</span></a>
+        <a onclick="go('account')"><i class="ic" data-i="user"></i><span data-i18n="nav.account">Account</span></a>
+      </div>
+    </div>
+
+    <!-- LISTING -->
+    <div class="screen" id="listing">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('categories')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.fruitsVeg">Fruits &amp; Vegetables</span><span class="rt"><span class="bk" onclick="go('searchsc')"><i class="ic" data-i="search"></i></span></span></div>
+      <div class="ltools"><b><span data-i18n="listing.productsCount">50 Products</span> <s data-i18n="listing.deliveredIn">· delivered in 20 mins</s></b>
+        <div style="display:flex;gap:7px"><button class="tbtn"><i class="ic s14" data-i="filter"></i><span data-i18n="listing.filter">Filter</span></button><button class="tbtn"><i class="ic s14" data-i="sort"></i><span data-i18n="listing.sort">Sort</span></button></div>
+      </div>
+      <div class="lbody">
+        <div class="rail">
+          <div class="ri on"><span class="re">🧺</span><span data-i18n="rail.fruitsVeggies">Fruits &amp; Veggies</span></div>
+          <div class="ri"><span class="re">🥗</span><span data-i18n="rail.freshlyCut">Freshly Cut</span></div>
+          <div class="ri"><span class="re">🥝</span><span data-i18n="rail.exoticFruits">Exotic Fruits</span></div>
+          <div class="ri"><span class="re">🥑</span><span data-i18n="rail.exoticVeggies">Exotic Veggies</span></div>
+          <div class="ri"><span class="re">🥕</span><span data-i18n="rail.vegetables">Vegetables</span></div>
+          <div class="ri"><span class="re">🍎</span><span data-i18n="rail.fruits">Fruits</span></div>
+          <div class="ri"><span class="re">🌿</span><span data-i18n="rail.herbs">Herbs</span></div>
+        </div>
+        <div class="lgrid">
+          <div class="pc"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1568584711075-3d021a7c3ca3?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥦</em><span class="stp"><i class="ic s12" data-i="minus"></i>1<i class="ic s12" data-i="plus"></i></span></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Phool Gobhi (Cauliflower) 450–550 g</div><span class="pwt">1 pc ▾</span><div class="prow"><span class="prc">SAR 32</span><span class="mrp">SAR 49</span><span class="sv">SAVE SAR 17</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🫑</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Shimla Mirch (Capsicum) Green 2 pc</div><span class="pwt">250–300 g ▾</span><div class="prow"><span class="prc">SAR 32</span><span class="mrp">SAR 49</span><span class="sv">SAVE SAR 17</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">35% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🌿</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dhania (Coriander Leaves) 100 g</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 18</span><span class="mrp">SAR 28</span><span class="sv">SAVE SAR 10</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">30% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥒</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Lauki (Bottle Gourd) 1 pc 450–600 g</div><span class="pwt">1 pc ▾</span><div class="prow"><span class="prc">SAR 26</span><span class="mrp">SAR 38</span><span class="sv">SAVE SAR 12</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">35% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1508747703725-719777637510?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🧅</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Pyaaj (Onion) 450 g</div><span class="pwt">450 g ▾</span><div class="prow"><span class="prc">SAR 29</span><span class="mrp">SAR 45</span><span class="sv">SAVE SAR 16</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">25% OFF</span><div class="pv tO"><img class="pimg" src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🥔</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Potato (Aloo) 950 g – 1 kg</div><span class="pwt">1 kg ▾</span><div class="prow"><span class="prc">SAR 34</span><span class="mrp">SAR 46</span><span class="sv">SAVE SAR 12</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">20% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍅</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamatar (Tomato) Hybrid 500 g</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">SAR 24</span><span class="mrp">SAR 30</span><span class="sv">SAVE SAR 6</span></div></div>
+          <div class="pc" onclick="go('pdp')"><span class="flag">15% OFF</span><div class="pv tY"><img class="pimg" src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🍌</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Kela (Banana) Robusta 6 pc</div><span class="pwt">6 pc ▾</span><div class="prow"><span class="prc">SAR 42</span><span class="mrp">SAR 49</span><span class="sv">SAVE SAR 7</span></div></div>
+        </div>
+      </div>
+      <div class="bnav">
+        <a onclick="go('home')"><i class="ic" data-i="home"></i><span data-i18n="nav.home">Home</span></a>
+        <a class="on"><i class="ic" data-i="grid"></i><span data-i18n="nav.categories">Categories</span></a>
+        <a onclick="go('offers')"><i class="ic" data-i="tag"></i><span data-i18n="nav.offers">Offers</span></a>
+        <a onclick="go('cart')"><i class="ic" data-i="cart"></i><span data-i18n="nav.cart">Cart</span><span class="bdg">3</span></a>
+        <a onclick="go('account')"><i class="ic" data-i="user"></i><span data-i18n="nav.account">Account</span></a>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="screen" id="searchsc">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead" style="gap:9px"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span>
+        <div class="srch" style="margin:0;flex:1;box-shadow:none;border:1.4px solid var(--red);padding:10px 13px"><i class="ic" data-i="search" style="color:var(--red)"></i><b>jeera</b><i class="ic s16" data-i="x" style="margin-left:auto;color:var(--faint)"></i></div>
+      </div>
+      <div class="shead" style="padding-top:14px"><span class="h2" data-i18n="search.recentSearches">Recent Searches</span><span class="link" data-i18n="search.clearAll">Clear all</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;padding:2px 16px 6px">
+        <span class="chip">atta 5kg</span><span class="chip">amul butter</span><span class="chip">maggi</span><span class="chip">paneer</span><span class="chip">cold coffee</span>
+      </div>
+      <div class="shead"><span class="h2"><span data-i18n="search.resultsFor">Results for</span> “jeera” <s style="text-decoration:none;color:var(--sub);font-weight:600;font-size:11.5px">· 6 items</s></span></div>
+      <div class="g2">
+        <div class="pc" onclick="go('pdp')"><span class="flag gold">OWN BRAND</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 250 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Jeera 250 gm</div><span class="pwt">250 g ▾</span><div class="prow"><span class="prc">SAR 109</span><span class="mrp">SAR 120</span><span class="sv">9% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tC"><em>🫙</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Catch Jeera Whole 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 65</span><span class="mrp">SAR 68</span><span class="sv">4% OFF</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">25% OFF</span><div class="pv tC"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 100 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Jeera 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 47</span><span class="mrp">SAR 63</span><span class="sv">SAVE SAR 16</span></div></div>
+        <div class="pc" onclick="go('pdp')"><div class="pv tB"><em>🥤</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Jeera Masala Soda 250 ml</div><span class="pwt">250 ml ▾</span><div class="prow"><span class="prc">SAR 20</span><span class="mrp">SAR 25</span><span class="sv">SAVE SAR 5</span></div></div>
+      </div>
+    </div>
+
+    <!-- PDP -->
+    <div class="screen" id="pdp">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('listing')"><i class="ic" data-i="back"></i></span><span style="font-size:13px;color:var(--sub);font-weight:600" data-i18n="pdp.categoryLabel">Masala &amp; Spices</span><span class="rt"><span class="bk"><i class="ic" data-i="heart"></i></span><span class="bk"><i class="ic" data-i="share"></i></span></span></div>
+      <div class="card" style="margin:10px 16px 0;padding:18px;position:relative">
+        <span class="flag gold" style="top:14px;border-radius:8px;left:14px;position:absolute">TAMIMI TRUSTED BRAND</span>
+        <div class="pv tC" style="height:262px;margin:14px 0 0"><span class="pack" data-e="🫙" data-n="Jeera" data-s="Cumin Seeds · 250 g" data-c1="#2E7D46" data-c2="#E8F1E2"></span></div>
+        <div style="display:flex;gap:5px;justify-content:center;margin-top:10px"><i style="width:16px;height:5px;border-radius:3px;background:var(--red)"></i><i style="width:5px;height:5px;border-radius:3px;background:#DCD7CE"></i><i style="width:5px;height:5px;border-radius:3px;background:#DCD7CE"></i><i style="width:5px;height:5px;border-radius:3px;background:#DCD7CE"></i></div>
+      </div>
+      <div style="display:flex;gap:8px;padding:10px 16px 0">
+        <div class="card" style="flex:1;height:58px;display:flex;align-items:center;justify-content:center;font-size:26px;border:1.5px solid var(--red);border-radius:14px">🫙</div>
+        <div class="card" style="flex:1;height:58px;display:flex;align-items:center;justify-content:center;font-size:26px;border-radius:14px;cursor:pointer">🌱</div>
+        <div class="card" style="flex:1;height:58px;display:flex;align-items:center;justify-content:center;font-size:26px;border-radius:14px;cursor:pointer">🍛</div>
+        <div class="card" style="flex:1;height:58px;display:flex;align-items:center;justify-content:center;font-size:26px;border-radius:14px;cursor:pointer">📦</div>
+      </div>
+      <div class="card" style="margin:10px 16px 96px;padding:18px">
+        <h2 style="font-size:18px;font-weight:800;letter-spacing:-.3px">Tamimi Jeera 250gm</h2>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:5px"><i class="ic s14" data-i="star" style="color:#E3A82B"></i><b style="font-size:12px">4.6</b><span class="cap">(1,240 ratings)</span><span class="cap" style="margin-left:auto;display:flex;align-items:center;gap:4px;color:#5E93A8;font-weight:800"><i class="ic s12" data-i="bolt"></i><span data-i18n="pdp.deliveredIn20">DELIVERED IN 20 MINS</span></span></div>
+        <div style="margin-top:10px;display:flex;align-items:baseline;gap:8px"><span style="font-size:22px;font-weight:800;letter-spacing:-.4px">SAR 109</span><span class="mrp" style="font-size:13px">SAR 120</span><span class="sv" style="font-size:10.5px;margin-left:0">9% OFF</span><span class="cap" style="margin-left:auto" data-i18n="pdp.inclTaxes">Incl. of all taxes</span></div>
+        <div style="display:flex;gap:9px;margin:15px 0 3px">
+          <span class="chip on" style="flex-direction:column;gap:1px;padding:9px 18px;border-radius:13px"><b style="font-size:12.5px">250 g</b><s style="text-decoration:none;font-size:10px;font-weight:600">SAR 109</s></span>
+          <span class="chip" style="flex-direction:column;gap:1px;padding:9px 18px;border-radius:13px"><b style="font-size:12.5px">500 g</b><s style="text-decoration:none;font-size:10px;font-weight:600;color:var(--sub)">SAR 205</s></span>
+          <span class="chip" style="flex-direction:column;gap:1px;padding:9px 18px;border-radius:13px"><b style="font-size:12.5px">1 kg</b><s style="text-decoration:none;font-size:10px;font-weight:600;color:var(--sub)">SAR 389</s></span>
+        </div>
+        <div style="border-top:1px solid var(--hairline);margin-top:16px;padding-top:14px">
+          <h3 style="font-size:14.5px;font-weight:800;letter-spacing:-.2px" data-i18n="pdp.productDetails">Product Details</h3>
+          <p style="font-size:12.5px;line-height:1.75;color:#57534D;margin-top:7px;font-weight:500" data-i18n="pdp.description">Enhance the flavor of your everyday cooking with Tamimi Jeera (Cumin Seeds) — a kitchen essential known for its distinctive aroma and earthy taste. Carefully sourced and hygienically packed, perfect for tempering, seasoning, roasting, and fresh masalas.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px">
+          <div style="background:var(--bg);border-radius:12px;padding:11px"><span class="cap" style="letter-spacing:.5px;font-size:9.5px" data-i18n="pdp.shelfLife">SHELF LIFE</span><b style="display:block;font-size:12px;margin-top:2px">9 months</b></div>
+          <div style="background:var(--bg);border-radius:12px;padding:11px"><span class="cap" style="letter-spacing:.5px;font-size:9.5px" data-i18n="pdp.origin">ORIGIN</span><b style="display:block;font-size:12px;margin-top:2px">India</b></div>
+          <div style="background:var(--bg);border-radius:12px;padding:11px"><span class="cap" style="letter-spacing:.5px;font-size:9.5px">FSSAI</span><b style="display:block;font-size:12px;margin-top:2px">10012043001355</b></div>
+          <div style="background:var(--bg);border-radius:12px;padding:11px"><span class="cap" style="letter-spacing:.5px;font-size:9.5px" data-i18n="pdp.returns">RETURNS</span><b style="display:block;font-size:12px;margin-top:2px">48 hrs, unopened</b></div>
+        </div>
+        <div class="shead" style="padding:18px 0 10px"><span class="h2" data-i18n="sec.similarProducts">Similar Products</span></div>
+        <div class="hsc" style="padding:0 0 6px;margin:0 -4px">
+          <div class="pc"><div class="pv tC"><em>🫙</em><button class="addb">ADD</button></div><div class="pnm">Catch Jeera Whole 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 65</span><span class="mrp">SAR 68</span></div></div>
+          <div class="pc"><div class="pv tR"><span class="pack" data-e="🌶️" data-n="Mirch Powder" data-s="Chilli · 100 g" data-c1="#D2231F" data-c2="#FAE4E0"></span><button class="addb">ADD</button></div><div class="pnm">Tamimi Mirch Powder 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 52</span><span class="mrp">SAR 60</span></div></div>
+          <div class="pc"><div class="pv tO"><span class="pack" data-e="🟠" data-n="Haldi Powder" data-s="Turmeric · 100 g" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb">ADD</button></div><div class="pnm">Tamimi Haldi Powder 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 38</span><span class="mrp">SAR 45</span></div></div>
+        </div>
+      </div>
+      <div style="position:sticky;bottom:0;margin-top:auto;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);padding:13px 16px 24px;display:flex;gap:12px;align-items:center;z-index:40;flex-shrink:0;box-shadow:0 -10px 30px rgba(27,20,12,.1);border-radius:24px 24px 0 0">
+        <div style="position:relative;width:48px;height:48px;border-radius:14px;background:var(--red-soft);display:flex;align-items:center;justify-content:center;color:var(--red);cursor:pointer" onclick="go('cart')"><i class="ic" data-i="cart"></i><span class="bdg" style="position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;font-size:9px;font-weight:800;border-radius:8px;padding:2px 6px;border:1.5px solid #fff">3</span></div>
+        <button class="btn" style="flex:1" onclick="go('cart')"><span data-i18n="pdp.addToCart">Add To Cart</span> · SAR 109</button>
+      </div>
+    </div>
+<!-- OFFERS -->
+    <div class="screen" id="offers">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.offers">Offers</span><span class="rt"><span class="bk" onclick="go('searchsc')"><i class="ic" data-i="search"></i></span></span></div>
+      <div style="margin:12px 16px 4px;border-radius:20px;background:linear-gradient(115deg,#F0584A,#C81E1B);color:#fff;padding:20px 18px;position:relative;overflow:hidden;box-shadow:var(--sh-md)">
+        <div style="position:absolute;right:-14px;top:-14px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.1)"></div>
+        <div style="position:absolute;right:26px;bottom:-24px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.08)"></div>
+        <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%) rotate(-6deg);font-size:52px;filter:drop-shadow(0 8px 8px rgba(60,5,0,.3))">🍅🥛</span>
+        <s style="text-decoration:none;font-size:9.5px;font-weight:800;letter-spacing:1.5px;color:var(--yellow)" data-i18n="offers.todayOnlyEnds">TODAY ONLY · ENDS 11:59 PM</s>
+        <b style="display:block;font-size:24px;font-weight:800;letter-spacing:-.5px;margin-top:5px;line-height:1.1" data-i18n="promo.bogo.b">Buy 1 Get 1 <span style="color:var(--yellow)">Free</span></b>
+        <s style="text-decoration:none;font-size:11.5px;font-weight:600;opacity:.9;display:block;margin-top:5px" data-i18n="promo.bogo.s">Fresh favourites at double the value</s>
+        <div style="display:flex;gap:5px;margin-top:14px"><i style="width:16px;height:5px;border-radius:3px;background:#fff"></i><i style="width:5px;height:5px;border-radius:3px;background:rgba(255,255,255,.45)"></i><i style="width:5px;height:5px;border-radius:3px;background:rgba(255,255,255,.45)"></i><i style="width:5px;height:5px;border-radius:3px;background:rgba(255,255,255,.45)"></i></div>
+      </div>
+      <div style="display:flex;gap:8px;overflow-x:auto;padding:12px 16px 4px;scrollbar-width:none">
+        <span class="chip on"><i class="ic s14" data-i="ticket"></i><span data-i18n="offers.upto50">Upto 50% off</span></span>
+        <span class="chip">➊+➊ <span data-i18n="offers.bogo">BOGO</span></span>
+        <span class="chip"><i class="ic s14" data-i="star"></i><span data-i18n="offers.megaDeals">Mega Deals</span></span>
+        <span class="chip"><i class="ic s14" data-i="bolt"></i><span data-i18n="offers.flashSale">Flash Sale</span></span>
+      </div>
+      <div class="g2" style="padding-top:12px">
+        <div class="pc" onclick="go('pdp')"><span class="flag">50% OFF</span><div class="pv tR"><img class="pimg" src="https://images.unsplash.com/photo-1508747703725-719777637510?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🧅</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Pyaaj (Onion) 450 g</div><span class="pwt">450 g ▾</span><div class="prow"><span class="prc">SAR 22</span><span class="mrp">SAR 45</span><span class="sv">SAVE SAR 23</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">50% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🌿</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Dhania (Coriander Leaves) 100 g</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 14</span><span class="mrp">SAR 28</span><span class="sv">SAVE SAR 14</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">50% OFF</span><div class="pv tG"><img class="pimg" src="https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400&q=60" loading="lazy" onerror="this.remove()"><em>🫑</em><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Shimla Mirch (Capsicum) 2 pc</div><span class="pwt">250–300 g ▾</span><div class="prow"><span class="prc">SAR 25</span><span class="mrp">SAR 49</span><span class="sv">SAVE SAR 24</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag gold">BOGO</span><div class="pv tC"><span class="pack" data-e="🍞" data-n="Milk Bread" data-s="Bakery Fresh · 400 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Milk Bread 400 g</div><span class="pwt">400 g ▾</span><div class="prow"><span class="prc">SAR 45</span><span class="mrp">SAR 90</span><span class="sv">1+1 FREE</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">MEGA</span><div class="pv tY"><span class="pack" data-e="🍚" data-n="Rice Gold" data-s="Premium · 5 kg" data-c1="#C8890D" data-c2="#FAF0D4"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Rice 5 kg (Gold)</div><span class="pwt">5 kg ▾</span><div class="prow"><span class="prc">SAR 600</span><span class="mrp">SAR 775</span><span class="sv">SAVE SAR 175</span></div></div>
+        <div class="pc" onclick="go('pdp')"><span class="flag">FLASH</span><div class="pv tO"><span class="pack" data-e="🥜" data-n="Badam" data-s="American · 500 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb">ADD</button></div><span class="eta"><i class="ic s12" data-i="bolt"></i>20 MINS</span><div class="pnm">Tamimi Badam American 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">SAR 489</span><span class="mrp">SAR 650</span><span class="sv">SAVE SAR 161</span></div></div>
+      </div>
+      <div class="bnav">
+        <a onclick="go('home')"><i class="ic" data-i="home"></i><span data-i18n="nav.home">Home</span></a>
+        <a onclick="go('categories')"><i class="ic" data-i="grid"></i><span data-i18n="nav.categories">Categories</span></a>
+        <a class="on"><i class="ic" data-i="tag"></i><span data-i18n="nav.offers">Offers</span></a>
+        <a onclick="go('cart')"><i class="ic" data-i="cart"></i><span data-i18n="nav.cart">Cart</span><span class="bdg">3</span></a>
+        <a onclick="go('account')"><i class="ic" data-i="user"></i><span data-i18n="nav.account">Account</span></a>
+      </div>
+    </div>
+
+    <!-- CART -->
+    <div class="screen" id="cart">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.myCart">My Cart</span><span class="rt"><span class="cap" style="align-self:center">3 items · saving SAR 236</span></span></div>
+      <div class="warn"><i class="ic s16" data-i="clock"></i>Add items worth <b>SAR 22</b> more to reach the SAR 199 minimum cart value</div>
+
+      <div class="sect">
+        <h4 data-i18n="cart.deliveryType">Delivery Type</h4>
+        <div class="dtype">
+          <div class="dopt"><span class="rdo"></span><b data-i18n="cart.combined.t">Combined</b><s data-i18n="cart.combined.s">All together · 20 mins</s></div>
+          <div class="dopt on"><span class="rdo"></span><b data-i18n="cart.multiDelivery.t">Multi-Delivery ⚡</b><s data-i18n="cart.multiDelivery.s">Fastest first · from 5 mins</s></div>
+        </div>
+      </div>
+
+      <div class="sect">
+        <div class="hrow" style="margin-bottom:4px"><h4 style="margin:0"><i class="ic s16" data-i="bolt" style="color:#E3A82B"></i><span data-i18n="cart.deliveredIn5">Delivered in 5 mins</span></h4><span class="cap">2 items · Delivery 1</span></div>
+        <div class="ci">
+          <div class="cim tC"><em>🫙</em></div>
+          <div class="nm"><b>Tamimi Jeera 250gm</b><s>250 g</s><span class="offer-badge"><i class="ic s12" data-i="check"></i>Special Offer Applied</span></div>
+          <span class="mstp"><i class="ic s12" data-i="minus"></i>1<i class="ic s12" data-i="plus"></i></span>
+          <div class="pr"><b>SAR 109</b><s>SAR 146</s></div>
+        </div>
+        <div class="ci">
+          <div class="cim tY"><em>🫘</em></div>
+          <div class="nm"><b>Tamimi Black Chana 500gm</b><s>500 g</s></div>
+          <span class="mstp"><i class="ic s12" data-i="minus"></i>1<i class="ic s12" data-i="plus"></i></span>
+          <div class="pr"><b>SAR 69</b><s>SAR 93</s></div>
+        </div>
+        <div class="ci" style="background:linear-gradient(140deg,#FDF7F0,#FBEFE4);border-radius:14px;padding:11px;border:1px dashed #EBCDA8;margin-top:4px">
+          <div class="cim" style="background:#fff"><em>🫙</em></div>
+          <div class="nm"><b>Catch Jeera Whole 100gm</b><s>Swap to Tamimi Jeera &amp; save SAR 18</s></div>
+          <button class="addb" style="position:static;box-shadow:none" data-i18n="cart.swap">SWAP</button>
+        </div>
+        <div class="swl"><i></i><span data-i18n="cart.swapSave">Swap and Save</span><i></i></div>
+      </div>
+
+      <div class="sect">
+        <div class="hrow" style="margin-bottom:4px"><h4 style="margin:0"><i class="ic s16" data-i="truck" style="color:var(--sub)"></i><span data-i18n="cart.deliveredIn20">Delivered in 20 mins</span></h4><span class="cap">1 item · Delivery 2</span></div>
+        <div class="ci">
+          <div class="cim tY"><em>🍚</em></div>
+          <div class="nm"><b>Tamimi Rice 5kg (Gold)</b><s>5 kg</s></div>
+          <span class="mstp"><i class="ic s12" data-i="minus"></i>1<i class="ic s12" data-i="plus"></i></span>
+          <div class="pr"><b>SAR 600</b><s>SAR 775</s></div>
+        </div>
+      </div>
+
+      <div class="sect">
+        <div class="hrow" style="border:1.4px dashed #E7B9B3;border-radius:13px;padding:12px 13px;background:linear-gradient(140deg,#fff,var(--red-soft));cursor:pointer">
+          <span style="font-size:12px;font-weight:800;color:var(--red);display:flex;align-items:center;gap:8px"><i class="ic s16" data-i="ticket"></i>TAMIMI50 · Flat SAR 50 off above SAR 499</span>
+          <b style="color:var(--red);font-size:12px" data-i18n="cart.apply">APPLY</b>
+        </div>
+      </div>
+
+      <div class="sect bill">
+        <h4 data-i18n="cart.billDetails">Bill Details</h4>
+        <div class="r"><span data-i18n="cart.itemTotal">Item total (3 items)</span><b>SAR 778</b></div>
+        <div class="r"><span data-i18n="cart.savedMrp">Saved on MRP</span><span class="fr">− SAR 236</span></div>
+        <div class="r"><span data-i18n="cart.deliveryFee">Delivery fee</span> <s class="mrp">SAR 35</s><span class="fr" data-i18n="cart.free">FREE</span></div>
+        <div class="r"><span data-i18n="cart.handling">Handling charge</span><b>SAR 9</b></div>
+        <div class="r tot"><span data-i18n="cart.toPay">To Pay</span><span>SAR 787</span></div>
+        <div style="margin-top:10px;background:var(--green-soft);color:var(--green);font-size:11px;font-weight:800;border-radius:10px;padding:9px 12px;text-align:center">🎉 You're saving SAR 236 on this order</div>
+      </div>
+
+      <div class="shead"><span class="h2" data-i18n="sec.alsoBought">Also Bought</span></div>
+      <div class="hsc" style="padding-bottom:14px">
+        <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tL"><span class="pack" data-e="⚪" data-n="Phool Makhana" data-s="Fox Nuts · 100 g" data-c1="#7A5C9E" data-c2="#EFE8F6"></span><button class="addb">ADD</button></div><div class="pnm">Tamimi Phool Makhana 100 gm</div><span class="pwt">100 g ▾</span><div class="prow"><span class="prc">SAR 135</span><span class="mrp">SAR 160</span></div></div>
+        <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tO"><span class="pack" data-e="🥜" data-n="Badam" data-s="American · 500 g" data-c1="#B06A22" data-c2="#FBE9D2"></span><button class="addb">ADD</button></div><div class="pnm">Tamimi Badam American 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">SAR 489</span><span class="mrp">SAR 650</span></div></div>
+        <div class="pc"><span class="flag gold">OWN BRAND</span><div class="pv tC"><span class="pack" data-e="🌰" data-n="Kaju W320" data-s="Cashews · 500 g" data-c1="#A97C42" data-c2="#F7F1E5"></span><button class="addb">ADD</button></div><div class="pnm">Tamimi Kaju W320 500 gm</div><span class="pwt">500 g ▾</span><div class="prow"><span class="prc">SAR 560</span><span class="mrp">SAR 720</span></div></div>
+      </div>
+
+      <div class="paybar">
+        <div class="tt"><b>SAR 787</b><s>3 items · saving SAR 236</s></div>
+        <button onclick="go('address')"><span data-i18n="cart.proceedPay">Proceed to Pay</span> <i class="ic s16" data-i="chev"></i></button>
+      </div>
+    </div>
+
+    <!-- ADDRESS -->
+    <div class="screen" id="address">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('cart')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.selectAddress">Select Delivery Address</span></div>
+      <div class="sect" style="border:1.4px dashed var(--red);background:linear-gradient(140deg,#fff,var(--red-soft));display:flex;align-items:center;gap:11px;cursor:pointer">
+        <span style="width:36px;height:36px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;color:var(--red);box-shadow:var(--sh-sm)"><i class="ic" data-i="plus"></i></span>
+        <b style="color:var(--red);font-size:13.5px;font-weight:800" data-i18n="addr.addNew">Add New Address</b>
+        <i class="ic" data-i="chev" style="margin-left:auto;color:var(--red)"></i>
+      </div>
+      <div class="sect" style="border:1.5px solid var(--red);position:relative">
+        <span class="rdo on" style="position:absolute;top:15px;right:15px"></span>
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:32px;height:32px;border-radius:10px;background:var(--red-soft);color:var(--red);display:flex;align-items:center;justify-content:center"><i class="ic s16" data-i="home"></i></span><b style="font-size:13.5px;font-weight:800" data-i18n="addr.home">Home</b><span class="stat g" data-i18n="addr.default">DEFAULT</span></div>
+        <p style="font-size:12px;color:#57534D;line-height:1.65;margin-top:9px;font-weight:500">Bldg 7842, Apartment 12, Prince Turki St, Al Ulaya District, Al Khobar 34424, Kingdom of Saudi Arabia</p>
+        <p class="cap" style="margin-top:4px">Lingraj · +966 55 123 4567</p>
+        <div style="display:flex;gap:16px;margin-top:11px"><span class="link"><i class="ic s12" data-i="edit"></i><span data-i18n="addr.edit">Edit</span></span><span class="link" style="color:var(--sub)"><i class="ic s12" data-i="x"></i><span data-i18n="addr.delete">Delete</span></span></div>
+      </div>
+      <div class="sect">
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:32px;height:32px;border-radius:10px;background:var(--bg);color:var(--sub);display:flex;align-items:center;justify-content:center"><i class="ic s16" data-i="store"></i></span><b style="font-size:13.5px;font-weight:800" data-i18n="addr.office">Office</b><span class="rdo" style="position:static;margin-left:auto"></span></div>
+        <p style="font-size:12px;color:#57534D;line-height:1.65;margin-top:9px;font-weight:500">4th Floor, Office 402, King Fahd Rd, Al Aqrabiyah District, Al Khobar 34625, Kingdom of Saudi Arabia</p>
+        <div style="display:flex;gap:16px;margin-top:11px"><span class="link"><i class="ic s12" data-i="edit"></i><span data-i18n="addr.edit">Edit</span></span><span class="link" style="color:var(--sub)"><i class="ic s12" data-i="x"></i><span data-i18n="addr.delete">Delete</span></span></div>
+      </div>
+      <div class="sect" style="background:linear-gradient(140deg,#FFFDF3,#FBF3D9);display:flex;gap:10px;align-items:center;border-color:#F0E3B4">
+        <i class="ic" data-i="bolt" style="color:#C8890D"></i><s style="text-decoration:none;font-size:11.5px;font-weight:700;color:#7A5C00;line-height:1.55">Deliverable in <b>20 mins</b> to Home — from Tamimi Al Khobar dark store, 1.2 km away</s>
+      </div>
+      <div style="margin-top:auto"></div>
+      <div style="padding:13px 16px 24px;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-radius:24px 24px 0 0;box-shadow:0 -10px 30px rgba(27,20,12,.1)">
+        <button class="btn" onclick="go('payment')"><span data-i18n="addr.deliverHere">Deliver Here</span> <i class="ic s16" data-i="chev"></i></button>
+      </div>
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="screen" id="payment">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('address')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.payment">Payment</span><span class="rt"><span class="cap" style="align-self:center">🔒 Secured by HyperPay</span></span></div>
+      <div class="sect" style="background:linear-gradient(140deg,#F2FAF3,#E9F6EC);border-color:#CEE9D5;display:flex;gap:10px;align-items:center">
+        <i class="ic" data-i="check" style="color:var(--green)"></i><s style="text-decoration:none;font-size:11.5px;font-weight:700;color:#2C6B36;line-height:1.55">To pay <b>SAR 787</b> · Delivering to <b>Home</b> in 20 mins ⚡</s>
+      </div>
+      <div class="sect">
+        <h4 data-i18n="pay.quickPay">Quick Pay · Recommended</h4>
+        <div class="mrow" style="border-bottom:1px solid var(--hairline)"><span class="mi" style="background:#000;color:#fff"><i class="ic s16" data-i="bolt"></i></span>Apple Pay<span class="rdo on" style="position:static;margin-left:auto"></span></div>
+        <div class="mrow"><span class="mi" style="background:#EDF5F8;color:#1A63B5"><i class="ic s16" data-i="card"></i></span>mada Pay<span class="rdo" style="position:static;margin-left:auto"></span></div>
+        <button style="margin-top:12px;width:100%;background:#000;color:#fff;border:none;border-radius:12px;padding:13px;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer" onclick="go('confirm')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="#fff"><path d="M16.365 1.43c0 1.14-.493 2.19-1.29 2.99-.97.97-2.31 1.68-3.4 1.59-.14-1.09.46-2.24 1.24-3.03.86-.9 2.32-1.58 3.45-1.55zm4.03 16.68c-.42.98-.93 1.94-1.62 2.85-.94 1.26-1.92 2.5-3.44 2.53-1.48.03-1.96-.87-3.66-.87-1.7 0-2.24.85-3.64.9-1.46.05-2.58-1.36-3.53-2.61-1.9-2.53-3.36-7.15-1.4-10.28.97-1.55 2.71-2.53 4.6-2.56 1.44-.03 2.8.97 3.68.97.87 0 2.52-1.2 4.25-1.02.72.03 2.74.29 4.04 2.18-.1.06-2.41 1.4-2.39 4.19.02 3.34 2.93 4.45 2.96 4.46-.02.09-.46 1.57-1.85 3.12z"/></svg>
+          Pay with Apple Pay
+        </button>
+      </div>
+      <div class="sect">
+        <h4 data-i18n="pay.cards">Cards</h4>
+        <div class="mrow" style="border-bottom:1px solid var(--hairline)"><span class="mi"><i class="ic" data-i="card"></i></span>mada Debit Card ····4523<i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="card"></i></span>Visa Credit Card ····1187<i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="plus"></i></span><span data-i18n="pay.cardsAdd">Add new card</span><i class="ic ar" data-i="chev"></i></div>
+      </div>
+      <div class="sect">
+        <h4 data-i18n="pay.moreOptions">More Options</h4>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="wallet"></i></span>Tamimi Wallet <span class="cap" style="margin-left:4px">· Balance SAR 120</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="cash"></i></span><span data-i18n="pay.cashOnDelivery">Cash on Delivery</span><i class="ic ar" data-i="chev"></i></div>
+      </div>
+      <p class="cap" style="text-align:center;margin:2px 0 4px">🔒 <span data-i18n="pay.securityNote">All payments processed securely via HyperPay</span></p>
+      <div style="margin-top:auto"></div>
+      <div class="paybar">
+        <div class="tt"><b>SAR 787</b><s>Apple Pay</s></div>
+        <button onclick="go('confirm')"><span data-i18n="pay.payNow">Pay Now</span> <i class="ic s16" data-i="chev"></i></button>
+      </div>
+    </div>
+
+    <!-- CONFIRM -->
+    <div class="screen" id="confirm" style="background:linear-gradient(180deg,#fff 0%,#F4FBF5 100%)">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="cwr" style="gap:12px">
+        <span style="position:absolute;top:16%;left:20%;width:9px;height:9px;border-radius:2px;background:#F6C445;transform:rotate(18deg)"></span>
+        <span style="position:absolute;top:12%;right:24%;width:8px;height:8px;border-radius:50%;background:#E88379"></span>
+        <span style="position:absolute;top:23%;right:15%;width:7px;height:7px;border-radius:2px;background:#7CC98F;transform:rotate(-14deg)"></span>
+        <span style="position:absolute;top:26%;left:13%;width:6px;height:6px;border-radius:50%;background:#9DB3E8"></span>
+        <div class="seal"><i class="ic" data-i="check" style="width:40px;height:40px"></i></div>
+        <h2 style="font-size:22px;font-weight:800;letter-spacing:-.4px" data-i18n="confirm.orderPlaced">Order Placed!</h2>
+        <p class="cap" style="font-size:12.5px;line-height:1.7;margin-top:-4px">Order <b style="color:var(--ink)">#TAM-240193</b> · SAR 787 paid via Apple Pay<br><span data-i18n="confirm.arriving">Arriving at Home in</span> <b style="color:var(--red)">20 mins</b> ⚡</p>
+        <div class="card" style="width:100%;padding:14px 16px;text-align:left">
+          <div class="hrow"><div style="display:flex;gap:6px;font-size:22px"><em style="font-style:normal">🫙</em><em style="font-style:normal">🫘</em><em style="font-style:normal">🍚</em></div><span class="cap"><b style="color:var(--ink)">3 items</b> · SAR 787</span></div>
+          <div class="hrow" style="margin-top:9px;padding-top:9px;border-top:1px solid var(--hairline)"><span class="cap" style="display:flex;align-items:center;gap:5px"><i class="ic s12" data-i="store"></i>Tamimi Al Khobar dark store</span><span class="cap">1.2 km away</span></div>
+        </div>
+        <button class="btn" style="max-width:300px" onclick="go('track')"><span data-i18n="confirm.trackOrder">Track Order Live</span></button>
+        <span class="link" style="font-size:13px" onclick="go('home')"><span data-i18n="confirm.continueShopping">Continue Shopping</span></span>
+      </div>
+    </div>
+
+    <!-- TRACK -->
+    <div class="screen" id="track">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('orders')"><i class="ic" data-i="back"></i></span>Order #TAM-240193<span class="rt"><span class="bk"><i class="ic" data-i="help"></i></span></span></div>
+      <div style="margin:10px 16px 0;border-radius:20px;overflow:hidden;position:relative;height:200px;flex-shrink:0;box-shadow:var(--sh-md)">
+        <svg width="100%" height="100%" viewBox="0 0 368 200" preserveAspectRatio="none">
+          <rect width="368" height="200" fill="#EAEFE4"/>
+          <circle cx="60" cy="40" r="34" fill="#DCE8D2"/><circle cx="320" cy="170" r="44" fill="#DCE8D2"/>
+          <path d="M250 0 C240 30 260 45 300 42 L368 38 L368 0 Z" fill="#CBDEEA"/>
+          <path d="M0 66 H368 M0 138 H368 M96 0 V200 M208 0 V200 M296 0 V200" stroke="#fff" stroke-width="13"/>
+          <path d="M0 66 H368 M0 138 H368 M96 0 V200 M208 0 V200 M296 0 V200" stroke="#E3E0D6" stroke-width="1.4" stroke-dasharray="6 6"/>
+          <path id="rt" d="M62 158 C130 148 160 96 208 84 C248 74 268 56 306 46" stroke="#EC2225" stroke-width="4" stroke-dasharray="9 7" fill="none" stroke-linecap="round" style="animation:dash 1.2s linear infinite"/>
+          <circle cx="306" cy="46" r="8" fill="#2E9E4C" stroke="#fff" stroke-width="2.5"/>
+        </svg>
+        <style>@keyframes dash{to{stroke-dashoffset:-16}}</style>
+        <span style="position:absolute;left:36px;top:118px;width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 12px rgba(0,0,0,.2)">🛵</span>
+        <span style="position:absolute;right:44px;top:12px;width:34px;height:34px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 12px rgba(0,0,0,.18)">🏠</span>
+        <div style="position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.96);border-radius:12px;padding:9px 13px;font-size:12px;font-weight:800;box-shadow:0 4px 14px rgba(0,0,0,.14);display:flex;align-items:center;gap:6px"><i class="ic s14" data-i="bolt" style="color:var(--red)"></i>Arriving in <span style="color:var(--red)">12 mins</span></div>
+      </div>
+      <div class="sect" style="display:flex;align-items:center;gap:12px">
+        <div style="width:46px;height:46px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:24px;border:2px solid #fff;box-shadow:var(--sh-sm)">🧑</div>
+        <div style="flex:1"><b style="font-size:13.5px;font-weight:800">Ravinder Kumar</b><s style="display:block;text-decoration:none;font-size:11px;color:var(--sub);font-weight:600;margin-top:1px"><span data-i18n="track.deliveryPartner">Delivery Partner</span> · <b style="color:#C8890D">★ 4.9</b></s></div>
+        <span style="width:40px;height:40px;border-radius:14px;background:var(--green-soft);color:var(--green);display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="ic" data-i="phone"></i></span>
+      </div>
+      <div class="sect tl">
+        <h4 style="margin-bottom:15px" data-i18n="track.orderStatus">Order Status</h4>
+        <div class="st done"><span class="dot"><i class="ic s12" data-i="check"></i></span><div><b data-i18n="track.orderConfirmed.t">Order Confirmed</b><s>09:40 am · Payment received SAR 787</s></div></div>
+        <div class="st done"><span class="dot"><i class="ic s12" data-i="check"></i></span><div><b data-i18n="track.packedAt.t">Packed at Al Khobar store</b><s>09:44 am · 3 items · Quality checked</s></div></div>
+        <div class="st now"><span class="dot"><i class="ic s12" data-i="truck"></i></span><div><b data-i18n="track.outForDelivery.t">Out for Delivery</b><s>Ravinder picked up your order · 1.2 km away</s></div></div>
+        <div class="st"><span class="dot"></span><div><b data-i18n="track.delivered.t">Delivered</b><s>ETA 10:00 am · Leave at door: OFF</s></div></div>
+      </div>
+      <div class="sect bill" style="margin-bottom:18px">
+        <h4>3 Items · SAR 787</h4>
+        <div class="r"><span>Tamimi Jeera 250gm × 1</span><b>SAR 109</b></div>
+        <div class="r"><span>Tamimi Black Chana 500gm × 1</span><b>SAR 69</b></div>
+        <div class="r"><span>Tamimi Rice 5kg Gold × 1</span><b>SAR 600</b></div>
+        <div class="r tot"><span data-i18n="track.paidViaApplePay">Paid via Apple Pay</span><span>SAR 787</span></div>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="screen" id="orders">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('account')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.myOrders">My Orders</span></div>
+      <div class="sect" style="cursor:pointer" onclick="go('track')">
+        <div class="hrow"><b style="font-size:13.5px;font-weight:800">#TAM-240193</b><span class="stat r" data-i18n="orders.onTheWay">ON THE WAY ⚡</span></div>
+        <span class="cap" style="display:block;margin-top:5px">Today, 09:40 am · 3 items · SAR 787</span>
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <span class="cim tC" style="width:40px;height:40px;font-size:20px"><em>🫙</em></span>
+          <span class="cim tY" style="width:40px;height:40px;font-size:20px"><em>🫘</em></span>
+          <span class="cim tY" style="width:40px;height:40px;font-size:20px"><em>🍚</em></span>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:13px;padding-top:11px;border-top:1px solid var(--hairline)"><span class="link"><span data-i18n="orders.trackLive">Track Live</span> <i class="ic s12" data-i="chev"></i></span><span class="link" style="color:var(--sub)" data-i18n="orders.help">Help</span></div>
+      </div>
+      <div class="sect">
+        <div class="hrow"><b style="font-size:13.5px;font-weight:800">#TAM-239104</b><span class="stat g">DELIVERED IN 18 MINS</span></div>
+        <span class="cap" style="display:block;margin-top:5px">Mon, 29 Jun · 12 items · SAR 1,432</span>
+        <div style="display:flex;gap:6px;margin-top:10px;align-items:center">
+          <span class="cim tB" style="width:40px;height:40px;font-size:20px"><em>🥛</em></span>
+          <span class="cim tC" style="width:40px;height:40px;font-size:20px"><em>🍞</em></span>
+          <span class="cim tY" style="width:40px;height:40px;font-size:20px"><em>🥚</em></span>
+          <span class="cim tG" style="width:40px;height:40px;font-size:20px"><em>🥦</em></span>
+          <span class="cap" style="font-weight:800">+8 more</span>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:13px;padding-top:11px;border-top:1px solid var(--hairline)"><span class="link"><span data-i18n="orders.reorder">Reorder</span> <i class="ic s12" data-i="chev"></i></span><span class="link" style="color:#C8890D"><span data-i18n="orders.rate">Rate</span> ★★★★★</span></div>
+      </div>
+      <div class="sect">
+        <div class="hrow"><b style="font-size:13.5px;font-weight:800">#TAM-237871</b><span class="stat g">DELIVERED IN 22 MINS</span></div>
+        <span class="cap" style="display:block;margin-top:5px">Fri, 26 Jun · 5 items · SAR 618</span>
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <span class="cim tC" style="width:40px;height:40px;font-size:20px"><em>🫙</em></span>
+          <span class="cim tR" style="width:40px;height:40px;font-size:20px"><em>🧅</em></span>
+          <span class="cim tO" style="width:40px;height:40px;font-size:20px"><em>🥔</em></span>
+          <span class="cim tR" style="width:40px;height:40px;font-size:20px"><em>🍅</em></span>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:13px;padding-top:11px;border-top:1px solid var(--hairline)"><span class="link"><span data-i18n="orders.reorder">Reorder</span> <i class="ic s12" data-i="chev"></i></span><span class="link" style="color:var(--sub)"><i class="ic s12" data-i="doc"></i><span data-i18n="orders.invoice">Invoice</span></span></div>
+      </div>
+    </div>
+
+    <!-- ACCOUNT -->
+    <div class="screen" id="account">
+      <div class="sbar"><b>9:41</b><span class="r">▪▪▪ &nbsp;wifi &nbsp;▮</span></div>
+      <div class="thead"><span class="bk" onclick="go('home')"><i class="ic" data-i="back"></i></span><span data-i18n="hdr.myAccount">My Account</span></div>
+      <div class="sect" style="display:flex;align-items:center;gap:13px">
+        <div style="width:54px;height:54px;border-radius:18px;background:linear-gradient(140deg,var(--red-3),var(--red-2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:800;box-shadow:var(--sh-red)">L</div>
+        <div style="flex:1"><b style="font-size:15.5px;font-weight:800;letter-spacing:-.2px">Lingraj</b><s style="display:block;text-decoration:none;font-size:11px;color:var(--sub);font-weight:600;margin-top:2px">+966 55 123 4567 · lingraj@zopping.com</s></div>
+        <span class="link"><i class="ic s12" data-i="edit"></i><span data-i18n="addr.edit">Edit</span></span>
+      </div>
+      <div class="sect" style="display:flex;gap:0;background:linear-gradient(115deg,#F0584A,#C81E1B);color:#fff;border:none;box-shadow:var(--sh-red)">
+        <div style="flex:1"><s style="text-decoration:none;font-size:9.5px;font-weight:800;letter-spacing:1.2px;opacity:.85" data-i18n="acct.walletLabel">TAMIMI WALLET</s><b style="display:block;font-size:20px;font-weight:800;margin-top:3px;letter-spacing:-.4px">SAR 120</b></div>
+        <div style="flex:1;border-left:1px solid rgba(255,255,255,.28);padding-left:14px"><s style="text-decoration:none;font-size:9.5px;font-weight:800;letter-spacing:1.2px;opacity:.85" data-i18n="acct.savedThisMonth">SAVED THIS MONTH</s><b style="display:block;font-size:20px;font-weight:800;margin-top:3px;letter-spacing:-.4px">SAR 1,240</b></div>
+      </div>
+      <div class="sect">
+        <div class="mrow" onclick="go('orders')"><span class="mi"><i class="ic" data-i="box"></i></span><span data-i18n="acct.myOrders">My Orders</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow" onclick="go('address')"><span class="mi"><i class="ic" data-i="pin"></i></span><span data-i18n="acct.savedAddresses">Saved Addresses</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="heart"></i></span><span data-i18n="acct.wishlist">Wishlist</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow" onclick="go('offers')"><span class="mi"><i class="ic" data-i="ticket"></i></span><span data-i18n="acct.coupons">Coupons &amp; Offers</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="card"></i></span><span data-i18n="acct.paymentMethods">Payment Methods</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="gift"></i></span><span data-i18n="acct.referEarn">Refer &amp; Earn</span> <span class="stat g" style="margin-left:2px">GET SAR 100</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="help"></i></span><span data-i18n="acct.help">Help &amp; Support</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow"><span class="mi"><i class="ic" data-i="doc"></i></span><span data-i18n="acct.terms">Terms, Privacy &amp; FSSAI</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow" onclick="toggleLang()"><span class="mi"><i class="ic" data-i="globe"></i></span><span data-i18n="acct.language">App Language</span><span class="cap" id="langLabelAccount" style="margin-left:4px">English</span><i class="ic ar" data-i="chev"></i></div>
+        <div class="mrow" onclick="go('login')" style="color:var(--red)"><span class="mi"><i class="ic" data-i="out"></i></span><span data-i18n="acct.logout">Log Out</span><i class="ic ar" data-i="chev"></i></div>
+      </div>
+      <p style="text-align:center;color:#B9B4AB;font-size:10.5px;font-weight:600;padding:4px 0 16px" data-i18n="acct.footer">Tamimi Super Market · App v2.0 · Al Khobar</p>
+      <div class="bnav">
+        <a onclick="go('home')"><i class="ic" data-i="home"></i><span data-i18n="nav.home">Home</span></a>
+        <a onclick="go('categories')"><i class="ic" data-i="grid"></i><span data-i18n="nav.categories">Categories</span></a>
+        <a onclick="go('offers')"><i class="ic" data-i="tag"></i><span data-i18n="nav.offers">Offers</span></a>
+        <a onclick="go('cart')"><i class="ic" data-i="cart"></i><span data-i18n="nav.cart">Cart</span><span class="bdg">3</span></a>
+        <a class="on"><i class="ic" data-i="user"></i><span data-i18n="nav.account">Account</span></a>
+      </div>
+    </div>
+
+
+  </div><div class="glass"></div></div>
+
+  <p class="note">Tamimi Super Market · Quick-commerce app design v2 · Product photos shown as styled placeholders — replace with photography in production.</p>
+</div>
+<script>
+const IC={
+search:'<circle cx="11" cy="11" r="7"/><path d="M20.5 20.5L16.6 16.6"/>',
+pin:'<path d="M12 21.5S5 15.8 5 10.2A7 7 0 0 1 19 10.2C19 15.8 12 21.5 12 21.5Z"/><circle cx="12" cy="10" r="2.7"/>',
+user:'<circle cx="12" cy="7.8" r="3.8"/><path d="M4.5 20.2C6 16.8 8.8 15.2 12 15.2S18 16.8 19.5 20.2"/>',
+cart:'<path d="M3.5 4H5.6L8 16.4A1.2 1.2 0 0 0 9.2 17.4H18.3A1.2 1.2 0 0 0 19.5 16.4L21 7.5H6.3"/><circle cx="10" cy="20.6" r="1.3"/><circle cx="17.4" cy="20.6" r="1.3"/>',
+home:'<path d="M4.5 10.8L12 4.2L19.5 10.8V19A1.4 1.4 0 0 1 18.1 20.4H5.9A1.4 1.4 0 0 1 4.5 19Z"/><path d="M9.6 20.4V14.6H14.4V20.4"/>',
+grid:'<rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/>',
+tag:'<path d="M3.5 10.5V5A1.5 1.5 0 0 1 5 3.5H10.5L20.5 13.5L13.5 20.5L3.5 10.5Z"/><circle cx="8.2" cy="8.2" r="1.4"/>',
+back:'<path d="M15 5L8 12L15 19"/>',
+chev:'<path d="M9.5 5.5L16 12L9.5 18.5"/>',
+down:'<path d="M6 9.5L12 15.5L18 9.5"/>',
+heart:'<path d="M12 20.2C12 20.2 3.5 15.2 3.5 9.3A4.6 4.6 0 0 1 12 6.9A4.6 4.6 0 0 1 20.5 9.3C20.5 15.2 12 20.2 12 20.2Z"/>',
+share:'<circle cx="6" cy="12" r="2.4"/><circle cx="17.5" cy="5.5" r="2.4"/><circle cx="17.5" cy="18.5" r="2.4"/><path d="M8.2 10.8L15.3 6.7M8.2 13.2L15.3 17.3"/>',
+phone:'<path d="M7.5 3.5H10L11.5 8L9.4 9.6A12 12 0 0 0 14.4 14.6L16 12.5L20.5 14V16.5A2 2 0 0 1 18.3 18.5C10.6 17.9 6.1 13.4 5.5 5.7A2 2 0 0 1 7.5 3.5Z"/>',
+bolt:'<path d="M13 2.5L4.5 13.5H10.5L9.5 21.5L18.5 10.5H12.5L13 2.5Z"/>',
+filter:'<path d="M4.5 7H19.5M7.5 12H16.5M10.5 17H13.5"/>',
+sort:'<path d="M8 5V19M8 19L4.8 15.8M8 19L11.2 15.8M16 19V5M16 5L12.8 8.2M16 5L19.2 8.2"/>',
+check:'<path d="M5 12.5L10 17.5L19 7"/>',
+plus:'<path d="M12 5V19M5 12H19"/>',
+x:'<path d="M6 6L18 18M18 6L6 18"/>',
+clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12L15 14"/>',
+star:'<path d="M12 3.5L14.6 8.9L20.5 9.7L16.2 13.8L17.3 19.6L12 16.8L6.7 19.6L7.8 13.8L3.5 9.7L9.4 8.9Z"/>',
+box:'<path d="M4 8L12 4L20 8V16L12 20L4 16Z"/><path d="M4 8L12 12L20 8M12 12V20"/>',
+ticket:'<path d="M4 9V6.5A1.5 1.5 0 0 1 5.5 5H18.5A1.5 1.5 0 0 1 20 6.5V9A3 3 0 0 0 20 15V17.5A1.5 1.5 0 0 1 18.5 19H5.5A1.5 1.5 0 0 1 4 17.5V15A3 3 0 0 0 4 9Z"/><path d="M12 5V19" stroke-dasharray="2.5 3"/>',
+wallet:'<rect x="3.5" y="6" width="17" height="13" rx="2.5"/><path d="M15.5 12.5H20.5"/>',
+card:'<rect x="3.5" y="5.5" width="17" height="13" rx="2.2"/><path d="M3.5 10H20.5"/>',
+cash:'<rect x="3" y="7" width="18" height="11" rx="2"/><circle cx="12" cy="12.5" r="2.6"/>',
+help:'<circle cx="12" cy="12" r="8.5"/><path d="M9.8 9.5A2.3 2.3 0 0 1 14.2 10.3C14.2 11.8 12 12.2 12 13.8"/><path d="M12 16.6V16.9"/>',
+doc:'<path d="M6 3.5H14L18 7.5V20.5H6Z"/><path d="M14 3.5V7.5H18"/>',
+out:'<path d="M9 4.5H5.5V19.5H9M14 8L18 12L14 16M18 12H8.5"/>',
+gift:'<rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M12 9V20M4 13.5H20M12 9C10 9 7.6 8.3 7.6 6.3A1.9 1.9 0 0 1 11.3 5.6C11.9 6.5 12 9 12 9ZM12 9C14 9 16.4 8.3 16.4 6.3A1.9 1.9 0 0 0 12.7 5.6C12.1 6.5 12 9 12 9Z"/>',
+truck:'<path d="M3 6.5H14.5V16H3Z"/><path d="M14.5 9.5H18.5L21 12.5V16H14.5"/><circle cx="7" cy="17.8" r="1.7"/><circle cx="17.5" cy="17.8" r="1.7"/>',
+store:'<path d="M4 9L5.3 4.5H18.7L20 9C20 10.4 18.9 11.5 17.5 11.5C16.6 11.5 15.8 11 15.4 10.3C14.9 11 14.1 11.5 13.2 11.5C12.7 11.5 12.3 11.4 12 11.1C11.7 11.4 11.3 11.5 10.8 11.5C9.9 11.5 9.1 11 8.6 10.3C8.2 11 7.4 11.5 6.5 11.5C5.1 11.5 4 10.4 4 9Z"/><path d="M5.5 11.5V19.5H18.5V11.5M10 19.5V15H14V19.5"/>',
+mic:'<rect x="9.2" y="3.5" width="5.6" height="10" rx="2.8"/><path d="M6 11.5A6 6 0 0 0 18 11.5M12 17.5V20.5"/>',
+minus:'<path d="M6 12H18"/>',
+edit:'<path d="M4 20H8L19 9L15 5L4 16V20Z"/><path d="M13 7L17 11"/>',
+globe:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12H20.5M12 3.5C14.3 6.2 15.3 9 15.3 12C15.3 15 14.3 17.8 12 20.5C9.7 17.8 8.7 15 8.7 12C8.7 9 9.7 6.2 12 3.5Z"/>'
+};
+function packSVG(d){
+  const e=d.e||'🫙',n=(d.n||'').toUpperCase(),s=(d.s||'').toUpperCase(),c1=d.c1||'#2E7D46',c2=d.c2||'#EAF3E6';
+  return '<svg viewBox="0 0 100 132" xmlns="http://www.w3.org/2000/svg">'
+  +'<ellipse cx="50" cy="128" rx="31" ry="3.5" fill="rgba(48,18,6,.13)"/>'
+  +'<path d="M20 8H80Q84 8 84.5 14Q88 64 84.5 114Q84 122 76 122H24Q16 122 15.5 114Q12 64 15.5 14Q16 8 20 8Z" fill="#FDFDFB" stroke="#E7E3D9"/>'
+  +'<path d="M20 11H80M20 13.5H80" stroke="#DDD8CD" stroke-width=".7"/>'
+  +'<path d="M15.2 17Q50 24 84.8 17L85 21.5Q50 28.5 15 21.5Z" fill="'+c1+'" opacity=".85"/>'
+  +'<text x="50" y="33" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="14" font-weight="900" fill="#C81E1B">Tamimi</text>'
+  +'<path d="M31 36.5Q50 41 69 36.5" stroke="#C81E1B" stroke-width="1.5" fill="none" stroke-linecap="round"/>'
+  +'<text x="50" y="45.5" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="5.2" font-weight="700" fill="#9A948A" letter-spacing="1.6">TRUSTED BRAND</text>'
+  +'<rect x="21" y="50" width="58" height="45" rx="7" fill="'+c2+'"/>'
+  +'<path d="M21 57Q50 51.5 79 57V57Q50 63 21 57Z" fill="'+c1+'" opacity=".18"/>'
+  +'<text x="50" y="80" text-anchor="middle" font-size="25">'+e+'</text>'
+  +'<rect x="26" y="99" width="48" height="1.6" rx=".8" fill="'+c1+'" opacity=".35"/>'
+  +'<text x="50" y="109" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="8.4" font-weight="800" fill="'+c1+'" letter-spacing=".4">'+n+'</text>'
+  +'<text x="50" y="117" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="5.4" font-weight="700" fill="#9A948A" letter-spacing=".7">'+s+'</text>'
+  +'</svg>';
+}
+function paint(){
+  document.querySelectorAll('.pack').forEach(p=>{if(!p.dataset.done){p.innerHTML=packSVG(p.dataset);p.dataset.done=1}});document.querySelectorAll('i.ic').forEach(e=>{if(!e.dataset.done&&IC[e.dataset.i]){e.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+IC[e.dataset.i]+'</svg>';e.dataset.done=1}})}
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  var el=document.getElementById(id); if(el){el.classList.add('on');el.scrollTop=0;}
+  document.querySelectorAll('#picker button').forEach(b=>b.classList.toggle('active',b.dataset.s===id));
+}
+document.querySelectorAll('#picker button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+function ktab(el,key){
+  document.querySelectorAll('#ktabs .ktab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('#home .tabc').forEach(t=>t.classList.toggle('on',t.id==='tab-'+key));
+}
+
+/* ============ EN / AR LANGUAGE TOGGLE ============ */
+const I18N={
+  en:{
+    'nav.home':'Home','nav.categories':'Categories','nav.offers':'Offers','nav.cart':'Cart','nav.account':'Account',
+    'hdr.allCategories':'All Categories','hdr.fruitsVeg':'Fruits &amp; Vegetables','hdr.offers':'Offers','hdr.myCart':'My Cart',
+    'hdr.selectAddress':'Select Delivery Address','hdr.payment':'Payment','hdr.myOrders':'My Orders','hdr.myAccount':'My Account',
+    'sec.trustedBrand':'Tamimi Trusted Brand','sec.freshVeg':'Fresh Vegetables','sec.freshFruits':'Fresh Fruits',
+    'sec.bestsellers':'Bestsellers Near You','sec.similarProducts':'Similar Products','sec.alsoBought':'Also Bought',
+    'lbl.seeAll':'See all',
+    'splash.line1':'Everything you need,','splash.line2':'delivered with care!',
+    'splash.trust':'Quality<br>You Trust','splash.products':'15,000+<br>Products','splash.delivery':'Delivery in<br>20 Minutes',
+    'login.title':'Login to Tamimi Markets','login.subtitle':'Groceries at your door in 20 minutes ⚡','login.phoneLabel':'Phone number',
+    'login.requestOtp':'Request OTP','login.terms':'By signing in, you agree to our <b style="color:var(--red)">terms &amp; conditions</b>',
+    'otp.title':'Verify OTP','otp.resend':'Resend OTP','otp.verifyContinue':'Verify &amp; Continue',
+    'success.title':'Sign-in successful','success.goHome':'Go to Homepage',
+    'hnote.line':'The supermarket of choice for Saudis and expatriates! Enjoy our best deals, online and in stores.',
+    'hnote.cv':'Al Khobar\'s own<br>supermarket ♥',
+    'cart.deliveryType':'Delivery Type','cart.billDetails':'Bill Details','cart.proceedPay':'Proceed to Pay',
+    'addr.addNew':'Add New Address','addr.deliverHere':'Deliver Here',
+    'pay.quickPay':'Quick Pay · Recommended','pay.cards':'Cards','pay.moreOptions':'More Options','pay.payNow':'Pay Now',
+    'confirm.trackOrder':'Track Order Live','confirm.continueShopping':'Continue Shopping',
+    'acct.myOrders':'My Orders','acct.savedAddresses':'Saved Addresses','acct.wishlist':'Wishlist','acct.coupons':'Coupons &amp; Offers',
+    'acct.paymentMethods':'Payment Methods','acct.referEarn':'Refer &amp; Earn','acct.help':'Help &amp; Support',
+    'acct.terms':'Terms, Privacy &amp; FSSAI','acct.logout':'Log Out','acct.language':'App Language',
+    'ktab.grocery':'Grocery',
+    'ktab.fresh':'Fresh',
+    'ktab.baby':'Baby Care',
+    'ktab.beauty':'Beauty',
+    'ktab.drinks':'Drinks',
+    'ktab.snacks':'Snacks',
+    'tile.freshVeggies.t':'Fresh Veggies',
+    'tile.freshVeggies.s':'Farm to home, before 10 am',
+    'tile.freshFruits.t':'Fresh Fruits',
+    'tile.freshFruits.s':'32 items on deal',
+    'tile.everydayFresh.t':'Everyday Fresh',
+    'tile.everydayFresh.s':'Milk, eggs &amp; bread',
+    'tile.drinksBev':'Drinks &amp; Beverages',
+    'tile.babyCare':'Baby Care',
+    'tile.farmFresh.t':'Farm Fresh, Every Morning',
+    'tile.farmFresh.s':'Harvested &lt; 24 hrs ago · 120+ items',
+    'tile.cutSprouts.t':'Cut &amp; Sprouts',
+    'tile.cutSprouts.s':'Ready to cook',
+    'tile.exotics.t':'Exotics',
+    'tile.exotics.s':'Imported picks',
+    'tile.babyEverything.t':'Everything for Baby',
+    'tile.babyEverything.s':'Certified &amp; gentle · 400+ items',
+    'tile.diapersWipes':'Diapers &amp; Wipes',
+    'tile.babyFood':'Baby Food',
+    'tile.beautyCosmetics.t':'Beauty &amp; Cosmetics',
+    'tile.beautyCosmetics.s':'Skincare, makeup &amp; more · 900+ items',
+    'tile.skincare':'Skincare',
+    'tile.bathBody':'Bath &amp; Body',
+    'tile.chilledReady.t':'Chilled &amp; Ready',
+    'tile.chilledReady.s':'Delivered cold from our fridge · 350+ items',
+    'tile.juices':'Juices',
+    'tile.teaCoffee':'Tea &amp; Coffee',
+    'tile.snackOClock.t':'Snack O\'Clock',
+    'tile.snackOClock.s':'Chips, namkeen &amp; sweets · 600+ items',
+    'tile.chocolates':'Chocolates',
+    'tile.biscuits':'Biscuits',
+    'seg.stockUp':'Stock Up &amp; Save!',
+    'seg.unbeatable':'Unbeatable Grocery Deals',
+    'deal.dairyBreakfast':'Dairy &amp;<br>Breakfast',
+    'deal.freshVeggies2':'Fresh<br>Veggies',
+    'deal.freshBakery':'Fresh<br>Bakery',
+    'deal.ricePulses':'Rice &amp;<br>Pulses',
+    'deal.coldDrinks':'Cold Drinks<br>&amp; Juices',
+    'deal.todaysOffers':'Today\'s<br>Offers',
+    'deal.upto20':'UPTO 20% OFF',
+    'deal.farmToHome':'FARM TO HOME',
+    'deal.freshEveryday':'FRESH EVERYDAY',
+    'deal.trustedBrand2':'TRUSTED BRAND',
+    'deal.chilledReady2':'CHILLED &amp; READY',
+    'deal.upto50':'UPTO 50% OFF',
+    'promo.todayOnly':'TODAY ONLY',
+    'promo.bogo.b':'Buy 1 Get 1 <span style="color:var(--yellow)">Free</span>',
+    'promo.bogo.s':'Fresh favourites at double the value',
+    'promo.firstOrder.pk':'FIRST ORDER',
+    'promo.firstOrder.b':'Flat SAR 50 off <span style="color:var(--yellow)">· TAMIMI50</span>',
+    'promo.firstOrder.s':'On carts above SAR 499 · auto-applies',
+    'promo.newArrivals.pk':'NEW ARRIVALS',
+    'promo.newArrivals.b':'Imported Range <span style="color:var(--yellow)">is here</span>',
+    'promo.newArrivals.s':'Curated picks from across the world',
+    'pantry.label':'TAMIMI TRUSTED BRAND',
+    'pantry.title':'Pantry staples, packed<br>by our own hands.',
+    'pantry.explore':'Explore the range',
+    'spot.imported.t':'Imported<br>Range',
+    'spot.imported.s':'From across the world',
+    'spot.party.t':'Party<br>Essentials',
+    'spot.party.s':'Snacks, drinks &amp; more',
+    'trust.delivery':'20-Minute<br>Delivery',
+    'trust.quality':'Quality<br>You Trust',
+    'trust.products':'15,000+<br>Products',
+    'trust.savings':'Guilt-free<br>Savings',
+    'sec.todaysHarvest':'Today\'s Harvest',
+    'fresh.promise':'Not fresh? Full refund, no questions asked — <b>Tamimi Freshness Promise</b>',
+    'sec.parentsFav':'Parents\' Favourites',
+    'baby.cert':'All baby products are <b>FSSAI / BIS certified</b> and checked for expiry before dispatch',
+    'sec.trendingBeauty':'Trending in Beauty',
+    'sec.beatHeat':'Beat the Heat',
+    'sec.mostMunched':'Most Munched',
+    'cat.groceryKitchen':'Grocery &amp; Kitchen',
+    'cat.fruitsVeg2':'Fruits &amp; Vegetables',
+    'cat.riceAttaDals':'Rice, Atta &amp; Dals',
+    'cat.masalaSpices':'Masala &amp; Spices',
+    'cat.oilGhee':'Oil &amp; Ghee',
+    'cat.dairyBreakfast2':'Dairy &amp; Breakfast',
+    'cat.freshBakery2':'Fresh Bakery',
+    'cat.freshMeat':'Fresh Meat',
+    'cat.frozenFood':'Frozen Food',
+    'cat.snacksDrinks':'Snacks &amp; Drinks',
+    'cat.snacksNamkeen':'Snacks &amp; Namkeen',
+    'cat.coldDrinksJuices':'Cold Drinks &amp; Juices',
+    'cat.chocolatesSweets':'Chocolates &amp; Sweets',
+    'cat.teaCoffeeMore':'Tea, Coffee &amp; More',
+    'cat.householdPersonal':'Household &amp; Personal Care',
+    'cat.bathBody2':'Bath &amp; Body',
+    'cat.beautyCosmetics2':'Beauty &amp; Cosmetics',
+    'cat.cleaningEssentials':'Cleaning Essentials',
+    'cat.babyCare2':'Baby Care',
+    'cat.petCare':'Pet Care',
+    'cat.kitchenware':'Kitchenware',
+    'cat.pharmaWellness':'Pharma &amp; Wellness',
+    'cat.importedRange':'Imported Range',
+    'listing.productsCount':'50 Products',
+    'listing.deliveredIn':'· delivered in 20 mins',
+    'listing.filter':'Filter',
+    'listing.sort':'Sort',
+    'rail.fruitsVeggies':'Fruits &amp; Veggies',
+    'rail.freshlyCut':'Freshly Cut',
+    'rail.exoticFruits':'Exotic Fruits',
+    'rail.exoticVeggies':'Exotic Veggies',
+    'rail.vegetables':'Vegetables',
+    'rail.fruits':'Fruits',
+    'rail.herbs':'Herbs',
+    'search.recentSearches':'Recent Searches',
+    'search.clearAll':'Clear all',
+    'search.resultsFor':'Results for',
+    'pdp.categoryLabel':'Masala &amp; Spices',
+    'pdp.productDetails':'Product Details',
+    'pdp.description':'Enhance the flavor of your everyday cooking with Tamimi Jeera (Cumin Seeds) — a kitchen essential known for its distinctive aroma and earthy taste. Carefully sourced and hygienically packed, perfect for tempering, seasoning, roasting, and fresh masalas.',
+    'pdp.shelfLife':'SHELF LIFE',
+    'pdp.origin':'ORIGIN',
+    'pdp.returns':'RETURNS',
+    'pdp.inclTaxes':'Incl. of all taxes',
+    'pdp.deliveredIn20':'DELIVERED IN 20 MINS',
+    'pdp.addToCart':'Add To Cart',
+    'offers.todayOnlyEnds':'TODAY ONLY · ENDS 11:59 PM',
+    'offers.upto50':'Upto 50% off',
+    'offers.bogo':'BOGO',
+    'offers.megaDeals':'Mega Deals',
+    'offers.flashSale':'Flash Sale',
+    'cart.combined.t':'Combined',
+    'cart.combined.s':'All together · 20 mins',
+    'cart.multiDelivery.t':'Multi-Delivery ⚡',
+    'cart.multiDelivery.s':'Fastest first · from 5 mins',
+    'cart.deliveredIn5':'Delivered in 5 mins',
+    'cart.deliveredIn20':'Delivered in 20 mins',
+    'cart.swapSave':'Swap and Save',
+    'cart.swap':'SWAP',
+    'cart.itemTotal':'Item total (3 items)',
+    'cart.savedMrp':'Saved on MRP',
+    'cart.deliveryFee':'Delivery fee',
+    'cart.free':'FREE',
+    'cart.handling':'Handling charge',
+    'cart.toPay':'To Pay',
+    'cart.apply':'APPLY',
+    'addr.home':'Home',
+    'addr.office':'Office',
+    'addr.default':'DEFAULT',
+    'addr.edit':'Edit',
+    'addr.delete':'Delete',
+    'pay.cardsAdd':'Add new card',
+    'pay.cashOnDelivery':'Cash on Delivery',
+    'pay.securityNote':'All payments processed securely via HyperPay',
+    'confirm.orderPlaced':'Order Placed!',
+    'confirm.arriving':'Arriving at Home in',
+    'track.orderStatus':'Order Status',
+    'track.orderConfirmed.t':'Order Confirmed',
+    'track.packedAt.t':'Packed at Al Khobar store',
+    'track.outForDelivery.t':'Out for Delivery',
+    'track.delivered.t':'Delivered',
+    'track.deliveryPartner':'Delivery Partner',
+    'track.paidViaApplePay':'Paid via Apple Pay',
+    'orders.onTheWay':'ON THE WAY ⚡',
+    'orders.trackLive':'Track Live',
+    'orders.help':'Help',
+    'orders.reorder':'Reorder',
+    'orders.rate':'Rate',
+    'orders.invoice':'Invoice',
+    'acct.walletLabel':'TAMIMI WALLET',
+    'acct.savedThisMonth':'SAVED THIS MONTH',
+    'acct.footer':'Tamimi Super Market · App v2.0 · Al Khobar'
+  },
+  ar:{
+    'nav.home':'الرئيسية','nav.categories':'الأقسام','nav.offers':'العروض','nav.cart':'السلة','nav.account':'حسابي',
+    'hdr.allCategories':'جميع الأقسام','hdr.fruitsVeg':'فواكه وخضروات','hdr.offers':'العروض','hdr.myCart':'سلتي',
+    'hdr.selectAddress':'اختر عنوان التوصيل','hdr.payment':'الدفع','hdr.myOrders':'طلباتي','hdr.myAccount':'حسابي',
+    'sec.trustedBrand':'علامة التميمي الموثوقة','sec.freshVeg':'خضروات طازجة','sec.freshFruits':'فواكه طازجة',
+    'sec.bestsellers':'الأكثر مبيعاً بالقرب منك','sec.similarProducts':'منتجات مشابهة','sec.alsoBought':'اشتراه آخرون أيضاً',
+    'lbl.seeAll':'عرض الكل',
+    'splash.line1':'كل ما تحتاجه،','splash.line2':'يصلك بعناية!',
+    'splash.trust':'جودة<br>تثق بها','splash.products':'+15,000<br>منتج','splash.delivery':'التوصيل خلال<br>20 دقيقة',
+    'login.title':'تسجيل الدخول إلى أسواق التميمي','login.subtitle':'بقالة تصل لباب منزلك خلال 20 دقيقة ⚡','login.phoneLabel':'رقم الجوال',
+    'login.requestOtp':'طلب رمز التحقق','login.terms':'بتسجيل الدخول، أنت توافق على <b style="color:var(--red)">الشروط والأحكام</b>',
+    'otp.title':'تحقق من الرمز','otp.resend':'إعادة إرسال الرمز','otp.verifyContinue':'تحقق ومتابعة',
+    'success.title':'تم تسجيل الدخول بنجاح','success.goHome':'الذهاب إلى الصفحة الرئيسية',
+    'hnote.line':'المتجر المفضل للسعوديين والمقيمين! استمتع بأفضل عروضنا، أونلاين وفي المتاجر.',
+    'hnote.cv':'سوقنا المفضل<br>في الخبر ♥',
+    'cart.deliveryType':'نوع التوصيل','cart.billDetails':'تفاصيل الفاتورة','cart.proceedPay':'المتابعة للدفع',
+    'addr.addNew':'إضافة عنوان جديد','addr.deliverHere':'التوصيل إلى هنا',
+    'pay.quickPay':'الدفع السريع · موصى به','pay.cards':'البطاقات','pay.moreOptions':'خيارات أخرى','pay.payNow':'ادفع الآن',
+    'confirm.trackOrder':'تتبع الطلب مباشرة','confirm.continueShopping':'متابعة التسوق',
+    'acct.myOrders':'طلباتي','acct.savedAddresses':'العناوين المحفوظة','acct.wishlist':'المفضلة','acct.coupons':'الكوبونات والعروض',
+    'acct.paymentMethods':'طرق الدفع','acct.referEarn':'أحل صديقاً واربح','acct.help':'المساعدة والدعم',
+    'acct.terms':'الشروط والخصوصية','acct.logout':'تسجيل الخروج','acct.language':'لغة التطبيق',
+    'ktab.grocery':'البقالة',
+    'ktab.fresh':'طازج',
+    'ktab.baby':'العناية بالطفل',
+    'ktab.beauty':'الجمال',
+    'ktab.drinks':'المشروبات',
+    'ktab.snacks':'الوجبات الخفيفة',
+    'tile.freshVeggies.t':'خضروات طازجة',
+    'tile.freshVeggies.s':'من المزرعة إلى منزلك، قبل الساعة 10 صباحاً',
+    'tile.freshFruits.t':'فواكه طازجة',
+    'tile.freshFruits.s':'32 منتج ضمن العروض',
+    'tile.everydayFresh.t':'طازج يومياً',
+    'tile.everydayFresh.s':'حليب، بيض وخبز',
+    'tile.drinksBev':'المشروبات',
+    'tile.babyCare':'العناية بالطفل',
+    'tile.farmFresh.t':'طازج من المزرعة كل صباح',
+    'tile.farmFresh.s':'حُصد قبل أقل من 24 ساعة · أكثر من 120 منتج',
+    'tile.cutSprouts.t':'مقطع وبراعم',
+    'tile.cutSprouts.s':'جاهز للطبخ',
+    'tile.exotics.t':'فواكه وخضروات مستوردة',
+    'tile.exotics.s':'منتجات مستوردة مختارة',
+    'tile.babyEverything.t':'كل ما يحتاجه طفلك',
+    'tile.babyEverything.s':'معتمد ولطيف · أكثر من 400 منتج',
+    'tile.diapersWipes':'الحفاضات والمناديل',
+    'tile.babyFood':'طعام الأطفال',
+    'tile.beautyCosmetics.t':'الجمال ومستحضرات التجميل',
+    'tile.beautyCosmetics.s':'العناية بالبشرة، المكياج والمزيد · أكثر من 900 منتج',
+    'tile.skincare':'العناية بالبشرة',
+    'tile.bathBody':'الاستحمام والعناية بالجسم',
+    'tile.chilledReady.t':'بارد وجاهز',
+    'tile.chilledReady.s':'يصلك بارداً من ثلاجتنا · أكثر من 350 منتج',
+    'tile.juices':'العصائر',
+    'tile.teaCoffee':'الشاي والقهوة',
+    'tile.snackOClock.t':'وقت الوجبات الخفيفة',
+    'tile.snackOClock.s':'رقائق، مقرمشات وحلويات · أكثر من 600 منتج',
+    'tile.chocolates':'الشوكولاتة',
+    'tile.biscuits':'البسكويت',
+    'seg.stockUp':'تسوق ووفر!',
+    'seg.unbeatable':'عروض بقالة لا تُقاوم',
+    'deal.dairyBreakfast':'الألبان<br>والفطور',
+    'deal.freshVeggies2':'خضروات<br>طازجة',
+    'deal.freshBakery':'مخبوزات<br>طازجة',
+    'deal.ricePulses':'الأرز<br>والبقوليات',
+    'deal.coldDrinks':'مشروبات باردة<br>وعصائر',
+    'deal.todaysOffers':'عروض<br>اليوم',
+    'deal.upto20':'خصم حتى 20%',
+    'deal.farmToHome':'من المزرعة للمنزل',
+    'deal.freshEveryday':'طازج يومياً',
+    'deal.trustedBrand2':'علامة موثوقة',
+    'deal.chilledReady2':'بارد وجاهز',
+    'deal.upto50':'خصم حتى 50%',
+    'promo.todayOnly':'اليوم فقط',
+    'promo.bogo.b':'اشترِ 1 واحصل على <span style="color:var(--yellow)">1 مجاناً</span>',
+    'promo.bogo.s':'منتجات طازجة بقيمة مضاعفة',
+    'promo.firstOrder.pk':'الطلب الأول',
+    'promo.firstOrder.b':'خصم 50 ريال <span style="color:var(--yellow)">· TAMIMI50</span>',
+    'promo.firstOrder.s':'على الطلبات فوق 499 ريال · يُطبق تلقائياً',
+    'promo.newArrivals.pk':'وصل حديثاً',
+    'promo.newArrivals.b':'التشكيلة المستوردة <span style="color:var(--yellow)">وصلت</span>',
+    'promo.newArrivals.s':'مختارات من حول العالم',
+    'pantry.label':'علامة التميمي الموثوقة',
+    'pantry.title':'أساسيات المخزن، معبأة<br>بأيدينا',
+    'pantry.explore':'استكشف التشكيلة',
+    'spot.imported.t':'التشكيلة<br>المستوردة',
+    'spot.imported.s':'من حول العالم',
+    'spot.party.t':'أساسيات<br>الحفلات',
+    'spot.party.s':'وجبات خفيفة، مشروبات والمزيد',
+    'trust.delivery':'توصيل خلال<br>20 دقيقة',
+    'trust.quality':'جودة<br>تثق بها',
+    'trust.products':'+15,000<br>منتج',
+    'trust.savings':'توفير<br>بلا قلق',
+    'sec.todaysHarvest':'حصاد اليوم',
+    'fresh.promise':'غير طازج؟ استرداد كامل دون أي أسئلة — <b>وعد التميمي بالطزاجة</b>',
+    'sec.parentsFav':'المفضلة لدى الآباء',
+    'baby.cert':'جميع منتجات الأطفال <b>معتمدة</b> ويتم التحقق من تاريخ صلاحيتها قبل الشحن',
+    'sec.trendingBeauty':'الأكثر رواجاً في الجمال',
+    'sec.beatHeat':'كسر حرارة الصيف',
+    'sec.mostMunched':'الأكثر تناولاً',
+    'cat.groceryKitchen':'البقالة والمطبخ',
+    'cat.fruitsVeg2':'الفواكه والخضروات',
+    'cat.riceAttaDals':'الأرز، الدقيق والبقوليات',
+    'cat.masalaSpices':'التوابل والبهارات',
+    'cat.oilGhee':'الزيوت والسمن',
+    'cat.dairyBreakfast2':'الألبان والفطور',
+    'cat.freshBakery2':'مخبوزات طازجة',
+    'cat.freshMeat':'لحوم طازجة',
+    'cat.frozenFood':'أطعمة مجمدة',
+    'cat.snacksDrinks':'وجبات خفيفة ومشروبات',
+    'cat.snacksNamkeen':'وجبات خفيفة ومقرمشات',
+    'cat.coldDrinksJuices':'مشروبات باردة وعصائر',
+    'cat.chocolatesSweets':'شوكولاتة وحلويات',
+    'cat.teaCoffeeMore':'شاي، قهوة والمزيد',
+    'cat.householdPersonal':'العناية المنزلية والشخصية',
+    'cat.bathBody2':'الاستحمام والعناية بالجسم',
+    'cat.beautyCosmetics2':'الجمال ومستحضرات التجميل',
+    'cat.cleaningEssentials':'أساسيات التنظيف',
+    'cat.babyCare2':'العناية بالطفل',
+    'cat.petCare':'العناية بالحيوانات الأليفة',
+    'cat.kitchenware':'أدوات المطبخ',
+    'cat.pharmaWellness':'الصيدلية والعافية',
+    'cat.importedRange':'التشكيلة المستوردة',
+    'listing.productsCount':'50 منتج',
+    'listing.deliveredIn':'· التوصيل خلال 20 دقيقة',
+    'listing.filter':'تصفية',
+    'listing.sort':'ترتيب',
+    'rail.fruitsVeggies':'فواكه وخضروات',
+    'rail.freshlyCut':'مقطع طازج',
+    'rail.exoticFruits':'فواكه استوائية',
+    'rail.exoticVeggies':'خضروات استوائية',
+    'rail.vegetables':'خضروات',
+    'rail.fruits':'فواكه',
+    'rail.herbs':'أعشاب',
+    'search.recentSearches':'عمليات البحث الأخيرة',
+    'search.clearAll':'مسح الكل',
+    'search.resultsFor':'نتائج البحث عن',
+    'pdp.categoryLabel':'التوابل والبهارات',
+    'pdp.productDetails':'تفاصيل المنتج',
+    'pdp.description':'عزز نكهة طبخك اليومي مع كمون التميمي (بذور الكمون) — عنصر أساسي في المطبخ يشتهر برائحته المميزة ونكهته الترابية. مصدره موثوق ومعبأ بشكل صحي، مثالي للتحمير والتتبيل والتحميص وتحضير البهارات الطازجة.',
+    'pdp.shelfLife':'مدة الصلاحية',
+    'pdp.origin':'بلد المنشأ',
+    'pdp.returns':'سياسة الإرجاع',
+    'pdp.inclTaxes':'شامل جميع الضرائب',
+    'pdp.deliveredIn20':'التوصيل خلال 20 دقيقة',
+    'pdp.addToCart':'أضف إلى السلة',
+    'offers.todayOnlyEnds':'اليوم فقط · ينتهي الساعة 11:59 مساءً',
+    'offers.upto50':'خصم حتى 50%',
+    'offers.bogo':'اشترِ 1 واحصل على 1',
+    'offers.megaDeals':'عروض ضخمة',
+    'offers.flashSale':'عرض خاطف',
+    'cart.combined.t':'موحّد',
+    'cart.combined.s':'كل شيء معاً · 20 دقيقة',
+    'cart.multiDelivery.t':'توصيل متعدد ⚡',
+    'cart.multiDelivery.s':'الأسرع أولاً · من 5 دقائق',
+    'cart.deliveredIn5':'التوصيل خلال 5 دقائق',
+    'cart.deliveredIn20':'التوصيل خلال 20 دقيقة',
+    'cart.swapSave':'استبدل ووفر',
+    'cart.swap':'استبدال',
+    'cart.itemTotal':'إجمالي المنتجات (3 منتجات)',
+    'cart.savedMrp':'الموفر من السعر الأصلي',
+    'cart.deliveryFee':'رسوم التوصيل',
+    'cart.free':'مجاني',
+    'cart.handling':'رسوم المناولة',
+    'cart.toPay':'المطلوب دفعه',
+    'cart.apply':'تطبيق',
+    'addr.home':'المنزل',
+    'addr.office':'المكتب',
+    'addr.default':'افتراضي',
+    'addr.edit':'تعديل',
+    'addr.delete':'حذف',
+    'pay.cardsAdd':'إضافة بطاقة جديدة',
+    'pay.cashOnDelivery':'الدفع عند الاستلام',
+    'pay.securityNote':'جميع المدفوعات تتم بأمان عبر HyperPay',
+    'confirm.orderPlaced':'تم تقديم الطلب!',
+    'confirm.arriving':'سيصل إلى المنزل خلال',
+    'track.orderStatus':'حالة الطلب',
+    'track.orderConfirmed.t':'تم تأكيد الطلب',
+    'track.packedAt.t':'تم التجهيز في متجر الخبر',
+    'track.outForDelivery.t':'في الطريق إليك',
+    'track.delivered.t':'تم التوصيل',
+    'track.deliveryPartner':'مندوب التوصيل',
+    'track.paidViaApplePay':'تم الدفع عبر Apple Pay',
+    'orders.onTheWay':'في الطريق ⚡',
+    'orders.trackLive':'تتبع مباشر',
+    'orders.help':'مساعدة',
+    'orders.reorder':'إعادة الطلب',
+    'orders.rate':'تقييم',
+    'orders.invoice':'الفاتورة',
+    'acct.walletLabel':'محفظة التميمي',
+    'acct.savedThisMonth':'التوفير هذا الشهر',
+    'acct.footer':'أسواق التميمي · الإصدار 2.0 · الخبر'
+  }
+};
+let LANG='en';
+function applyLang(lang){
+  LANG=lang;
+  const rtl=lang==='ar';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.getAttribute('data-i18n');
+    const val=(I18N[lang]&&I18N[lang][key])||(I18N.en[key]);
+    if(val!==undefined){el.innerHTML=val;el.setAttribute('dir',rtl?'rtl':'ltr');}
+  });
+  const vp=document.getElementById('vp');
+  if(vp) vp.setAttribute('dir',rtl?'rtl':'ltr');
+  const btn=document.getElementById('langBtn');
+  if(btn) btn.textContent=rtl?'EN':'AR';
+  const acctLbl=document.getElementById('langLabelAccount');
+  if(acctLbl) acctLbl.textContent=rtl?'العربية':'English';
+}
+function toggleLang(){ applyLang(LANG==='en'?'ar':'en'); }
+paint();
+applyLang(LANG);
+</script>
+</body>
+</html>
