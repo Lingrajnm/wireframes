@@ -22,15 +22,23 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;font-family:'Plus Jakarta Sans',-apple-system,sans-serif}
 body{background:radial-gradient(120% 90% at 50% 0%,#2B2723 0%,#171512 70%);color:var(--ink);min-height:100vh;padding:34px 16px 70px}
-.stage{display:flex;flex-direction:row;align-items:center;justify-content:center;flex-wrap:wrap;gap:64px;min-height:100vh;padding:40px}
-.stage-left{display:flex;flex-direction:column;align-items:flex-start;gap:22px;max-width:640px}
-.stage-left>h1{color:#fff;font-size:30px;font-weight:800;letter-spacing:-.3px;line-height:1.25}
+.stage{display:flex;flex-direction:row;align-items:flex-start;justify-content:center;flex-wrap:nowrap;gap:40px;min-height:100vh;padding:40px;overflow-x:auto}
+.stage-left{display:flex;flex-direction:column;align-items:flex-start;gap:18px;max-width:400px;flex-shrink:0;padding-top:18px;position:sticky;top:18px}
+.stage-left>h1{color:#fff;font-size:26px;font-weight:800;letter-spacing:-.3px;line-height:1.25}
 .stage-left>h1 em{font-style:normal;color:#E88379}
-.stage-left>p{color:#98928A;font-size:14px;max-width:560px;text-align:left;line-height:1.6}
-.picker{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-start;max-width:600px}
+.stage-left>p{color:#98928A;font-size:13.5px;max-width:380px;text-align:left;line-height:1.6}
+.picker{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-start;max-width:400px}
 .picker button{background:rgba(255,255,255,.06);color:#C9C3BB;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:7px 14px;font-size:11.5px;font-weight:700;cursor:pointer;transition:.15s}
 .picker button:hover{background:rgba(255,255,255,.12)}
 .picker button.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:var(--sh-red)}
+
+/* device view toggle */
+.devtoggle{display:flex;flex-direction:column;gap:8px;margin-top:2px}
+.devtoggle-label{color:#8B857D;font-size:11px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase}
+.devtoggle-btns{display:flex;gap:6px}
+.dvbtn{background:rgba(255,255,255,.06);color:#C9C3BB;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:7px 14px;font-size:11.5px;font-weight:700;cursor:pointer;transition:.15s}
+.dvbtn:hover{background:rgba(255,255,255,.12)}
+.dvbtn.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:var(--sh-red)}
 
 /* ============ ICONS ============ */
 i.ic{display:inline-flex;width:20px;height:20px;flex-shrink:0}
@@ -45,8 +53,9 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
 .punch{position:absolute;top:16px;left:50%;transform:translateX(-50%);width:13px;height:13px;background:#050505;border-radius:50%;z-index:70;box-shadow:inset 0 0 0 2px #201E1B}
 
 /* ============ STAGE: TWO DEVICE FRAMES SIDE BY SIDE ============ */
-.stage-phones{display:flex;flex-direction:row;align-items:flex-start;gap:44px;flex-wrap:wrap}
-.phone-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+.stage-phones{display:flex;flex-direction:row;align-items:flex-start;gap:30px;flex-wrap:nowrap;flex-shrink:0}
+.phone-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;flex-shrink:0}
+.stage-phones .phone{zoom:.74}
 .dev-label{color:#C9C3BB;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 16px}
 .phone.ios .punch{display:none}
 .phone.android .island{display:none}
@@ -54,8 +63,10 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
 .phone.android .glass{border-radius:34px}
 .phone.android .vp{border-radius:22px}
 .phone.android .sbar{padding-top:20px}
-@media (max-width:900px){.stage-phones{justify-content:center}}
-@media (max-width:460px){.phone-wrap{transform:scale(.82);margin:-70px -34px}}
+.stage-phones.view-ios .phone-wrap.android-wrap{display:none}
+.stage-phones.view-android .phone-wrap.ios-wrap{display:none}
+@media (max-width:1180px){.stage-phones .phone{zoom:.62}}
+@media (max-width:900px){.stage{flex-wrap:wrap;overflow-x:visible;justify-content:center}.stage-left{position:static;padding-top:0}.stage-phones{justify-content:center;flex-wrap:wrap}.stage-phones .phone{zoom:.78}}
 .screen{position:absolute;inset:0;display:none;flex-direction:column;overflow-y:auto;overflow-x:hidden;background:var(--bg);scrollbar-width:none}
 .screen::-webkit-scrollbar{display:none}
 .screen.on{display:flex;animation:fadein .28s ease}
@@ -417,10 +428,16 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
     <button data-s="splash" class="active">Splash</button><button data-s="login">Login</button><button data-s="otp">OTP</button><button data-s="success">Success</button><button data-s="home">Home</button><button data-s="categories">Categories</button><button data-s="listing">Product List</button><button data-s="searchsc">Search</button><button data-s="pdp">Product Detail</button><button data-s="offers">Offers</button><button data-s="cart">Cart</button><button data-s="address">Address</button><button data-s="payment">Payment</button><button data-s="confirm">Order Placed</button><button data-s="track">Tracking</button><button data-s="orders">My Orders</button><button data-s="account">Account</button>
   </div>
   <p class="note">Tamimi Super Market · Quick-commerce app design v2 · Product photos shown as styled placeholders — replace with photography in production.</p>
+  <div class="devtoggle" id="devToggle">
+    <span class="devtoggle-label">Device view</span>
+    <div class="devtoggle-btns">
+      <button class="dvbtn active" data-view="both">Both</button><button class="dvbtn" data-view="ios">iOS only</button><button class="dvbtn" data-view="android">Android only</button>
+    </div>
+  </div>
   </div>
 
   <div class="stage-phones">
-    <div class="phone-wrap">
+    <div class="phone-wrap ios-wrap">
       <div class="dev-label">iOS</div>
   <div class="phone ios"><div class="vp" id="vp">
     <div class="island"></div><div class="punch"></div>
@@ -1174,7 +1191,7 @@ i.ic.s16{width:16px;height:16px} i.ic.s14{width:14px;height:14px} i.ic.s24{width
 
   </div><div class="glass"></div></div>
     </div>
-    <div class="phone-wrap">
+    <div class="phone-wrap android-wrap">
       <div class="dev-label">Android</div>
   <div class="phone android"><div class="vp">
     <div class="island"></div><div class="punch"></div>
@@ -1995,6 +2012,14 @@ function go(id){
   document.querySelectorAll('#picker button').forEach(b=>b.classList.toggle('active',b.dataset.s===id));
 }
 document.querySelectorAll('#picker button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+document.querySelectorAll('.dvbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.dvbtn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  const sp=document.querySelector('.stage-phones');
+  sp.classList.remove('view-ios','view-android');
+  if(b.dataset.view==='ios') sp.classList.add('view-ios');
+  else if(b.dataset.view==='android') sp.classList.add('view-android');
+}));
 function ktab(el,key){
   const home=el.closest('.screen');
   home.querySelectorAll('.ktabs .ktab').forEach(t=>t.classList.remove('on'));
