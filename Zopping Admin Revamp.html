@@ -1728,107 +1728,73 @@ function renderOverview(scroll){
   let stats=ind.stats;
   if(!isOwner){
     const statOverrides={
-      ops:   [{l:'Orders Today',v:'14',c:'+12%',up:true,ic:'ti-shopping-bag',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Picking Pending',v:'7',c:'items',up:false,ic:'ti-stack',bg:'#fef9c3',ic_c:'#ca8a04'},{l:'Vehicles on Trip',v:'4',c:'of 8',up:true,ic:'ti-truck',bg:'#f5f3ff',ic_c:'#7c3aed'},{l:'Slot Utilisation',v:'76%',c:'today',up:true,ic:'ti-calendar-time',bg:'#f0fdf4',ic_c:'#16a34a'},{l:'Delayed Trips',v:'1',c:'alert',up:false,ic:'ti-alert-triangle',bg:'#fee2e2',ic_c:'#b91c1c'}],
-      mkt:   [{l:'Revenue',v:'₹24,850',c:'+8%',up:true,ic:'ti-currency-rupee',bg:'#dcfce7',ic_c:'#16a34a'},{l:'Customers',v:'9',c:'today',up:true,ic:'ti-users',bg:'#fce7f3',ic_c:'#be185d'},{l:'Campaigns Active',v:'5',c:'running',up:true,ic:'ti-speakerphone',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Abandoned Carts',v:'3',c:'₹4.2k',up:false,ic:'ti-shopping-cart-off',bg:'#fff7ed',ic_c:'#ea580c'},{l:'Conversion Rate',v:'3.2%',c:'+0.4%',up:true,ic:'ti-trending-up',bg:'#f0fdf4',ic_c:'#16a34a'}],
-      cat:   [{l:'Products',v:'54,334',c:'total',up:true,ic:'ti-package',bg:'#fff7ed',ic_c:'#b45309'},{l:'Missing Images',v:'22,441',c:'fix needed',up:false,ic:'ti-photo-off',bg:'#fee2e2',ic_c:'#b91c1c'},{l:'Missing Desc.',v:'19,491',c:'affects SEO',up:false,ic:'ti-file-off',bg:'#fef9c3',ic_c:'#ca8a04'},{l:'Categories',v:'300',c:'live',up:true,ic:'ti-category',bg:'#fce7f3',ic_c:'#be185d'},{l:'Brands',v:'3,375',c:'listed',up:true,ic:'ti-registered',bg:'#f5f3ff',ic_c:'#7c3aed'}],
-      cs:    [{l:'Customers',v:'9',c:'today',up:true,ic:'ti-users',bg:'#fce7f3',ic_c:'#be185d'},{l:'Abandoned Carts',v:'3',c:'₹4.2k',up:false,ic:'ti-shopping-cart-off',bg:'#fff7ed',ic_c:'#ea580c'},{l:'Wallet Txns',v:'12',c:'today',up:true,ic:'ti-wallet',bg:'#f0fdf4',ic_c:'#16a34a'},{l:'Orders Today',v:'14',c:'+12%',up:true,ic:'ti-shopping-bag',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Revenue',v:'₹24,850',c:'+8%',up:true,ic:'ti-currency-rupee',bg:'#dcfce7',ic_c:'#16a34a'}],
-      log:   [{l:'Vehicles Active',v:'4',c:'of 8',up:true,ic:'ti-car',bg:'#f5f3ff',ic_c:'#7c3aed'},{l:'Trips Today',v:'6',c:'planned',up:true,ic:'ti-route',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Runners on Duty',v:'12',c:'active',up:true,ic:'ti-run',bg:'#f0fdf4',ic_c:'#16a34a'},{l:'Delayed',v:'1',c:'alert',up:false,ic:'ti-alert-triangle',bg:'#fee2e2',ic_c:'#b91c1c'},{l:'Orders Dispatched',v:'9',c:'today',up:true,ic:'ti-check',bg:'#dcfce7',ic_c:'#16a34a'}],
-      wh:    [{l:'Picking Queue',v:'7',c:'pending',up:false,ic:'ti-stack',bg:'#fef9c3',ic_c:'#ca8a04'},{l:'Packing Queue',v:'5',c:'ready',up:false,ic:'ti-archive',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Checking Queue',v:'3',c:'items',up:false,ic:'ti-list-check',bg:'#f5f3ff',ic_c:'#7c3aed'},{l:'Dispatched',v:'9',c:'today',up:true,ic:'ti-check',bg:'#dcfce7',ic_c:'#16a34a'},{l:'Rack Locations',v:'48',c:'active',up:true,ic:'ti-server',bg:'#f0fdf4',ic_c:'#16a34a'}],
-      hr:    [{l:'Employees',v:'47',c:'total',up:true,ic:'ti-users',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Present Today',v:'39',c:'of 47',up:true,ic:'ti-check',bg:'#dcfce7',ic_c:'#16a34a'},{l:'Absent',v:'5',c:'today',up:false,ic:'ti-x',bg:'#fee2e2',ic_c:'#b91c1c'},{l:'On Leave',v:'3',c:'approved',up:true,ic:'ti-beach',bg:'#fef9c3',ic_c:'#ca8a04'},{l:'Leave Pending',v:'3',c:'approve',up:false,ic:'ti-clock',bg:'#fff7ed',ic_c:'#ea580c'}],
+      ops:   [{l:'Orders Today',v:'14',c:'+12%',up:true,ic:'ti-shopping-bag',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Picking Pending',v:'7',c:'items',up:false,ic:'ti-stack',bg:'#fef9c3',ic_c:'#ca8a04'},{l:'Vehicles on Trip',v:'4',c:'of 8',up:true,ic:'ti-truck',bg:'#f5f3ff',ic_c:'#7c3aed'},{l:'Delayed',v:'1',c:'alert',up:false,ic:'ti-alert-triangle',bg:'#fee2e2',ic_c:'#b91c1c'}],
+      mkt:   [{l:'Revenue',v:'₹24,850',c:'+8%',up:true,ic:'ti-currency-rupee',bg:'#dcfce7',ic_c:'#348212'},{l:'Customers',v:'9',c:'today',up:true,ic:'ti-users',bg:'#fce7f3',ic_c:'#be185d'},{l:'Campaigns Active',v:'5',c:'running',up:true,ic:'ti-speakerphone',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Conversion Rate',v:'3.2%',c:'+0.4%',up:true,ic:'ti-trending-up',bg:'#f0fdf4',ic_c:'#348212'}],
+      cat:   [{l:'Products',v:'54,334',c:'total',up:true,ic:'ti-package',bg:'#fff7ed',ic_c:'#b45309'},{l:'Missing Images',v:'22,441',c:'fix needed',up:false,ic:'ti-photo-off',bg:'#fee2e2',ic_c:'#b91c1c'},{l:'Missing Desc.',v:'19,491',c:'affects SEO',up:false,ic:'ti-file-off',bg:'#fef9c3',ic_c:'#ca8a04'},{l:'Categories',v:'300',c:'live',up:true,ic:'ti-category',bg:'#fce7f3',ic_c:'#be185d'}],
+      cs:    [{l:'Customers',v:'9',c:'today',up:true,ic:'ti-users',bg:'#fce7f3',ic_c:'#be185d'},{l:'Abandoned Carts',v:'3',c:'₹4.2k',up:false,ic:'ti-shopping-cart-off',bg:'#fff7ed',ic_c:'#ea580c'},{l:'Orders Today',v:'14',c:'+12%',up:true,ic:'ti-shopping-bag',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Revenue',v:'₹24,850',c:'+8%',up:true,ic:'ti-currency-rupee',bg:'#dcfce7',ic_c:'#348212'}],
+      log:   [{l:'Vehicles Active',v:'4',c:'of 8',up:true,ic:'ti-car',bg:'#f5f3ff',ic_c:'#7c3aed'},{l:'Trips Today',v:'6',c:'planned',up:true,ic:'ti-route',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Runners on Duty',v:'12',c:'active',up:true,ic:'ti-run',bg:'#f0fdf4',ic_c:'#348212'},{l:'Delayed',v:'1',c:'alert',up:false,ic:'ti-alert-triangle',bg:'#fee2e2',ic_c:'#b91c1c'}],
+      wh:    [{l:'Picking Queue',v:'7',c:'pending',up:false,ic:'ti-stack',bg:'#fef9c3',ic_c:'#ca8a04'},{l:'Packing Queue',v:'5',c:'ready',up:false,ic:'ti-archive',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Dispatched',v:'9',c:'today',up:true,ic:'ti-check',bg:'#dcfce7',ic_c:'#348212'},{l:'Rack Locations',v:'48',c:'active',up:true,ic:'ti-server',bg:'#f0fdf4',ic_c:'#348212'}],
+      hr:    [{l:'Employees',v:'47',c:'total',up:true,ic:'ti-users',bg:'#dbeafe',ic_c:'#1d4ed8'},{l:'Present Today',v:'39',c:'of 47',up:true,ic:'ti-check',bg:'#dcfce7',ic_c:'#348212'},{l:'Absent',v:'5',c:'today',up:false,ic:'ti-x',bg:'#fee2e2',ic_c:'#b91c1c'},{l:'Leave Pending',v:'3',c:'approve',up:false,ic:'ti-clock',bg:'#fff7ed',ic_c:'#ea580c'}],
     };
     stats=statOverrides[firstG]||stats;
   }
 
-  // Use unified stats for admin/store, role overrides for others
   const UNIFIED_STATS=[
-    {l:'Orders Today',v:'142',c:'+18%',up:true,ic:'ti-shopping-bag',bg:'#dbeafe',ic_c:'#1d4ed8'},
-    {l:'Revenue',v:'₹68,420',c:'+11%',up:true,ic:'ti-currency-rupee',bg:'#dcfce7',ic_c:'#16a34a'},
-    {l:'Fill Rate',v:'94.2%',c:'+1.1%',up:true,ic:'ti-check-circle',bg:'#f0fdf4',ic_c:'#16a34a'},
-    {l:'Avg Delivery',v:'28 min',c:'-3 min',up:true,ic:'ti-clock',bg:'#f5f3ff',ic_c:'#7c3aed'},
-    {l:'Slot Utilisation',v:'76%',c:'today',up:true,ic:'ti-calendar-time',bg:'#fff7ed',ic_c:'#ea580c'},
+    {l:'Orders Today',   v:'142',    c:'+18%',  up:true, ic:'ti-shopping-bag',     bg:'#dbeafe',ic_c:'#1d4ed8'},
+    {l:'Revenue',        v:'₹68,420',c:'+11%',  up:true, ic:'ti-currency-rupee',   bg:'#e3f3da',ic_c:'#348212'},
+    {l:'Fill Rate',      v:'94.2%',  c:'+1.1%', up:true, ic:'ti-check-circle',     bg:'#eef8e9',ic_c:'#348212'},
+    {l:'Avg Delivery',   v:'28 min', c:'-3 min',up:true, ic:'ti-clock',            bg:'#f5f3ff',ic_c:'#7c3aed'},
   ];
   if(isOwner) stats=UNIFIED_STATS;
 
   const d1=genData(30,142,40);
   const d2=genData(30,114,32);
 
-  let html=`<div class="ov-greeting">
-    <h1>${greeting}, ${rm.n}</h1>
-    <p>${rm.store||'Zopping'} &nbsp;·&nbsp; ${new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</p>
+  const DONUT_DATA=[{c:'#1d4ed8',v:89,l:'Delivered'},{c:'#348212',v:32,l:'Dispatched'},{c:'#f97316',v:14,l:'Processing'},{c:'#ef4444',v:7,l:'Cancelled'}];
+  const HEALTH_DATA=[
+    {dot:'#ef4444',t:'Low stock',   s:'Below reorder threshold',n:2, c:'#ef4444'},
+    {dot:'#f97316',t:'Slot near full',s:'Over 85% capacity',   n:3, c:'#f97316'},
+    {dot:'#eab308',t:'Expiring soon',s:'Within 7 days',        n:5, c:'#eab308'},
+  ];
+
+  let html=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="font-size:21px;font-weight:800;color:#1a2b1a;font-family:'Plus Jakarta Sans',Inter,sans-serif">${greeting}, ${rm.n} 👋</div>
+      <div style="font-size:12.5px;color:#80959d;margin-top:3px">${rm.store||'Zopping'} &nbsp;·&nbsp; ${new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</div>
+    </div>
+    ${isOwner?`<button onclick="gotoPage('analytics')" style="display:flex;align-items:center;gap:6px;padding:8px 16px;border:1.5px solid #dadee0;border-radius:9px;background:#fff;color:#2b3238;font-size:12.5px;font-weight:600;cursor:pointer"><i class="ti ti-chart-bar" style="font-size:14px;color:#348212"></i>View Full Analytics</button>`:''}
   </div>`;
 
-  // ── AI ASK BAR ──
-  html+=`<div class="ai-bar">
-    <div class="ai-bar-top">
-      <div class="ai-icon-wrap"><i class="ti ti-sparkles"></i></div>
-      <div>
-        <div class="ai-bar-label">Ask Zopping AI</div>
-        <div class="ai-bar-sub">Get instant insights about your store performance</div>
-      </div>
-    </div>
-    <div class="ai-input-row">
-      <input class="ai-input" id="aiInput" placeholder="Ask anything… e.g. Why did orders drop yesterday?" onkeydown="if(event.key==='Enter') askAI()" onclick="openAIChat()">
-      <button class="ai-ask-btn" onclick="askAI()"><i class="ti ti-send"></i>Ask</button>
-    </div>
-    <div class="ai-chips">
-      <div class="ai-chip" onclick="askChip('Why did orders drop yesterday?')"><i class="ti ti-trending-down"></i>Why did orders drop?</div>
-      <div class="ai-chip" onclick="askChip('Which store has lowest fill rate this week?')"><i class="ti ti-building-store"></i>Lowest fill rate store</div>
-      <div class="ai-chip" onclick="askChip('What are my top 5 selling products?')"><i class="ti ti-trophy"></i>Top selling products</div>
-      <div class="ai-chip" onclick="askChip('Show slot utilisation for today')"><i class="ti ti-calendar-time"></i>Slot utilisation today</div>
-      <div class="ai-chip" onclick="askChip('How many abandoned carts can be recovered?')"><i class="ti ti-shopping-cart-off"></i>Recoverable carts</div>
-    </div>
-    <div class="ai-response" id="aiResponse">
-      <div class="ai-resp-head"><i class="ti ti-sparkles"></i> Zopping AI</div>
-      <div id="aiResponseText"></div>
-    </div>
-  </div>`;
-
-  // Stat cards
-  html+=`<div class="stat-row">${stats.map(s=>`
-    <div class="stat-card">
-      <div class="sc-top">
-        <div class="sc-icon" style="background:${s.bg}"><i class="ti ${s.ic}" style="color:${s.ic_c}"></i></div>
+  // ── 4 KPI stat cards ──
+  const shown=stats.slice(0,4);
+  html+=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px">
+    ${shown.map(s=>`<div class="stat-card" style="padding:16px 18px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="width:36px;height:36px;border-radius:9px;background:${s.bg};display:flex;align-items:center;justify-content:center"><i class="ti ${s.ic}" style="font-size:17px;color:${s.ic_c}"></i></div>
         <span class="sc-chg ${s.up?'up':'dn'}">${s.c}</span>
       </div>
-      <div class="sc-val">${s.v}</div>
-      <div class="sc-lbl">${s.l}</div>
-    </div>`).join('')}</div>`;
+      <div style="font-size:24px;font-weight:800;color:#1a2b1a;line-height:1">${s.v}</div>
+      <div style="font-size:11px;color:#80959d;margin-top:4px;font-weight:500">${s.l}</div>
+    </div>`).join('')}
+  </div>`;
 
-  const DONUT_DATA=[{c:'#3b82f6',v:89,l:'Delivered'},{c:'#16a34a',v:32,l:'Dispatched'},{c:'#f97316',v:14,l:'Processing'},{c:'#ef4444',v:7,l:'Cancelled'}];
-  const HEALTH_DATA=[{dot:'#ef4444',t:'Low stock',s:'Below reorder threshold',n:2,c:'#ef4444'},{dot:'#f97316',t:'Slot near full',s:'Over 85% capacity',n:3,c:'#f97316'},{dot:'#eab308',t:'Expiring soon',s:'Within 7 days',n:5,c:'#eab308'}];
-
-  // Charts
-  html+=`<div class="charts-row">
-    <div class="card">
-      <div class="card-hd">
-        <div><div class="card-title">Orders & revenue trend</div><div class="card-sub">Last 30 days · ${storeVal}</div></div>
-        <a class="card-link" onclick="gotoPage('analytics')">View analytics <i class="ti ti-arrow-right" style="font-size:12px"></i></a>
-      </div>
-      <div id="lineChartEl"></div>
-      <div class="chart-legend">
-        <div class="leg-item"><span class="leg-dot" style="background:#16a34a"></span>Orders placed</div>
-        <div class="leg-item"><span class="leg-dot" style="background:#f97316;opacity:.7"></span>Orders fulfilled</div>
-      </div>
+  // ── Full-width chart ──
+  html+=`<div class="card" style="margin-bottom:16px">
+    <div class="card-hd">
+      <div><div class="card-title">Orders & Revenue — Last 30 days</div><div class="card-sub">${storeVal}</div></div>
+      <a class="card-link" onclick="gotoPage('analytics')">Full analytics <i class="ti ti-arrow-right" style="font-size:12px"></i></a>
     </div>
-    <div class="card">
-      <div class="card-hd">
-        <div><div class="card-title">Order mix</div><div class="card-sub">Last 30 days</div></div>
-      </div>
-      <div id="donutEl"></div>
-      <div style="margin-top:10px">
-        ${DONUT_DATA.map(s=>`<div class="dl-row">
-          <div class="dl-dot" style="background:${s.c}"></div>
-          <span class="dl-name">${s.l}</span>
-          <span class="dl-val">${s.v}</span>
-        </div>`).join('')}
-      </div>
+    <div id="lineChartEl"></div>
+    <div class="chart-legend" style="margin-top:8px">
+      <div class="leg-item"><span class="leg-dot" style="background:#348212"></span>Orders placed</div>
+      <div class="leg-item"><span class="leg-dot" style="background:#f97316;opacity:.7"></span>Orders fulfilled</div>
     </div>
   </div>`;
 
-  // Bottom
+  // ── Bottom: health + activity ──
   const healthItems=isOwner?HEALTH_DATA:[
-    {dot:'#f97316',t:'Action needed',s:'Check your queues',n:5,c:'#f97316'},
-    {dot:'#eab308',t:'Pending items',s:'Require your attention',n:3,c:'#eab308'},
+    {dot:'#f97316',t:'Action needed', s:'Check your queues', n:5, c:'#f97316'},
+    {dot:'#eab308',t:'Pending items', s:'Require your attention',n:3,c:'#eab308'},
   ];
   html+=`<div class="bottom-row">
     <div class="card">
@@ -1837,7 +1803,7 @@ function renderOverview(scroll){
         ${healthItems.map(h=>`<div class="health-item">
           <span class="hi-dot" style="background:${h.dot}"></span>
           <div class="hi-body"><div class="hi-title">${h.t}</div><div class="hi-sub">${h.s}</div></div>
-          <span class="hi-count" style="color:${h.c}">${h.n>999?(h.n/1000).toFixed(0)+'k':h.n}</span>
+          <span class="hi-count" style="color:${h.c}">${h.n}</span>
           <i class="ti ti-chevron-right ha"></i>
         </div>`).join('')}
       </div>
@@ -1858,7 +1824,7 @@ function renderOverview(scroll){
 
   requestAnimationFrame(()=>{
     const lc=document.getElementById('lineChartEl');
-    if(lc) renderLineChart(lc,d1,d2,'#16a34a','#f97316');
+    if(lc) renderLineChart(lc,d1,d2,'#348212','#f97316');
     const dc=document.getElementById('donutEl');
     if(dc) renderDonut(dc,DONUT_DATA,120);
   });
@@ -6187,7 +6153,7 @@ function renderOB(){
     bFont:"Inter,system-ui,sans-serif",
   };
 
-  const STEPS=['Sign In','Store Setup','Industry','Preview','Get Started'];
+  const STEPS=['Sign In','Store Setup','Industry','Get Started'];
 
   const hdr=obStep>1?`<div style="position:sticky;top:0;background:#fff;border-bottom:1px solid ${Z.border};padding:0 32px;height:60px;display:flex;align-items:center;z-index:10;font-family:${Z.bFont}">
     <div style="display:flex;align-items:center;gap:10px;min-width:180px">
@@ -6302,68 +6268,8 @@ function renderOB(){
     </div>`;
   }
 
-  // ── STEP 4: THEME PREVIEW ──
+  // ── STEP 4: PENDING ACTIONS ──
   else if(obStep===4){
-    const IC={
-      grocery:    {name:'Grocery',      color:'#11823b',navBg:'#11823b',hdr:'#0a4d22',bg:'#eef8e9',accent:'#e3f3da',icon:'ti-apple',       cats:['Fruits & Veg','Dairy','Bakery','Beverages','Snacks','Household'],feat:[['Mango 500g','₹49'],['Farm Milk 1L','₹58'],['Whole Wheat Bread','₹35']]},
-      fashion:    {name:'Fashion',       color:'#7c3aed',navBg:'#0f172a',hdr:'#1e1b4b',bg:'#f5f3ff',accent:'#ede9fe',icon:'ti-hanger',      cats:['Men','Women','Kids','Ethnic','Footwear','Accessories'],feat:[['Floral Kurti','₹799'],['Slim Fit Jeans','₹1,299'],['Canvas Sneakers','₹1,899']]},
-      electronics:{name:'Electronics',  color:'#1d4ed8',navBg:'#1e3a5f',hdr:'#172554',bg:'#eff6ff',accent:'#dbeafe',icon:'ti-device-laptop',cats:['Mobiles','Laptops','TVs','Audio','Cameras','Accessories'],feat:[['iPhone 15','₹79,999'],['Galaxy S24','₹69,999'],['Sony WH-1000XM5','₹28,990']]},
-      restaurant: {name:'Restaurant',   color:'#ea580c',navBg:'#ea580c',hdr:'#7c2d12',bg:'#fff7ed',accent:'#ffedd5',icon:'ti-pizza',         cats:['Starters','Mains','Biryani','Breads','Desserts','Drinks'],feat:[['Chicken Biryani','₹249'],['Paneer Butter Masala','₹199'],['Garlic Naan x2','₹79']]},
-    };
-    const ind=IC[obIndustry]||IC.grocery;
-    const s=window._obSlide||0;
-
-    const webSlide=`<div style="background:#1e293b;border-radius:14px;padding:14px;box-shadow:0 8px 32px rgba(0,0,0,.3);width:100%;max-width:620px;margin:0 auto">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><div style="display:flex;gap:5px"><div style="width:11px;height:11px;border-radius:50%;background:#ef4444"></div><div style="width:11px;height:11px;border-radius:50%;background:#f59e0b"></div><div style="width:11px;height:11px;border-radius:50%;background:#22c55e"></div></div><div style="flex:1;background:#0f172a;border-radius:6px;padding:5px 14px;font-size:11px;color:#64748b;text-align:center">zopping.com/${obStoreUrl||'your-store'}</div></div>
-      <div style="border-radius:10px;overflow:hidden;background:#fff">
-        <div style="background:${ind.navBg};padding:11px 16px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:14px;font-weight:800;color:#fff">${obStoreName||ind.name+' Store'}</span><div style="display:flex;gap:12px">${ind.cats.slice(0,4).map(c=>`<span style="font-size:10.5px;color:rgba(255,255,255,.8)">${c}</span>`).join('')}</div><div style="display:flex;gap:8px;align-items:center"><i class="ti ti-search" style="font-size:14px;color:rgba(255,255,255,.7)"></i><div style="position:relative"><i class="ti ti-shopping-cart" style="font-size:14px;color:rgba(255,255,255,.7)"></i><span style="position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;background:#ef4444;font-size:8px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">3</span></div></div></div>
-        <div style="background:linear-gradient(135deg,${ind.color},${ind.hdr});padding:24px 20px;display:flex;align-items:center;gap:20px"><div><div style="font-size:20px;font-weight:800;color:#fff;margin-bottom:6px">Fresh ${ind.name}<br>Delivered Daily</div><div style="font-size:11.5px;color:rgba(255,255,255,.8);margin-bottom:14px">Fast delivery · Best prices · Quality guaranteed</div><button style="padding:8px 20px;background:#fff;color:${ind.color};border:none;border-radius:7px;font-size:12.5px;font-weight:700;cursor:pointer">Shop Now →</button></div><div style="margin-left:auto;text-align:right"><div style="background:rgba(255,255,255,.15);border-radius:12px;padding:10px 14px;display:inline-block"><div style="font-size:10px;color:rgba(255,255,255,.7);margin-bottom:2px">Delivering to</div><div style="font-size:12px;font-weight:700;color:#fff">🇮🇳 Mumbai, IN</div></div></div></div>
-        <div style="padding:12px 16px;background:${Z.bg};border-bottom:1px solid ${Z.border}"><div style="font-size:10.5px;font-weight:700;color:${Z.text};margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Shop by Category</div><div style="display:flex;gap:7px;flex-wrap:wrap">${ind.cats.map(c=>`<span style="padding:5px 12px;background:#fff;border:1px solid ${Z.border};border-radius:20px;font-size:10.5px;color:${Z.text}">${c}</span>`).join('')}</div></div>
-        <div style="padding:12px 16px"><div style="font-size:10.5px;font-weight:700;color:${Z.text};margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em">Featured Products</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">${ind.feat.map(([name,price])=>`<div style="border:1px solid ${Z.border};border-radius:10px;overflow:hidden;background:#fff"><div style="height:64px;background:${ind.accent};display:flex;align-items:center;justify-content:center"><i class="ti ${ind.icon}" style="font-size:28px;color:${ind.color}"></i></div><div style="padding:8px 10px"><div style="font-size:10.5px;font-weight:600;color:${Z.text};margin-bottom:3px">${name}</div><div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:11px;font-weight:700;color:${ind.color}">${price}</span><button style="padding:3px 8px;background:${ind.color};color:#fff;border:none;border-radius:5px;font-size:9.5px;font-weight:600;cursor:pointer">+ Add</button></div></div></div>`).join('')}</div></div>
-      </div>
-    </div>`;
-
-    const makePhone=(content)=>`<div style="display:flex;justify-content:center">
-      <div style="background:linear-gradient(160deg,#1e293b,#0f172a);border-radius:40px;padding:18px 16px 24px;box-shadow:0 12px 40px rgba(0,0,0,.35);width:230px;flex-shrink:0">
-        <div style="width:60px;height:7px;background:#334155;border-radius:4px;margin:0 auto 12px"></div>
-        <div style="background:#fff;border-radius:28px;overflow:hidden">${content}</div>
-        <div style="width:80px;height:5px;background:#334155;border-radius:3px;margin:12px auto 0"></div>
-      </div>
-    </div>`;
-
-    const appNavBar=`<div style="background:${ind.navBg};padding:11px 14px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px;font-weight:800;color:#fff">${obStoreName||ind.name}</span><div style="display:flex;gap:8px"><i class="ti ti-search" style="font-size:14px;color:rgba(255,255,255,.85)"></i><i class="ti ti-shopping-cart" style="font-size:14px;color:rgba(255,255,255,.85)"></i></div></div>`;
-    const appHomeContent=`${appNavBar}<div style="background:linear-gradient(135deg,${ind.color},${ind.hdr});padding:16px 14px"><div style="font-size:13.5px;font-weight:800;color:#fff;margin-bottom:4px">${ind.name} Delivered Fresh</div><div style="font-size:10px;color:rgba(255,255,255,.8);margin-bottom:10px">⚡ 2-hour express delivery</div><button style="padding:6px 14px;background:#fff;color:${ind.color};border:none;border-radius:6px;font-size:10px;font-weight:700">Order Now →</button></div><div style="padding:10px 12px"><div style="font-size:10px;font-weight:700;color:${Z.text};margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Categories</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px">${ind.cats.slice(0,4).map(c=>`<div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:40px;height:40px;border-radius:12px;background:${ind.accent};display:flex;align-items:center;justify-content:center"><i class="ti ${ind.icon}" style="font-size:20px;color:${ind.color}"></i></div><span style="font-size:8.5px;color:${Z.text};text-align:center;line-height:1.2">${c}</span></div>`).join('')}</div><div style="font-size:10px;font-weight:700;color:${Z.text};margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Popular</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">${ind.feat.slice(0,2).map(([name,price])=>`<div style="border:1px solid ${Z.border};border-radius:10px;overflow:hidden;background:#fff"><div style="height:48px;background:${ind.accent};display:flex;align-items:center;justify-content:center"><i class="ti ${ind.icon}" style="font-size:24px;color:${ind.color}"></i></div><div style="padding:6px 8px"><div style="font-size:9px;font-weight:600;color:${Z.text};margin-bottom:2px">${name}</div><div style="font-size:9.5px;font-weight:700;color:${ind.color}">${price}</div></div></div>`).join('')}</div></div>`;
-    const appProductContent=`${appNavBar}<div style="background:${ind.accent};height:100px;display:flex;align-items:center;justify-content:center"><i class="ti ${ind.icon}" style="font-size:52px;color:${ind.color}"></i></div><div style="padding:12px 14px"><div style="font-size:15px;font-weight:800;color:${Z.text};margin-bottom:4px">${ind.feat[0][0]}</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:17px;font-weight:800;color:${ind.color}">${ind.feat[0][1]}</span></div><div style="font-size:10.5px;color:${Z.subtle};line-height:1.6;margin-bottom:12px">Premium quality. Sourced fresh daily. No preservatives. Certified product.</div><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><button style="width:32px;height:32px;border:1.5px solid ${Z.border};border-radius:8px;background:#fff;cursor:pointer;font-size:16px;font-weight:700;color:${Z.text};display:flex;align-items:center;justify-content:center">−</button><span style="font-size:14px;font-weight:700;color:${Z.text};padding:0 10px">1</span><button style="width:32px;height:32px;border:1.5px solid ${ind.color};border-radius:8px;background:${ind.bg};cursor:pointer;font-size:16px;font-weight:700;color:${ind.color};display:flex;align-items:center;justify-content:center">+</button></div><button style="width:100%;padding:11px;background:${ind.color};color:#fff;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer">Add to Cart • ${ind.feat[0][1]}</button></div>`;
-
-    const slides=[
-      {title:'Web Storefront', sub:'Your homepage on desktop',  html:webSlide},
-      {title:'App — Home',      sub:'Customer mobile app',       html:makePhone(appHomeContent)},
-      {title:'App — Product',   sub:'Product detail page',       html:makePhone(appProductContent)},
-    ];
-
-    body=`<div style="min-height:calc(100vh - 60px);background:${Z.surface};padding:44px 24px;font-family:${Z.bFont}">
-      <div style="max-width:800px;margin:0 auto">
-        <div style="text-align:center;margin-bottom:28px">
-          <span style="font-size:12px;font-weight:700;background:${ind.bg};color:${ind.color};padding:5px 14px;border-radius:20px;border:1.5px solid ${ind.accent};display:inline-flex;align-items:center;gap:5px;margin-bottom:14px"><i class="ti ${ind.icon}" style="font-size:12px"></i>${ind.name}</span>
-          <div style="font-size:28px;font-weight:800;color:${Z.dark};margin-bottom:6px;font-family:${Z.hFont}">Here's your ${ind.name} store</div>
-          <div style="font-size:13.5px;color:${Z.muted}">Automatically themed and configured for ${ind.name.toLowerCase()} retail.</div>
-        </div>
-        <div style="display:flex;justify-content:center;gap:8px;margin-bottom:24px">
-          ${slides.map((sl,i)=>`<button onclick="window._obSlide=${i};renderOB()" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 20px;border-radius:10px;border:1.5px solid ${s===i?ind.color:Z.border};background:${s===i?ind.bg:'#fff'};cursor:pointer;font-family:${Z.bFont}"><span style="font-size:13px;font-weight:${s===i?'700':'500'};color:${s===i?ind.color:Z.text}">${sl.title}</span><span style="font-size:11px;color:${Z.muted}">${sl.sub}</span></button>`).join('')}
-        </div>
-        <div style="background:#fff;border-radius:16px;padding:32px 24px;box-shadow:0 2px 16px rgba(0,0,0,.05);margin-bottom:24px;min-height:360px;display:flex;align-items:center;justify-content:center">
-          ${slides[s].html}
-        </div>
-        <div style="display:flex;gap:12px;justify-content:center">
-          <button onclick="window._obSlide=${Math.max(0,s-1)};if(${s}===0)obGo(3);else renderOB()" style="padding:12px 24px;background:#fff;color:${Z.subtle};border:1.5px solid ${Z.border};border-radius:9px;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;font-family:${Z.bFont}"><i class="ti ti-arrow-left" style="font-size:14px"></i>${s===0?'Change Industry':'Previous'}</button>
-          <button onclick="${s<2?'window._obSlide='+(s+1)+';renderOB()':'obGo(5)'}" style="padding:12px 28px;background:${Z.primary};color:#fff;border:none;border-radius:9px;font-size:15px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:${Z.hFont}">${s<2?'Next preview':'Looks great! Set up my store'} <i class="ti ti-arrow-right" style="font-size:15px"></i></button>
-        </div>
-      </div>
-    </div>`;
-  }
-
-  // ── STEP 5: PENDING ACTIONS ──
-  else if(obStep===5){
     const TASKS=[
       {ic:'ti-photo-up',    color:'#7c3aed',bg:'#f5f3ff',title:'Upload logo & banner',        sub:'Brand your store',               page:'web-config', done:false},
       {ic:'ti-box-seam',    color:Z.primary, bg:Z.green50, title:'Add your first product',     sub:'Start building your catalogue',  page:'products',   done:false},
