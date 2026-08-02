@@ -1765,6 +1765,32 @@ function renderOverview(scroll){
     ${isOwner?`<button onclick="gotoPage('analytics')" style="display:flex;align-items:center;gap:6px;padding:8px 16px;border:1.5px solid #dadee0;border-radius:9px;background:#fff;color:#2b3238;font-size:12.5px;font-weight:600;cursor:pointer"><i class="ti ti-chart-bar" style="font-size:14px;color:#348212"></i>View Full Analytics</button>`:''}
   </div>`;
 
+  // ── AI bar ──
+  html+=`<div class="ai-bar" style="margin-bottom:18px">
+    <div class="ai-bar-top">
+      <div class="ai-icon-wrap"><i class="ti ti-sparkles"></i></div>
+      <div>
+        <div class="ai-bar-label">Ask Zopping AI</div>
+        <div class="ai-bar-sub">Get instant insights about your store performance</div>
+      </div>
+    </div>
+    <div class="ai-input-row">
+      <input class="ai-input" id="aiInput" placeholder="Ask anything… e.g. Why did orders drop yesterday?" onkeydown="if(event.key==='Enter') askAI()" onclick="openAIChat()">
+      <button class="ai-ask-btn" onclick="askAI()"><i class="ti ti-send"></i>Ask</button>
+    </div>
+    <div class="ai-chips">
+      <div class="ai-chip" onclick="askChip('Why did orders drop yesterday?')"><i class="ti ti-trending-down"></i>Why did orders drop?</div>
+      <div class="ai-chip" onclick="askChip('Which store has lowest fill rate this week?')"><i class="ti ti-building-store"></i>Lowest fill rate store</div>
+      <div class="ai-chip" onclick="askChip('What are my top 5 selling products?')"><i class="ti ti-trophy"></i>Top selling products</div>
+      <div class="ai-chip" onclick="askChip('Show slot utilisation for today')"><i class="ti ti-calendar-time"></i>Slot utilisation today</div>
+      <div class="ai-chip" onclick="askChip('How many abandoned carts can be recovered?')"><i class="ti ti-shopping-cart-off"></i>Recoverable carts</div>
+    </div>
+    <div class="ai-response" id="aiResponse">
+      <div class="ai-resp-head"><i class="ti ti-sparkles"></i> Zopping AI</div>
+      <div id="aiResponseText"></div>
+    </div>
+  </div>`;
+
   // ── 4 KPI stat cards ──
   const shown=stats.slice(0,4);
   html+=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px">
