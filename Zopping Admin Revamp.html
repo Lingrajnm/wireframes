@@ -21,7 +21,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .ctrl-sep{width:1px;height:20px;background:rgba(255,255,255,.1);margin:0 4px}
 .toggle-wrap{display:flex;align-items:center;gap:6px;cursor:pointer}
 .toggle{width:34px;height:18px;background:rgba(255,255,255,.15);border-radius:9px;position:relative;transition:background .2s;flex-shrink:0}
-.toggle.on{background:#16a34a}
+.toggle.on{background:#348212}
 .toggle::after{content:'';position:absolute;width:14px;height:14px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .2s}
 .toggle.on::after{left:18px}
 .toggle-lbl{font-size:10px;color:rgba(255,255,255,.5);font-weight:600}
@@ -39,19 +39,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 /* Store/Lang selectors */
 .sb-selectors{flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.06)}
 .sel-row{display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;transition:background .1s;position:relative}
-.sel-row.store-sel{background:rgba(22,163,74,.12)}
-.sel-row.store-sel:hover{background:rgba(22,163,74,.18)}
+.sel-row.store-sel{background:rgba(52,130,18,.12)}
+.sel-row.store-sel:hover{background:rgba(52,130,18,.18)}
 .sel-row.lang-sel{background:rgba(255,255,255,.03)}
 .sel-row.lang-sel:hover{background:rgba(255,255,255,.06)}
 .sel-row.lang-sel{border-top:1px solid rgba(255,255,255,.04)}
 .sel-ic{font-size:13px;flex-shrink:0}
-.store-sel .sel-ic{color:#4ade80}
+.store-sel .sel-ic{color:#86c96a}
 .lang-sel .sel-ic{color:rgba(255,255,255,.4)}
 .sel-text{font-size:11.5px;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.store-sel .sel-text{color:#4ade80}
+.store-sel .sel-text{color:#86c96a}
 .lang-sel .sel-text{color:rgba(255,255,255,.45)}
 .sel-caret{font-size:10px;flex-shrink:0}
-.store-sel .sel-caret{color:rgba(74,222,128,.5)}
+.store-sel .sel-caret{color:rgba(134,201,106,.5)}
 .lang-sel .sel-caret{color:rgba(255,255,255,.2)}
 .dd-panel{position:absolute;top:100%;left:0;right:0;background:#252c3d;border:1px solid rgba(255,255,255,.1);border-radius:0 0 8px 8px;z-index:500;box-shadow:0 8px 24px rgba(0,0,0,.4);max-height:200px;overflow-y:auto}
 .dd-item{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:11.5px;color:rgba(255,255,255,.55);cursor:pointer;border-bottom:1px solid rgba(255,255,255,.04)}
@@ -68,7 +68,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .nav-sec{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.22);padding:10px 14px 3px}
 .nav-item{display:flex;align-items:center;gap:9px;padding:6px 14px;cursor:pointer;color:rgba(255,255,255,.48);font-size:12.5px;border-left:2px solid transparent;transition:all .1s;margin:0}
 .nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.82)}
-.nav-item.active{background:rgba(22,163,74,.11);color:#4ade80;border-left-color:#16a34a;font-weight:600}
+.nav-item.active{background:rgba(52,130,18,.11);color:#86c96a;border-left-color:#348212;font-weight:600}
 .nav-item i{font-size:15px;flex-shrink:0}
 .nav-item .nbadge{font-size:9px;margin-left:auto;background:#ef4444;color:#fff;padding:1px 5px;border-radius:10px;font-weight:700}
 .nav-item .nview{font-size:9px;margin-left:auto;color:rgba(255,255,255,.2);font-style:italic}
@@ -105,8 +105,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 #hdrSearchBar{background:#fff;border-bottom:1px solid #ede8e0;flex-shrink:0;transition:all .15s}
 .cta-btn{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:8px;border:1.5px solid #e2d9ce;background:#fff;color:#374151;cursor:pointer;transition:all .1s;white-space:nowrap}
 .cta-btn:hover{border-color:#16a34a;color:#16a34a;background:#f0fdf4}
-.cta-btn.primary{background:#16a34a;color:#fff;border-color:#16a34a;box-shadow:0 1px 4px rgba(22,163,74,.3)}
-.cta-btn.primary:hover{background:#15803d}
+.cta-btn.primary{background:#348212;color:#fff;border-color:#348212;box-shadow:0 1px 4px rgba(52,130,18,.3)}
+.cta-btn.primary:hover{background:#2a6b0f}
 .cta-btn i{font-size:14px}
 .tb-icon-btn{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#6b7280;transition:all .1s;position:relative;background:transparent;border:none}
 .tb-icon-btn:hover{background:#f3f4f6;color:#374151}
@@ -153,7 +153,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .industry-tabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
 .ind-tab{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;border:1.5px solid #e2d9ce;background:#fff;color:#6b7280;font-size:11.5px;font-weight:500;cursor:pointer;transition:all .1s}
 .ind-tab:hover{border-color:#16a34a;color:#16a34a}
-.ind-tab.active{background:#16a34a;color:#fff;border-color:#16a34a}
+.ind-tab.active{background:#348212;color:#fff;border-color:#348212}
 .ind-tab i{font-size:14px}
 .stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
 .stat-card{background:#fff;border-radius:10px;padding:14px;border:1px solid #ede8e0;box-shadow:0 1px 3px rgba(0,0,0,.04);cursor:pointer;transition:box-shadow .12s}
@@ -213,9 +213,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .myacc-email{font-size:10.5px;color:#9ca3af;margin-top:2px;word-break:break-all}
 .myacc-nav-item{display:flex;align-items:center;gap:8px;padding:7px 16px;cursor:pointer;color:#475569;font-size:12.5px;border-left:2px solid transparent;transition:all .1s}
 .myacc-nav-item:hover{background:#f9fafb;color:#111827}
-.myacc-nav-item.active{color:#16a34a;border-left-color:#16a34a;background:#f0fdf4;font-weight:600}
+.myacc-nav-item.active{color:#348212;border-left-color:#348212;background:#f0fdf4;font-weight:600}
 .myacc-nav-item i{font-size:15px;color:#9ca3af}
-.myacc-nav-item.active i{color:#16a34a}
+.myacc-nav-item.active i{color:#348212}
 .myacc-nav-item.danger{color:#ef4444}
 .myacc-nav-item.danger i{color:#fca5a5}
 .myacc-content{background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
@@ -226,7 +226,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .form-input:focus{border-color:#16a34a}
 .form-input:disabled{background:#f9fafb;color:#9ca3af}
 .form-hint{font-size:10.5px;color:#9ca3af;margin-top:4px}
-.form-save{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:background .1s;font-family:inherit}
+.form-save{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;background:#348212;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:background .1s;font-family:inherit}
 .form-save:hover{background:#15803d}
 .billing-card{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:14px 16px;margin-bottom:12px}
 .bc-plan{font-size:15px;font-weight:700;color:#15803d}
@@ -254,7 +254,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .es-desc{font-size:13.5px;color:#6b7280;text-align:center;line-height:1.65;max-width:480px;margin-bottom:24px}
 .es-actions{display:flex;gap:10px;align-items:center;margin-bottom:36px;flex-wrap:wrap;justify-content:center}
 .es-cta{display:flex;align-items:center;gap:6px;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .15s;animation:es-pulse 2.5s ease-in-out infinite}
-.es-cta.primary{background:#16a34a;color:#fff;box-shadow:0 2px 8px rgba(22,163,74,.3)}
+.es-cta.primary{background:#348212;color:#fff;box-shadow:0 2px 8px rgba(52,130,18,.3)}
 .es-cta.primary:hover{background:#15803d;animation:none;box-shadow:0 4px 12px rgba(22,163,74,.4)}
 .es-cta.secondary{background:#fff;color:#374151;border:1.5px solid #e2d9ce;animation:none}
 .es-cta.secondary:hover{border-color:#16a34a;color:#16a34a}
@@ -331,7 +331,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .ai-chat-close{margin-left:auto;width:28px;height:28px;border-radius:7px;border:none;background:#f3f4f6;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#6b7280}
 .ai-chat-close:hover{background:#e5e7eb;color:#374151}
 .ai-chat-new{font-size:11px;padding:4px 10px;border-radius:8px;border:1.5px solid #d1fae5;background:#f0fdf4;color:#16a34a;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:4px;margin-right:6px}
-.ai-chat-new:hover{background:#16a34a;color:#fff;border-color:#16a34a}
+.ai-chat-new:hover{background:#348212;color:#fff;border-color:#348212}
 .ai-chat-msgs{flex:1;overflow-y:auto;padding:14px 14px 8px;display:flex;flex-direction:column;gap:12px;background:#fafaf9}
 .ai-chat-msgs::-webkit-scrollbar{width:3px}
 .ai-chat-msgs::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:2px}
@@ -342,7 +342,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .ai-msg-av.bot i{font-size:14px;color:#fff}
 .ai-msg-bubble{max-width:82%;padding:10px 13px;border-radius:12px;font-size:12.5px;line-height:1.6}
 .ai-msg.bot .ai-msg-bubble{background:#fff;border:1px solid #e5e7eb;color:#374151;border-radius:4px 12px 12px 12px}
-.ai-msg.user .ai-msg-bubble{background:#16a34a;color:#fff;border-radius:12px 4px 12px 12px}
+.ai-msg.user .ai-msg-bubble{background:#348212;color:#fff;border-radius:12px 4px 12px 12px}
 .ai-msg-time{font-size:9.5px;color:#9ca3af;margin-top:4px;text-align:right}
 .ai-typing{display:flex;gap:4px;align-items:center;padding:10px 13px;background:#fff;border:1px solid #e5e7eb;border-radius:4px 12px 12px 12px;width:fit-content}
 .ai-typing span{width:6px;height:6px;border-radius:50%;background:#9ca3af;animation:typing 1.2s infinite}
@@ -353,7 +353,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .ai-chat-input-row{display:flex;gap:8px;align-items:flex-end}
 .ai-chat-input{flex:1;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:13px;color:#374151;outline:none;font-family:inherit;resize:none;max-height:100px;line-height:1.5;transition:border-color .1s}
 .ai-chat-input:focus{border-color:#16a34a}
-.ai-chat-send{width:36px;height:36px;border-radius:9px;background:#16a34a;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:background .1s}
+.ai-chat-send{width:36px;height:36px;border-radius:9px;background:#348212;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:background .1s}
 .ai-chat-send:hover{background:#15803d}
 .ai-quick-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
 .ai-qchip{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid #d1fae5;background:#f0fdf4;color:#374151;cursor:pointer;transition:all .1s;white-space:nowrap}
@@ -371,7 +371,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .ai-input{flex:1;padding:9px 14px;border:1.5px solid #d1fae5;border-radius:9px;font-size:13px;color:#374151;outline:none;background:#fff;font-family:inherit;transition:border-color .1s}
 .ai-input:focus{border-color:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.08)}
 .ai-input::placeholder{color:#9ca3af}
-.ai-ask-btn{padding:9px 16px;background:#16a34a;color:#fff;border:none;border-radius:9px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;transition:background .1s;flex-shrink:0}
+.ai-ask-btn{padding:9px 16px;background:#348212;color:#fff;border:none;border-radius:9px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;transition:background .1s;flex-shrink:0}
 .ai-ask-btn:hover{background:#15803d}
 .ai-ask-btn i{font-size:14px}
 .ai-chips{display:flex;gap:6px;flex-wrap:wrap}
@@ -397,7 +397,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;f
 .an-table tr:last-child td{border:none}
 .an-table tr:hover td{background:#fafaf9}
 .an-add-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1.5px solid #16a34a;border-radius:8px;background:#f0fdf4;color:#16a34a;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .1s}
-.an-add-btn:hover{background:#16a34a;color:#fff}
+.an-add-btn:hover{background:#348212;color:#fff}
 
 /* ── GENERIC PLACEHOLDER ── */
 .page-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:calc(100% - 40px);text-align:center;color:#9ca3af}
@@ -418,7 +418,7 @@ body.mobile .mob-bot-nav{bottom:22px}
 body.mobile .main-scroll{padding-bottom:84px}
 
 /* FAB */
-#mobFab{display:none;position:fixed;bottom:90px;right:18px;z-index:190;width:52px;height:52px;border-radius:50%;background:#16a34a;color:#fff;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(22,163,74,.4);align-items:center;justify-content:center;font-size:22px;transition:transform .15s,box-shadow .15s}
+#mobFab{display:none;position:fixed;bottom:90px;right:18px;z-index:190;width:52px;height:52px;border-radius:50%;background:#348212;color:#fff;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(22,163,74,.4);align-items:center;justify-content:center;font-size:22px;transition:transform .15s,box-shadow .15s}
 #mobFab:active{transform:scale(.93);box-shadow:0 2px 8px rgba(22,163,74,.35)}
 body.mobile #mobFab{display:flex}
 
@@ -1596,9 +1596,9 @@ function renderOverview(scroll){
         <div style="display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:10px;padding:10px 14px">
           <div style="display:flex;align-items:center;gap:8px">
             <i class="ti ti-rocket" style="font-size:18px;color:#16a34a"></i>
-            <span style="font-size:13px;font-weight:700;color:#15803d">~30 min to go live</span>
+            <span style="font-size:13px;font-weight:700;color:#2a6b0f">~30 min to go live</span>
           </div>
-          <button onclick="toggleData()" style="padding:8px 16px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(22,163,74,.3)">Preview Store →</button>
+          <button onclick="toggleData()" style="padding:8px 16px;background:#348212;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(22,163,74,.3)">Preview Store →</button>
         </div>
       </div>
     </div>`
@@ -1620,14 +1620,14 @@ function renderOverview(scroll){
                 </div>
               </div>
             </div>
-            <button onclick="toggleData()" style="padding:9px 18px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(22,163,74,.3)">Preview Store →</button>
+            <button onclick="toggleData()" style="padding:9px 18px;background:#348212;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(22,163,74,.3)">Preview Store →</button>
           </div>
         </div>
         <div style="display:flex;gap:10px">
           ${stepCardsDesktop}
           <div style="flex-shrink:0;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #bbf7d0;border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:100px;text-align:center">
             <i class="ti ti-rocket" style="font-size:22px;color:#16a34a"></i>
-            <div style="font-size:20px;font-weight:900;color:#15803d;line-height:1">~30</div>
+            <div style="font-size:20px;font-weight:900;color:#2a6b0f;line-height:1">~30</div>
             <div style="font-size:11px;color:#16a34a;font-weight:600">min to go live</div>
           </div>
         </div>
@@ -1644,7 +1644,7 @@ function renderOverview(scroll){
         <div style="font-size:11.5px;color:#6b7280;${isMobile?'white-space:nowrap;overflow:hidden;text-overflow:ellipsis':''}">Add catalogue → Delivery zones → Enable payment · ~30 min</div>
       </div>
       ${!isMobile?`<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
-        <span style="width:24px;height:24px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">1</span>
+        <span style="width:24px;height:24px;border-radius:50%;background:#348212;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">1</span>
         <span style="width:24px;height:24px;border-radius:50%;background:#e5e7eb;color:#6b7280;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">2</span>
         <span style="width:24px;height:24px;border-radius:50%;background:#e5e7eb;color:#6b7280;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">3</span>
       </div>`:''}
@@ -2098,7 +2098,7 @@ function renderAnalytics(scroll){
   let widH=anWidgets.map(id=>{
     const wd=AN_DEFS[id]; if(!wd) return '';
     let inner='';
-    if(id==='an_revenue') inner=`<div class="an-kpi-val">₹68,420</div><div class="an-kpi-lbl">Total Revenue</div><span class="an-kpi-chg" style="background:#dcfce7;color:#15803d">↑ +11% vs yesterday</span>`;
+    if(id==='an_revenue') inner=`<div class="an-kpi-val">₹68,420</div><div class="an-kpi-lbl">Total Revenue</div><span class="an-kpi-chg" style="background:#dcfce7;color:#2a6b0f">↑ +11% vs yesterday</span>`;
     else if(id==='an_orders') inner=`<div class="an-kpi-val">142</div><div class="an-kpi-lbl">Total Orders</div><span class="an-kpi-chg" style="background:#dbeafe;color:#1d4ed8">↑ +18% vs yesterday</span>`;
     else if(id==='an_customers') inner=`<div class="an-kpi-val">84</div><div class="an-kpi-lbl">New Customers</div><span class="an-kpi-chg" style="background:#fce7f3;color:#be185d">↑ +24% vs yesterday</span>`;
     else if(id==='an_conv') inner=`<div class="an-kpi-val">3.8%</div><div class="an-kpi-lbl">Conversion Rate</div><span class="an-kpi-chg" style="background:#f5f3ff;color:#7c3aed">↑ +0.6%</span>`;
@@ -2224,8 +2224,8 @@ function renderAnalytics(scroll){
         ${chCard('ti-mail','Email','5 carts','recovered','₹6,800','revenue','#7c3aed')}
         ${chCard('ti-phone-call','Agent Calls','10 carts','recovered','₹23,400','revenue','#0891b2')}
         <div style="padding:12px 14px;border-radius:8px;border:1.5px solid #bbf7d0;background:#f0fdf4;flex:1">
-          <div style="font-size:10px;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">Total Recovered</div>
-          <div style="font-size:22px;font-weight:800;color:#15803d">₹77,800</div>
+          <div style="font-size:10px;font-weight:700;color:#2a6b0f;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">Total Recovered</div>
+          <div style="font-size:22px;font-weight:800;color:#2a6b0f">₹77,800</div>
           <div style="font-size:11px;color:#16a34a;margin-top:2px">36.6% of abandoned value</div>
         </div>
       </div>
@@ -2917,7 +2917,7 @@ function renderFilled(scroll){
       };
       const dots=`<i class="ti ti-dots-vertical" style="font-size:16px;color:#9ca3af;cursor:pointer"></i>`;
       const pendingCell=`<div style="display:flex;align-items:center;gap:5px">
-        <button title="Accept order" style="display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11.5px;font-weight:600;background:#dcfce7;color:#15803d;border:none;border-radius:5px;cursor:pointer">
+        <button title="Accept order" style="display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11.5px;font-weight:600;background:#dcfce7;color:#2a6b0f;border:none;border-radius:5px;cursor:pointer">
           <i class="ti ti-check" style="font-size:12px"></i>Accept
         </button>
         <button title="Reject order" style="display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:11.5px;font-weight:600;background:#fee2e2;color:#b91c1c;border:none;border-radius:5px;cursor:pointer">
@@ -2925,7 +2925,7 @@ function renderFilled(scroll){
         </button>
       </div>`;
       const moveStoreBtn=`<button title="Transfer to another store" style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">
-        <i class="ti ti-arrows-transfer-down" style="font-size:14px;color:#15803d"></i>
+        <i class="ti ti-arrows-transfer-down" style="font-size:14px;color:#2a6b0f"></i>
       </button>`;
       const orderActions=o=>{
         if(o.status==='Picking'||o.status==='Packing'||o.status==='Packed'){
@@ -3000,7 +3000,7 @@ function renderFilled(scroll){
       const statsHtml=`<div style="background:#fff;border:1px solid #ede8e0;border-radius:10px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.04);overflow:hidden">
         <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-bottom:1px solid #f5f2ee">
           <span style="font-size:11px;font-weight:700;color:#374151">Live Order Pipeline</span>
-          <span style="font-size:10px;background:#f0fdf4;color:#15803d;padding:1px 7px;border-radius:10px;font-weight:600">94.2% Fill Rate</span>
+          <span style="font-size:10px;background:#f0fdf4;color:#2a6b0f;padding:1px 7px;border-radius:10px;font-weight:600">94.2% Fill Rate</span>
           <span style="font-size:10px;color:#9ca3af;margin-left:auto">Last updated: just now &nbsp;·&nbsp; 28 Jun 2026</span>
         </div>
         <div style="display:grid;grid-template-columns:repeat(6,1fr)">
@@ -3038,7 +3038,7 @@ function renderFilled(scroll){
           <div style="display:flex;align-items:center;gap:8px;padding-top:8px"><div style="width:36px;height:20px;background:#e5e7eb;border-radius:10px;position:relative;cursor:pointer" onclick="this.style.background=this.dataset.on?'#e5e7eb':'#16a34a';this.dataset.on=this.dataset.on?'':'1';this.firstChild.style.left=this.dataset.on?'18px':'2px'" ><div style="position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .15s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div></div><span style="font-size:12px;font-weight:600;color:#374151">Pre-order only</span></div>
         </div>
         <div style="display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid #ede8e0">
-          <button style="padding:7px 20px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-search" style="font-size:13px"></i>Search</button>
+          <button style="padding:7px 20px;background:#348212;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-search" style="font-size:13px"></i>Search</button>
           <button style="padding:7px 16px;background:#fff;color:#6b7280;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;cursor:pointer">Clear All</button>
           <span style="font-size:11px;color:#9ca3af;align-self:center;margin-left:4px">Tip: Use the search bar above for quick lookup</span>
         </div>
@@ -3101,7 +3101,7 @@ function renderFilled(scroll){
         </div>
         <div style="margin-top:12px;margin-bottom:12px"><div style="${lblS}">STATUS</div><div style="display:flex">${radioRow}</div></div>
         <div style="display:flex;gap:8px;padding-top:12px;border-top:1px solid #ede8e0">
-          <button style="padding:7px 20px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-search" style="font-size:13px"></i>Search</button>
+          <button style="padding:7px 20px;background:#348212;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-search" style="font-size:13px"></i>Search</button>
           <button style="padding:7px 16px;background:#fff;color:#6b7280;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;cursor:pointer">Clear All</button>
         </div>
       </div>`;
@@ -3277,7 +3277,7 @@ function renderFilled(scroll){
         ];
       });
       const pill=(opts,name,activeIdx=0)=>opts.map((s,i)=>`<button onclick="this.parentNode.querySelectorAll('button').forEach(b=>b.style.cssText=b.dataset.off);this.style.cssText=this.dataset.on"
-        data-on="padding:5px 14px;border-radius:20px;border:1.5px solid #16a34a;background:#dcfce7;color:#15803d;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap"
+        data-on="padding:5px 14px;border-radius:20px;border:1.5px solid #16a34a;background:#dcfce7;color:#2a6b0f;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap"
         data-off="padding:5px 14px;border-radius:20px;border:1.5px solid #e5e7eb;background:#fff;color:#6b7280;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap"
         style="padding:5px 14px;border-radius:20px;border:1.5px solid ${i===activeIdx?'#16a34a':'#e5e7eb'};background:${i===activeIdx?'#dcfce7':'#fff'};color:${i===activeIdx?'#15803d':'#6b7280'};font-size:12px;font-weight:${i===activeIdx?700:500};cursor:pointer;white-space:nowrap">${s}</button>`).join('');
 
@@ -3331,7 +3331,7 @@ function renderFilled(scroll){
           </div>
         </div>
         <div style="display:flex;gap:8px">
-          <button style="padding:7px 20px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ti ti-search" style="font-size:13px"></i>Search</button>
+          <button style="padding:7px 20px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ti ti-search" style="font-size:13px"></i>Search</button>
           <button style="padding:7px 16px;background:#fff;color:#6b7280;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear</button>
         </div>
       </div>`;
@@ -3380,7 +3380,7 @@ function renderFilled(scroll){
           <div><div style="${lblS}">STATUS</div><div style="display:flex">${statusR}</div></div>
         </div>
         <div style="display:flex;gap:8px">
-          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
+          <button style="padding:8px 22px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
           <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
         </div>
       </div>`;
@@ -3557,7 +3557,7 @@ function renderFilled(scroll){
                     <div id="tripDetailAgent" style="font-size:14px;font-weight:600;color:#111827"></div>
                     <div style="font-size:12px;color:#6b7280;margin-top:2px"><i class="ti ti-phone" style="color:#3b82f6;margin-right:3px"></i>+91 93106 48994</div>
                   </div>
-                  <span style="margin-left:auto;background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px">CLOSED</span>
+                  <span style="margin-left:auto;background:#348212;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px">CLOSED</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #f3f4f6;border-bottom:1px solid #f3f4f6">
                   <i class="ti ti-motorbike" style="font-size:22px;color:#9ca3af"></i>
@@ -3734,7 +3734,7 @@ function renderFilled(scroll){
         </div>
         <div style="margin-bottom:16px"><div style="${lblS}">STORE</div><select style="${inpS}cursor:pointer"><option value="">SELECT STORE</option><option>Corniche Rd</option><option>Al Hamra</option><option>Khozam</option></select></div>
         <div style="display:flex;gap:8px">
-          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Submit</button>
+          <button style="padding:8px 22px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Submit</button>
           <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
         </div>
       </div>`;
@@ -3856,7 +3856,7 @@ function renderFilled(scroll){
         </table>
       </div>
       <div style="display:flex;gap:8px">
-        <button style="padding:9px 28px;background:#16a34a;color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer">Save</button>
+        <button style="padding:9px 28px;background:#348212;color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer">Save</button>
         <button style="padding:9px 20px;background:#fff;color:#374151;border:1.5px solid #e2d9ce;border-radius:7px;font-size:13px;cursor:pointer">Cancel</button>
       </div>`;
       const slotBanner=`<div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:9px 14px;margin-bottom:12px">
@@ -3932,7 +3932,7 @@ function renderFilled(scroll){
       const content=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)">
         <div style="padding:16px 20px;line-height:2.2">${chips}</div>
         <div style="padding:14px 16px;border-top:1px solid #f5f2ee;display:flex;gap:8px">
-          <button style="padding:8px 24px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Save</button>
+          <button style="padding:8px 24px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Save</button>
           <button style="padding:8px 20px;background:#fff;color:#374151;border:1.5px solid #e2d9ce;border-radius:6px;font-size:13px;cursor:pointer">Clear Sequence</button>
         </div>
       </div>`;
@@ -3979,7 +3979,7 @@ function renderFilled(scroll){
               </div>
             </div>
             <div style="display:flex;gap:10px">
-              <button onclick="document.getElementById('vplanModal').style.display='none'" style="padding:9px 26px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Save</button>
+              <button onclick="document.getElementById('vplanModal').style.display='none'" style="padding:9px 26px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Save</button>
               <button onclick="document.getElementById('vplanModal').style.display='none'" style="padding:9px 26px;background:#fff;color:#374151;border:1px solid #d1d5db;border-radius:6px;font-size:13px;cursor:pointer">Cancel</button>
             </div>
           </div>
@@ -4021,7 +4021,7 @@ function renderFilled(scroll){
               <div style="font-size:12.5px;color:#6b7280;text-align:center;margin-bottom:16px">Regular Vehicle</div>
               ${regRows}
               <div style="margin-top:10px;text-align:center">
-                <button style="padding:6px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Add</button>
+                <button style="padding:6px 22px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Add</button>
               </div>
             </div>
             <!-- Adhoc vehicles -->
@@ -4039,7 +4039,7 @@ function renderFilled(scroll){
                 <option>MH 12 CD 5678</option>
               </select>
               <div style="display:flex;gap:8px;justify-content:center">
-                <button style="padding:6px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Add</button>
+                <button style="padding:6px 22px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Add</button>
                 <button style="padding:6px 16px;background:#fff;color:#374151;border:1px solid #d1d5db;border-radius:6px;font-size:12.5px;cursor:pointer">Cancel</button>
               </div>
             </div>
@@ -4199,7 +4199,7 @@ function renderFilled(scroll){
           <span style="font-size:13.5px;color:#374151">Show courier estimation and charges to customers</span>
         </label>
         <div style="display:flex;gap:10px">
-          <button style="padding:9px 28px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
+          <button style="padding:9px 28px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
           <button style="padding:9px 22px;background:#fff;color:#374151;border:1px solid #d1d5db;border-radius:6px;font-size:14px;cursor:pointer">Cancel</button>
         </div>`;
 
@@ -4226,7 +4226,7 @@ function renderFilled(scroll){
           </div>
         </div>
         <div style="display:flex;gap:10px">
-          <button style="padding:9px 28px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
+          <button style="padding:9px 28px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
           <button style="padding:9px 22px;background:#fff;color:#374151;border:1px solid #d1d5db;border-radius:6px;font-size:14px;cursor:pointer">Cancel</button>
         </div>`;
 
@@ -4285,7 +4285,7 @@ function renderFilled(scroll){
           ${sel('ZONE',['Select zone','Default zone','Zone A','Zone B','Zone C'])}
           ${sel('SLOT',['Select Slot','09:00 PM – 09:15 PM','08:45 PM – 09:00 PM','08:30 PM – 08:45 PM','06:30 PM – 07:00 PM','06:00 PM – 06:30 PM'])}
           <div style="display:flex;gap:8px;flex-shrink:0">
-            <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap">Submit</button>
+            <button style="padding:8px 22px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap">Submit</button>
             <button style="padding:8px 16px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer;white-space:nowrap">Clear</button>
           </div>
         </div>
@@ -4341,7 +4341,7 @@ function renderFilled(scroll){
           <div><div style="${lblS}">STATUS</div><div style="display:flex">${statusR}</div></div>
         </div>
         <div style="display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid #ede8e0">
-          <button style="padding:7px 20px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-search" style="font-size:13px"></i>Search</button>
+          <button style="padding:7px 20px;background:#348212;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-search" style="font-size:13px"></i>Search</button>
           <button style="padding:7px 16px;background:#fff;color:#6b7280;border:1.5px solid #e2d9ce;border-radius:8px;font-size:12.5px;cursor:pointer">Clear All</button>
         </div>
       </div>`;
@@ -4378,7 +4378,7 @@ function renderFilled(scroll){
           <div><div style="${lblS}">STATUS</div><div style="display:flex">${statusR}</div></div>
         </div>
         <div style="display:flex;gap:8px">
-          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
+          <button style="padding:8px 22px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
           <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
         </div>
       </div>`;
@@ -4410,7 +4410,7 @@ function renderFilled(scroll){
       const filterPanel=`<div style="background:#fff;border-radius:10px;border:1px solid #ede8e0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
         <div style="margin-bottom:16px"><div style="${lblS}">NAME</div><input style="${inpS}" placeholder="Search by Name"></div>
         <div style="display:flex;gap:8px">
-          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
+          <button style="padding:8px 22px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
           <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
         </div>
       </div>`;
@@ -4444,7 +4444,7 @@ function renderFilled(scroll){
           <div><div style="${lblS}">NAME</div><div style="display:flex">${statusR}</div></div>
         </div>
         <div style="display:flex;gap:8px">
-          <button style="padding:8px 22px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
+          <button style="padding:8px 22px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Search</button>
           <button style="padding:8px 22px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
         </div>
       </div>`;
@@ -4978,7 +4978,7 @@ function renderFilled(scroll){
           </div>
         </div>
         <div style="display:flex;gap:8px">
-          <button style="padding:7px 20px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Submit</button>
+          <button style="padding:7px 20px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Submit</button>
           <button style="padding:7px 16px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear All</button>
         </div>
       </div>`;
@@ -5055,7 +5055,7 @@ function renderFilled(scroll){
           </div>
         </div>
         <div style="display:flex;gap:8px">
-          <button style="padding:7px 20px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Apply</button>
+          <button style="padding:7px 20px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer">Apply</button>
           <button style="padding:7px 16px;background:#fff;color:#374151;border:1px solid #e2d9ce;border-radius:6px;font-size:12.5px;cursor:pointer">Clear</button>
         </div>
       </div>`;
@@ -5344,7 +5344,7 @@ function renderFilled(scroll){
               </table>
             </div>
             <div style="display:flex;gap:10px;margin-top:20px">
-              <button style="padding:9px 28px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
+              <button style="padding:9px 28px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
               <button onclick="document.getElementById('rolesPermPanel').style.display='none'" style="padding:9px 22px;background:#fff;color:#374151;border:1px solid #d1d5db;border-radius:6px;font-size:14px;cursor:pointer">Cancel</button>
             </div>
           </div>
@@ -5498,7 +5498,7 @@ function renderFilled(scroll){
           ${chk('emailver',false,'Enable email verification','Enable this option for customer email verification on checkout')}
 
           <div style="display:flex;gap:10px;margin-top:8px">
-            <button style="padding:9px 28px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
+            <button style="padding:9px 28px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
             <button style="padding:9px 22px;background:#f3f4f6;color:#374151;border:none;border-radius:6px;font-size:14px;cursor:pointer">Cancel</button>
           </div>
         </div>`;
@@ -5556,7 +5556,7 @@ function renderFilled(scroll){
             </div>
           </div>
         </div>
-        <button style="padding:10px 28px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>`;
+        <button style="padding:10px 28px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>`;
 
       const tabs=`<div style="display:flex;border-bottom:2px solid #e5e7eb;margin-bottom:24px">
         <button id="slotTab1" onclick="document.getElementById('slotTab1').style.cssText+=';color:#111827;border-bottom-color:#16a34a;font-weight:600';document.getElementById('slotTab2').style.cssText+=';color:#9ca3af;border-bottom-color:transparent;font-weight:400';document.getElementById('slotContent').innerHTML=${JSON.stringify('<div>'+deliveryContent+'</div>')}"
@@ -5624,7 +5624,7 @@ function renderFilled(scroll){
         </div>
 
         <div style="display:flex;gap:10px">
-          <button style="padding:9px 28px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
+          <button style="padding:9px 28px;background:#348212;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer">Save</button>
           <button style="padding:9px 22px;background:#f3f4f6;color:#374151;border:none;border-radius:6px;font-size:14px;cursor:pointer">Cancel</button>
         </div>
       </div>`;
@@ -5683,7 +5683,7 @@ function renderFilled(scroll){
         <div id="tb${i}" style="display:${i===0?'block':'none'};padding:18px 20px;border-top:1px solid #f1f5f9;background:#fafbfc">
           <div style="margin-bottom:14px"><div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Placeholders</div><div style="display:flex;gap:7px;flex-wrap:wrap">${t.ph.map(p=>`<code style="padding:4px 10px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;color:#334155;font-family:monospace">${p}</code>`).join('')}</div></div>
           <div style="margin-bottom:14px"><label style="display:block;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px">Subject Line</label><input value="${t.subject}" style="width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13.5px;color:#1e293b;outline:none;font-family:inherit;box-sizing:border-box;background:#fff"></div>
-          <div style="display:flex;justify-content:flex-end;gap:9px"><button style="padding:9px 18px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;font-size:13px;color:#64748b;cursor:pointer">Reset</button><button style="padding:9px 20px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">Save</button></div>
+          <div style="display:flex;justify-content:flex-end;gap:9px"><button style="padding:9px 18px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;font-size:13px;color:#64748b;cursor:pointer">Reset</button><button style="padding:9px 20px;background:#348212;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">Save</button></div>
         </div>
       </div>`).join('');
 
@@ -5710,7 +5710,7 @@ function renderFilled(scroll){
           <div style="margin-bottom:4px"><label style="display:block;font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">Default From Email</label><input value="appsupport@ssmretail.com" style="width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:9px;font-size:14px;color:#1e293b;outline:none;font-family:inherit;box-sizing:border-box"></div>
         </div>
         <div style="padding:16px 22px;border-top:1px solid #f1f5f9;background:#f8fafc;display:flex;align-items:center;gap:10px">
-          <button style="padding:10px 24px;background:#16a34a;color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(22,163,74,.25)">Save Changes</button>
+          <button style="padding:10px 24px;background:#348212;color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(22,163,74,.25)">Save Changes</button>
           <button style="padding:10px 20px;background:transparent;color:#64748b;border:1.5px solid #e2e8f0;border-radius:9px;font-size:14px;cursor:pointer">Cancel</button>
           <button style="margin-left:auto;padding:10px 18px;background:#fff;color:#3b82f6;border:1.5px solid #bfdbfe;border-radius:9px;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px"><i class="ti ti-send" style="font-size:14px"></i>Send Test Email</button>
         </div>
@@ -5762,11 +5762,11 @@ function renderFilled(scroll){
         <div style="display:flex;align-items:center;gap:18px">
           <div style="width:52px;height:52px;border-radius:14px;background:#16a34a;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(22,163,74,.3)"><i class="ti ti-device-mobile-check" style="font-size:26px;color:#fff"></i></div>
           <div>
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><div style="font-size:17px;font-weight:700;color:#14532d">Latest Build Ready</div><span style="background:#dcfce7;color:#15803d;border:1px solid #86efac;border-radius:20px;font-size:11.5px;font-weight:700;padding:3px 10px">v2.4.1</span></div>
-            <div style="font-size:13px;color:#15803d">Built 15 Jun 2026 · zopping-firebase-1234 · 48.2 MB</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><div style="font-size:17px;font-weight:700;color:#14532d">Latest Build Ready</div><span style="background:#dcfce7;color:#2a6b0f;border:1px solid #86efac;border-radius:20px;font-size:11.5px;font-weight:700;padding:3px 10px">v2.4.1</span></div>
+            <div style="font-size:13px;color:#2a6b0f">Built 15 Jun 2026 · zopping-firebase-1234 · 48.2 MB</div>
           </div>
         </div>
-        <button style="padding:12px 22px;background:#16a34a;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(22,163,74,.35)"><i class="ti ti-download" style="font-size:16px"></i>Download APK</button>
+        <button style="padding:12px 22px;background:#348212;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(22,163,74,.35)"><i class="ti ti-download" style="font-size:16px"></i>Download APK</button>
       </div>
       <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.04)">
         <div style="display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;color:#0f172a;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid #f1f5f9"><i class="ti ti-settings-2" style="font-size:18px;color:#64748b"></i>App Configuration</div>
@@ -5779,7 +5779,7 @@ function renderFilled(scroll){
         ${field('Google Drive Folder URL','','Paste folder URL with icons + config files',true,'Must include App Icons, google-services.json and GoogleService-Info.plist')}
       </div>
       <div style="display:flex;gap:12px">
-        <button style="padding:12px 26px;background:#16a34a;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(22,163,74,.3)">Submit Build Request</button>
+        <button style="padding:12px 26px;background:#348212;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(22,163,74,.3)">Submit Build Request</button>
         <button style="padding:12px 20px;background:transparent;color:#64748b;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;cursor:pointer">Cancel</button>
       </div>`;
 
@@ -5832,7 +5832,7 @@ function renderFilled(scroll){
             </div>
           </div>
           <div style="display:flex;gap:12px">
-            <button style="padding:12px 26px;background:#16a34a;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(22,163,74,.3)">Update</button>
+            <button style="padding:12px 26px;background:#348212;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(22,163,74,.3)">Update</button>
             <button style="padding:12px 20px;background:transparent;color:#64748b;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;cursor:pointer">Cancel</button>
           </div>
         </div>
@@ -5896,7 +5896,7 @@ function renderFilled(scroll){
         </div>
         <div style="padding:24px">${keys}</div>
         <div style="padding:14px 24px;border-top:1px solid #f1f5f9;background:#f8fafc;display:flex;align-items:center;gap:10px">
-          <button style="padding:10px 22px;background:#16a34a;color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(22,163,74,.25)">Save</button>
+          <button style="padding:10px 22px;background:#348212;color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(22,163,74,.25)">Save</button>
           <button style="padding:10px 18px;background:transparent;color:#64748b;border:1.5px solid #e2e8f0;border-radius:9px;font-size:14px;cursor:pointer">Cancel</button>
           ${saveNote?`<span style="margin-left:auto;font-size:12.5px;color:#94a3b8;display:flex;align-items:center;gap:5px"><i class="ti ti-shield-lock" style="font-size:13px"></i>${saveNote}</span>`:''}
         </div>
@@ -6177,7 +6177,7 @@ function renderOB(){
 
   /* ── Zopping brand tokens ── */
   const Z={
-    primary:'#4ab819', dark:'#348212', darker:'#2a6b0f',
+    primary:'#348212', dark:'#348212', darker:'#2a6b0f',
     teal:'#00b6a4', tealDark:'#007a87',
     green50:'#f6fcf3', green100:'#eef8e9', green200:'#e3f3da',
     text:'#2b3238', muted:'#80959d', subtle:'#63757e',
