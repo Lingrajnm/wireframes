@@ -1532,194 +1532,106 @@ function renderOverview(scroll){
     const gr=h2<12?'Good morning':h2<17?'Good afternoon':'Good evening';
     const storeName=rm.store||'Your Store';
 
-    // Progress: 1 of 8 complete (Logistics pre-done)
-    const TOTAL=8, DONE=1, PCT=Math.round(DONE/TOTAL*100);
+    /* ── Zopping brand tokens ── */
+    const Z={
+      primary:'#348212', dark:'#2a6b0f', teal:'#00b6a4',
+      green50:'#f6fcf3', green100:'#eef8e9', green200:'#e3f3da',
+      text:'#2b3238', muted:'#80959d', subtle:'#63757e',
+      bg:'#fbfcfc', surface:'#f3f5f6', border:'#dadee0',
+      hFont:"'Plus Jakarta Sans',Inter,sans-serif",
+      bFont:"Inter,system-ui,sans-serif",
+    };
 
-    // ── Launch readiness banner ──
-    const nextSteps=[
-      {step:1,label:'Add Product Catalogue',sub:'SKUs · Prices · Images',icon:'ti-packages',page:'inventory',time:'15–60 min',accent:'#ea580c',light:'#fff7ed',border:'#fed7aa'},
-      {step:2,label:'Set Delivery Zones',sub:'Pincodes · Fees · Express',icon:'ti-map-pin',page:'capacity',time:'~10 min',accent:'#2563eb',light:'#eff6ff',border:'#bfdbfe'},
-      {step:3,label:'Enable Payments',sub:'UPI · Cards · COD',icon:'ti-credit-card',page:'billing',time:'~5 min',accent:'#7c3aed',light:'#f5f3ff',border:'#ddd6fe'},
+    const TASKS=[
+      {n:1,ic:'ti-building-store', bg:'#eef8e9', c:Z.primary,  label:'Store Identity',            sub:'Add your logo, store name and contact details',   est:'5 min',   cta:'Set Up',        page:'myaccount', done:true},
+      {n:2,ic:'ti-packages',       bg:'#fff7ed', c:'#ea580c',   label:'Add Product Catalogue',     sub:'Upload SKUs, images, categories and prices',       est:'15–60 min',cta:'Add Products',  page:'inventory', done:false},
+      {n:3,ic:'ti-map-pin',        bg:'#eff6ff', c:'#1d4ed8',   label:'Set Delivery Zones',        sub:'Define pincodes, fees and express slots',          est:'~10 min',  cta:'Setup Delivery',page:'capacity',  done:false},
+      {n:4,ic:'ti-credit-card',    bg:'#f5f3ff', c:'#7c3aed',   label:'Connect Payment Gateway',   sub:'Enable Razorpay, UPI, cards and cash on delivery', est:'~5 min',   cta:'Configure',     page:'payments',  done:false},
+      {n:5,ic:'ti-bell',           bg:'#fce7f3', c:'#be185d',   label:'Set Up Notifications',      sub:'Order updates, OTP and confirmation messages',     est:'~5 min',   cta:'Configure',     page:'myaccount', done:false},
+      {n:6,ic:'ti-users',          bg:'#e0f2fe', c:'#0284c7',   label:'Invite Your Team',          sub:'Add pickers, riders and managers with roles',      est:'~5 min',   cta:'Add Staff',     page:'staff',     done:false},
+      {n:7,ic:'ti-speakerphone',   bg:'#ede9fe', c:'#7c3aed',   label:'Launch Announcement',       sub:'Send a WhatsApp or SMS broadcast to customers',    est:'~10 min',  cta:'Create Campaign',page:'campaigns',done:false},
     ];
-    // ── Desktop step cards (horizontal)
-    const stepCardsDesktop=nextSteps.map(s=>`
-      <div onclick="gotoPage('${s.page}')" style="flex:1;background:${s.light};border:1.5px solid ${s.border};border-radius:10px;padding:14px 16px;cursor:pointer;transition:box-shadow .2s;min-width:0;position:relative"
-        onmouseover="this.style.boxShadow='0 4px 14px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-          <div style="width:34px;height:34px;border-radius:8px;background:#fff;border:1.5px solid ${s.border};display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)">
-            <i class="ti ${s.icon}" style="font-size:17px;color:${s.accent}"></i>
-          </div>
-          <span style="font-size:10px;font-weight:800;color:${s.accent};background:#fff;border:1px solid ${s.border};padding:2px 8px;border-radius:20px;letter-spacing:.04em">STEP ${s.step}</span>
-        </div>
-        <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:3px;line-height:1.3">${s.label}</div>
-        <div style="font-size:11.5px;color:#6b7280;margin-bottom:12px">${s.sub}</div>
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <span style="font-size:11px;color:#9ca3af"><i class="ti ti-clock" style="font-size:10px"></i> ${s.time}</span>
-          <span style="font-size:12px;font-weight:700;color:${s.accent};display:flex;align-items:center;gap:3px">Go <i class="ti ti-arrow-right" style="font-size:11px"></i></span>
-        </div>
-      </div>`).join('');
+    const DONE_N=TASKS.filter(t=>t.done).length;
+    const TOTAL=TASKS.length;
+    const PCT=Math.round(DONE_N/TOTAL*100);
 
-    // ── Mobile step cards (vertical list)
-    const stepCardsMobile=nextSteps.map(s=>`
-      <div onclick="gotoPage('${s.page}')" style="background:${s.light};border:1.5px solid ${s.border};border-radius:10px;padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:12px">
-        <div style="width:36px;height:36px;border-radius:8px;background:#fff;border:1.5px solid ${s.border};display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <i class="ti ${s.icon}" style="font-size:17px;color:${s.accent}"></i>
-        </div>
-        <div style="flex:1;min-width:0">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
-            <span style="font-size:9px;font-weight:800;color:${s.accent};background:#fff;border:1px solid ${s.border};padding:1px 7px;border-radius:20px;letter-spacing:.04em">STEP ${s.step}</span>
-            <span style="font-size:10.5px;color:#9ca3af"><i class="ti ti-clock" style="font-size:9px"></i> ${s.time}</span>
-          </div>
-          <div style="font-size:13px;font-weight:700;color:#111827;line-height:1.3">${s.label}</div>
-          <div style="font-size:11px;color:#6b7280">${s.sub}</div>
-        </div>
-        <span style="font-size:12px;font-weight:700;color:${s.accent};display:flex;align-items:center;gap:2px;flex-shrink:0">Go <i class="ti ti-arrow-right" style="font-size:11px"></i></span>
-      </div>`).join('');
-
-    const readinessBanner=isMobile
-    // ── MOBILE layout ──
-    ?`<div style="background:#fff;border-radius:14px;border:1.5px solid #e5e7eb;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:14px;overflow:hidden">
-      <div style="height:4px;background:linear-gradient(90deg,#16a34a,#4ade80,#16a34a)"></div>
-      <div style="padding:16px 16px 14px">
-        <div style="font-size:10.5px;color:#9ca3af;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px">${gr}, ${rm.n}</div>
-        <div style="font-size:17px;font-weight:800;color:#111827;line-height:1.3;margin-bottom:4px">Launch <span style="color:#16a34a">${storeName}</span></div>
-        <div style="font-size:13px;color:#374151;margin-bottom:10px">you're <span style="color:#16a34a;font-weight:700">${PCT}% ready</span></div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-          <div style="flex:1;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden">
-            <div style="height:100%;width:${PCT}%;background:linear-gradient(90deg,#16a34a,#4ade80);border-radius:3px"></div>
-          </div>
-          <span style="font-size:11px;color:#6b7280;white-space:nowrap;flex-shrink:0">${DONE} of ${TOTAL} steps</span>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
-          ${stepCardsMobile}
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:10px;padding:10px 14px">
-          <div style="display:flex;align-items:center;gap:8px">
-            <i class="ti ti-rocket" style="font-size:18px;color:#16a34a"></i>
-            <span style="font-size:13px;font-weight:700;color:#2a6b0f">~30 min to go live</span>
-          </div>
-          <button onclick="toggleData()" style="padding:8px 16px;background:#348212;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(22,163,74,.3)">Preview Store →</button>
-        </div>
-      </div>
-    </div>`
-    // ── DESKTOP layout ──
-    :`<div style="background:#fff;border-radius:14px;border:1.5px solid #e5e7eb;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:16px;overflow:hidden">
-      <div style="height:4px;background:linear-gradient(90deg,#16a34a,#4ade80,#16a34a);background-size:200% 100%"></div>
-      <div style="padding:20px 24px">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px">
-          <div style="flex:1;min-width:0">
-            <div style="font-size:11px;color:#9ca3af;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px">${gr}, ${rm.n}</div>
-            <div style="font-size:19px;font-weight:800;color:#111827;line-height:1.25">Launch <span style="color:#16a34a">${storeName}</span> — you're <span style="color:#16a34a">${PCT}% ready</span></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
-            <div style="text-align:right">
-              <div style="font-size:11px;color:#9ca3af;margin-bottom:4px">${DONE} of ${TOTAL} steps complete</div>
-              <div style="display:flex;align-items:center;gap:8px;justify-content:flex-end">
-                <div style="width:100px;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden">
-                  <div style="height:100%;width:${PCT}%;background:linear-gradient(90deg,#16a34a,#4ade80);border-radius:3px"></div>
-                </div>
+    // ── Hero welcome card ──
+    const hero=`
+      <div style="background:linear-gradient(135deg,#1a2e1a 0%,#1e3c20 60%,#0f2e14 100%);border-radius:16px;padding:28px 32px;margin-bottom:20px;position:relative;overflow:hidden;font-family:${Z.bFont}">
+        <div style="position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(74,184,25,.08)"></div>
+        <div style="position:absolute;right:60px;bottom:-50px;width:130px;height:130px;border-radius:50%;background:rgba(0,182,164,.06)"></div>
+        <div style="position:relative">
+          <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.45);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">${gr}, ${rm.n}</div>
+          <div style="font-size:26px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:6px;font-family:${Z.hFont}">Welcome to <span style="color:#86c96a">${storeName}</span></div>
+          <div style="font-size:13.5px;color:rgba(255,255,255,.55);margin-bottom:22px">Complete your store setup to start selling online. Most stores go live in under 30 minutes.</div>
+          <div style="display:flex;align-items:center;gap:14px">
+            <div style="flex:1;max-width:320px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+                <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6)">Setup progress</span>
+                <span style="font-size:12px;font-weight:700;color:#86c96a">${DONE_N} of ${TOTAL} done</span>
+              </div>
+              <div style="height:7px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden">
+                <div style="height:100%;width:${PCT}%;background:linear-gradient(90deg,${Z.primary},${Z.teal});border-radius:4px"></div>
               </div>
             </div>
-            <button onclick="toggleData()" style="padding:9px 18px;background:#348212;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(22,163,74,.3)">Preview Store →</button>
+            <button onclick="toggleData()" style="flex-shrink:0;padding:10px 20px;background:${Z.primary};color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:${Z.bFont}">Preview Store →</button>
           </div>
         </div>
-        <div style="display:flex;gap:10px">
-          ${stepCardsDesktop}
-          <div style="flex-shrink:0;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #bbf7d0;border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:100px;text-align:center">
-            <i class="ti ti-rocket" style="font-size:22px;color:#16a34a"></i>
-            <div style="font-size:20px;font-weight:900;color:#2a6b0f;line-height:1">~30</div>
-            <div style="font-size:11px;color:#16a34a;font-weight:600">min to go live</div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-
-    // ── Quick start path ──
-    const quickStart=`<div style="background:#fff;border:1.5px solid #bbf7d0;border-radius:12px;padding:${isMobile?'12px 14px':'14px 18px'};margin-bottom:${isMobile?'12px':'16px'};display:flex;align-items:center;gap:${isMobile?'10px':'14px'};box-shadow:0 1px 4px rgba(22,163,74,.08)">
-      <div style="width:36px;height:36px;border-radius:10px;background:#dcfce7;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <i class="ti ti-rocket" style="font-size:18px;color:#16a34a"></i>
-      </div>
-      <div style="flex:1;min-width:0">
-        <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:2px">⚡ Fastest path to your first order</div>
-        <div style="font-size:11.5px;color:#6b7280;${isMobile?'white-space:nowrap;overflow:hidden;text-overflow:ellipsis':''}">Add catalogue → Delivery zones → Enable payment · ~30 min</div>
-      </div>
-      ${!isMobile?`<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
-        <span style="width:24px;height:24px;border-radius:50%;background:#348212;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">1</span>
-        <span style="width:24px;height:24px;border-radius:50%;background:#e5e7eb;color:#6b7280;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">2</span>
-        <span style="width:24px;height:24px;border-radius:50%;background:#e5e7eb;color:#6b7280;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">3</span>
-      </div>`:''}
-    </div>`;
-
-    // ── Task groups ──
-    const taskRow=(n,ic,bg,ic_c,label,sublabel,est,cta,page,done,unlock)=>`
-      <div onclick="${isMobile&&!done&&page?`gotoPage('${page}')`:'void 0'}" style="display:flex;align-items:center;gap:${isMobile?'10px':'14px'};padding:${isMobile?'11px 14px':'14px 18px'};border-bottom:1px solid #f5f5f5;${done?'background:#f0fdf4;':''}cursor:${isMobile&&!done?'pointer':''}" onmouseover="this.style.background='${done?'#f0fdf4':'#fafaf9'}'" onmouseout="this.style.background='${done?'#f0fdf4':''}'">
-        ${done
-          ? `<div style="width:${isMobile?32:38}px;height:${isMobile?32:38}px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-check" style="color:#fff;font-size:14px"></i></div>`
-          : `<div style="width:${isMobile?32:38}px;height:${isMobile?32:38}px;border-radius:${isMobile?8:10}px;background:${bg};display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${ic}" style="color:${ic_c};font-size:${isMobile?15:18}px"></i></div>`
-        }
-        <div style="flex:1;min-width:0">
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-            <span style="font-size:${isMobile?12.5:13.5}px;font-weight:${done?600:700};color:${done?'#16a34a':'#111827'}">${label}</span>
-            ${est?`<span style="font-size:10.5px;padding:1px 7px;border-radius:20px;background:${done?'#dcfce7':'#f3f4f6'};color:${done?'#16a34a':'#6b7280'};font-weight:600">${done?'Done':est}</span>`:''}
-          </div>
-          <div style="font-size:${isMobile?11:12}px;color:#9ca3af;margin-top:2px">${sublabel}</div>
-          ${unlock&&!done?`<div style="font-size:11px;color:#7c3aed;margin-top:3px;display:flex;align-items:center;gap:4px"><i class="ti ti-lock-open" style="font-size:10px"></i>Unlocks: ${unlock}</div>`:''}
-        </div>
-        ${!done&&cta&&!isMobile?`<button onclick="gotoPage('${page}')" style="padding:6px 16px;border:1.5px solid #d1d5db;border-radius:7px;background:#fff;color:#374151;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0" onmouseover="this.style.borderColor='#16a34a';this.style.color='#16a34a'" onmouseout="this.style.borderColor='#d1d5db';this.style.color='#374151'">${cta}</button>`:''}
-        ${!done&&isMobile?`<i class="ti ti-chevron-right" style="font-size:14px;color:#d1d5db;flex-shrink:0"></i>`:''}
       </div>`;
 
-    const section=(icon,color,bg,title,subtitle,rows)=>`
-      <div style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.04)">
-        <div style="padding:12px 18px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;background:${bg}">
-          <i class="ti ${icon}" style="font-size:16px;color:${color}"></i>
+    // ── 3 priority action cards ──
+    const priority=[TASKS[1],TASKS[2],TASKS[3]]; // products, delivery, payments
+    const priorityCards=`
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px">
+        ${priority.map((t,i)=>`
+          <div onclick="gotoPage('${t.page}')" style="background:#fff;border:1.5px solid ${Z.border};border-radius:14px;padding:20px;cursor:pointer;transition:all .15s;font-family:${Z.bFont}"
+            onmouseover="this.style.borderColor='${Z.primary}';this.style.boxShadow='0 4px 20px rgba(52,130,18,.1)'"
+            onmouseout="this.style.borderColor='${Z.border}';this.style.boxShadow='none'">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div style="width:42px;height:42px;border-radius:11px;background:${t.bg};display:flex;align-items:center;justify-content:center">
+                <i class="ti ${t.ic}" style="font-size:20px;color:${t.c}"></i>
+              </div>
+              <span style="font-size:10.5px;font-weight:700;color:${Z.muted};background:${Z.surface};padding:3px 10px;border-radius:20px;border:1px solid ${Z.border}">${t.est}</span>
+            </div>
+            <div style="font-size:14px;font-weight:700;color:${Z.text};margin-bottom:5px;font-family:${Z.hFont}">${t.label}</div>
+            <div style="font-size:12.5px;color:${Z.muted};line-height:1.5;margin-bottom:16px">${t.sub}</div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:${Z.primary}">
+              ${t.cta} <i class="ti ti-arrow-right" style="font-size:13px"></i>
+            </div>
+          </div>`).join('')}
+      </div>`;
+
+    // ── Full setup checklist ──
+    const checklist=`
+      <div style="background:#fff;border:1px solid ${Z.border};border-radius:14px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.04);font-family:${Z.bFont}">
+        <div style="padding:16px 22px;border-bottom:1px solid ${Z.border};display:flex;align-items:center;justify-content:space-between">
           <div>
-            <div style="font-size:13px;font-weight:700;color:${color}">${title}</div>
-            <div style="font-size:11.5px;color:#9ca3af">${subtitle}</div>
+            <div style="font-size:14px;font-weight:700;color:${Z.text};font-family:${Z.hFont}">Full Setup Checklist</div>
+            <div style="font-size:12px;color:${Z.muted};margin-top:2px">${TOTAL - DONE_N} tasks remaining · ~30 min total</div>
           </div>
+          <span style="font-size:13px;font-weight:800;color:${Z.primary};background:${Z.green50};padding:5px 14px;border-radius:20px;border:1.5px solid ${Z.green200}">${PCT}%</span>
         </div>
-        ${rows}
+        ${TASKS.map(t=>`
+          <div style="display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid ${Z.border};${t.done?'background:'+Z.green50:''}"
+            onmouseover="this.style.background='${t.done?Z.green50:'#fafaf9'}'" onmouseout="this.style.background='${t.done?Z.green50:''}'">
+            <div style="width:36px;height:36px;border-radius:${t.done?'50%':'10px'};background:${t.done?Z.primary:t.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ti ${t.done?'ti-check':t.ic}" style="font-size:${t.done?14:17}px;color:${t.done?'#fff':t.c}"></i>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13.5px;font-weight:${t.done?600:700};color:${t.done?Z.muted:Z.text};${t.done?'text-decoration:line-through':''};font-family:${Z.hFont}">${t.label}</div>
+              <div style="font-size:12px;color:${Z.muted};margin-top:2px">${t.sub}</div>
+            </div>
+            <div style="flex-shrink:0;display:flex;align-items:center;gap:10px">
+              <span style="font-size:11px;color:${Z.muted};white-space:nowrap">${t.done?'Completed':t.est}</span>
+              ${t.done
+                ?`<span style="display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;color:${Z.dark};background:${Z.green100};padding:4px 12px;border-radius:20px"><i class="ti ti-check" style="font-size:10px"></i>Done</span>`
+                :`<button onclick="gotoPage('${t.page}')" style="padding:7px 16px;background:${Z.text};color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:${Z.bFont};white-space:nowrap">${t.cta}</button>`
+              }
+            </div>
+          </div>`).join('')}
       </div>`;
 
-    const criticalRows=
-      taskRow(1,'ti-building-store','#dbeafe','#1d4ed8','Store Identity','Name · Logo · Domain · Contact','5 min','Set Up','myaccount',false,'Branded storefront for customers')+
-      taskRow(2,'ti-packages','#fff7ed','#ea580c','Product Catalogue','SKUs · Categories · Images · Prices','15–60 min','Add Products','inventory',false,'Customers can browse & buy')+
-      taskRow(3,'ti-credit-card','#f5f3ff','#7c3aed','Payment Gateway','Razorpay · UPI · COD','10 min','Configure','billing',false,'Accept real money from day one');
-
-    const operateRows=
-      taskRow(4,'ti-map-pin','#dcfce7','#16a34a','Delivery Zones & Slots','Pincodes · Fees · Express vs Scheduled','10 min','Setup Delivery','capacity',false,'Go hyperlocal — 30–60 min delivery')+
-      taskRow(5,'ti-message','#fce7f3','#be185d','SMS & Email Notifications','Order updates · OTP · Confirmations','5 min','Configure','myaccount',false,'Customers trust status updates')+
-      taskRow(6,'ti-users','#e0f2fe','#0284c7','Add Your Team','Pickers · Riders · Store Managers','5 min','Add Staff','staff',false,'Parallel operations from day one')+
-      taskRow(7,'ti-truck','#fff7ed','#ea580c','Logistics','Delivery zones & Google Maps API','','','' ,true,'');
-
-    const growRows=
-      taskRow(8,'ti-speakerphone','#ede9fe','#7c3aed','Launch Announcement','WhatsApp broadcast · SMS campaign to existing customers','','Create Campaign','campaigns',false,'Your first orders')+
-      taskRow(9,'ti-discount','#dcfce7','#16a34a','Welcome Offer','Give new shoppers a discount on their first order','','Create Offer','offers',false,'Converts first-time visitors')+
-      taskRow(10,'ti-device-mobile','#fef9c3','#ca8a04','Mobile App & Website','Customise your homepage banners and app theme','','Customise','web-sched',false,'Brand experience customers remember');
-
-    const tasksHtml=
-      section('ti-alert-circle','#dc2626','#fff5f5','🔴 Launch Critical — Complete before going live','3 steps · ~75 min',criticalRows)+
-      section('ti-clock','#d97706','#fffbeb','🟡 Operate — Complete in your first week','4 steps · ~20 min',operateRows)+
-      section('ti-trending-up','#16a34a','#f0fdf4','🟢 Grow — Maximise revenue once live','3 steps · ongoing',growRows);
-
-    // ── What you unlock card ──
-    const unlockCard=`<div style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;padding:18px 20px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.04)">
-      <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:14px">What you unlock when live 🚀</div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
-        ${[
-          ['ti-shopping-bag','#dbeafe','#1d4ed8','Online Orders','24/7, no phone calls'],
-          ['ti-truck','#dcfce7','#16a34a','Quick Delivery','30–60 min hyperlocal'],
-          ['ti-chart-line','#f5f3ff','#7c3aed','Live Analytics','Revenue & fill rate'],
-          ['ti-users','#fff7ed','#ea580c','Customer Base','Loyalty & repeat orders'],
-        ].map(([ic,bg,c,t,s])=>`<div style="padding:14px;background:${bg};border-radius:10px;text-align:center">
-          <i class="ti ${ic}" style="font-size:22px;color:${c};display:block;margin-bottom:7px"></i>
-          <div style="font-size:12.5px;font-weight:700;color:#111827;margin-bottom:2px">${t}</div>
-          <div style="font-size:11px;color:#6b7280">${s}</div>
-        </div>`).join('')}
-      </div>
-    </div>`;
-
-    scroll.innerHTML=`<div style="padding:${isMobile?'10px 10px 20px':'16px 20px 24px'}">${readinessBanner}${quickStart}${tasksHtml}${unlockCard}</div>`;
+    scroll.innerHTML=`<div style="padding:20px 24px 32px;font-family:${Z.bFont}">${hero}${priorityCards}${checklist}</div>`;
     return;
   }
   // ── END EMPTY STATE ────────────────────────────────────────────────
