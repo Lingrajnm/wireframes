@@ -554,20 +554,12 @@ body.mobile #hdrSearchBar{overflow-x:auto}
     <div class="toggle" id="mobileToggle"></div>
     <span class="toggle-lbl" id="mobileLbl">Desktop View</span>
   </div>
-</div>
-
-<!-- ── WIREFRAME BANNER ── -->
-<div style="position:fixed;top:0;left:0;right:0;z-index:3000;background:#0f172a;border-bottom:1px solid #1e293b;height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:16px">
-  <div style="display:flex;align-items:center;gap:10px">
-    <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;background:rgba(251,191,36,.15);color:#fbbf24;padding:3px 10px;border-radius:20px;border:1px solid rgba(251,191,36,.3);letter-spacing:.04em"><i class="ti ti-eye" style="font-size:11px"></i>WIREFRAME PREVIEW</span>
-    <span style="font-size:12px;color:#64748b">Not part of the product</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:3px;background:#1e293b;border:1px solid #334155;border-radius:9px;padding:3px">
-    <button id="wfBtnLive" onclick="wfToggle('live')" style="padding:5px 18px;border-radius:7px;border:none;font-size:12.5px;font-weight:700;cursor:pointer;background:#fff;color:#0f172a;transition:all .15s">Live</button>
-    <button id="wfBtnOB" onclick="wfToggle('onboarding')" style="padding:5px 18px;border-radius:7px;border:none;font-size:12.5px;font-weight:600;cursor:pointer;background:transparent;color:#64748b;transition:all .15s">Onboarding</button>
+  <div class="ctrl-sep"></div>
+  <div style="display:flex;align-items:center;gap:3px;background:rgba(0,0,0,.3);border:1px solid rgba(167,139,250,.3);border-radius:8px;padding:3px;margin-left:auto">
+    <button id="wfBtnLive" onclick="wfToggle('live')" style="padding:4px 14px;border-radius:6px;border:none;font-size:11px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.95);color:#2e1065;transition:all .15s">Live</button>
+    <button id="wfBtnOB" onclick="wfToggle('onboarding')" style="padding:4px 14px;border-radius:6px;border:none;font-size:11px;font-weight:600;cursor:pointer;background:transparent;color:rgba(167,139,250,.6);transition:all .15s">Onboard</button>
   </div>
 </div>
-<div style="height:40px"></div>
 
 <!-- ── SHELL ── -->
 <div class="app">
@@ -6171,12 +6163,12 @@ window.wfToggle=mode=>{
   const bl=document.getElementById('wfBtnLive'),bo=document.getElementById('wfBtnOB');
   if(!bl||!bo) return;
   if(mode==='onboarding'){
-    bl.style.background='transparent';bl.style.color='#64748b';bl.style.fontWeight='600';
-    bo.style.background='#16a34a';bo.style.color='#fff';bo.style.fontWeight='700';
+    bl.style.background='transparent';bl.style.color='rgba(167,139,250,.6)';bl.style.fontWeight='600';
+    bo.style.background='rgba(167,139,250,.9)';bo.style.color='#2e1065';bo.style.fontWeight='700';
     launchOB();
   } else {
-    bl.style.background='#fff';bl.style.color='#0f172a';bl.style.fontWeight='700';
-    bo.style.background='transparent';bo.style.color='#64748b';bo.style.fontWeight='600';
+    bl.style.background='rgba(255,255,255,.95)';bl.style.color='#2e1065';bl.style.fontWeight='700';
+    bo.style.background='transparent';bo.style.color='rgba(167,139,250,.6)';bo.style.fontWeight='600';
     const e=document.getElementById('obOverlay');if(e)e.remove();obMode=false;
   }
 };
