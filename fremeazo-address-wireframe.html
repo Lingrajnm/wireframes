@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fremeazo — Header + Address/Pickup Popup Wireframe</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; background: #f4f3ee; color: #222; }
+  .wire-tag { font-size: 10px; letter-spacing: .5px; text-transform: uppercase; color: #b32b23; background: #fdeceb; border: 1px dashed #e0342a; padding: 2px 6px; border-radius: 3px; }
+
+  /* ===== Top contact bar ===== */
+  .topbar { background: #b32b23; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: space-between; padding: 6px 24px; }
+  .topbar .left, .topbar .right { display: flex; align-items: center; gap: 16px; }
+
+  /* ===== Main header ===== */
+  .header { background: #fff; display: flex; align-items: center; gap: 20px; padding: 14px 24px; border-bottom: 1px solid #eee; }
+  .logo { font-size: 26px; font-weight: 800; color: #e0342a; white-space: nowrap; }
+  .addr-select { display: flex; align-items: center; gap: 8px; border: 1px solid #e0342a; border-radius: 10px; padding: 8px 12px; cursor: pointer; min-width: 260px; background: #fff; }
+  .addr-select:hover { background: #fdeceb; }
+  .addr-select .pin { color: #e0342a; font-size: 16px; }
+  .addr-select .txt { font-size: 13px; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
+  .addr-select .chev { color: #999; margin-left: auto; }
+  .search { flex: 1; display: flex; align-items: center; background: #f2f2f2; border-radius: 10px; padding: 10px 14px; color: #999; font-size: 14px; }
+  .icons { display: flex; align-items: center; gap: 22px; font-size: 20px; color: #333; }
+  .cart-btn { background: #e0342a; color: #fff; border-radius: 10px; padding: 10px 18px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; position: relative; }
+  .cart-badge { position: absolute; top: -8px; right: -8px; background: #2f9e44; color: #fff; font-size: 11px; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; }
+
+  /* ===== Category nav ===== */
+  .catnav { display: flex; gap: 34px; padding: 14px 24px; background: #fff; border-bottom: 1px solid #eee; font-size: 14px; font-weight: 600; }
+  .catnav span { display: flex; align-items: center; gap: 6px; color: #333; }
+
+  /* ===== Scenario preview buttons ===== */
+  .scenario-bar { margin: 22px 24px 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .scenario-bar .lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #999; }
+  .scenario-btn { background: #fff; border: 1.5px solid #e0342a; color: #b32b23; font-weight: 700; font-size: 13px; padding: 10px 18px; border-radius: 10px; cursor: pointer; }
+  .scenario-btn:hover { background: #fdeceb; }
+
+  /* ===== Placeholder page body ===== */
+  .placeholder-hero { margin: 24px; height: 220px; background: repeating-linear-gradient(45deg, #ececec, #ececec 10px, #e2e2e2 10px, #e2e2e2 20px); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 13px; }
+  .placeholder-strip { margin: 0 24px 24px; display: flex; gap: 16px; }
+  .placeholder-strip div { flex: 1; height: 60px; background: #eee; border-radius: 8px; }
+
+  /* ===== Modal overlay ===== */
+  .overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,.45); align-items: center; justify-content: center; z-index: 50; padding: 40px 0; }
+  .overlay.show { display: flex; }
+  .modal { width: 960px; max-width: 92vw; background: #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.25); display: flex; flex-direction: column; }
+
+  /* header — one line: icon+title, order-type pills (optional), close */
+  .modal-header { background: #e0554a; color: #fff; padding: 18px 26px; flex-shrink: 0; }
+  .title-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+  .modal-header .title { display: flex; align-items: center; gap: 12px; font-size: 19px; font-weight: 700; flex-shrink: 0; white-space: nowrap; }
+  .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .modal-header .close { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 17px; flex-shrink: 0; margin-left: auto; }
+
+  .modal-tabs-red { display: flex; gap: 10px; flex: 1; max-width: 400px; margin: 0 12px; }
+  .radio-option-red { flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; background: rgba(255,255,255,.15); border: 1.5px solid rgba(255,255,255,.4); border-radius: 10px; padding: 9px 10px; cursor: pointer; font-size: 13px; font-weight: 700; color: #fff; white-space: nowrap; }
+  .radio-option-red input { display: none; }
+  .radio-option-red .radio-dot { width: 13px; height: 13px; border-radius: 50%; border: 2px solid rgba(255,255,255,.7); flex-shrink: 0; position: relative; }
+  .radio-option-red.active { background: #fff; border-color: #fff; color: #b32b23; }
+  .radio-option-red.active .radio-dot { border-color: #b32b23; }
+  .radio-option-red.active .radio-dot::after { content: ""; position: absolute; inset: 2px; border-radius: 50%; background: #b32b23; }
+
+  .modal-body { display: flex; height: 520px; }
+  .modal-left, .modal-right { padding: 22px 26px; overflow-y: auto; display: flex; flex-direction: column; }
+  .modal-left { flex: 1; border-right: 1px solid #f0efe9; }
+  .modal-right { flex: 1.15; }
+  .modal-right h4 { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+  .modal-right .hint { font-size: 12.5px; color: #999; margin-bottom: 10px; }
+
+  #left-delivery, #left-pickup, #right-delivery, #right-pickup { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  [data-role="addr-grid-view"], [data-role="addr-form-view"] { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  [data-role="addr-form-view"] .save-btn { margin-top: auto; }
+  [data-role="addr-grid-view"] [data-role="addr-grid"] { flex: 1; min-height: 0; }
+
+  .field { background: #f5f4ef; border: 1px solid #e5e3da; border-radius: 12px; padding: 15px 18px; font-size: 14.5px; color: #444; margin-bottom: 14px; }
+  .field.ph { color: #a7a59e; }
+  .field-label { font-size: 10.5px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: .4px; margin: 0 0 4px 2px; }
+  .save-btn { width: 100%; background: #e0342a; color: #fff; border: none; border-radius: 14px; padding: 13px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 4px; }
+
+  .back-link { font-size: 13px; font-weight: 700; color: #e0342a; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+
+  /* "save address as" type pills */
+  .addrtype-row { display: flex; gap: 6px; margin-bottom: 10px; }
+  .addrtype-pill { flex: 1; display: flex; align-items: center; gap: 6px; border: 1.5px solid #e5e3da; border-radius: 10px; padding: 6px 8px; cursor: pointer; font-size: 12px; font-weight: 700; color: #333; }
+  .addrtype-pill .ic { width: 15px; height: 15px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 9px; flex-shrink: 0; }
+  .addrtype-pill.active { border-color: #e0342a; background: #fdeceb; color: #b32b23; }
+
+  /* "use current location" dashed pill */
+  .current-loc { display: flex; align-items: center; gap: 14px; border: 1.5px dashed #d8d5cb; border-radius: 14px; padding: 16px 18px; cursor: pointer; margin-bottom: 18px; }
+  .current-loc .dot { width: 36px; height: 36px; border-radius: 50%; background: #e7f5ec; color: #2f9e44; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .current-loc span.lbl { font-size: 15px; font-weight: 700; color: #222; }
+
+  .or-divider { display: flex; align-items: center; gap: 14px; color: #b3b1a8; font-size: 13px; margin-bottom: 18px; }
+  .or-divider .line { flex: 1; height: 1px; background: #e5e3da; }
+
+  .search-field { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #f5f4ef; border-radius: 14px; padding: 14px 18px; font-size: 14px; color: #333; margin-bottom: 14px; cursor: pointer; }
+  .search-field .x { color: #b3b1a8; font-size: 15px; cursor: pointer; flex-shrink: 0; }
+
+  .map-box, .map-full, .store-map {
+      background-color: #f2f0ea;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' fill='%23f2f0ea'/%3E%3Cpath d='M0 70 Q120 15 260 45 Q400 65 500 35' stroke='%23c9c6ba' stroke-width='9' fill='none'/%3E%3Cpath d='M55 30 Q150 110 133 215 Q118 300 45 325 L18 325 L18 10 Z' fill='%23a9d8e6' stroke='%2390c4d6' stroke-width='2'/%3E%3Ctext x='48' y='150' font-family='Arial' font-size='13' fill='%235f8fa6' font-weight='bold'%3ELake%3C/text%3E%3Crect x='150' y='0' width='7' height='500' fill='%23fbfaf6'/%3E%3Crect x='330' y='0' width='6' height='500' fill='%23fbfaf6'/%3E%3Crect x='0' y='190' width='500' height='6' fill='%23fbfaf6'/%3E%3Crect x='0' y='340' width='500' height='5' fill='%23fbfaf6'/%3E%3Crect x='60' y='60' width='60' height='45' fill='%23dfe6d3'/%3E%3Crect x='380' y='250' width='70' height='55' fill='%23dfe6d3'/%3E%3Ccircle cx='420' cy='430' r='55' fill='%23cfe3c9'/%3E%3Ctext x='168' y='222' font-family='Arial' font-size='13' fill='%238a8a86' font-weight='bold' letter-spacing='1'%3ESECTOR 4%3C/text%3E%3Ctext x='345' y='148' font-family='Arial' font-size='13' fill='%238a8a86' font-weight='bold' letter-spacing='1'%3E1ST SECTOR%3C/text%3E%3Ctext x='185' y='300' font-family='Arial' font-size='15' fill='%2355554f' font-weight='bold' letter-spacing='1'%3EHSR LAYOUT%3C/text%3E%3C/svg%3E");
+      background-size: cover;
+      background-position: center;
+  }
+  .map-box { height: 190px; border-radius: 14px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .map-pin { display: inline-block; width: 24px; height: 30px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23e0342a' d='M12 2C7.6 2 4 5.6 4 10c0 5.2 6.4 11.1 7.3 11.9.4.3 1 .3 1.4 0C13.6 21.1 20 15.2 20 10c0-4.4-3.6-8-8-8z'/%3E%3Ccircle cx='12' cy='10' r='3.2' fill='%23fff'/%3E%3C/svg%3E"); background-size: contain; background-repeat: no-repeat; filter: drop-shadow(0 2px 3px rgba(0,0,0,.25)); }
+  .map-current-pill { position: absolute; left: 12px; bottom: 86px; background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.15); border-radius: 24px; padding: 6px 16px 6px 6px; font-size: 12.5px; color: #1f8a3d; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .map-current-pill .ic { width: 26px; height: 26px; border-radius: 50%; background: #e7f5ec; color: #2f9e44; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+
+  /* full immersive map (delivery) with floating search + bottom "delivering to" card, blinkit-style */
+  .map-full { position: relative; flex: 1; min-height: 260px; border-radius: 14px; overflow: hidden; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .map-search-overlay { position: absolute; top: 14px; left: 14px; right: 14px; background: #fff; border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: #333; box-shadow: 0 4px 14px rgba(0,0,0,.15); }
+  .map-search-overlay .x { margin-left: auto; color: #b3b1a8; cursor: pointer; }
+  .deliver-to-bar { position: absolute; left: 12px; right: 12px; bottom: 12px; background: #fff; border: 1px solid #e5e3da; border-radius: 12px; padding: 11px 14px; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 14px rgba(0,0,0,.12); }
+  .deliver-to-bar .dot { width: 28px; height: 28px; border-radius: 50%; background: #fdeceb; color: #e0342a; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+  .deliver-to-bar b { display: block; font-size: 13.5px; }
+  .deliver-to-bar span { font-size: 11.5px; color: #888; }
+
+  /* store map with multiple pins */
+  .store-map { flex: 1; min-height: 260px; cursor: default; border-radius: 14px; position: relative; }
+  .map-store-pin { position: absolute; display: inline-block; width: 18px; height: 23px; transform: translate(-50%,-100%); transition: width .15s, height .15s; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23a9a79e' d='M12 2C7.6 2 4 5.6 4 10c0 5.2 6.4 11.1 7.3 11.9.4.3 1 .3 1.4 0C13.6 21.1 20 15.2 20 10c0-4.4-3.6-8-8-8z'/%3E%3Ccircle cx='12' cy='10' r='3.2' fill='%23fff'/%3E%3C/svg%3E"); background-size: contain; background-repeat: no-repeat; }
+  .map-store-pin.active { width: 28px; height: 35px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23e0342a' d='M12 2C7.6 2 4 5.6 4 10c0 5.2 6.4 11.1 7.3 11.9.4.3 1 .3 1.4 0C13.6 21.1 20 15.2 20 10c0-4.4-3.6-8-8-8z'/%3E%3Ccircle cx='12' cy='10' r='3.2' fill='%23fff'/%3E%3C/svg%3E"); filter: drop-shadow(0 2px 3px rgba(0,0,0,.25)); }
+  .map-you { position: absolute; top: 50%; left: 50%; width: 12px; height: 12px; border-radius: 50%; background: #378ADD; box-shadow: 0 0 0 6px rgba(55,138,221,.22); transform: translate(-50%,-50%); }
+
+  /* saved addresses — 3-col grid with pager */
+  .section-label { font-size: 12px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 12px; }
+  .addr-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 10px; }
+  .addr-grid-card { background: #f5f4ef; border-radius: 12px; padding: 11px 12px; cursor: pointer; box-shadow: inset 0 0 0 1.5px transparent; display: flex; flex-direction: column; justify-content: flex-start; }
+  .addr-grid-card.selected { background: #fdeceb; box-shadow: inset 0 0 0 1.5px #e0342a; }
+  .addr-type-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+  .addr-type-icon { width: 24px; height: 24px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+  .addr-type-label { font-size: 12px; font-weight: 700; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .addr-grid-card.selected .addr-type-label { color: #b32b23; }
+  .addr-grid-text { font-size: 10.5px; color: #777; line-height: 1.5; }
+  .addr-grid-card.selected .addr-grid-text { color: #7a2119; }
+
+  .addr-pager { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 14px 0; }
+  .pager-btn { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid #e5e3da; background: #fff; color: #b32b23; font-size: 15px; cursor: pointer; }
+  .pager-info { font-size: 12px; color: #999; font-weight: 700; }
+
+  /* pickup store rows */
+  .store-row-list { display: flex; flex-direction: column; gap: 10px; flex: 1; min-height: 0; max-height: none; overflow: auto; margin-bottom: 14px; }
+  .store-row { display: flex; align-items: flex-start; gap: 12px; background: #f5f4ef; border-radius: 14px; padding: 14px 16px; cursor: pointer; }
+  .store-row.selected { background: #fdeceb; box-shadow: inset 0 0 0 1.5px #e0342a; }
+  .store-radio { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #ccc; flex-shrink: 0; margin-top: 2px; position: relative; }
+  .store-radio.on { border-color: #e0342a; }
+  .store-radio.on::after { content: ""; position: absolute; inset: 2px; border-radius: 50%; background: #e0342a; }
+  .store-row-body { flex: 1; min-width: 0; }
+  .store-row-name { font-size: 14px; font-weight: 700; color: #333; margin-bottom: 2px; }
+  .store-row-addr { font-size: 11.5px; color: #888; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+  .store-row-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+  .store-row-dist { font-size: 12px; font-weight: 700; color: #b32b23; white-space: nowrap; }
+  .store-row-nav { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #e0342a; color: #b32b23; display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; }
+
+  .skip-footer { text-align: center; padding: 16px 24px 22px; font-size: 13px; color: #999; border-top: 1px solid #f0efe9; flex-shrink: 0; }
+  .skip-footer b { color: #333; text-decoration: underline; cursor: pointer; }
+
+  .hide { display: none !important; }
+
+  /* ===== Mobile web preview ===== */
+  .mobile-frame { width: 380px; height: 760px; margin: 20px auto 40px; border: 10px solid #1c1c1e; border-radius: 44px; position: relative; overflow: hidden; background: #fff; box-shadow: 0 20px 50px rgba(0,0,0,.22); }
+  .mobile-screen { position: absolute; inset: 0; overflow-y: auto; background: #fff; }
+  .mobile-topbar { background: #b32b23; color: #fff; font-size: 10px; padding: 6px 14px; text-align: center; }
+  .mobile-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid #eee; }
+  .mobile-header .logo { font-size: 18px; font-weight: 800; color: #e0342a; white-space: nowrap; }
+  .mobile-addr { flex: 1; display: flex; align-items: center; gap: 6px; border: 1px solid #e0342a; border-radius: 8px; padding: 8px 10px; font-size: 11px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; cursor: pointer; }
+  .mobile-icons { display: flex; gap: 10px; font-size: 15px; }
+  .mobile-search { margin: 10px 14px; background: #f2f2f2; border-radius: 8px; padding: 9px 12px; font-size: 12px; color: #999; }
+  .mobile-catnav { display: flex; gap: 14px; overflow-x: auto; padding: 4px 14px 12px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .mobile-hero { margin: 0 14px 14px; height: 110px; border-radius: 10px; background: repeating-linear-gradient(45deg, #ececec, #ececec 8px, #e2e2e2 8px, #e2e2e2 16px); }
+
+  .mobile-frame .overlay { padding: 0; align-items: stretch; justify-content: stretch; border-radius: inherit; }
+  .mobile-frame .modal { width: 100%; height: 100%; max-width: none; border-radius: 0; box-shadow: none; }
+  .mobile-frame .modal-body { flex-direction: column; height: auto; flex: 1; overflow-y: auto; }
+  .mobile-frame .modal-left { border-right: none; border-bottom: 1px solid #f0efe9; }
+  .mobile-frame .modal-left, .mobile-frame .modal-right { padding: 16px 18px; overflow-y: visible; }
+  .mobile-frame .addr-grid { grid-template-columns: repeat(2, 1fr); min-height: 0; }
+  .mobile-frame .store-map, .mobile-frame .map-box { height: 140px; }
+  .mobile-frame .map-full { height: 220px; flex: none; min-height: 0; }
+  .mobile-frame .map-current-pill { bottom: 76px; }
+  .mobile-frame .title-row { flex-wrap: wrap; gap: 10px; }
+  .mobile-frame .modal-header .title { font-size: 15px; }
+  .mobile-frame .modal-tabs-red { max-width: none; flex-basis: 100%; margin: 0; order: 3; }
+  .mobile-frame .radio-option-red { font-size: 12px; padding: 8px; }
+  .mobile-frame .close { margin-left: 0; }
+  .mobile-frame .skip-footer { padding: 12px 18px 16px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="left"><span>&#9742; +91 8088467551</span><span>&#9993; wecare@fremeazo.com</span></div>
+  <div class="right"><span>Flat 20% OFF on First Order! Use Code: WELCOME20</span></div>
+</div>
+
+<div class="header">
+  <div class="logo">Fremeazo</div>
+  <div class="addr-select" onclick="openModal('overlay')">
+    <span class="pin">&#128205;</span>
+    <span class="txt" id="header-addr-txt">1484, 11th Cross Rd, Vanganahalli...</span>
+    <span class="chev">&#9662;</span>
+  </div>
+  <div class="search">&#128269;&nbsp; Search for...</div>
+  <div class="icons">
+    <span>&#128276;</span>
+    <span>&#128100;</span>
+    <div class="cart-btn">&#128092; Cart <span class="cart-badge">3</span></div>
+  </div>
+</div>
+
+<div class="catnav">
+  <span>&#128031; Sea Fish</span>
+  <span>&#128020; Chicken</span>
+  <span>&#129424; Prawns &amp; Crab</span>
+  <span>&#128031; River Fish</span>
+  <span>&#129388; Crispy Delights</span>
+  <span>&#129408; Exotic &amp; Premium</span>
+</div>
+
+<div class="scenario-bar">
+  <span class="lbl">Desktop web scenarios:</span>
+  <button class="scenario-btn" onclick="openModal('overlay')">Delivery + Pickup (both enabled)</button>
+  <button class="scenario-btn" onclick="openModal('overlay-delivery')">Delivery only</button>
+  <button class="scenario-btn" onclick="openModal('overlay-pickup')">Pickup only</button>
+</div>
+
+<div class="placeholder-hero">page content placeholder — hero banner</div>
+<div class="placeholder-strip"><div></div><div></div><div></div><div></div></div>
+
+<!-- ===================== MODAL 1: BOTH DELIVERY + PICKUP (desktop) ===================== -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="title-row">
+        <div class="title"><span class="icon-circle"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9l-8 4.5l-8 -4.5v-9z"></path><path d="M12 12l8 -4.5"></path><path d="M12 12v9"></path><path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path></svg></span><span>Select your order type</span></div>
+        <div class="modal-tabs-red">
+          <label class="radio-option-red active" id="tab-delivery">
+            <input type="radio" name="ordertype" value="delivery" checked onchange="setMode('delivery')">
+            <span class="radio-dot"></span><span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:2px;"><rect x="1" y="4" width="14" height="12"></rect><path d="M15 8h4l3 3v5h-7z"></path><circle cx="5.5" cy="18" r="2"></circle><circle cx="17.5" cy="18" r="2"></circle></svg> Delivery</span>
+          </label>
+          <label class="radio-option-red" id="tab-pickup">
+            <input type="radio" name="ordertype" value="pickup" onchange="setMode('pickup')">
+            <span class="radio-dot"></span><span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:2px;"><path d="M17 10l-2 -6"></path><path d="M7 10l2 -6"></path><path d="M3 10l1.4 10.4a2 2 0 0 0 2 1.6h11.2a2 2 0 0 0 2 -1.6l1.4 -10.4z"></path><path d="M3 10h18"></path><path d="M12 14v3"></path><path d="M9 14l1 3"></path><path d="M15 14l-1 3"></path></svg> Pickup</span>
+          </label>
+        </div>
+        <span class="close" onclick="closeModal('overlay')">&times;</span>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-left">
+        <div id="left-delivery">
+          <div class="map-full" data-role="trigger-addr-form">
+            <div class="map-search-overlay"><span>&#128269;</span><span>Search for area, street name...</span><span class="x" data-role="stop">&times;</span></div>
+            <span class="map-pin"></span>
+            <span class="map-current-pill"><span class="ic">&#8982;</span>Go to current location</span>
+            <div class="deliver-to-bar"><span class="dot">&#128205;</span><div><b>Vanganahalli</b><span>1st Sector, HSR Layout, Bengaluru</span></div></div>
+          </div>
+        </div>
+        <div id="left-pickup" class="hide">
+          <div class="section-label">Store locations</div>
+          <div class="map-box store-map">
+            <span class="map-store-pin" data-role="store-pin" data-store="hsr" style="top:38%;left:32%;"></span>
+            <span class="map-store-pin" data-role="store-pin" data-store="kora" style="top:62%;left:66%;"></span>
+            <span class="map-store-pin" data-role="store-pin" data-store="btm" style="top:78%;left:24%;"></span>
+            <span class="map-store-pin" data-role="store-pin" data-store="indira" style="top:18%;left:72%;"></span>
+            <span class="map-you" title="You are here"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-right">
+        <div id="right-delivery">
+          <div data-role="addr-grid-view">
+            <h4>Saved addresses</h4>
+            <div class="hint">Select an address to deliver to</div>
+            <div class="addr-grid" data-role="addr-grid"></div>
+            <div class="addr-pager">
+              <button class="pager-btn" data-role="addr-prev">&#8249;</button>
+              <span class="pager-info" data-role="addr-page-info">1 / 2</span>
+              <button class="pager-btn" data-role="addr-next">&#8250;</button>
+            </div>
+            <button class="save-btn">Deliver Here</button>
+          </div>
+          <div data-role="addr-form-view" class="hide">
+            <div class="back-link" data-role="back-to-grid">&#8592; Back to saved addresses</div>
+            <div class="field-label">Save address as *</div>
+            <div class="addrtype-row" data-role="addrtype-row">
+              <div class="addrtype-pill active"><span class="ic">&#127968;</span>Home</div>
+              <div class="addrtype-pill"><span class="ic">&#127970;</span>Work</div>
+              <div class="addrtype-pill"><span class="ic">&#127976;</span>Hotel</div>
+              <div class="addrtype-pill"><span class="ic">&#128205;</span>Other</div>
+            </div>
+            <div class="field ph">Flat / House no / Building name *</div>
+            <div class="field ph">Floor (optional)</div>
+            <div class="field ph">Nearby landmark (optional)</div>
+            <div class="field-label">Your name *</div>
+            <div class="field">Lingraj</div>
+            <div class="field-label">Your phone number (optional)</div>
+            <div class="field">9060899997</div>
+            <button class="save-btn">Save &amp; Continue</button>
+          </div>
+        </div>
+
+        <div id="right-pickup" class="hide">
+          <h4>Nearby stores</h4>
+          <div class="hint">Select a store to pick up your order</div>
+          <div class="store-row-list" data-role="store-list"></div>
+          <button class="save-btn">Confirm Pickup Store</button>
+        </div>
+      </div>
+    </div>
+    <div class="skip-footer"><b>Skip for now</b> and Explore the site</div>
+  </div>
+</div>
+
+<!-- ===================== MODAL 2: DELIVERY ONLY (desktop) ===================== -->
+<div class="overlay" id="overlay-delivery">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="title-row">
+        <div class="title"><span class="icon-circle"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="14" height="12"></rect><path d="M15 8h4l3 3v5h-7z"></path><circle cx="5.5" cy="18" r="2"></circle><circle cx="17.5" cy="18" r="2"></circle></svg></span><span>Where should we deliver?</span></div>
+        <span class="close" onclick="closeModal('overlay-delivery')">&times;</span>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-left">
+        <div class="map-full" data-role="trigger-addr-form">
+          <div class="map-search-overlay"><span>&#128269;</span><span>Search for area, street name...</span><span class="x" data-role="stop">&times;</span></div>
+          <span class="map-pin"></span>
+          <span class="map-current-pill"><span class="ic">&#8982;</span>Go to current location</span>
+          <div class="deliver-to-bar"><span class="dot">&#128205;</span><div><b>Vanganahalli</b><span>1st Sector, HSR Layout, Bengaluru</span></div></div>
+        </div>
+      </div>
+      <div class="modal-right">
+        <div data-role="addr-grid-view">
+          <h4>Saved addresses</h4>
+          <div class="hint">Select an address to deliver to</div>
+          <div class="addr-grid" data-role="addr-grid"></div>
+          <div class="addr-pager">
+            <button class="pager-btn" data-role="addr-prev">&#8249;</button>
+            <span class="pager-info" data-role="addr-page-info">1 / 2</span>
+            <button class="pager-btn" data-role="addr-next">&#8250;</button>
+          </div>
+          <button class="save-btn">Deliver Here</button>
+        </div>
+        <div data-role="addr-form-view" class="hide">
+          <div class="back-link" data-role="back-to-grid">&#8592; Back to saved addresses</div>
+          <div class="field-label">Save address as *</div>
+          <div class="addrtype-row" data-role="addrtype-row">
+            <div class="addrtype-pill active"><span class="ic">&#127968;</span>Home</div>
+            <div class="addrtype-pill"><span class="ic">&#127970;</span>Work</div>
+            <div class="addrtype-pill"><span class="ic">&#127976;</span>Hotel</div>
+            <div class="addrtype-pill"><span class="ic">&#128205;</span>Other</div>
+          </div>
+          <div class="field ph">Flat / House no / Building name *</div>
+          <div class="field ph">Floor (optional)</div>
+          <div class="field ph">Nearby landmark (optional)</div>
+          <div class="field-label">Your name *</div>
+          <div class="field">Lingraj</div>
+          <div class="field-label">Your phone number (optional)</div>
+          <div class="field">9060899997</div>
+          <button class="save-btn">Save &amp; Continue</button>
+        </div>
+      </div>
+    </div>
+    <div class="skip-footer"><b>Skip for now</b> and Explore the site</div>
+  </div>
+</div>
+
+<!-- ===================== MODAL 3: PICKUP ONLY (desktop) ===================== -->
+<div class="overlay" id="overlay-pickup">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="title-row">
+        <div class="title"><span class="icon-circle"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 10l-2 -6"></path><path d="M7 10l2 -6"></path><path d="M3 10l1.4 10.4a2 2 0 0 0 2 1.6h11.2a2 2 0 0 0 2 -1.6l1.4 -10.4z"></path><path d="M3 10h18"></path><path d="M12 14v3"></path><path d="M9 14l1 3"></path><path d="M15 14l-1 3"></path></svg></span><span>Select a pickup store</span></div>
+        <span class="close" onclick="closeModal('overlay-pickup')">&times;</span>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-left">
+        <div class="section-label">Store locations</div>
+        <div class="map-box store-map">
+          <span class="map-store-pin" data-role="store-pin" data-store="hsr" style="top:38%;left:32%;"></span>
+          <span class="map-store-pin" data-role="store-pin" data-store="kora" style="top:62%;left:66%;"></span>
+          <span class="map-store-pin" data-role="store-pin" data-store="btm" style="top:78%;left:24%;"></span>
+          <span class="map-store-pin" data-role="store-pin" data-store="indira" style="top:18%;left:72%;"></span>
+          <span class="map-you" title="You are here"></span>
+        </div>
+      </div>
+      <div class="modal-right">
+        <h4>Nearby stores</h4>
+        <div class="hint">Select a store to pick up your order</div>
+        <div class="store-row-list" data-role="store-list"></div>
+        <button class="save-btn">Confirm Pickup Store</button>
+      </div>
+    </div>
+    <div class="skip-footer"><b>Skip for now</b> and Explore the site</div>
+  </div>
+</div>
+
+<div class="scenario-bar">
+  <span class="lbl">Mobile web scenarios:</span>
+  <button class="scenario-btn" onclick="openModal('overlay-m')">Delivery + Pickup (both enabled)</button>
+  <button class="scenario-btn" onclick="openModal('overlay-m-delivery')">Delivery only</button>
+  <button class="scenario-btn" onclick="openModal('overlay-m-pickup')">Pickup only</button>
+</div>
+
+<div class="mobile-frame">
+  <div class="mobile-screen">
+    <div class="mobile-topbar">Flat 20% OFF on First Order! Use Code: WELCOME20</div>
+    <div class="mobile-header">
+      <span style="font-size:18px;">&#9776;</span>
+      <div class="logo">Fremeazo</div>
+      <div class="mobile-icons"><span>&#128276;</span><span>&#128092;</span></div>
+    </div>
+    <div class="mobile-addr" onclick="openModal('overlay-m')">
+      <span style="color:#e0342a;">&#128205;</span>
+      <span id="mobile-header-addr-txt">1484, 11th Cross Rd, Vanganahalli...</span>
+    </div>
+    <div class="mobile-search">&#128269; Search for...</div>
+    <div class="mobile-catnav">
+      <span>&#128031; Sea Fish</span><span>&#128020; Chicken</span><span>&#129424; Prawns &amp; Crab</span><span>&#128031; River Fish</span><span>&#129388; Crispy Delights</span>
+    </div>
+    <div class="mobile-hero">page content placeholder</div>
+  </div>
+
+  <!-- MOBILE MODAL 1: BOTH -->
+  <div class="overlay" id="overlay-m">
+    <div class="modal mobile">
+      <div class="modal-header">
+        <div class="title-row">
+          <div class="title"><span class="icon-circle"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9l-8 4.5l-8 -4.5v-9z"></path><path d="M12 12l8 -4.5"></path><path d="M12 12v9"></path><path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path></svg></span><span>Select your order type</span></div>
+          <span class="close" onclick="closeModal('overlay-m')">&times;</span>
+          <div class="modal-tabs-red">
+            <label class="radio-option-red active" id="tab-delivery-m">
+              <input type="radio" name="ordertype-m" value="delivery" checked onchange="mobileSetMode('delivery')">
+              <span class="radio-dot"></span><span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:2px;"><rect x="1" y="4" width="14" height="12"></rect><path d="M15 8h4l3 3v5h-7z"></path><circle cx="5.5" cy="18" r="2"></circle><circle cx="17.5" cy="18" r="2"></circle></svg> Delivery</span>
+            </label>
+            <label class="radio-option-red" id="tab-pickup-m">
+              <input type="radio" name="ordertype-m" value="pickup" onchange="mobileSetMode('pickup')">
+              <span class="radio-dot"></span><span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:2px;"><path d="M17 10l-2 -6"></path><path d="M7 10l2 -6"></path><path d="M3 10l1.4 10.4a2 2 0 0 0 2 1.6h11.2a2 2 0 0 0 2 -1.6l1.4 -10.4z"></path><path d="M3 10h18"></path><path d="M12 14v3"></path><path d="M9 14l1 3"></path><path d="M15 14l-1 3"></path></svg> Pickup</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-left">
+          <div id="left-delivery-m">
+            <div class="map-full" data-role="trigger-addr-form">
+              <div class="map-search-overlay"><span>&#128269;</span><span>Search area, street...</span><span class="x" data-role="stop">&times;</span></div>
+              <span class="map-pin"></span>
+              <span class="map-current-pill"><span class="ic">&#8982;</span>Current location</span>
+              <div class="deliver-to-bar"><span class="dot">&#128205;</span><div><b>Vanganahalli</b><span>1st Sector, HSR Layout</span></div></div>
+            </div>
+          </div>
+          <div id="left-pickup-m" class="hide">
+            <div class="section-label">Store locations</div>
+            <div class="map-box store-map">
+              <span class="map-store-pin" data-role="store-pin" data-store="hsr" style="top:38%;left:32%;"></span>
+              <span class="map-store-pin" data-role="store-pin" data-store="kora" style="top:62%;left:66%;"></span>
+              <span class="map-store-pin" data-role="store-pin" data-store="btm" style="top:78%;left:24%;"></span>
+              <span class="map-store-pin" data-role="store-pin" data-store="indira" style="top:18%;left:72%;"></span>
+              <span class="map-you"></span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-right">
+          <div id="right-delivery-m">
+            <div data-role="addr-grid-view">
+              <h4>Saved addresses</h4>
+              <div class="hint">Select an address to deliver to</div>
+              <div class="addr-grid" data-role="addr-grid"></div>
+              <div class="addr-pager">
+                <button class="pager-btn" data-role="addr-prev">&#8249;</button>
+                <span class="pager-info" data-role="addr-page-info">1 / 2</span>
+                <button class="pager-btn" data-role="addr-next">&#8250;</button>
+              </div>
+              <button class="save-btn">Deliver Here</button>
+            </div>
+            <div data-role="addr-form-view" class="hide">
+              <div class="back-link" data-role="back-to-grid">&#8592; Back to saved addresses</div>
+                <div class="field-label">Save address as *</div>
+              <div class="addrtype-row" data-role="addrtype-row">
+                <div class="addrtype-pill active"><span class="ic">&#127968;</span>Home</div>
+                <div class="addrtype-pill"><span class="ic">&#127970;</span>Work</div>
+                <div class="addrtype-pill"><span class="ic">&#127976;</span>Hotel</div>
+                <div class="addrtype-pill"><span class="ic">&#128205;</span>Other</div>
+              </div>
+              <div class="field ph">Flat / House no / Building name *</div>
+              <div class="field ph">Floor (optional)</div>
+              <div class="field ph">Nearby landmark (optional)</div>
+              <div class="field-label">Your name *</div>
+              <div class="field">Lingraj</div>
+              <div class="field-label">Your phone number (optional)</div>
+              <div class="field">9060899997</div>
+              <button class="save-btn">Save &amp; Continue</button>
+            </div>
+          </div>
+          <div id="right-pickup-m" class="hide">
+            <h4>Nearby stores</h4>
+            <div class="hint">Select a store to pick up your order</div>
+            <div class="store-row-list" data-role="store-list"></div>
+            <button class="save-btn">Confirm Pickup Store</button>
+          </div>
+        </div>
+      </div>
+      <div class="skip-footer"><b>Skip for now</b> and Explore the site</div>
+    </div>
+  </div>
+
+  <!-- MOBILE MODAL 2: DELIVERY ONLY -->
+  <div class="overlay" id="overlay-m-delivery">
+    <div class="modal mobile">
+      <div class="modal-header">
+        <div class="title-row">
+          <div class="title"><span class="icon-circle"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="14" height="12"></rect><path d="M15 8h4l3 3v5h-7z"></path><circle cx="5.5" cy="18" r="2"></circle><circle cx="17.5" cy="18" r="2"></circle></svg></span><span>Where should we deliver?</span></div>
+          <span class="close" onclick="closeModal('overlay-m-delivery')">&times;</span>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-left">
+          <div class="map-full" data-role="trigger-addr-form">
+            <div class="map-search-overlay"><span>&#128269;</span><span>Search area, street...</span><span class="x" data-role="stop">&times;</span></div>
+            <span class="map-pin"></span>
+            <span class="map-current-pill"><span class="ic">&#8982;</span>Current location</span>
+            <div class="deliver-to-bar"><span class="dot">&#128205;</span><div><b>Vanganahalli</b><span>1st Sector, HSR Layout</span></div></div>
+          </div>
+        </div>
+        <div class="modal-right">
+          <div data-role="addr-grid-view">
+            <h4>Saved addresses</h4>
+            <div class="hint">Select an address to deliver to</div>
+            <div class="addr-grid" data-role="addr-grid"></div>
+            <div class="addr-pager">
+              <button class="pager-btn" data-role="addr-prev">&#8249;</button>
+              <span class="pager-info" data-role="addr-page-info">1 / 2</span>
+              <button class="pager-btn" data-role="addr-next">&#8250;</button>
+            </div>
+            <button class="save-btn">Deliver Here</button>
+          </div>
+          <div data-role="addr-form-view" class="hide">
+            <div class="back-link" data-role="back-to-grid">&#8592; Back to saved addresses</div>
+            <div class="field-label">Save address as *</div>
+            <div class="addrtype-row" data-role="addrtype-row">
+              <div class="addrtype-pill active"><span class="ic">&#127968;</span>Home</div>
+              <div class="addrtype-pill"><span class="ic">&#127970;</span>Work</div>
+              <div class="addrtype-pill"><span class="ic">&#127976;</span>Hotel</div>
+              <div class="addrtype-pill"><span class="ic">&#128205;</span>Other</div>
+            </div>
+            <div class="field ph">Flat / House no / Building name *</div>
+            <div class="field ph">Floor (optional)</div>
+            <div class="field ph">Nearby landmark (optional)</div>
+            <div class="field-label">Your name *</div>
+            <div class="field">Lingraj</div>
+            <div class="field-label">Your phone number (optional)</div>
+            <div class="field">9060899997</div>
+            <button class="save-btn">Save &amp; Continue</button>
+          </div>
+        </div>
+      </div>
+      <div class="skip-footer"><b>Skip for now</b> and Explore the site</div>
+    </div>
+  </div>
+
+  <!-- MOBILE MODAL 3: PICKUP ONLY -->
+  <div class="overlay" id="overlay-m-pickup">
+    <div class="modal mobile">
+      <div class="modal-header">
+        <div class="title-row">
+          <div class="title"><span class="icon-circle"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 10l-2 -6"></path><path d="M7 10l2 -6"></path><path d="M3 10l1.4 10.4a2 2 0 0 0 2 1.6h11.2a2 2 0 0 0 2 -1.6l1.4 -10.4z"></path><path d="M3 10h18"></path><path d="M12 14v3"></path><path d="M9 14l1 3"></path><path d="M15 14l-1 3"></path></svg></span><span>Select a pickup store</span></div>
+          <span class="close" onclick="closeModal('overlay-m-pickup')">&times;</span>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-left">
+          <div class="section-label">Store locations</div>
+          <div class="map-box store-map">
+            <span class="map-store-pin" data-role="store-pin" data-store="hsr" style="top:38%;left:32%;"></span>
+            <span class="map-store-pin" data-role="store-pin" data-store="kora" style="top:62%;left:66%;"></span>
+            <span class="map-store-pin" data-role="store-pin" data-store="btm" style="top:78%;left:24%;"></span>
+            <span class="map-store-pin" data-role="store-pin" data-store="indira" style="top:18%;left:72%;"></span>
+            <span class="map-you"></span>
+          </div>
+        </div>
+        <div class="modal-right">
+          <h4>Nearby stores</h4>
+          <div class="hint">Select a store to pick up your order</div>
+          <div class="store-row-list" data-role="store-list"></div>
+          <button class="save-btn">Confirm Pickup Store</button>
+        </div>
+      </div>
+      <div class="skip-footer"><b>Skip for now</b> and Explore the site</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var ADDRESSES = [
+    {icon:'&#127968;', label:'Home', text:'1484, 11th Cross Rd, Vanganahalli, 1st Sector, HSR Layout, Bengaluru, Karnataka 560102'},
+    {icon:'&#127970;', label:'Work', text:'3rd Floor, Prestige Tech Park, Sarjapur Road, Bengaluru, Karnataka 560103'},
+    {icon:'&#127976;', label:'Hotel', text:'221B, 5th Cross, Indiranagar, Bengaluru, Karnataka 560038'},
+    {icon:'&#128205;', label:'Other', text:'Block 2, Flat 7, 8th Main Rd, Jawaregowda Nagar, Bengaluru'},
+    {icon:'&#127970;', label:'Office 2', text:'5th Floor, RMZ Ecoworld, Bellandur, Bengaluru, Karnataka 560103'},
+    {icon:'&#128170;', label:'Gym', text:'Cult Fitness, 27th Main, HSR Layout, Bengaluru'},
+    {icon:'&#128106;', label:"Parents' Home", text:'45, 4th Cross, Jayanagar, Bengaluru, Karnataka 560011'},
+    {icon:'&#128101;', label:"Friend's Place", text:'12, Domlur Layout, Bengaluru, Karnataka 560071'},
+    {icon:'&#127969;', label:'Weekend Home', text:'Nandi Hills Road, Chikkaballapur, Karnataka 562101'}
+  ];
+  var ADDR_PAGE_SIZE = 6;
+
+  var STORES = [
+    {id:'hsr', name:'HSR Layout Store', addr:'1484, 11th Cross Rd, Vanganahalli, HSR Layout, Bengaluru', dist:'1.2 km'},
+    {id:'kora', name:'Koramangala Store', addr:'80 Ft Road, 4th Block, Koramangala, Bengaluru', dist:'3.8 km'},
+    {id:'btm', name:'BTM Layout Store', addr:'16th Main, 2nd Stage, BTM Layout, Bengaluru', dist:'5.4 km'},
+    {id:'indira', name:'Indiranagar Store', addr:'100 Ft Road, Indiranagar, Bengaluru', dist:'7.1 km'}
+  ];
+
+  function openModal(id){ document.getElementById(id).classList.add('show'); }
+  function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+
+  /* ---- reusable delivery (saved-address grid + inline add-address form) behaviour ---- */
+  function buildDeliveryAddressUI(root, onSelect){
+    var page = 0, selected = 0;
+    var gridEl = root.querySelector('[data-role="addr-grid"]');
+    var pageInfo = root.querySelector('[data-role="addr-page-info"]');
+    var prevBtn = root.querySelector('[data-role="addr-prev"]');
+    var nextBtn = root.querySelector('[data-role="addr-next"]');
+    var gridView = root.querySelector('[data-role="addr-grid-view"]');
+    var formView = root.querySelector('[data-role="addr-form-view"]');
+    var typeRow = root.querySelector('[data-role="addrtype-row"]');
+
+    function renderGrid(){
+      var start = page * ADDR_PAGE_SIZE;
+      var items = ADDRESSES.slice(start, start + ADDR_PAGE_SIZE);
+      gridEl.innerHTML = items.map(function(a, i){
+        var idx = start + i;
+        var sel = idx === selected ? ' selected' : '';
+        return '<div class="addr-grid-card' + sel + '" data-idx="' + idx + '">'
+          + '<div class="addr-type-row"><span class="addr-type-icon">' + a.icon + '</span><span class="addr-type-label">' + a.label + '</span></div>'
+          + '<div class="addr-grid-text">' + a.text + '</div></div>';
+      }).join('');
+      var totalPages = Math.ceil(ADDRESSES.length / ADDR_PAGE_SIZE);
+      pageInfo.textContent = (page + 1) + ' / ' + totalPages;
+      prevBtn.style.visibility = page === 0 ? 'hidden' : 'visible';
+      nextBtn.style.visibility = page >= totalPages - 1 ? 'hidden' : 'visible';
+    }
+    gridEl.addEventListener('click', function(e){
+      var card = e.target.closest('.addr-grid-card');
+      if(!card) return;
+      selected = parseInt(card.getAttribute('data-idx'), 10);
+      renderGrid();
+      if(onSelect) onSelect(ADDRESSES[selected].text);
+    });
+    prevBtn.addEventListener('click', function(){ if(page > 0){ page--; renderGrid(); } });
+    nextBtn.addEventListener('click', function(){
+      var totalPages = Math.ceil(ADDRESSES.length / ADDR_PAGE_SIZE);
+      if(page < totalPages - 1){ page++; renderGrid(); }
+    });
+
+    root.querySelectorAll('[data-role="trigger-addr-form"]').forEach(function(el){
+      el.addEventListener('click', function(ev){
+        if(ev.target.closest('[data-role="stop"]')) return;
+        gridView.classList.add('hide');
+        formView.classList.remove('hide');
+      });
+    });
+    root.querySelectorAll('[data-role="back-to-grid"]').forEach(function(el){
+      el.addEventListener('click', function(){
+        formView.classList.add('hide');
+        gridView.classList.remove('hide');
+      });
+    });
+    if(typeRow){
+      typeRow.addEventListener('click', function(e){
+        var pill = e.target.closest('.addrtype-pill');
+        if(!pill) return;
+        typeRow.querySelectorAll('.addrtype-pill').forEach(function(p){ p.classList.remove('active'); });
+        pill.classList.add('active');
+      });
+    }
+
+    renderGrid();
+    if(onSelect) onSelect(ADDRESSES[selected].text);
+  }
+
+  /* ---- reusable pickup (store map + store list) behaviour ---- */
+  function buildPickupUI(root, onSelect){
+    var selected = 'hsr';
+    var listEl = root.querySelector('[data-role="store-list"]');
+    var pins = root.querySelectorAll('[data-role="store-pin"]');
+
+    function render(){
+      listEl.innerHTML = STORES.map(function(s){
+        var sel = s.id === selected;
+        return '<div class="store-row' + (sel ? ' selected' : '') + '" data-id="' + s.id + '">'
+          + '<span class="store-radio' + (sel ? ' on' : '') + '"></span>'
+          + '<div class="store-row-body">'
+            + '<div class="store-row-name">Fremeazo — ' + s.name + '</div>'
+            + '<div class="store-row-addr">' + s.addr + '</div>'
+          + '</div>'
+          + '<div class="store-row-meta">'
+            + '<span class="store-row-dist">' + s.dist + '</span>'
+            + '<span class="store-row-nav" data-role="stop" title="Navigate"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"></polyline><path d="M4 20v-7a4 4 0 0 1 4-4h12"></path></svg></span>'
+          + '</div>'
+        + '</div>';
+      }).join('');
+      pins.forEach(function(p){ p.classList.toggle('active', p.getAttribute('data-store') === selected); });
+    }
+    listEl.addEventListener('click', function(e){
+      if(e.target.closest('[data-role="stop"]')) return;
+      var row = e.target.closest('.store-row');
+      if(!row) return;
+      selected = row.getAttribute('data-id');
+      render();
+      if(onSelect){ var s = STORES.find(function(x){ return x.id === selected; }); onSelect('Fremeazo — ' + s.name); }
+    });
+    render();
+    if(onSelect){ var s0 = STORES.find(function(x){ return x.id === selected; }); onSelect('Fremeazo — ' + s0.name); }
+  }
+
+  /* ---- desktop: wiring for the three preview modals ---- */
+  var mainOverlay = document.getElementById('overlay');
+  var deliveryOverlay = document.getElementById('overlay-delivery');
+  var pickupOverlay = document.getElementById('overlay-pickup');
+
+  var currentMainMode = 'delivery';
+  var mainDeliveryText = ADDRESSES[0].text;
+  var mainPickupText = 'Fremeazo — ' + STORES[0].name;
+
+  function updateHeaderAddr(){
+    document.getElementById('header-addr-txt').textContent = currentMainMode === 'delivery' ? mainDeliveryText : mainPickupText;
+  }
+
+  buildDeliveryAddressUI(mainOverlay, function(text){ mainDeliveryText = text; if(currentMainMode === 'delivery') updateHeaderAddr(); });
+  buildPickupUI(mainOverlay, function(text){ mainPickupText = text; if(currentMainMode === 'pickup') updateHeaderAddr(); });
+  buildDeliveryAddressUI(deliveryOverlay);
+  buildPickupUI(pickupOverlay);
+  updateHeaderAddr();
+
+  function setMode(mode){
+    currentMainMode = mode;
+    var isDelivery = mode === 'delivery';
+    document.getElementById('tab-delivery').classList.toggle('active', isDelivery);
+    document.getElementById('tab-pickup').classList.toggle('active', !isDelivery);
+    mainOverlay.querySelector('#tab-delivery input').checked = isDelivery;
+    mainOverlay.querySelector('#tab-pickup input').checked = !isDelivery;
+    document.getElementById('left-delivery').classList.toggle('hide', !isDelivery);
+    document.getElementById('left-pickup').classList.toggle('hide', isDelivery);
+    document.getElementById('right-delivery').classList.toggle('hide', !isDelivery);
+    document.getElementById('right-pickup').classList.toggle('hide', isDelivery);
+    updateHeaderAddr();
+  }
+
+  /* ---- mobile: wiring for the three preview modals ---- */
+  var mobileOverlay = document.getElementById('overlay-m');
+  var mobileDeliveryOverlay = document.getElementById('overlay-m-delivery');
+  var mobilePickupOverlay = document.getElementById('overlay-m-pickup');
+
+  var currentMobileMode = 'delivery';
+  var mobileDeliveryText = ADDRESSES[0].text;
+  var mobilePickupText = 'Fremeazo — ' + STORES[0].name;
+
+  function updateMobileHeaderAddr(){
+    document.getElementById('mobile-header-addr-txt').textContent = currentMobileMode === 'delivery' ? mobileDeliveryText : mobilePickupText;
+  }
+
+  buildDeliveryAddressUI(mobileOverlay, function(text){ mobileDeliveryText = text; if(currentMobileMode === 'delivery') updateMobileHeaderAddr(); });
+  buildPickupUI(mobileOverlay, function(text){ mobilePickupText = text; if(currentMobileMode === 'pickup') updateMobileHeaderAddr(); });
+  buildDeliveryAddressUI(mobileDeliveryOverlay);
+  buildPickupUI(mobilePickupOverlay);
+  updateMobileHeaderAddr();
+
+  function mobileSetMode(mode){
+    currentMobileMode = mode;
+    var isDelivery = mode === 'delivery';
+    document.getElementById('tab-delivery-m').classList.toggle('active', isDelivery);
+    document.getElementById('tab-pickup-m').classList.toggle('active', !isDelivery);
+    mobileOverlay.querySelector('#tab-delivery-m input').checked = isDelivery;
+    mobileOverlay.querySelector('#tab-pickup-m input').checked = !isDelivery;
+    document.getElementById('left-delivery-m').classList.toggle('hide', !isDelivery);
+    document.getElementById('left-pickup-m').classList.toggle('hide', isDelivery);
+    document.getElementById('right-delivery-m').classList.toggle('hide', !isDelivery);
+    document.getElementById('right-pickup-m').classList.toggle('hide', isDelivery);
+    updateMobileHeaderAddr();
+  }
+</script>
+
+</body>
+</html>
