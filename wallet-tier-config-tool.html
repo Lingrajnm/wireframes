@@ -1,0 +1,1027 @@
+<title>Wallet Tier Configurator</title>
+<style>
+  :root {
+    --green: #16A34A;
+    --green-hover: #15803D;
+    --dark: #111827;
+    --text: #374151;
+    --text-faint: #6B7280;
+    --bg: #F8FAFC;
+    --white: #FFFFFF;
+    --border: #E5E7EB;
+    --green-highlight: #ECFDF3;
+    --green-highlight-border: #BBF0D2;
+    --danger: #DC2626;
+    --danger-soft: #FEF2F2;
+    --blue-soft: #EFF6FF;
+    --blue: #2563EB;
+    --mint-soft: #ECFDF5;
+    --mint: #059669;
+    --shadow-menu: 0 4px 10px rgba(17,24,39,0.10), 0 2px 4px rgba(17,24,39,0.06);
+    --focus-ring: #16A34A;
+    --radius-btn: 8px;
+    --radius-card: 10px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+  button { font-family: inherit; }
+  input, select { font-family: inherit; }
+
+  /* ---- App shell ---- */
+  .app { display: flex; min-height: 100vh; }
+  .sidebar { width: 232px; flex-shrink: 0; border-right: 1px solid var(--border); padding: 24px 0; background: var(--white); }
+  .logo { font-weight: 800; font-size: 18px; color: var(--dark); letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; padding: 0 22px 24px; }
+  .logo .mark { width: 9px; height: 9px; border-radius: 2.5px; background: var(--green); display: inline-block; flex-shrink: 0; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 22px; font-size: 13.5px; color: var(--text); font-weight: 500; }
+  .nav-item .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.3; }
+  .nav-item.active { background: var(--green-highlight); color: var(--green-hover); font-weight: 600; box-shadow: inset 3px 0 0 var(--green); }
+  .nav-divider { height: 1px; background: var(--border); margin: 10px 22px; }
+
+  .main { flex: 1; padding: 40px 48px 80px; max-width: 1180px; }
+  .crumb { font-size: 12px; color: var(--text-faint); margin-bottom: 8px; font-weight: 500; }
+  h1 { font-weight: 800; font-size: 26px; margin: 0 0 6px; text-wrap: balance; letter-spacing: -0.02em; color: var(--dark); }
+  .lede { font-size: 14.5px; color: var(--text); max-width: 62ch; margin-bottom: 30px; }
+
+  .panel-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+  .panel-head h1 { margin: 0; }
+  .head-actions { display: flex; align-items: center; gap: 10px; }
+
+  /* ---- Bottom flow navigation (Back / Next between the three screens) ---- */
+  .flow-nav { display: flex; align-items: center; gap: 10px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border); max-width: 900px; }
+  .flow-nav[hidden] { display: none; }
+  .flow-nav .spacer { flex: 1; }
+  .flow-nav .btn[hidden] { display: none; }
+
+  /* ---- Secondary (decorative / functional) sub-tabs ---- */
+  .subtab-strip { display: flex; gap: 26px; border-bottom: 1px solid var(--border); margin-bottom: 22px; flex-wrap: wrap; }
+  .subtab-strip button, .subtab-strip .subtab-static { background: none; border: none; padding: 0 0 12px; font-size: 13.5px; font-weight: 600; color: var(--text-faint); cursor: pointer; position: relative; top: 1px; }
+  .subtab-strip .subtab-static { cursor: default; color: #9CA3AF; font-weight: 500; }
+  .subtab-strip button:hover { color: var(--dark); }
+  .subtab-strip button.active { color: var(--dark); }
+  .subtab-strip button.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--green); border-radius: 2px; }
+
+  /* ---- Buttons ---- */
+  .btn { display: inline-flex; align-items: center; gap: 7px; font-size: 13.5px; font-weight: 600; padding: 9px 16px; border-radius: var(--radius-btn); cursor: pointer; border: 1.5px solid var(--border); color: var(--dark); background: var(--white); transition: border-color .15s, background .15s, color .15s; }
+  .btn:hover { border-color: var(--dark); }
+  .btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .btn.solid { background: var(--green); color: var(--white); border-color: var(--green); }
+  .btn.solid:hover { background: var(--green-hover); border-color: var(--green-hover); }
+  .btn.subtle { background: var(--bg); border-color: var(--border); color: var(--text); }
+  .btn.subtle:hover { border-color: var(--text-faint); }
+  .btn .plus { font-size: 15px; line-height: 1; }
+
+  /* ---- List table ---- */
+  .table-wrap { border: 1px solid var(--border); border-radius: var(--radius-card); overflow: visible; background: var(--white); margin-bottom: 12px; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th { text-align: left; font-size: 12px; color: var(--text-faint); background: var(--bg); padding: 13px 20px; border-bottom: 1px solid var(--border); font-weight: 600; border-radius: var(--radius-card) var(--radius-card) 0 0; }
+  thead tr th:first-child { border-top-left-radius: var(--radius-card); }
+  thead tr th:last-child { border-top-right-radius: var(--radius-card); }
+  tbody td { padding: 16px 20px; font-size: 14px; color: var(--text); border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  .tier-name-cell { font-weight: 600; color: var(--dark); }
+  .benefit-main { font-weight: 500; color: var(--dark); }
+  .benefit-sub { font-size: 12px; color: var(--text-faint); margin-top: 2px; }
+  .status-text { font-weight: 500; }
+  .status-text.on { color: var(--green-hover); }
+  .status-text.off { color: var(--text-faint); }
+  .row-count { font-size: 13px; color: var(--text-faint); margin: 12px 4px 40px; }
+
+  /* row actions kebab */
+  .row-menu-cell { position: relative; text-align: right; }
+  .kebab-btn { width: 30px; height: 30px; border: none; background: transparent; border-radius: 6px; color: var(--text-faint); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+  .kebab-btn:hover { background: var(--bg); color: var(--dark); }
+  .kebab-btn svg { width: 17px; height: 17px; }
+  .row-menu { position: absolute; right: 20px; top: 40px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow-menu); min-width: 150px; z-index: 20; overflow: hidden; }
+  .row-menu button { display: block; width: 100%; text-align: left; padding: 10px 14px; font-size: 13.5px; color: var(--text); background: none; border: none; cursor: pointer; }
+  .row-menu button:hover { background: var(--bg); }
+  .row-menu button.danger { color: var(--danger); }
+  .row-menu button.danger:hover { background: var(--danger-soft); }
+  .row-menu .confirm-row { padding: 12px 14px; font-size: 12.5px; color: var(--text); }
+  .row-menu .confirm-actions { display: flex; gap: 8px; margin-top: 8px; }
+  .row-menu .confirm-actions button { flex: 1; text-align: center; border-radius: 6px; padding: 6px; font-weight: 600; }
+  .row-menu .confirm-actions .yes { background: var(--danger); color: var(--white); }
+  .row-menu .confirm-actions .no { background: var(--bg); border: 1px solid var(--border); }
+
+  /* ---- Form view (single column, page nav — not a modal) ---- */
+  #view-form { max-width: 620px; }
+  .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-faint); text-decoration: none; margin-bottom: 14px; cursor: pointer; border: none; background: none; padding: 0; }
+  .back-link:hover { color: var(--dark); }
+  .back-link svg { width: 14px; height: 14px; }
+
+  .form-section { margin-bottom: 28px; }
+  .form-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--green-hover); margin-bottom: 12px; }
+  .form-section-note { font-size: 12.5px; color: var(--text-faint); margin-top: -6px; margin-bottom: 14px; }
+
+  .field { margin-bottom: 18px; }
+  .field:last-child { margin-bottom: 0; }
+  .field label { display: block; font-size: 13.5px; color: var(--text); margin-bottom: 7px; font-weight: 500; }
+  .field label .req { color: var(--danger); }
+  .field label .hint { display: block; font-size: 12px; color: var(--text-faint); font-weight: 400; margin-top: 2px; }
+  .field input[type="text"], .field input[type="number"], .field select {
+    width: 100%; padding: 10px 13px; border: 1px solid var(--border); border-radius: var(--radius-btn);
+    font-size: 14px; color: var(--dark); background: var(--white); font-variant-numeric: tabular-nums;
+  }
+  .field input:focus-visible, .field select:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; border-color: var(--green); }
+  .field .prefix-input { position: relative; }
+  .field .prefix-input span { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-faint); font-size: 14px; }
+  .field .prefix-input input { padding-left: 27px; }
+  .field .suffix-input { position: relative; }
+  .field .suffix-input span { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: var(--text-faint); font-size: 13px; }
+  .field .suffix-input input { padding-right: 30px; }
+  .field-two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  /* Shared checkmark-radio visual — used by .seg and .card-radio-grid alike */
+  .radio-visual { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #D1D5DB; background: var(--white); flex-shrink: 0; position: relative; transition: background .15s, border-color .15s; }
+  .radio-visual::after { content: ""; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; background-size: 10px 10px; opacity: 0; transition: opacity .1s; }
+  input:checked + label .radio-visual { background: var(--green); border-color: var(--green); }
+  input:checked + label .radio-visual::after { opacity: 1; }
+
+  .seg { display: flex; position: relative; width: 100%; border: 1px solid var(--border); border-radius: var(--radius-btn); overflow: hidden; background: var(--white); }
+  .seg label { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; font-weight: 500; padding: 13px 12px; cursor: pointer; color: var(--text); background: var(--white); border-right: 1px solid var(--border); margin: 0; position: relative; border-radius: 6px; }
+  .seg label:last-child { border-right: none; }
+  .seg input { position: absolute; opacity: 0; pointer-events: none; }
+  .seg input:checked + label { color: var(--dark); font-weight: 700; box-shadow: inset 0 0 0 1.5px var(--green); }
+  .seg input:focus-visible + label { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+
+  /* Card grid of radio options (address selection etc.) — same checkmark language, wraps to a grid */
+  .card-radio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; position: relative; margin-bottom: 22px; }
+  .card-radio-grid input { position: absolute; opacity: 0; pointer-events: none; }
+  .card-radio-grid label { display: flex; align-items: flex-start; gap: 10px; border: 1px solid var(--border); border-radius: var(--radius-btn); padding: 12px 14px; font-size: 12.5px; line-height: 1.55; color: var(--text); cursor: pointer; background: var(--white); margin: 0; }
+  .card-radio-grid input:checked + label { box-shadow: inset 0 0 0 1.5px var(--green); background: var(--green-highlight); color: var(--dark); }
+  .card-radio-grid label .radio-visual { margin-top: 2px; }
+
+  /* Quantity stepper */
+  .qty-stepper { display: inline-flex; align-items: center; border: 1px solid var(--green); border-radius: 6px; overflow: hidden; }
+  .qty-stepper button { width: 26px; height: 26px; border: none; background: var(--white); color: var(--green-hover); font-weight: 700; font-size: 14px; cursor: pointer; line-height: 1; }
+  .qty-stepper button:hover { background: var(--green-highlight); }
+  .qty-stepper span { width: 28px; text-align: center; font-weight: 600; font-size: 13px; color: var(--dark); }
+
+  .checkbox-row { display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--text); margin: 22px 0; }
+  .checkbox-row input { accent-color: var(--green); width: 15px; height: 15px; }
+
+  .field textarea {
+    width: 100%; padding: 10px 13px; border: 1px solid var(--border); border-radius: var(--radius-btn);
+    font-size: 14px; color: var(--dark); background: var(--white); font-family: inherit; resize: vertical; min-height: 84px;
+  }
+
+  .filter-row { display: flex; gap: 22px; margin-bottom: 16px; }
+  .filter-row span { font-size: 13px; color: var(--text-faint); padding-bottom: 6px; }
+  .filter-row span.active { color: var(--dark); font-weight: 700; border-bottom: 2px solid var(--green); }
+
+  .contact-icons { display: flex; justify-content: center; gap: 10px; margin-top: 16px; }
+  .contact-icons button { display: flex; align-items: center; gap: 3px; padding: 0 8px; height: 34px; border: 1px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text-faint); cursor: pointer; }
+  .contact-icons button svg { width: 15px; height: 15px; }
+  .contact-icons button:hover { color: var(--dark); border-color: var(--dark); }
+
+  .btn.blue { background: var(--blue); color: var(--white); border-color: var(--blue); }
+  .btn.blue:hover { background: #1D4ED8; border-color: #1D4ED8; }
+
+  .switch-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 4px 0 18px; }
+  .switch-row .label { font-size: 13.5px; color: var(--dark); font-weight: 500; }
+  .switch-row .desc { font-size: 12px; color: var(--text-faint); margin-top: 2px; max-width: 46ch; }
+  .switch { position: relative; width: 38px; height: 22px; flex-shrink: 0; }
+  .switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .switch .track { position: absolute; inset: 0; background: var(--border); border-radius: 20px; transition: background .15s; pointer-events: none; }
+  .switch .thumb { position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--white); box-shadow: 0 1px 2px rgba(17,24,39,0.25); transition: transform .15s; pointer-events: none; }
+  .switch input:checked + .track { background: var(--green); }
+  .switch input:checked + .track + .thumb { transform: translateX(16px); }
+  .switch input:focus-visible + .track { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+  .conditional-field { margin-top: -6px; margin-bottom: 18px; }
+
+  .live-summary { background: var(--green-highlight); border: 1px solid var(--green-highlight-border); border-radius: var(--radius-card); padding: 13px 15px; font-size: 12.5px; color: var(--green-hover); line-height: 1.5; margin-bottom: 28px; }
+  .live-summary b { font-weight: 700; color: var(--dark); }
+
+  .form-actions { display: flex; gap: 10px; }
+
+  /* ---- Customer Details tab ---- */
+  .customer-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 26px; gap: 16px; flex-wrap: wrap; }
+  .customer-head h1 { margin: 0; }
+  .customer-layout { display: grid; grid-template-columns: 1fr 280px; gap: 26px; align-items: start; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 28px; max-width: 640px; }
+  .stat-box { border-radius: var(--radius-card); padding: 18px 20px; display: flex; align-items: flex-start; gap: 14px; border: 1px solid transparent; }
+  .stat-box .stat-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: rgba(255,255,255,.65); font-weight: 700; font-size: 16px; }
+  .stat-box .stat-icon svg { width: 19px; height: 19px; }
+  .stat-box .stat-label { font-size: 12.5px; color: var(--text-faint); font-weight: 600; margin-bottom: 4px; }
+  .stat-box .stat-value { font-size: 19px; font-weight: 800; color: var(--dark); line-height: 1.3; }
+  .stat-box .stat-sub { font-size: 12px; color: var(--text-faint); margin-top: 4px; line-height: 1.5; }
+  .stat-box.blue { background: var(--blue-soft); }
+  .stat-box.blue .stat-icon { color: var(--blue); }
+  .stat-box.mint { background: var(--mint-soft); }
+  .stat-box.mint .stat-icon { color: var(--mint); }
+  .stat-box.mint .stat-sub { color: var(--green-hover); font-weight: 600; }
+
+  .profile-card { border: 1px solid var(--border); border-radius: var(--radius-card); padding: 26px 20px; text-align: center; background: var(--white); }
+  .profile-avatar { width: 60px; height: 60px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 19px; color: var(--text-faint); margin: 0 auto 14px; }
+  .profile-card .p-name { font-weight: 700; color: var(--dark); font-size: 14.5px; margin-bottom: 12px; }
+  .profile-card .p-line { font-size: 13px; color: var(--text-faint); margin-bottom: 4px; }
+
+  /* ---- Create Order tab ---- */
+  .search-row { display: flex; gap: 10px; margin-bottom: 18px; max-width: 480px; }
+  .search-row input { flex: 1; padding: 10px 13px; border: 1px solid var(--border); border-radius: var(--radius-btn); font-size: 14px; color: var(--text-faint); background: var(--bg); }
+  .found-customer { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border: 1px solid var(--border); border-radius: var(--radius-card); padding: 14px 18px; background: var(--white); margin-bottom: 30px; max-width: 560px; }
+  .found-customer .fc-left { display: flex; align-items: center; gap: 12px; }
+  .found-customer .fc-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12.5px; color: var(--text-faint); flex-shrink: 0; }
+  .found-customer .fc-name { font-weight: 700; color: var(--dark); font-size: 14px; }
+  .tier-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--green-highlight); color: var(--green-hover); border: 1px solid var(--green-highlight-border); font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 20px; white-space: nowrap; }
+
+  .order-layout { display: grid; grid-template-columns: 1fr 320px; gap: 26px; align-items: start; }
+  .amount-input { width: 96px; padding: 6px 9px; border: 1px solid var(--border); border-radius: 6px; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+
+  .order-summary-card { border: 1px solid var(--border); border-radius: var(--radius-card); padding: 20px; background: var(--white); position: sticky; top: 24px; }
+  .order-summary-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-faint); margin: 0 0 14px; font-weight: 700; }
+  .summary-row { display: flex; justify-content: space-between; gap: 10px; font-size: 13.5px; padding: 7px 0; color: var(--text); }
+  .summary-row[hidden] { display: none; }
+  .summary-row.discount span:last-child { color: var(--green-hover); font-weight: 700; }
+  .summary-row.total { border-top: 1px solid var(--border); margin-top: 8px; padding-top: 13px; font-size: 15px; font-weight: 800; color: var(--dark); }
+  .summary-note { font-size: 12px; color: var(--text-faint); background: var(--bg); border-radius: 8px; padding: 11px 13px; margin-top: 16px; line-height: 1.55; }
+  .summary-note.positive { background: var(--green-highlight); color: var(--green-hover); }
+
+  @media (max-width: 900px) {
+    .customer-layout, .order-layout { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .sidebar { display: none; }
+    .main { padding: 28px 18px 60px; }
+    .field-two { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<div class="app">
+  <div class="sidebar">
+    <div class="logo"><span class="mark"></span>Zopping</div>
+    <div class="nav-item"><span class="dot"></span> Dashboard</div>
+    <div class="nav-item" id="nav-orders"><span class="dot"></span> Orders</div>
+    <div class="nav-item"><span class="dot"></span> VIP Membership</div>
+    <div class="nav-item"><span class="dot"></span> Reports &amp; Analytics</div>
+    <div class="nav-item" id="nav-customers"><span class="dot"></span> Customers</div>
+    <div class="nav-divider"></div>
+    <div class="nav-item"><span class="dot"></span> Catalogue</div>
+    <div class="nav-item"><span class="dot"></span> Online Store</div>
+    <div class="nav-item"><span class="dot"></span> Marketing</div>
+    <div class="nav-item"><span class="dot"></span> Operations</div>
+    <div class="nav-item"><span class="dot"></span> Insights</div>
+    <div class="nav-item active" id="nav-settings"><span class="dot"></span> Settings</div>
+  </div>
+
+  <div class="main">
+    <div class="crumb" id="crumb">https://zopping.com/admin/settings/wallet-configuration</div>
+
+    <!-- ================= TAB: CONFIG ================= -->
+    <div id="tab-config">
+      <!-- ---- List view ---- -->
+      <div id="view-list">
+        <div class="panel-head">
+          <h1>Wallet Configuration</h1>
+          <div class="head-actions">
+            <button class="btn solid" id="open-add-tier"><span class="plus">+</span> Add Tier</button>
+          </div>
+        </div>
+        <p class="lede">Set up recharge plans for your customers. The more a customer recharges, the bigger the reward they get — but that reward only applies when they actually pay for an order using that recharged balance, not when they pay any other way.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tier</th>
+                <th>Recharge amount</th>
+                <th>Benefit</th>
+                <th>Validity</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tier-tbody"></tbody>
+          </table>
+        </div>
+        <div class="row-count" id="row-count"></div>
+      </div>
+
+      <!-- ---- Add / edit view ---- -->
+      <div id="view-form" hidden>
+        <button class="back-link" id="back-to-list" type="button">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l-6 6 6 6"/></svg>
+          Recharge Tiers
+        </button>
+        <h1 id="form-title">Add Tier</h1>
+        <p class="lede" id="form-sub">Define what a customer unlocks by prepaying into this tier.</p>
+
+        <form id="tier-form">
+          <div class="field">
+            <label for="f-name">Tier name <span class="req">*</span></label>
+            <input type="text" id="f-name" required placeholder="e.g. Value">
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Recharge to unlock</div>
+            <div class="field-two">
+              <div class="field">
+                <label for="f-recharge">Recharge amount <span class="req">*</span><span class="hint">The advance the customer prepays to join this tier.</span></label>
+                <div class="prefix-input"><span>₹</span><input type="number" id="f-recharge" min="0" step="100" required></div>
+              </div>
+              <div class="field">
+                <label for="f-mov">Minimum order value to redeem<span class="hint">Order must be at least this to use the benefit.</span></label>
+                <div class="prefix-input"><span>₹</span><input type="number" id="f-mov" min="0" step="10"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Benefit rules</div>
+            <div class="form-section-note">Applies only to orders paid using this wallet balance.</div>
+
+            <div class="field">
+              <label>Benefit type</label>
+              <div class="seg">
+                <input type="radio" name="benefit-type" id="bt-discount" value="discount" checked><label for="bt-discount"><span class="radio-visual"></span>Instant discount</label>
+                <input type="radio" name="benefit-type" id="bt-cashback" value="cashback"><label for="bt-cashback"><span class="radio-visual"></span>Cashback to wallet</label>
+              </div>
+            </div>
+
+            <div class="conditional-field" id="cashback-delay-field" hidden>
+              <div class="field">
+                <label for="f-cashbackdelay">Credit cashback after (days)</label>
+                <input type="number" id="f-cashbackdelay" min="0" step="1" value="1">
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Applies to</label>
+              <div class="seg">
+                <input type="radio" name="benefit-freq" id="freq-first" value="first"><label for="freq-first"><span class="radio-visual"></span>First order only</label>
+                <input type="radio" name="benefit-freq" id="freq-firstn" value="firstN"><label for="freq-firstn"><span class="radio-visual"></span>First N orders</label>
+                <input type="radio" name="benefit-freq" id="freq-every" value="every" checked><label for="freq-every"><span class="radio-visual"></span>Every order</label>
+              </div>
+            </div>
+            <div class="conditional-field" id="firstn-field" hidden>
+              <div class="field">
+                <label for="f-firstn">Number of orders (N)</label>
+                <input type="number" id="f-firstn" min="1" step="1" value="3">
+              </div>
+            </div>
+
+            <div class="field-two">
+              <div class="field">
+                <label for="f-value">Benefit value <span class="req">*</span></label>
+                <div class="suffix-input"><input type="number" id="f-value" min="0" max="100" step="0.5" required><span>%</span></div>
+              </div>
+              <div class="field">
+                <label for="f-maxorder">Max benefit per order<span class="hint">0 = no per-order cap</span></label>
+                <div class="prefix-input"><span>₹</span><input type="number" id="f-maxorder" min="0" step="10" value="0"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Validity &amp; balance rules</div>
+            <div class="field">
+              <label for="f-validity">Valid for (days) <span class="req">*</span></label>
+              <input type="number" id="f-validity" min="1" step="1" value="365">
+            </div>
+            <div class="field">
+              <label for="f-onexpiry">On expiry</label>
+              <select id="f-onexpiry">
+                <option value="forfeit">Forfeit unused balance</option>
+                <option value="keep">Keep balance, lose benefit</option>
+              </select>
+            </div>
+            <div class="switch-row">
+              <div>
+                <div class="label">Allow extending validity after expiry</div>
+                <div class="desc">Customer can recharge again to extend this tier's validity even after it has lapsed.</div>
+              </div>
+              <label class="switch"><input type="checkbox" id="f-extend"><span class="track"></span><span class="thumb"></span></label>
+            </div>
+            <div class="field">
+              <label for="f-onrecharge">If customer already has an active tier and recharges again</label>
+              <select id="f-onrecharge">
+                <option value="replace">Replace with new tier</option>
+                <option value="add">Add to balance, keep current tier's benefit</option>
+              </select>
+            </div>
+            <div class="switch-row" style="padding-bottom:4px;">
+              <div>
+                <div class="label">Stack with other coupons</div>
+                <div class="desc">Allow this benefit to combine with promo codes on the same order.</div>
+              </div>
+              <label class="switch"><input type="checkbox" id="f-stackable"><span class="track"></span><span class="thumb"></span></label>
+            </div>
+          </div>
+
+          <div class="live-summary" id="live-summary"></div>
+
+          <div class="form-actions">
+            <button class="btn solid" type="submit">Submit</button>
+            <button class="btn subtle" id="cancel-tier" type="button">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ================= TAB: CUSTOMER DETAILS ================= -->
+    <div id="tab-customer" hidden>
+      <div class="customer-head">
+        <h1>Lingraj</h1>
+        <div class="head-actions">
+          <button class="btn solid" id="goto-order-from-customer"><span class="plus">+</span> Create New Order</button>
+        </div>
+      </div>
+
+      <div class="customer-layout">
+        <div>
+          <div class="subtab-strip">
+            <span class="subtab-static">Basic Info</span>
+            <span class="subtab-static">Address</span>
+            <span class="subtab-static">Phone / Email</span>
+            <span class="subtab-static" style="color:var(--dark);">Wallet</span>
+            <span class="subtab-static">Other Details</span>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-box blue">
+              <div class="stat-icon">₹</div>
+              <div>
+                <div class="stat-label">Wallet Cashback</div>
+                <div class="stat-value">₹100</div>
+              </div>
+            </div>
+            <div class="stat-box mint">
+              <div class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><circle cx="16.5" cy="14" r="1" fill="currentColor" stroke="none"/></svg>
+              </div>
+              <div>
+                <div class="stat-label">Wallet Money</div>
+                <div class="stat-value" id="cust-money-value">₹0</div>
+                <div class="stat-sub" id="cust-money-sub">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="subtab-strip" id="history-tabs">
+            <button type="button" data-htab="purchase">Purchase History</button>
+            <button type="button" data-htab="cashback">Wallet Cashback</button>
+            <button type="button" data-htab="money" class="active">Wallet Money</button>
+            <button type="button" data-htab="call">Call History</button>
+          </div>
+
+          <div class="filter-row">
+            <span class="active">All</span>
+            <span>Credit</span>
+            <span>Debit</span>
+          </div>
+
+          <div class="table-wrap" id="history-table-wrap"></div>
+          <div class="row-count" id="history-count"></div>
+        </div>
+
+        <div class="profile-card">
+          <div class="profile-avatar">LI</div>
+          <div class="p-name">Lingraj</div>
+          <div class="p-line">lingraj@zopping.com</div>
+          <div class="p-line">+91 90608 99997</div>
+          <div class="contact-icons">
+            <button type="button" aria-label="Call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 9 9 0 0 0 2.8.45 1 1 0 0 1 1 1V19.5a1 1 0 0 1-1 1A16.5 16.5 0 0 1 3.5 4a1 1 0 0 1 1-1H7.5a1 1 0 0 1 1 1 9 9 0 0 0 .45 2.8 1 1 0 0 1-.25 1z"/></svg></button>
+            <button type="button" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></button>
+            <button type="button" aria-label="SMS"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB: CREATE ORDER ================= -->
+    <div id="tab-order" hidden>
+      <h1>Place New Order</h1>
+
+      <div class="field" style="max-width:520px;">
+        <div class="seg">
+          <input type="radio" name="lookup-method" id="lookup-phone" checked><label for="lookup-phone"><span class="radio-visual"></span>Customer Phone Number</label>
+          <input type="radio" name="lookup-method" id="lookup-email"><label for="lookup-email"><span class="radio-visual"></span>Customer Email Address</label>
+        </div>
+      </div>
+
+      <div class="search-row">
+        <input type="text" value="090608 99997" readonly>
+        <button class="btn solid" type="button">Search</button>
+      </div>
+
+      <div class="found-customer">
+        <div class="fc-left">
+          <div class="fc-avatar">LI</div>
+          <div class="fc-name">Lingraj</div>
+        </div>
+        <div class="tier-chip" id="order-tier-chip">—</div>
+      </div>
+
+      <div class="field" style="max-width:340px;">
+        <label>Order Type</label>
+        <div class="seg">
+          <input type="radio" name="order-type" id="type-delivery" checked><label for="type-delivery"><span class="radio-visual"></span>Delivery</label>
+          <input type="radio" name="order-type" id="type-pickup"><label for="type-pickup"><span class="radio-visual"></span>Pickup</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Select Delivery Address</label>
+        <div class="card-radio-grid">
+          <input type="radio" name="address" id="addr-1"><label for="addr-1"><span class="radio-visual"></span>Lower Parel, Tower B, 1402, Ganapatrao Kadam Marg, Mumbai, Maharashtra 400013</label>
+          <input type="radio" name="address" id="addr-2" checked><label for="addr-2"><span class="radio-visual"></span>433 Lal Bahadur Shastri Marg, Amrut Nagar, Ghatkopar West, Mumbai 400086</label>
+          <input type="radio" name="address" id="addr-3"><label for="addr-3"><span class="radio-visual"></span>2342, Andheri West Station, Madhavdas Amarshi Rd, Andheri West, Mumbai 400058</label>
+          <input type="radio" name="address" id="addr-4"><label for="addr-4"><span class="radio-visual"></span>1432, Pescafresh 145, Lower Parel West, Mumbai 400013</label>
+        </div>
+      </div>
+
+      <div class="field" style="max-width:460px;">
+        <label>Select Date</label>
+        <div class="seg">
+          <input type="radio" name="order-date" id="date-today" checked><label for="date-today"><span class="radio-visual"></span>Today</label>
+          <input type="radio" name="order-date" id="date-tom"><label for="date-tom"><span class="radio-visual"></span>Tomorrow</label>
+          <input type="radio" name="order-date" id="date-29"><label for="date-29"><span class="radio-visual"></span>29th Aug</label>
+        </div>
+      </div>
+
+      <div class="field" style="max-width:720px;">
+        <label>Select Slot</label>
+        <div class="seg">
+          <input type="radio" name="order-slot" id="slot-1" checked><label for="slot-1"><span class="radio-visual"></span>8–11 AM</label>
+          <input type="radio" name="order-slot" id="slot-2"><label for="slot-2"><span class="radio-visual"></span>11–2 PM</label>
+          <input type="radio" name="order-slot" id="slot-3"><label for="slot-3"><span class="radio-visual"></span>2–5 PM</label>
+          <input type="radio" name="order-slot" id="slot-4"><label for="slot-4"><span class="radio-visual"></span>5–8 PM</label>
+        </div>
+      </div>
+
+      <div class="order-layout">
+        <div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Product</th><th>Qty</th><th>Price</th><th>Discount</th><th>Amount</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="tier-name-cell">Surmai / Seer Fish Fillets — 250g</td>
+                  <td>
+                    <div class="qty-stepper">
+                      <button type="button" id="qty-minus">−</button>
+                      <span id="qty-value">1</span>
+                      <button type="button" id="qty-plus">+</button>
+                    </div>
+                  </td>
+                  <td>₹1,469.00</td>
+                  <td>₹0.00</td>
+                  <td id="order-amount-display">₹1,469.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="field" style="max-width:520px;">
+            <label>Payment option</label>
+            <div class="seg" id="payment-seg">
+              <input type="radio" name="payment-method" id="pay-online" value="online"><label for="pay-online"><span class="radio-visual"></span>Online</label>
+              <input type="radio" name="payment-method" id="pay-cash" value="cash"><label for="pay-cash"><span class="radio-visual"></span>Cash</label>
+              <input type="radio" name="payment-method" id="pay-wallet" value="wallet" checked><label for="pay-wallet"><span class="radio-visual"></span>Wallet Balance</label>
+            </div>
+          </div>
+
+          <div class="checkbox-row">
+            <input type="checkbox" id="bulk-order">
+            <label for="bulk-order">BulkOrder</label>
+          </div>
+
+          <div class="field" style="max-width:520px;">
+            <label>GST Number</label>
+            <input type="text" placeholder="Enter GST Number">
+          </div>
+
+          <div class="field" style="max-width:520px;">
+            <label>Special instructions</label>
+            <textarea placeholder="Enter Special instructions"></textarea>
+          </div>
+        </div>
+
+        <div class="order-summary-card">
+          <h3>Order Summary</h3>
+          <div class="summary-row"><span>Order amount</span><span id="sum-order">₹0</span></div>
+          <div class="summary-row discount" id="sum-discount-row" hidden><span id="sum-discount-label">Tier discount</span><span id="sum-discount">-₹0</span></div>
+          <div class="summary-row"><span>Slot charge</span><span>₹10.00</span></div>
+          <div class="summary-row total"><span id="sum-total-label">Total amount</span><span id="sum-total">₹0</span></div>
+          <div class="field" id="cash-tendered-field" style="margin-top:16px;">
+            <label>Cash tendered (₹)</label>
+            <div class="prefix-input"><span>₹</span><input type="number" min="0" step="1" value="0"></div>
+          </div>
+          <div class="summary-note" id="sum-note"></div>
+        </div>
+      </div>
+
+      <div class="form-actions" style="max-width:900px; margin-top:8px;">
+        <button class="btn solid" type="button">Place Order</button>
+        <button class="btn subtle" type="button">Cancel</button>
+      </div>
+    </div>
+
+    <div class="flow-nav" id="flow-nav">
+      <button class="btn subtle" id="flow-back" type="button">← Back</button>
+      <div class="spacer"></div>
+      <button class="btn solid" id="flow-next" type="button">Next →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ICON_KEBAB = '<svg viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="4" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="10" cy="16" r="1.6"/></svg>';
+
+  let tiers = [
+    { id: 1, name: "Smart", active: true, rechargeAmount: 5000, mov: 0,
+      benefitType: "discount", cashbackDelay: 1, benefitFreq: "every", firstN: 3, value: 3, maxOrder: 150,
+      validityDays: 365, onExpiry: "forfeit", extend: false, onRecharge: "replace", stackable: false },
+    { id: 2, name: "Value", active: true, rechargeAmount: 10000, mov: 0,
+      benefitType: "discount", cashbackDelay: 1, benefitFreq: "every", firstN: 3, value: 5, maxOrder: 500,
+      validityDays: 365, onExpiry: "forfeit", extend: false, onRecharge: "replace", stackable: false },
+    { id: 3, name: "Elite", active: true, rechargeAmount: 50000, mov: 0,
+      benefitType: "discount", cashbackDelay: 1, benefitFreq: "every", firstN: 3, value: 10, maxOrder: 2000,
+      validityDays: 730, onExpiry: "forfeit", extend: false, onRecharge: "replace", stackable: false }
+  ];
+  let nextId = 4;
+  let editingId = null;
+  let openMenuId = null;
+
+  // Demo customer — linked to the Value tier above, so the Customer Details
+  // and Create Order tabs stay in sync with whatever is configured in Config.
+  let customer = { name: "Lingraj", tierId: 2, walletBalance: 8100, validTill: "20 Aug 2027" };
+
+  const rupee = n => "₹" + Math.round(Number(n || 0)).toLocaleString("en-IN");
+  const freqLabel = t => t.benefitFreq === "first" ? "first order only" : t.benefitFreq === "firstN" ? `first ${t.firstN} orders` : "every order";
+  const typeLabel = t => t.benefitType === "discount" ? "discount" : "cashback";
+  const activeTier = () => tiers.find(t => t.id === customer.tierId);
+
+  function renderTable() {
+    const tbody = document.getElementById("tier-tbody");
+    tbody.innerHTML = "";
+    tiers.forEach(t => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="tier-name-cell">${t.name}</td>
+        <td>${rupee(t.rechargeAmount)}</td>
+        <td>
+          <div class="benefit-main">${t.value}% ${typeLabel(t)}</div>
+          <div class="benefit-sub">${freqLabel(t)}${t.maxOrder ? " · cap " + rupee(t.maxOrder) : ""}</div>
+        </td>
+        <td>${t.validityDays} days</td>
+        <td><span class="status-text ${t.active ? "on" : "off"}">${t.active ? "Enabled" : "Disabled"}</span></td>
+        <td class="row-menu-cell">
+          <button class="kebab-btn" data-menu="${t.id}" aria-haspopup="true" aria-label="Actions for ${t.name}">${ICON_KEBAB}</button>
+          <div class="row-menu-slot" data-slot="${t.id}"></div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+    document.getElementById("row-count").textContent = `Showing 1 - ${tiers.length} of ${tiers.length}`;
+    tbody.querySelectorAll("[data-menu]").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const id = parseInt(btn.getAttribute("data-menu"), 10);
+        openMenuId = openMenuId === id ? null : id;
+        renderTable();
+        if (openMenuId) renderMenu(openMenuId);
+      });
+    });
+    if (openMenuId) renderMenu(openMenuId);
+  }
+
+  function renderMenu(id) {
+    const slot = document.querySelector(`[data-slot="${id}"]`);
+    if (!slot) return;
+    const t = tiers.find(x => x.id === id);
+    slot.innerHTML = `
+      <div class="row-menu">
+        <button type="button" data-act="edit">Edit</button>
+        <button type="button" data-act="toggle">${t.active ? "Disable" : "Enable"}</button>
+        <button type="button" class="danger" data-act="delete">Delete</button>
+      </div>
+    `;
+    slot.querySelector('[data-act="edit"]').addEventListener("click", (e) => { e.stopPropagation(); openMenuId = null; openForm(id); });
+    slot.querySelector('[data-act="toggle"]').addEventListener("click", (e) => {
+      e.stopPropagation(); t.active = !t.active; openMenuId = null; renderTable();
+    });
+    slot.querySelector('[data-act="delete"]').addEventListener("click", (e) => {
+      e.stopPropagation();
+      slot.querySelector(".row-menu").innerHTML = `
+        <div class="confirm-row">
+          Delete "${t.name}" tier?
+          <div class="confirm-actions">
+            <button type="button" class="yes" data-act="confirm-yes">Delete</button>
+            <button type="button" class="no" data-act="confirm-no">Cancel</button>
+          </div>
+        </div>
+      `;
+      slot.querySelector('[data-act="confirm-yes"]').addEventListener("click", (e2) => {
+        e2.stopPropagation(); tiers = tiers.filter(x => x.id !== id); openMenuId = null; renderTable();
+      });
+      slot.querySelector('[data-act="confirm-no"]').addEventListener("click", (e2) => {
+        e2.stopPropagation(); openMenuId = null; renderTable();
+      });
+    });
+  }
+
+  document.addEventListener("click", () => { if (openMenuId) { openMenuId = null; renderTable(); } });
+
+  function updateLiveSummary() {
+    const name = document.getElementById("f-name").value || "This tier";
+    const recharge = document.getElementById("f-recharge").value || "0";
+    const value = document.getElementById("f-value").value || "0";
+    const type = document.querySelector("input[name='benefit-type']:checked").value;
+    const freq = document.querySelector("input[name='benefit-freq']:checked").value;
+    const freqText = freq === "first" ? "on their first order" : freq === "firstN" ? `on their first ${document.getElementById("f-firstn").value || "N"} orders` : "on every order";
+    const typeText = type === "discount" ? "an instant discount" : "cashback to their wallet";
+    document.getElementById("live-summary").innerHTML =
+      `<b>${name}:</b> customer prepays ₹${Number(recharge || 0).toLocaleString("en-IN")}. When they pay ${freqText} using that wallet balance, they get ${value}% back as ${typeText}.`;
+  }
+
+  function toggleFirstN() {
+    document.getElementById("firstn-field").hidden = !document.getElementById("freq-firstn").checked;
+  }
+  function toggleCashbackDelay() {
+    document.getElementById("cashback-delay-field").hidden = !document.getElementById("bt-cashback").checked;
+  }
+
+  function showList() {
+    document.getElementById("view-list").hidden = false;
+    document.getElementById("view-form").hidden = true;
+    renderFlowNav();
+  }
+
+  function openForm(id) {
+    editingId = id || null;
+    const t = id ? tiers.find(x => x.id === id) : null;
+    document.getElementById("form-title").textContent = t ? `Edit Tier — ${t.name}` : "Add Tier";
+    document.getElementById("form-sub").textContent = "Define what a customer unlocks by prepaying into this tier.";
+
+    document.getElementById("f-name").value = t ? t.name : "";
+    document.getElementById("f-recharge").value = t ? t.rechargeAmount : "";
+    document.getElementById("f-mov").value = t ? t.mov : 0;
+    document.getElementById(t && t.benefitType === "cashback" ? "bt-cashback" : "bt-discount").checked = true;
+    document.getElementById("f-cashbackdelay").value = t ? t.cashbackDelay : 1;
+    const freqId = t ? (t.benefitFreq === "first" ? "freq-first" : t.benefitFreq === "firstN" ? "freq-firstn" : "freq-every") : "freq-every";
+    document.getElementById(freqId).checked = true;
+    document.getElementById("f-firstn").value = t ? t.firstN : 3;
+    toggleFirstN();
+    toggleCashbackDelay();
+    document.getElementById("f-value").value = t ? t.value : "";
+    document.getElementById("f-maxorder").value = t ? t.maxOrder : 0;
+    document.getElementById("f-validity").value = t ? t.validityDays : 365;
+    document.getElementById("f-onexpiry").value = t ? t.onExpiry : "forfeit";
+    document.getElementById("f-extend").checked = t ? t.extend : false;
+    document.getElementById("f-onrecharge").value = t ? t.onRecharge : "replace";
+    document.getElementById("f-stackable").checked = t ? t.stackable : false;
+
+    updateLiveSummary();
+    document.getElementById("view-list").hidden = true;
+    document.getElementById("view-form").hidden = false;
+    renderFlowNav();
+    document.getElementById("f-name").focus();
+  }
+
+  function saveTier(e) {
+    e.preventDefault();
+    const name = document.getElementById("f-name").value.trim();
+    const recharge = parseFloat(document.getElementById("f-recharge").value);
+    const value = parseFloat(document.getElementById("f-value").value);
+    if (!name || isNaN(recharge) || isNaN(value)) return;
+
+    const data = {
+      name,
+      rechargeAmount: recharge,
+      mov: parseFloat(document.getElementById("f-mov").value) || 0,
+      benefitType: document.querySelector("input[name='benefit-type']:checked").value,
+      cashbackDelay: parseInt(document.getElementById("f-cashbackdelay").value, 10) || 0,
+      benefitFreq: document.querySelector("input[name='benefit-freq']:checked").value,
+      firstN: parseInt(document.getElementById("f-firstn").value, 10) || 1,
+      value,
+      maxOrder: parseFloat(document.getElementById("f-maxorder").value) || 0,
+      validityDays: parseInt(document.getElementById("f-validity").value, 10) || 1,
+      onExpiry: document.getElementById("f-onexpiry").value,
+      extend: document.getElementById("f-extend").checked,
+      onRecharge: document.getElementById("f-onrecharge").value,
+      stackable: document.getElementById("f-stackable").checked
+    };
+
+    if (editingId) {
+      const idx = tiers.findIndex(x => x.id === editingId);
+      tiers[idx] = { ...tiers[idx], ...data };
+    } else {
+      tiers.push({ id: nextId++, active: true, ...data });
+    }
+    renderTable();
+    showList();
+    renderCustomerTab();
+    updateOrderSummary();
+  }
+
+  document.getElementById("open-add-tier").addEventListener("click", () => openForm(null));
+  document.getElementById("back-to-list").addEventListener("click", showList);
+  document.getElementById("cancel-tier").addEventListener("click", showList);
+  document.getElementById("tier-form").addEventListener("submit", saveTier);
+
+  ["freq-first", "freq-firstn", "freq-every"].forEach(id => document.getElementById(id).addEventListener("change", () => { toggleFirstN(); updateLiveSummary(); }));
+  ["bt-discount", "bt-cashback"].forEach(id => document.getElementById(id).addEventListener("change", () => { toggleCashbackDelay(); updateLiveSummary(); }));
+  ["f-name", "f-recharge", "f-value", "f-firstn"].forEach(id => document.getElementById(id).addEventListener("input", updateLiveSummary));
+
+  renderTable();
+
+  /* ================= Customer Details tab ================= */
+
+  const HISTORY = {
+    purchase: { cols: ["Order no.", "Date", "Amount", "Status"], rows: [
+      ["29644-17874", "22 Aug 2026", "₹2,000.00", "Delivered"]
+    ] },
+    cashback: { cols: ["Order no.", "Category", "Date &amp; Time", "Type", "Amount", "Expiry"], rows: [
+      ["01", "Expired", "05:30 AM<br>24 Aug 2026", "DEBIT", "<span style='color:var(--danger)'>-₹131.44</span>", "03/09/2026"],
+      ["1053156", "Bonus", "09:04 PM<br>20 Aug 2026", "CREDIT", "<span style='color:var(--green-hover)'>+₹100</span>", "30/08/2026"],
+      ["29644-17874", "ORDER_CASHBACK", "10:45 PM<br>13 Aug 2026", "CREDIT", "<span style='color:var(--green-hover)'>+₹131.44</span>", "23/08/2026"]
+    ] },
+    money: { cols: ["Order no.", "Category", "Date &amp; Time", "Type", "Amount", "Balance"], rows: [
+      ["—", "Recharged into Value tier", "09:04 PM<br>20 Aug 2026", "CREDIT", "<span style='color:var(--green-hover)'>+₹10,000</span>", "₹10,000"],
+      ["29644-17874", "Order paid via wallet — 5% Value discount", "10:45 PM<br>22 Aug 2026", "DEBIT", "<span style='color:var(--danger)'>-₹1,900</span> <span class='benefit-sub'>(₹100 discount)</span>", "₹8,100"]
+    ] },
+    call: { cols: ["Date &amp; Time", "Type", "Duration", "Notes"], rows: [
+      ["—", "—", "—", "No calls logged yet"]
+    ] }
+  };
+
+  function renderHistory(tab) {
+    const data = HISTORY[tab];
+    document.querySelectorAll("#history-tabs button").forEach(b => b.classList.toggle("active", b.dataset.htab === tab));
+    const theadRow = data.cols.map(c => `<th>${c}</th>`).join("");
+    const bodyRows = data.rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("");
+    document.getElementById("history-table-wrap").innerHTML = `<table><thead><tr>${theadRow}</tr></thead><tbody>${bodyRows}</tbody></table>`;
+    document.getElementById("history-count").textContent = `Showing 1 - ${data.rows.length} of ${data.rows.length}`;
+  }
+  document.querySelectorAll("#history-tabs button").forEach(b => b.addEventListener("click", () => renderHistory(b.dataset.htab)));
+
+  function renderCustomerTab() {
+    const tier = activeTier();
+    document.getElementById("cust-money-value").textContent = rupee(customer.walletBalance);
+    if (tier) {
+      document.getElementById("cust-money-sub").textContent =
+        `${tier.name} tier · ${tier.value}% ${tier.benefitType === "cashback" ? "cashback" : "off"} on wallet-paid orders · valid till ${customer.validTill}`;
+    } else {
+      document.getElementById("cust-money-sub").textContent = "No active recharge tier";
+    }
+  }
+
+  /* ================= Create Order tab ================= */
+
+  function renderOrderChip() {
+    const tier = activeTier();
+    const chip = document.getElementById("order-tier-chip");
+    chip.textContent = tier ? `${tier.name} tier · ${rupee(customer.walletBalance)} wallet balance` : "No active recharge tier";
+  }
+
+  const UNIT_PRICE = 1469;
+  let orderQty = 1;
+
+  function changeQty(delta) {
+    orderQty = Math.max(1, orderQty + delta);
+    document.getElementById("qty-value").textContent = orderQty;
+    updateOrderSummary();
+  }
+  document.getElementById("qty-minus").addEventListener("click", () => changeQty(-1));
+  document.getElementById("qty-plus").addEventListener("click", () => changeQty(1));
+
+  function updateOrderSummary() {
+    const tier = activeTier();
+    const orderAmount = orderQty * UNIT_PRICE;
+    document.getElementById("order-amount-display").textContent = rupee(orderAmount);
+    const slotCharge = 10;
+    const method = document.querySelector("input[name='payment-method']:checked").value;
+    const discountRow = document.getElementById("sum-discount-row");
+    const note = document.getElementById("sum-note");
+    document.getElementById("cash-tendered-field").hidden = (method !== "cash");
+
+    document.getElementById("sum-order").textContent = rupee(orderAmount);
+
+    if (method === "wallet" && tier) {
+      if (orderAmount < tier.mov) {
+        discountRow.hidden = true;
+        note.className = "summary-note";
+        note.textContent = `This order needs to be at least ${rupee(tier.mov)} to use the ${tier.name} tier's wallet discount, so the full amount is payable another way.`;
+        document.getElementById("sum-total-label").textContent = "Total amount";
+        document.getElementById("sum-total").textContent = rupee(orderAmount + slotCharge);
+      } else {
+        const rawDiscount = orderAmount * tier.value / 100;
+        const discount = tier.maxOrder ? Math.min(rawDiscount, tier.maxOrder) : rawDiscount;
+        const debit = orderAmount - discount + slotCharge;
+        discountRow.hidden = false;
+        document.getElementById("sum-discount-label").textContent = `${tier.name} tier discount (${tier.value}%)`;
+        document.getElementById("sum-discount").textContent = "-" + rupee(discount);
+
+        if (debit <= customer.walletBalance) {
+          const after = customer.walletBalance - debit;
+          note.className = "summary-note positive";
+          note.textContent = `${tier.value}% ${tier.name} tier discount applied. ${rupee(debit)} (order + slot charge) will be debited from the wallet (${rupee(customer.walletBalance)} → ${rupee(after)}). Nothing else payable.`;
+          document.getElementById("sum-total-label").textContent = "Payable now";
+          document.getElementById("sum-total").textContent = rupee(0);
+        } else {
+          const shortfall = debit - customer.walletBalance;
+          note.className = "summary-note";
+          note.textContent = `Wallet balance (${rupee(customer.walletBalance)}) doesn't fully cover this order. ${rupee(customer.walletBalance)} will be debited from the wallet and the remaining ${rupee(shortfall)} must be paid via cash or online.`;
+          document.getElementById("sum-total-label").textContent = "Payable now (cash/online)";
+          document.getElementById("sum-total").textContent = rupee(shortfall);
+        }
+      }
+    } else {
+      discountRow.hidden = true;
+      note.className = "summary-note";
+      note.textContent = tier
+        ? "Paying by cash or online pays full price — the wallet discount only applies when the order is paid from the customer's wallet balance."
+        : "This customer has no active recharge tier, so there's no wallet discount to apply.";
+      document.getElementById("sum-total-label").textContent = "Total amount";
+      document.getElementById("sum-total").textContent = rupee(orderAmount + slotCharge);
+    }
+  }
+
+  document.querySelectorAll("input[name='payment-method']").forEach(r => r.addEventListener("change", updateOrderSummary));
+
+  /* ================= Screen navigation =================
+     Config, Customer Details, and Create Order are three separate real
+     screens in the product (Settings, a customer profile, and the order
+     flow) — not tabs of one screen. They're shown one at a time here,
+     moved between with Back / Next, purely so this prototype can walk
+     through the whole story in one place. */
+
+  const SCREENS = ["config", "customer", "order"];
+  const SCREEN_META = {
+    config:   { crumb: "https://zopping.com/admin/settings/wallet-configuration",   nav: "nav-settings" },
+    customer: { crumb: "https://zopping.com/admin/customers/customers/view/695832", nav: "nav-customers" },
+    order:    { crumb: "https://zopping.com/admin/orders/orders/add",               nav: "nav-orders" }
+  };
+  let currentScreen = "config";
+
+  function renderFlowNav() {
+    const idx = SCREENS.indexOf(currentScreen);
+    const onAddEditForm = currentScreen === "config" && !document.getElementById("view-form").hidden;
+    const nav = document.getElementById("flow-nav");
+    nav.hidden = onAddEditForm;
+    if (onAddEditForm) return;
+
+    const backBtn = document.getElementById("flow-back");
+    const nextBtn = document.getElementById("flow-next");
+    backBtn.hidden = idx === 0;
+    if (idx > 0) backBtn.textContent = `← Back: ${idx === 1 ? "Settings" : "Customer profile"}`;
+    nextBtn.hidden = idx === SCREENS.length - 1;
+    if (idx < SCREENS.length - 1) {
+      nextBtn.textContent = "Internal Note";
+      nextBtn.classList.remove("solid");
+      nextBtn.classList.add("blue");
+    }
+  }
+
+  function goToScreen(screen) {
+    currentScreen = screen;
+    SCREENS.forEach(s => document.getElementById("tab-" + s).hidden = (s !== screen));
+    document.getElementById("crumb").textContent = SCREEN_META[screen].crumb;
+
+    ["nav-settings", "nav-customers", "nav-orders"].forEach(id => document.getElementById(id).classList.remove("active"));
+    document.getElementById(SCREEN_META[screen].nav).classList.add("active");
+
+    if (screen === "config") showList();
+    if (screen === "customer") renderCustomerTab();
+    if (screen === "order") { renderOrderChip(); updateOrderSummary(); }
+
+    renderFlowNav();
+    window.scrollTo(0, 0);
+  }
+
+  document.getElementById("flow-back").addEventListener("click", () => {
+    const idx = SCREENS.indexOf(currentScreen);
+    if (idx > 0) goToScreen(SCREENS[idx - 1]);
+  });
+  document.getElementById("flow-next").addEventListener("click", () => {
+    const idx = SCREENS.indexOf(currentScreen);
+    if (idx < SCREENS.length - 1) goToScreen(SCREENS[idx + 1]);
+  });
+  document.getElementById("goto-order-from-customer").addEventListener("click", () => goToScreen("order"));
+
+  renderHistory("money");
+  renderCustomerTab();
+  renderOrderChip();
+  updateOrderSummary();
+  renderFlowNav();
+</script>
