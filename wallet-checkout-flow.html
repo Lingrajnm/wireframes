@@ -1,0 +1,718 @@
+<title>Wallet Checkout Flow</title>
+<style>
+  :root {
+    --olive: #3E4A24;
+    --olive-dark: #2F3919;
+    --olive-soft: #EAF0DE;
+    --olive-soft-border: #D3E0BE;
+    --cream: #F6F4EC;
+    --input-bg: #F1EFE4;
+    --white: #FFFFFF;
+    --text: #1A1A1A;
+    --text-muted: #6B7280;
+    --text-faint: #9CA3AF;
+    --border: #E7E3D5;
+    --border-strong: #D8D2BE;
+    --discount: #2F7D3B;
+    --shadow-card: 0 1px 2px rgba(26,26,26,0.04), 0 6px 18px rgba(26,26,26,0.05);
+    --radius-card: 16px;
+    --radius-input: 10px;
+    --radius-btn: 10px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: "Manrope", -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+  button, input { font-family: inherit; }
+  button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--olive); outline-offset: 2px; }
+  h1, h2, h3 { margin: 0; }
+  p { margin: 0; }
+
+  /* ---------- prototype control bar ---------- */
+  .proto-bar {
+    background: #1F2617;
+    color: #D9E3C8;
+    font-size: 12.5px;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+  .proto-bar b { color: #fff; }
+  .proto-toggle { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); padding: 5px 12px 5px 6px; border-radius: 20px; cursor: pointer; border: 1px solid rgba(255,255,255,0.15); }
+  .proto-toggle .switch { width: 30px; height: 17px; border-radius: 20px; background: #4B5636; position: relative; transition: background .15s; flex-shrink: 0; }
+  .proto-toggle .switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 13px; height: 13px; border-radius: 50%; background: #fff; transition: left .15s; }
+  .proto-toggle.on .switch { background: #7FA84C; }
+  .proto-toggle.on .switch::after { left: 15px; }
+
+  /* ---------- header ---------- */
+  .topbar-accent { height: 5px; background: var(--olive-dark); }
+  header.topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .logo { font-family: "Fraunces", Georgia, serif; line-height: 1.05; flex-shrink: 0; }
+  .logo .l1 { font-size: 21px; font-weight: 700; color: var(--text); display: block; }
+  .logo .l2 { font-size: 12.5px; font-weight: 600; color: var(--olive); letter-spacing: 0.02em; display: block; }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--input-bg); border-radius: 24px;
+    padding: 9px 14px; font-size: 13px; font-weight: 600; color: var(--text);
+    white-space: nowrap;
+  }
+  .pill svg { flex-shrink: 0; }
+  .pill .chev { color: var(--text-faint); margin-left: 2px; }
+
+  .search-wrap { flex: 1; min-width: 120px; }
+  .search-box {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--input-bg); border-radius: 24px; padding: 10px 16px;
+    color: var(--text-faint); font-size: 13.5px;
+  }
+
+  .head-icons { display: flex; align-items: center; gap: 18px; flex-shrink: 0; }
+  .icon-btn { background: none; border: none; padding: 4px; cursor: pointer; color: var(--text); display: flex; position: relative; }
+  .cart-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--olive); color: #fff; border: none; border-radius: 24px;
+    padding: 10px 16px 10px 14px; font-size: 13.5px; font-weight: 700; cursor: pointer; position: relative;
+  }
+  .cart-badge {
+    position: absolute; top: -6px; right: -6px; background: #fff; color: var(--olive);
+    border-radius: 50%; width: 18px; height: 18px; font-size: 10.5px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  nav.catnav {
+    background: var(--white); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 40px; padding: 14px 32px; flex-wrap: wrap;
+  }
+  .cat-item { display: flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 600; color: var(--text); }
+  .cat-item svg { color: var(--olive); flex-shrink: 0; }
+
+  /* ---------- page ---------- */
+  main.screen { max-width: 1260px; margin: 0 auto; padding: 28px 32px 90px; }
+  .page-title { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+
+  .checkout-grid { display: grid; grid-template-columns: 1.7fr 1fr; gap: 24px; align-items: start; }
+  @media (max-width: 900px) { .checkout-grid { grid-template-columns: 1fr; } }
+
+  .stack { display: flex; flex-direction: column; gap: 20px; }
+
+  .card {
+    background: var(--white); border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card); padding: 24px 26px;
+  }
+
+  .card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+  .card-head-left { display: flex; align-items: center; gap: 12px; }
+  .icon-badge {
+    width: 34px; height: 34px; border-radius: 50%; background: var(--olive);
+    color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .card-head h2 { font-size: 16.5px; font-weight: 800; }
+  .link-btn { background: none; border: none; color: var(--olive); font-size: 13px; font-weight: 700; cursor: pointer; padding: 0; }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .field-row:last-child { margin-bottom: 0; }
+  .input {
+    width: 100%; background: var(--input-bg); border: none; border-radius: var(--radius-input);
+    padding: 12px 14px; font-size: 13.5px; color: var(--text);
+  }
+  .input::placeholder { color: var(--text-faint); }
+  .input-phone { display: flex; align-items: center; background: var(--input-bg); border-radius: var(--radius-input); overflow: hidden; }
+  .input-phone .flag { padding: 0 10px 0 14px; font-size: 13.5px; color: var(--text-muted); border-right: 1px solid var(--border-strong); }
+  .input-phone input { border: none; background: none; padding: 12px 14px; font-size: 13.5px; flex: 1; color: var(--text); }
+
+  .addr-row { display: flex; align-items: flex-start; gap: 12px; }
+  .radio-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--olive); flex-shrink: 0; margin-top: 2px; position: relative; }
+  .radio-dot.checked::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--olive); }
+  .addr-text { font-size: 13.5px; color: var(--text); line-height: 1.5; }
+  .check-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: 13px; color: var(--text-muted); }
+  .checkbox-sq { width: 17px; height: 17px; border-radius: 4px; background: var(--olive); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+  .product-row { display: flex; gap: 12px; margin-bottom: 8px; }
+  .product-thumb { width: 46px; height: 46px; border-radius: 10px; background: var(--input-bg); flex-shrink: 0; }
+  .product-name { font-size: 13.5px; font-weight: 700; }
+  .product-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .slot-date { font-size: 13.5px; font-weight: 800; margin: 16px 0 10px; }
+  .slot-date:first-of-type { margin-top: 18px; }
+  .slot-grid { display: flex; gap: 10px; flex-wrap: wrap; }
+  .slot-btn {
+    border: 1.5px solid var(--border-strong); background: var(--white); color: var(--text);
+    border-radius: var(--radius-btn); padding: 9px 14px; font-size: 12.5px; font-weight: 700; cursor: pointer;
+  }
+  .slot-btn.active { background: var(--olive); border-color: var(--olive); color: #fff; }
+  .slot-note { font-size: 12.5px; color: var(--text-muted); margin-top: 14px; }
+
+  .field-label { font-size: 13.5px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: baseline; gap: 6px; }
+  .field-label .opt { font-weight: 500; color: var(--text-faint); font-size: 12px; }
+  .radio-inline { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text); }
+  .radio-inline-group { display: flex; gap: 26px; }
+  .radio-plain { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--border-strong); flex-shrink: 0; }
+
+  /* order summary */
+  .coupon-head { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+  .coupon-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  .coupon-input { flex: 1; background: var(--input-bg); border: none; border-radius: var(--radius-input); padding: 11px 14px; font-size: 13px; color: var(--text-faint); }
+  .apply-btn { border: 1.5px solid var(--border-strong); background: var(--white); color: var(--text-faint); border-radius: var(--radius-input); padding: 0 18px; font-size: 13px; font-weight: 700; cursor: default; }
+  .coupons-link { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; color: var(--olive); margin-bottom: 16px; }
+
+  .sum-divider { border-top: 1px solid var(--border); margin: 14px 0; }
+  .sum-row { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; padding: 4px 0; }
+  .sum-row .label { color: var(--text-muted); }
+  .sum-row .value { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .sum-row .value.discount { color: var(--discount); }
+  .sum-row.total .label { color: var(--text); font-weight: 800; font-size: 15px; }
+  .sum-row.total .value { font-size: 17px; }
+  .sum-row[hidden] { display: none; }
+
+  /* payment card */
+  .pay-row {
+    display: flex; align-items: center; gap: 12px; padding: 12px 12px;
+    border-radius: 12px; margin-bottom: 4px; transition: background .15s;
+  }
+  .pay-row.selected { background: var(--input-bg); }
+  .pay-row.disabled { opacity: .55; }
+  .pay-row .label-text { font-size: 13.5px; font-weight: 700; flex: 1; }
+  .pay-row .sub-text { font-size: 11.5px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+  .pay-row .icons { display: flex; gap: 6px; flex-shrink: 0; }
+  .paybadge { font-size: 9px; font-weight: 800; color: var(--text-muted); background: var(--white); border: 1px solid var(--border-strong); border-radius: 4px; padding: 3px 5px; }
+
+  .checkbox-wrap { width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--border-strong); background: var(--white); flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .checkbox-wrap.checked { background: var(--olive); border-color: var(--olive); }
+  .checkbox-wrap.disabled { cursor: default; background: #EDEBE2; border-color: var(--border); }
+  .radio-wrap { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border-strong); flex-shrink: 0; cursor: pointer; position: relative; }
+  .radio-wrap.checked { border-color: var(--olive); }
+  .radio-wrap.checked::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--olive); }
+
+  .plan-nudge {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    background: var(--olive-soft); border: 1px solid var(--olive-soft-border);
+    border-radius: 12px; padding: 11px 14px; margin: 6px 0 14px;
+  }
+  .plan-nudge p { font-size: 12.5px; color: var(--olive-dark); font-weight: 600; }
+  .plan-nudge button {
+    background: var(--olive); color: #fff; border: none; border-radius: 8px;
+    padding: 7px 13px; font-size: 12px; font-weight: 800; cursor: pointer; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+
+  .wallet-note {
+    display: flex; gap: 8px; font-size: 12.5px; color: var(--text-muted);
+    background: var(--olive-soft); border: 1px solid var(--olive-soft-border);
+    border-radius: 10px; padding: 10px 12px; margin-top: 10px;
+  }
+  .wallet-note b { color: var(--olive-dark); }
+  .wallet-note[hidden] { display: none; }
+
+  .paid-full-row {
+    display: flex; align-items: center; gap: 8px; background: var(--olive-soft);
+    border: 1px solid var(--olive-soft-border); border-radius: 12px; padding: 12px 14px;
+    font-size: 13px; font-weight: 700; color: var(--olive-dark); margin-top: 4px;
+  }
+  .paid-full-row[hidden] { display: none; }
+
+  .pay-now-btn {
+    width: 100%; background: var(--olive); color: #fff; border: none; border-radius: 12px;
+    padding: 15px; font-size: 14.5px; font-weight: 800; cursor: pointer; margin-top: 18px;
+  }
+  .pay-now-btn:hover { background: var(--olive-dark); }
+
+  /* add wallet plan screen */
+  .back-link { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: var(--olive); font-size: 13px; font-weight: 800; cursor: pointer; padding: 0; margin-bottom: 18px; }
+  .plans-head { max-width: 620px; margin-bottom: 30px; }
+  .plans-head h1 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+  .plans-head p { font-size: 14px; color: var(--text-muted); }
+
+  .plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 820px) { .plan-grid { grid-template-columns: 1fr; } }
+
+  .plan-card {
+    background: var(--white); border: 1.5px solid var(--border); border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card); padding: 26px 22px; display: flex; flex-direction: column; gap: 14px;
+    position: relative;
+  }
+  .plan-card.featured { border-color: var(--olive); }
+  .plan-ribbon {
+    position: absolute; top: -12px; left: 22px; background: var(--olive); color: #fff;
+    font-size: 10.5px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+    padding: 5px 10px; border-radius: 20px;
+  }
+  .plan-name { font-size: 15px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: .03em; }
+  .plan-amount { font-size: 30px; font-weight: 800; color: var(--text); }
+  .plan-amount span { font-size: 14px; color: var(--text-muted); font-weight: 600; }
+  .plan-benefit { font-size: 13.5px; color: var(--text); line-height: 1.5; }
+  .plan-benefit b { color: var(--olive-dark); }
+  .plan-validity { font-size: 12px; color: var(--text-faint); }
+  .plan-btn {
+    margin-top: 6px; background: var(--olive); color: #fff; border: none; border-radius: var(--radius-btn);
+    padding: 12px; font-size: 13.5px; font-weight: 800; cursor: pointer;
+  }
+  .plan-btn:hover { background: var(--olive-dark); }
+
+  .rule-note {
+    max-width: 620px; margin-top: 26px; font-size: 12.5px; color: var(--text-muted);
+    background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px;
+  }
+
+  /* toast */
+  .toast {
+    position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%);
+    background: var(--olive-dark); color: #fff; font-size: 13.5px; font-weight: 700;
+    padding: 13px 22px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    display: flex; align-items: center; gap: 8px; z-index: 50;
+  }
+  .toast[hidden] { display: none; }
+
+  [hidden] { display: none !important; }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<div class="proto-bar">
+  <span>Prototype demo controls — not part of the product UI:</span>
+  <div class="proto-toggle" id="proto-toggle" role="button" tabindex="0">
+    <span class="switch"></span>
+    <span id="proto-toggle-label">Simulate: has active Wallet plan</span>
+  </div>
+</div>
+
+<div class="topbar-accent"></div>
+<header class="topbar">
+  <div class="logo"><span class="l1">Fresh</span><span class="l2">By Brham</span></div>
+  <div class="pill">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
+    Zone 1, Apple Premium Reseller - iP
+    <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="search-wrap">
+    <div class="search-box">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      Search for...
+    </div>
+  </div>
+  <div class="head-icons">
+    <button class="icon-btn" aria-label="Notifications"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+    <button class="icon-btn" aria-label="Account"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></button>
+    <button class="cart-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6L5 3H2"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>
+      Cart
+      <span class="cart-badge">8</span>
+    </button>
+  </div>
+</header>
+
+<nav class="catnav">
+  <div class="cat-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="13" rx="7" ry="8.5"/></svg>Eggs</div>
+  <div class="cat-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 10c0-4 3-7 6-7s4 3 3 6c3 0 4 3 2 5-1 4-6 7-9 7-4 0-7-3-7-6 0-3 2-5 5-5z"/></svg>Chicken</div>
+  <div class="cat-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 4c-3 1-5 4-4 8 1 5 6 8 10 7 3-1 4-4 3-6-4 1-7-1-8-4-1-2 0-4-1-5z"/></svg>Mutton</div>
+  <div class="cat-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12c4-6 14-6 18 0-4 6-14 6-18 0z"/><circle cx="16" cy="12" r="1"/></svg>Fish</div>
+  <div class="cat-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="9" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Ready to Cook</div>
+  <div class="cat-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>Ready to Eat</div>
+</nav>
+
+<!-- ============ SCREEN 1: CHECKOUT ============ -->
+<main class="screen" id="screen-checkout">
+  <h1 class="page-title">Checkout</h1>
+  <div class="checkout-grid">
+
+    <div class="stack">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="icon-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+            <h2>Personal Details</h2>
+          </div>
+        </div>
+        <div class="field-row">
+          <input class="input" value="Lingraj" readonly>
+          <input class="input" placeholder="Last name">
+        </div>
+        <div class="field-row">
+          <input class="input" value="lingraj@zopping.com" readonly>
+          <div class="input-phone"><span class="flag">🇮🇳 ▾</span><input placeholder="Phone number"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="icon-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></div>
+            <h2>Delivery Location</h2>
+          </div>
+          <button class="link-btn">+ Add New</button>
+        </div>
+        <div class="addr-row">
+          <div class="radio-dot checked"></div>
+          <p class="addr-text">Zone 1, Apple Premium Reseller - iPlanet, R City Mall, Lal Bahadur Shastri Marg, near Envi Salon, Amrut Nagar, Ghatkopar West, Mumbai, Maharashtra 400086, India</p>
+        </div>
+        <div class="check-row">
+          <div class="checkbox-sq"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          Billing address is same as the shipping address
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-head-left">
+            <div class="icon-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+            <h2>Select Delivery Slots</h2>
+          </div>
+        </div>
+        <div class="product-row">
+          <div class="product-thumb"></div>
+          <div>
+            <div class="product-name">Chicken Boneless Breast - Boneless Breast-1kg</div>
+            <div class="product-meta">Cut Type: Boneless Breast<br>Select Weight: 1kg<br>x 2</div>
+          </div>
+        </div>
+        <div class="product-row">
+          <div class="product-thumb"></div>
+          <div>
+            <div class="product-name">Rohu Bengali Curry Cut (With Head) - Bengali Curry Cut (With Head)-1kg</div>
+            <div class="product-meta">Cut Type: Bengali Curry Cut (With Head)<br>Select Weight: 1kg<br>x 6</div>
+          </div>
+        </div>
+
+        <div class="slot-date">Tomorrow (27-Aug-2026)</div>
+        <div class="slot-grid">
+          <button class="slot-btn active">8:00AM-11:00AM</button>
+          <button class="slot-btn">11:00AM-2:00PM</button>
+          <button class="slot-btn">2:00PM-5:00PM</button>
+          <button class="slot-btn">5:00PM-8:00PM</button>
+        </div>
+        <div class="slot-date">28-Aug-2026</div>
+        <div class="slot-grid">
+          <button class="slot-btn">8:00AM-11:00AM</button>
+          <button class="slot-btn">11:00AM-2:00PM</button>
+          <button class="slot-btn">2:00PM-5:00PM</button>
+          <button class="slot-btn">5:00PM-8:00PM</button>
+        </div>
+        <p class="slot-note">You have selected Tomorrow (27-Aug-2026) — 8:00 AM - 11:00 AM for DELIVERY</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Additional Details</h2></div>
+        <div class="field-label">GST Number <span class="opt">(Optional)</span></div>
+        <input class="input" style="margin-bottom:18px;">
+        <div class="field-label">bulkOrder <span class="opt">(Optional)</span></div>
+        <div class="radio-inline-group">
+          <label class="radio-inline"><span class="radio-plain"></span>Yes</label>
+          <label class="radio-inline"><span class="radio-plain"></span>No</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card">
+        <div class="coupon-head">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>
+          Apply Coupon
+        </div>
+        <div class="coupon-row">
+          <input class="coupon-input" placeholder="Enter Coupon Code" readonly>
+          <button class="apply-btn">Apply</button>
+        </div>
+        <div class="coupons-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7M12 7C10 3 6 3 6 6s3 1 6 1zM12 7c2-4 6-4 6-1s-3 1-6 1z"/></svg>
+          Coupons
+        </div>
+        <div class="sum-divider"></div>
+        <div class="sum-row"><span class="label">Subtotal</span><span class="value" id="sum-subtotal"></span></div>
+        <div class="sum-row"><span class="label">Product Discount</span><span class="value discount" id="sum-product-discount"></span></div>
+        <div class="sum-row" id="sum-wallet-row" hidden><span class="label">Wallet Discount</span><span class="value discount" id="sum-wallet-discount"></span></div>
+        <div class="sum-row"><span class="label">Delivery Fee</span><span class="value">FREE</span></div>
+        <div class="sum-row"><span class="label">Slot Charge</span><span class="value" id="sum-slot-charge"></span></div>
+        <div class="sum-divider"></div>
+        <div class="sum-row total"><span class="label">Total</span><span class="value" id="sum-total"></span></div>
+      </div>
+
+      <div class="card" id="payment-card">
+        <div class="card-head"><h2>Payment</h2></div>
+
+        <div class="pay-row" id="wallet-row">
+          <div class="checkbox-wrap" id="wallet-checkbox"></div>
+          <div style="flex:1;">
+            <div class="label-text" id="wallet-label">Wallet (Balance: ₹ 0.00)</div>
+            <div class="sub-text" id="wallet-sub" hidden></div>
+          </div>
+        </div>
+
+        <div class="plan-nudge" id="plan-nudge">
+          <p>No active Wallet plan — recharge to save on every order.</p>
+          <button id="btn-add-plan">Add Wallet Plan
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+
+        <div class="pay-row" id="cod-row">
+          <div class="radio-wrap" id="cod-radio"></div>
+          <div class="label-text">Cash on Delivery (COD)</div>
+        </div>
+
+        <div class="pay-row selected" id="online-row">
+          <div class="radio-wrap checked" id="online-radio"></div>
+          <div class="label-text">Online</div>
+          <div class="icons">
+            <span class="paybadge">UPI</span><span class="paybadge">VISA</span><span class="paybadge">MC</span><span class="paybadge">Paytm</span>
+          </div>
+        </div>
+
+        <div class="paid-full-row" id="paid-full-row" hidden>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          Fully paid from Wallet balance — nothing else payable
+        </div>
+
+        <div class="wallet-note" id="wallet-note" hidden></div>
+      </div>
+
+      <button class="pay-now-btn">Pay Now</button>
+    </div>
+  </div>
+</main>
+
+<!-- ============ SCREEN 2: ADD WALLET PLAN ============ -->
+<main class="screen" id="screen-plans" hidden>
+  <button class="back-link" id="btn-back-checkout">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+    Back to Checkout
+  </button>
+
+  <div class="plans-head">
+    <h1>Add a Wallet Plan</h1>
+    <p>Recharge your wallet and save on every order you pay from it. The discount is only applied when you check out using your Wallet balance.</p>
+  </div>
+
+  <div class="plan-grid" id="plan-grid"></div>
+
+  <div class="rule-note">Your discount is only realized on an order when you pay it using your Wallet balance at checkout — it doesn't apply automatically to orders paid by Cash or Online.</div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const TIERS = [
+    { id: 1, name: "Starter", recharge: 5000, pct: 3, validityDays: 180 },
+    { id: 2, name: "Value", recharge: 10000, pct: 5, validityDays: 365, featured: true },
+    { id: 3, name: "Elite", recharge: 25000, pct: 8, validityDays: 365 }
+  ];
+
+  const ORDER = { subtotal: 5278, productDiscount: 500, slotCharge: 10 };
+
+  let wallet = { hasPlan: false, tierId: null, balance: 0 };
+  let walletChecked = false;
+  let paymentMethod = "online";
+
+  function rupee(n) {
+    return "₹ " + n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function activeTier() { return TIERS.find(t => t.id === wallet.tierId); }
+
+  function computeSummary() {
+    const afterProductDiscount = ORDER.subtotal - ORDER.productDiscount;
+    let walletDiscount = 0, walletDebit = 0;
+    let amountDue = afterProductDiscount + ORDER.slotCharge;
+    if (wallet.hasPlan && walletChecked) {
+      const tier = activeTier();
+      walletDiscount = Math.round(afterProductDiscount * tier.pct / 100);
+      amountDue = afterProductDiscount - walletDiscount + ORDER.slotCharge;
+      walletDebit = Math.min(wallet.balance, amountDue);
+    }
+    const total = afterProductDiscount - walletDiscount + ORDER.slotCharge;
+    const remaining = (wallet.hasPlan && walletChecked) ? amountDue - walletDebit : total;
+    return { afterProductDiscount, walletDiscount, walletDebit, remaining, total };
+  }
+
+  function renderCheckout() {
+    document.getElementById("sum-subtotal").textContent = rupee(ORDER.subtotal);
+    document.getElementById("sum-product-discount").textContent = "- " + rupee(ORDER.productDiscount);
+    document.getElementById("sum-slot-charge").textContent = rupee(ORDER.slotCharge);
+
+    const s = computeSummary();
+    const walletRow = document.getElementById("sum-wallet-row");
+    if (wallet.hasPlan && walletChecked && s.walletDiscount > 0) {
+      walletRow.hidden = false;
+      document.getElementById("sum-wallet-discount").textContent = "- " + rupee(s.walletDiscount);
+    } else {
+      walletRow.hidden = true;
+    }
+    document.getElementById("sum-total").textContent = rupee(s.total);
+
+    // wallet row
+    const walletCheckbox = document.getElementById("wallet-checkbox");
+    const walletLabel = document.getElementById("wallet-label");
+    const walletSub = document.getElementById("wallet-sub");
+    const walletRowEl = document.getElementById("wallet-row");
+    const planNudge = document.getElementById("plan-nudge");
+
+    if (wallet.hasPlan) {
+      const tier = activeTier();
+      walletLabel.textContent = `Wallet (Balance: ${rupee(wallet.balance)})`;
+      walletSub.hidden = false;
+      walletSub.textContent = `${tier.name} plan · ${tier.pct}% off orders paid from Wallet`;
+      walletCheckbox.className = "checkbox-wrap" + (walletChecked ? " checked" : "");
+      if (walletChecked) {
+        walletCheckbox.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>';
+      } else {
+        walletCheckbox.innerHTML = "";
+      }
+      walletRowEl.className = "pay-row" + (walletChecked ? " selected" : "");
+      planNudge.hidden = true;
+    } else {
+      walletLabel.textContent = "Wallet (Balance: ₹ 0.00)";
+      walletSub.hidden = true;
+      walletCheckbox.className = "checkbox-wrap disabled";
+      walletCheckbox.innerHTML = "";
+      walletRowEl.className = "pay-row disabled";
+      planNudge.hidden = false;
+    }
+
+    // cod / online rows
+    const codRadio = document.getElementById("cod-radio");
+    const onlineRadio = document.getElementById("online-radio");
+    const codRow = document.getElementById("cod-row");
+    const onlineRow = document.getElementById("online-row");
+    const fullyPaid = wallet.hasPlan && walletChecked && s.remaining <= 0;
+
+    codRadio.className = "radio-wrap" + (paymentMethod === "cod" ? " checked" : "");
+    onlineRadio.className = "radio-wrap" + (paymentMethod === "online" ? " checked" : "");
+    codRow.className = "pay-row" + (paymentMethod === "cod" && !fullyPaid ? " selected" : "") + (fullyPaid ? " disabled" : "");
+    onlineRow.className = "pay-row" + (paymentMethod === "online" && !fullyPaid ? " selected" : "") + (fullyPaid ? " disabled" : "");
+
+    document.getElementById("paid-full-row").hidden = !fullyPaid;
+    codRow.hidden = fullyPaid;
+    onlineRow.hidden = fullyPaid;
+
+    // wallet note
+    const note = document.getElementById("wallet-note");
+    if (wallet.hasPlan && walletChecked) {
+      note.hidden = false;
+      if (s.remaining <= 0) {
+        note.innerHTML = `<span><b>${rupee(s.walletDebit)}</b> will be paid from your Wallet balance (${rupee(wallet.balance)} available). Nothing else payable.</span>`;
+      } else {
+        const methodLabel = paymentMethod === "cod" ? "Cash on Delivery" : "Online";
+        note.innerHTML = `<span><b>${rupee(s.walletDebit)}</b> will be paid from your Wallet balance. <b>${rupee(s.remaining)}</b> remaining is payable via ${methodLabel}.</span>`;
+      }
+    } else {
+      note.hidden = true;
+    }
+  }
+
+  document.getElementById("wallet-checkbox").addEventListener("click", () => {
+    if (!wallet.hasPlan) return;
+    walletChecked = !walletChecked;
+    renderCheckout();
+  });
+  document.getElementById("wallet-row").addEventListener("click", (e) => {
+    if (!wallet.hasPlan) return;
+    if (e.target.closest("#wallet-checkbox")) return;
+    walletChecked = !walletChecked;
+    renderCheckout();
+  });
+  document.getElementById("cod-row").addEventListener("click", () => { paymentMethod = "cod"; renderCheckout(); });
+  document.getElementById("online-row").addEventListener("click", () => { paymentMethod = "online"; renderCheckout(); });
+
+  // slot buttons (light interactivity)
+  document.querySelectorAll(".slot-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const group = btn.closest(".slot-grid");
+      group.querySelectorAll(".slot-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+  });
+
+  // ---------- add wallet plan screen ----------
+  function renderPlanGrid() {
+    const grid = document.getElementById("plan-grid");
+    grid.innerHTML = "";
+    TIERS.forEach(tier => {
+      const card = document.createElement("div");
+      card.className = "plan-card" + (tier.featured ? " featured" : "");
+      card.innerHTML = `
+        ${tier.featured ? '<span class="plan-ribbon">Most Popular</span>' : ""}
+        <div class="plan-name">${tier.name}</div>
+        <div class="plan-amount">${rupee(tier.recharge).replace(".00", "")}<span> recharge</span></div>
+        <p class="plan-benefit">Get <b>${tier.pct}% off</b> every order you pay using your Wallet balance.</p>
+        <div class="plan-validity">Valid for ${tier.validityDays} days from recharge</div>
+        <button class="plan-btn" data-tier="${tier.id}">Recharge ${rupee(tier.recharge).replace(".00", "")}</button>
+      `;
+      grid.appendChild(card);
+    });
+    grid.querySelectorAll(".plan-btn").forEach(btn => {
+      btn.addEventListener("click", () => choosePlan(parseInt(btn.getAttribute("data-tier"), 10)));
+    });
+  }
+
+  function choosePlan(tierId) {
+    const tier = TIERS.find(t => t.id === tierId);
+    wallet = { hasPlan: true, tierId: tier.id, balance: tier.recharge };
+    walletChecked = true;
+    syncProtoToggle();
+    showToast(`🎉 ${tier.name} plan added — ${rupee(tier.recharge)} credited to your Wallet`);
+    setTimeout(() => goToScreen("checkout"), 950);
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById("toast");
+    toast.textContent = msg;
+    toast.hidden = false;
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => { toast.hidden = true; }, 2600);
+  }
+
+  function goToScreen(name) {
+    document.getElementById("screen-checkout").hidden = name !== "checkout";
+    document.getElementById("screen-plans").hidden = name !== "plans";
+    if (name === "checkout") renderCheckout();
+    if (name === "plans") renderPlanGrid();
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+
+  document.getElementById("btn-add-plan").addEventListener("click", () => goToScreen("plans"));
+  document.getElementById("btn-back-checkout").addEventListener("click", () => goToScreen("checkout"));
+
+  // ---------- prototype toggle ----------
+  const protoToggle = document.getElementById("proto-toggle");
+  function syncProtoToggle() {
+    protoToggle.classList.toggle("on", wallet.hasPlan);
+    document.getElementById("proto-toggle-label").textContent =
+      wallet.hasPlan ? "Simulate: has active Wallet plan" : "Simulate: no active Wallet plan";
+  }
+  function toggleSimulatedPlan() {
+    if (wallet.hasPlan) {
+      wallet = { hasPlan: false, tierId: null, balance: 0 };
+      walletChecked = false;
+    } else {
+      wallet = { hasPlan: true, tierId: 2, balance: 8100 };
+      walletChecked = true;
+    }
+    syncProtoToggle();
+    goToScreen("checkout");
+  }
+  protoToggle.addEventListener("click", toggleSimulatedPlan);
+  protoToggle.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleSimulatedPlan(); } });
+
+  syncProtoToggle();
+  renderCheckout();
+</script>
