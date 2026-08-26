@@ -1,0 +1,544 @@
+<title>Zopping Plans</title>
+<style>
+  :root {
+    --green: #16A34A;
+    --green-dark: #128A3E;
+    --green-tint: #ECFDF3;
+    --dark: #111827;
+    --dark-hover: #1F2937;
+    --text: #374151;
+    --text-soft: #6B7280;
+    --bg: #F8FAFC;
+    --white: #FFFFFF;
+    --border: #E5E7EB;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--white);
+    color: var(--text);
+    font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: "Inter", sans-serif; font-weight: 700; color: var(--dark); margin: 0; text-wrap: balance; }
+  .num { font-variant-numeric: tabular-nums; }
+  a { color: inherit; }
+
+  .shell { max-width: 1220px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- header ---------- */
+  header.site { background: var(--white); border-bottom: 1px solid var(--border); }
+  header.site .row { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+  .logo { font-size: 19px; font-weight: 800; color: var(--dark); letter-spacing: -0.01em; }
+  .logo span { color: var(--green); }
+  .head-actions { display: flex; align-items: center; gap: 18px; }
+  .link-quiet { font-size: 14px; font-weight: 500; color: var(--text); text-decoration: none; }
+
+  /* ---------- buttons ---------- */
+  .btn { display: inline-flex; align-items: center; gap: 7px; font-family: inherit; font-size: 14px; font-weight: 600; border-radius: 8px; padding: 11px 18px; border: 1px solid transparent; cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease; white-space: nowrap; }
+  .btn-primary { background: var(--green); color: #fff; }
+  .btn-primary:hover { background: var(--green-dark); }
+  .btn-outline { background: var(--white); color: var(--dark); border-color: var(--border); }
+  .btn-outline:hover { border-color: var(--dark); }
+  .btn-dark { background: var(--dark); color: #fff; }
+  .btn-dark:hover { background: var(--dark-hover); }
+  .btn-block { width: 100%; justify-content: center; }
+  .btn .arrow { transition: transform 0.15s ease; }
+  .btn:hover .arrow { transform: translateX(2px); }
+
+  /* ---------- hero ---------- */
+  section.hero { background: var(--bg); padding: 60px 0 44px; }
+  .eyebrow { font-size: 12.5px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--green); font-weight: 700; }
+  .hero h1 { font-size: 42px; margin: 12px 0 14px; max-width: 720px; }
+  .hero .sub { font-size: 17px; color: var(--text-soft); max-width: 620px; }
+
+  .toggle-row { display: flex; align-items: center; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
+  .toggle { display: inline-flex; background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 3px; }
+  .toggle button { border: none; background: transparent; font-family: inherit; font-size: 13.5px; font-weight: 600; color: var(--text-soft); padding: 8px 18px; border-radius: 6px; cursor: pointer; }
+  .toggle button.active { background: var(--dark); color: #fff; }
+  .save-tag { font-size: 12.5px; font-weight: 600; color: var(--green-dark); background: var(--green-tint); padding: 5px 10px; border-radius: 6px; }
+  .trial-note { font-size: 12.5px; color: var(--text-soft); }
+
+  /* ---------- pricing cards ---------- */
+  section.plans { background: var(--bg); padding: 8px 0 60px; }
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: stretch; }
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 24px 20px; display: flex; flex-direction: column; box-shadow: 0 1px 2px rgba(17,24,39,0.03); }
+  .card.popular { border: 1.5px solid var(--green); box-shadow: 0 4px 18px rgba(22,163,74,0.08); position: relative; }
+  .tag-popular { display: inline-block; background: var(--green); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.02em; padding: 4px 9px; border-radius: 6px; margin-bottom: 12px; width: fit-content; }
+  .card-name { font-size: 18px; font-weight: 700; color: var(--dark); }
+  .card-tagline { font-size: 13px; color: var(--text-soft); margin-top: 4px; margin-bottom: 16px; }
+  .price-row { display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap; }
+  .price { font-size: 29px; font-weight: 800; color: var(--dark); }
+  .price-strike { font-size: 15px; font-weight: 600; color: var(--text-soft); text-decoration: line-through; opacity: 0.7; }
+  .price-unit { font-size: 13px; color: var(--text-soft); font-weight: 500; }
+  .price-billed { font-size: 12px; color: var(--text-soft); margin-top: 4px; margin-bottom: 20px; }
+
+  .feat-list { list-style: none; margin: 0 0 22px; padding: 0; display: flex; flex-direction: column; gap: 11px; flex: 1; }
+  .feat-list li { display: flex; gap: 9px; align-items: flex-start; font-size: 13.5px; color: var(--text); }
+  .feat-list svg { flex: none; margin-top: 2px; }
+
+  /* ---------- commission band ---------- */
+  section.commission { background: var(--green-tint); padding: 44px 0; }
+  .commission-row { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; }
+  .commission-num { font-size: 60px; font-weight: 800; color: var(--green-dark); line-height: 1; }
+  .commission-text h2 { font-size: 20px; margin-bottom: 4px; }
+  .commission-text p { font-size: 14px; color: var(--text); margin: 0; max-width: 480px; }
+
+  /* ---------- differentiators ---------- */
+  section.diff { background: var(--white); padding: 58px 0; }
+  .diff-head { max-width: 560px; margin-bottom: 30px; }
+  .diff-head h2 { font-size: 26px; margin-bottom: 8px; }
+  .diff-head p { font-size: 15px; color: var(--text-soft); }
+  .diff-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+  .diff-item { display: flex; flex-direction: column; gap: 10px; }
+  .diff-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+  .diff-item h3 { font-size: 14px; font-weight: 700; }
+  .diff-item p { font-size: 12.5px; color: var(--text-soft); margin: 0; }
+
+  /* ---------- compare table ---------- */
+  section.compare { background: var(--bg); padding: 58px 0; }
+  .compare-head { margin-bottom: 24px; }
+  .compare-head h2 { font-size: 26px; margin-bottom: 8px; }
+  .compare-head p { font-size: 15px; color: var(--text-soft); max-width: 560px; }
+  .table-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .table-scroll { overflow-x: auto; }
+  table.compare-table { width: 100%; border-collapse: collapse; min-width: 820px; }
+  table.compare-table th, table.compare-table td { padding: 13px 18px; text-align: center; font-size: 13px; border-bottom: 1px solid var(--border); }
+  table.compare-table th:first-child, table.compare-table td:first-child { text-align: left; }
+  table.compare-table thead th { font-size: 12.5px; font-weight: 700; color: var(--dark); background: var(--bg); }
+  table.compare-table tbody tr:last-child td { border-bottom: none; }
+  table.compare-table .grp td { background: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green-dark); text-align: left; padding: 15px 18px 7px; border-bottom: none; }
+  table.compare-table .val { color: var(--text); font-variant-numeric: tabular-nums; }
+  table.compare-table .dash { color: var(--text-soft); }
+  .cap-cta { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .cap-cta-note { font-size: 13px; color: var(--text-soft); }
+
+  /* ---------- full capability list ---------- */
+  section.capabilities { background: var(--white); padding: 58px 0; }
+  .cap-eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green-dark); background: var(--green-tint); padding: 4px 10px; border-radius: 6px; margin-bottom: 10px; }
+  .cap-head { margin: 0 0 20px; }
+  .cap-head h2 { font-size: 26px; margin-bottom: 8px; }
+  .cap-head p { font-size: 15px; color: var(--text-soft); max-width: 640px; }
+  .cap-legend { display: flex; gap: 16px; font-size: 12px; color: var(--text-soft); margin-bottom: 18px; flex-wrap: wrap; }
+  .cap-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .cap-columns { column-count: 2; column-gap: 20px; }
+  .cap-card { break-inside: avoid; background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px 8px; margin-bottom: 20px; display: inline-block; width: 100%; }
+  .cap-card h3 { font-size: 14.5px; font-weight: 700; margin-bottom: 2px; }
+  .cap-card .cap-count { font-size: 11.5px; color: var(--text-soft); font-weight: 500; margin-bottom: 8px; display: block; }
+  .cap-row { padding: 9px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+  .cap-row:last-child { border-bottom: none; }
+  .cap-row .cap-name { font-size: 13px; font-weight: 600; color: var(--dark); }
+  .cap-row .cap-desc { font-size: 12px; color: var(--text-soft); margin-top: 1px; }
+  .cap-badge { flex: none; font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 6px; white-space: nowrap; margin-top: 1px; }
+  .cap-badge.all { background: var(--bg); color: var(--text-soft); border: 1px solid var(--border); }
+  .cap-badge.business { background: var(--green-tint); color: var(--green-dark); }
+  .cap-badge.enterprise { background: var(--dark); color: #fff; }
+
+  /* ---------- good to know ---------- */
+  section.notes { background: var(--white); padding: 8px 0 58px; }
+  .notes-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .note { border: 1px solid var(--border); border-radius: 12px; padding: 16px 17px; font-size: 13px; color: var(--text); background: var(--bg); }
+  .note b { color: var(--dark); }
+
+  /* ---------- final cta ---------- */
+  section.final-cta { background: var(--dark); padding: 60px 0; text-align: center; }
+  .final-cta h2 { color: #fff; font-size: 28px; margin-bottom: 12px; }
+  .final-cta p { color: #C7CCD3; font-size: 15px; margin: 0 0 24px; }
+  .final-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  footer.site { background: var(--white); padding: 24px 0; }
+  footer.site .foot-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 12.5px; color: var(--text-soft); }
+
+  @media (max-width: 1080px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
+    .diff-grid { grid-template-columns: repeat(2, 1fr); }
+    .notes-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 780px) {
+    .cap-columns { column-count: 1; }
+  }
+  @media (max-width: 560px) {
+    .hero h1 { font-size: 30px; }
+    .cards { grid-template-columns: 1fr; }
+    .diff-grid { grid-template-columns: 1fr; }
+    .notes-grid { grid-template-columns: 1fr; }
+    .commission-num { font-size: 46px; }
+  }
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+
+<!-- icon sprite -->
+<svg style="display:none">
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none"><rect x="6" y="2.5" width="12" height="19" rx="2.2" stroke="currentColor" stroke-width="1.7"/><line x1="10" y1="18.3" x2="14" y2="18.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24" fill="none"><path d="M4 8l8-4 8 4-8 4-8-4z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M4 8v8l8 4 8-4V8" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><line x1="12" y1="12" x2="12" y2="20" stroke="currentColor" stroke-width="1.7"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24" fill="none"><rect x="2" y="8" width="11" height="8" rx="1" stroke="currentColor" stroke-width="1.7"/><path d="M13 11h4l3 3v2h-7v-5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="1.6" stroke="currentColor" stroke-width="1.7"/><circle cx="16.5" cy="18" r="1.6" stroke="currentColor" stroke-width="1.7"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v11H9l-4 4v-4H4V5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="8.5" cy="10.3" r="0.9" fill="currentColor"/><circle cx="12" cy="10.3" r="0.9" fill="currentColor"/><circle cx="15.5" cy="10.3" r="0.9" fill="currentColor"/></symbol>
+  <symbol id="i-headset" viewBox="0 0 24 24" fill="none"><path d="M4 13v-1a8 8 0 0116 0v1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><rect x="2.7" y="13" width="4" height="6" rx="1.6" stroke="currentColor" stroke-width="1.7"/><rect x="17.3" y="13" width="4" height="6" rx="1.6" stroke="currentColor" stroke-width="1.7"/><path d="M19.3 19v1a2 2 0 01-2 2h-3.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header class="site">
+  <div class="shell row">
+    <div class="logo">Zopping<span>.</span></div>
+    <div class="head-actions">
+      <a class="link-quiet" href="#">Talk to an Expert</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="shell">
+    <div class="eyebrow">Pricing</div>
+    <h1>Everything you need to sell. Nothing extra to pay for.</h1>
+    <p class="sub">Storefront, native apps, warehouse tools, and delivery — one plan, one price. No commission on top, ever.</p>
+
+    <div class="toggle-row">
+      <div class="toggle">
+        <button id="btn-biannual" onclick="setCycle('biannual')">Bi-Annual</button>
+        <button id="btn-annual" class="active" onclick="setCycle('annual')">Annual</button>
+      </div>
+      <span class="save-tag">Annual saves ~25%</span>
+      <span class="trial-note">14-day trial of Business-tier limits on any plan · no card required</span>
+    </div>
+  </div>
+</section>
+
+<section class="plans">
+  <div class="shell">
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-name">Free</div>
+        <div class="card-tagline">Test the waters, no card needed</div>
+        <div class="price-row"><span class="price">₹0</span><span class="price-unit">forever</span></div>
+        <div class="price-billed">No billing cycle to choose</div>
+        <ul class="feat-list">
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>1 store, 2 team members</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>200 products, 100 orders/month</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Web storefront (no native app)</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>WhatsApp order-status automation</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Community + email support</li>
+        </ul>
+        <a href="#" class="btn btn-outline btn-block">Start Selling Free</a>
+      </div>
+
+      <div class="card">
+        <div class="card-name">Basic</div>
+        <div class="card-tagline">For entrepreneurs and small teams</div>
+        <div class="price-row"><span class="price p-annual">₹1,499</span><span class="price-strike p-strike">₹1,999</span><span class="price-unit">/mo</span></div>
+        <div class="price-billed p-billed">Billed annually · ₹17,988/yr, excl. GST</div>
+        <ul class="feat-list">
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Up to 3 active stores (5 ready to unlock)</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>5 team members, 3,000 products</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>1,500 orders/month included</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Native Android app, your brand</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Picker &amp; delivery apps included</li>
+        </ul>
+        <a href="#" class="btn btn-primary btn-block">Start Selling <svg class="arrow" width="16" height="16"><use href="#i-arrow"/></svg></a>
+      </div>
+
+      <div class="card popular">
+        <div class="tag-popular">Most Popular</div>
+        <div class="card-name">Business</div>
+        <div class="card-tagline">For businesses ready to scale</div>
+        <div class="price-row"><span class="price p-annual">₹4,999</span><span class="price-strike p-strike">₹6,499</span><span class="price-unit">/mo</span></div>
+        <div class="price-billed p-billed">Billed annually · ₹59,988/yr, excl. GST</div>
+        <ul class="feat-list">
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Up to 15 active stores (25 ready to unlock)</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>20 team members, 20,000 products</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>12,000 orders/month included</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Native Android + iOS apps, your brand</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Multi-warehouse ops &amp; shared account manager</li>
+        </ul>
+        <a href="#" class="btn btn-primary btn-block">Start Growing <svg class="arrow" width="16" height="16"><use href="#i-arrow"/></svg></a>
+      </div>
+
+      <div class="card">
+        <div class="card-name">Enterprise</div>
+        <div class="card-tagline">For multi-store &amp; multi-city businesses</div>
+        <div class="price-row"><span class="price">Custom</span></div>
+        <div class="price-billed">Scoped to volume &amp; contract term</div>
+        <ul class="feat-list">
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Unlimited stores, users &amp; products</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>White-labeled apps, built for your brand</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>ERP &amp; 3PL integrations</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Dedicated account manager</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>24/7 support, guaranteed SLA</li>
+        </ul>
+        <a href="#" class="btn btn-dark btn-block">Talk to an Expert</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="commission">
+  <div class="shell commission-row">
+    <div class="commission-num">0%</div>
+    <div class="commission-text">
+      <h2>Additional commission. On any plan.</h2>
+      <p>We charge for the platform — never a cut of your sales. Every order stays yours, in full, no matter which plan you're on.</p>
+    </div>
+  </div>
+</section>
+
+<section class="diff">
+  <div class="shell">
+    <div class="diff-head">
+      <h2>Built for commerce, not just checkout</h2>
+      <p>Capabilities most platforms sell back to you as separate apps — Zopping ships them in.</p>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-item"><div class="diff-icon"><svg width="19" height="19" style="color:var(--dark)"><use href="#i-phone"/></svg></div><h3>Native mobile apps</h3><p>Android &amp; iOS apps under your own brand, not a plug-in.</p></div>
+      <div class="diff-item"><div class="diff-icon"><svg width="19" height="19" style="color:var(--dark)"><use href="#i-box"/></svg></div><h3>Warehouse &amp; store ops</h3><p>Multi-warehouse routing and batch picking, built in.</p></div>
+      <div class="diff-item"><div class="diff-icon"><svg width="19" height="19" style="color:var(--dark)"><use href="#i-truck"/></svg></div><h3>Picker &amp; delivery apps</h3><p>Run in-store fulfillment and last-mile delivery natively.</p></div>
+      <div class="diff-item"><div class="diff-icon"><svg width="19" height="19" style="color:var(--dark)"><use href="#i-chat"/></svg></div><h3>WhatsApp automation</h3><p>Order updates &amp; marketing flows — pay only for what you send.</p></div>
+      <div class="diff-item"><div class="diff-icon"><svg width="19" height="19" style="color:var(--dark)"><use href="#i-headset"/></svg></div><h3>Real support</h3><p>An account manager from Business upward, not a ticket queue.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="compare">
+  <div class="shell">
+    <div class="compare-head">
+      <h2>Compare plans</h2>
+      <p>The numbers that actually change as you grow — nothing else is hidden between plans.</p>
+    </div>
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead><tr><th>&nbsp;</th><th>Free</th><th>Basic</th><th>Business</th><th>Enterprise</th></tr></thead>
+          <tbody>
+            <tr class="grp"><td colspan="5">Scale</td></tr>
+            <tr><td>Stores (active / max)</td><td class="val">1</td><td class="val">3 / 5</td><td class="val">15 / 25</td><td class="val">Unlimited</td></tr>
+            <tr><td>Team members</td><td class="val">2</td><td class="val">5</td><td class="val">20</td><td class="val">Unlimited</td></tr>
+            <tr><td>Orders / month included</td><td class="val">100</td><td class="val">1,500</td><td class="val">12,000</td><td class="val">Unlimited</td></tr>
+
+            <tr class="grp"><td colspan="5">Apps &amp; operations</td></tr>
+            <tr><td>Mobile app</td><td class="dash">Web only</td><td class="val">Android only</td><td class="val">Android + iOS</td><td class="val">White-labeled</td></tr>
+            <tr><td>Warehouse management</td><td class="val">Basic stock counter</td><td class="val">Single warehouse</td><td class="val">Multi-warehouse</td><td class="val">Enterprise WSM + ERP</td></tr>
+            <tr><td>Picker &amp; delivery apps</td><td class="val">1 + 1 seat</td><td class="val">3 + 5 seats</td><td class="val">15 + 30 seats</td><td class="val">Unlimited</td></tr>
+            <tr><td>WhatsApp automation</td><td class="val">Status only, prepaid</td><td class="val">3 flows, prepaid</td><td class="val">Unlimited flows, prepaid</td><td class="val">Custom, prepaid</td></tr>
+
+            <tr class="grp"><td colspan="5">Payments &amp; support</td></tr>
+            <tr><td>UPI processing (PhonePe)</td><td class="val">1.0%</td><td class="val">0.60%</td><td class="val">0.50%</td><td class="val">Custom, &lt;0.50%</td></tr>
+            <tr><td>Support</td><td class="val">Community + email</td><td class="val">Email + chat</td><td class="val">Priority + phone</td><td class="val">24/7 dedicated</td></tr>
+            <tr><td>Account manager</td><td class="dash">—</td><td class="dash">—</td><td class="val">Shared</td><td class="val">Dedicated</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="cap-cta">
+      <a href="#capabilities" class="btn btn-outline">See every capability, plan by plan <svg class="arrow" width="16" height="16"><use href="#i-arrow"/></svg></a>
+      <span class="cap-cta-note">86 features today — new ones ship every release, and none of them get locked away later.</span>
+    </div>
+  </div>
+</section>
+
+<section class="capabilities" id="capabilities">
+  <div class="shell">
+    <div class="cap-head">
+      <span class="cap-eyebrow">The full list</span>
+      <h2>Every platform capability, and which plan unlocks it</h2>
+      <p>Zopping ships 86 individual capabilities today across catalog, orders, marketing, analytics and more — and this list only grows. Nothing here is walled off to force an upgrade; most are on every plan from Free onward. The few that unlock later are genuinely operational-scale or enterprise-integration features.</p>
+      <div class="cap-legend">
+        <span><span class="cap-badge all" style="padding:2px 6px;">All plans</span> included from Free</span>
+        <span><span class="cap-badge business" style="padding:2px 6px;">Business+</span> unlocks on Business</span>
+        <span><span class="cap-badge enterprise" style="padding:2px 6px;">Enterprise</span> unlocks on Enterprise</span>
+      </div>
+    </div>
+
+    <div class="cap-columns">
+
+      <div class="cap-card">
+        <h3>Catalog &amp; merchandising</h3>
+        <span class="cap-count">17 capabilities</span>
+        <div class="cap-row"><div><div class="cap-name">Dynamic hero banners</div><div class="cap-desc">Entity-driven header layouts per category</div></div><span class="cap-badge business">Business+</span></div>
+        <div class="cap-row"><div><div class="cap-name">Trending searches</div><div class="cap-desc">Surface popular queries to boost discovery</div></div><span class="cap-badge business">Business+</span></div>
+        <div class="cap-row"><div><div class="cap-name">Personalized search results</div><div class="cap-desc">Rank listings by each customer's purchase history</div></div><span class="cap-badge business">Business+</span></div>
+        <div class="cap-row"><div><div class="cap-name">Search results control</div><div class="cap-desc">Pin products for chosen keywords</div></div><span class="cap-badge business">Business+</span></div>
+        <div class="cap-row"><div><div class="cap-name">Notify me (back-in-stock)</div><div class="cap-desc">Alert shoppers when an item is restocked</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Product bundles</div><div class="cap-desc">Fixed bundles with live inventory sync</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Recipe page generator</div><div class="cap-desc">Shoppable recipe pages with add-to-cart</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Digital products</div><div class="cap-desc">Sell ebooks, licenses and files with no delivery charge</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Subscription products</div><div class="cap-desc">Recurring purchase reminders for repeat buys</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Product restrictions</div><div class="cap-desc">Purchase limits per customer, per time window</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Reviews &amp; ratings</div><div class="cap-desc">Verified-buyer ratings and photo reviews</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Pre-order support</div><div class="cap-desc">Sell items with a procurement lead time</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Sold-by-weight products</div><div class="cap-desc">Billing for loose, fractional-quantity items</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Product substitution</div><div class="cap-desc">Auto-suggest swaps for out-of-stock items</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Product tags</div><div class="cap-desc">Tag-based collection pages and filtering</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Product variants</div><div class="cap-desc">Colour, size and weight variants per SKU</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Brand pages</div><div class="cap-desc">Browse, filter and analyse sales by brand</div></div><span class="cap-badge all">All plans</span></div>
+      </div>
+
+      <div class="cap-card">
+        <h3>Pricing, promotions &amp; loyalty</h3>
+        <span class="cap-count">9 capabilities</span>
+        <div class="cap-row"><div><div class="cap-name">VIP membership plans</div><div class="cap-desc">Paid loyalty tiers with waived fees and perks</div></div><span class="cap-badge business">Business+</span></div>
+        <div class="cap-row"><div><div class="cap-name">Customer groups</div><div class="cap-desc">Segment-based access and shared account management</div></div><span class="cap-badge business">Business+</span></div>
+        <div class="cap-row"><div><div class="cap-name">Tiered pricing</div><div class="cap-desc">Rules by customer tag and quantity bracket</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Customer credit</div><div class="cap-desc">Buy-now, pay-later with a repayment schedule</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Unique coupon generator</div><div class="cap-desc">Bulk-generate one-time discount codes</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Offers &amp; promotions</div><div class="cap-desc">10+ built-in offer types incl. BOGO and bundling</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Wallet &amp; cashback</div><div class="cap-desc">Store credit, top-ups and cashback on orders</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Customer tags &amp; segmentation</div><div class="cap-desc">System and custom tags for targeted offers</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Slot surcharge / discount</div><div class="cap-desc">Price delivery and pickup slots differently</div></div><span class="cap-badge all">All plans</span></div>
+      </div>
+
+      <div class="cap-card">
+        <h3>Orders, delivery &amp; warehouse ops</h3>
+        <span class="cap-count">21 capabilities</span>
+        <div class="cap-row"><div><div class="cap-name">Order accept/reject with hopping</div><div class="cap-desc">Auto-reassign orders on reject or timeout</div></div><span class="cap-badge enterprise">Enterprise</span></div>
+        <div class="cap-row"><div><div class="cap-name">Endless aisle kiosk</div><div class="cap-desc">In-store tablets ordering from the full online catalogue</div></div><span class="cap-badge enterprise">Enterprise</span></div>
+        <div class="cap-row"><div><div class="cap-name">Inventory cycle counts</div><div class="cap-desc">Scheduled stock counting tasks with audit trail</div></div><span class="cap-badge enterprise">Enterprise</span></div>
+        <div class="cap-row"><div><div class="cap-name">Order split</div><div class="cap-desc">One cart checks out as independent, back-orderable orders</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Order gating</div><div class="cap-desc">Manual review and approval before orders confirm</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Order status nomenclature</div><div class="cap-desc">Rename order statuses to match your brand terms</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Rider earnings &amp; incentives</div><div class="cap-desc">Distance, order-value and milestone-based rider pay</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">OMS / WMS integrations</div><div class="cap-desc">Plug into Unicommerce and similar order/warehouse systems</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Free delivery by product</div><div class="cap-desc">Waive delivery fee on selected SKUs</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Low stock alerts</div><div class="cap-desc">Real-time email alerts below a stock threshold</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Hub trip support</div><div class="cap-desc">Track orders moving between packaging and dispatch hubs</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Multiple &amp; partial order picking</div><div class="cap-desc">Pickers batch or split orders by zone</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Bulk-order handling</div><div class="cap-desc">Route large orders to a different fulfilling store</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Slot capacity planning</div><div class="cap-desc">Cap orders per delivery/pickup slot, per store</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Stock buffer set-up</div><div class="cap-desc">Reserve buffer stock by product or category</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Order returns</div><div class="cap-desc">Manage returns with automatic inventory and refund adjustment</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Delivery &amp; pickup slots</div><div class="cap-desc">Configure the slots your business can actually fulfil</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Stock management</div><div class="cap-desc">Track exact unit counts, not just in/out of stock</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Delivery dispatch</div><div class="cap-desc">Trips, vehicles and vendors, plus the Android delivery app</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Delivery area set-up</div><div class="cap-desc">Define serviceable boundaries and area-based fees</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Pick &amp; pack (Android picker app)</div><div class="cap-desc">Automated picking queue with QC and barcode labelling</div></div><span class="cap-badge all">All plans</span></div>
+      </div>
+
+      <div class="cap-card">
+        <h3>Multi-store, team &amp; access</h3>
+        <span class="cap-count">10 capabilities</span>
+        <div class="cap-row"><div><div class="cap-name">Sales location mapping</div><div class="cap-desc">Assign villages, blocks or zones to staff and codes</div></div><span class="cap-badge enterprise">Enterprise</span></div>
+        <div class="cap-row"><div><div class="cap-name">B2B / wholesale accounts</div><div class="cap-desc">GST-verified business accounts, group pricing, order visibility</div></div><span class="cap-badge enterprise">Enterprise</span></div>
+        <div class="cap-row"><div><div class="cap-name">User activity logs</div><div class="cap-desc">Centralized audit trail of login and account actions</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Marketplace / vendor management</div><div class="cap-desc">Onboard vendors with their own catalogue and orders</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Leave management</div><div class="cap-desc">Staff leave requests with manager approval</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Password policy</div><div class="cap-desc">Enforce length and character rules for customer passwords</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Custom fields</div><div class="cap-desc">Capture extra data on products, orders and signup</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Shift &amp; designation management</div><div class="cap-desc">Manage staff shifts, weekly-offs and designations</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Multi-store operations</div><div class="cap-desc">Per-store catalogue, stock and pricing, compared side by side</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Multi-user support</div><div class="cap-desc">Invite teammates with scoped permissions</div></div><span class="cap-badge all">All plans</span></div>
+      </div>
+
+      <div class="cap-card">
+        <h3>Marketing &amp; engagement</h3>
+        <span class="cap-count">11 capabilities</span>
+        <div class="cap-row"><div><div class="cap-name">Customer wishlist</div><div class="cap-desc">Save-for-later to drive return visits</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Instagram feed</div><div class="cap-desc">Auto-updating Instagram gallery on your storefront</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Newsletter subscription</div><div class="cap-desc">Opt-in capture for offers and launches</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Whatmore shoppable video</div><div class="cap-desc">Interactive, shoppable video embeds</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Referral management</div><div class="cap-desc">Unique referral codes with wallet cashback both ways</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Marketing banners</div><div class="cap-desc">Multilingual, page-targeted, pre-scheduled banners</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Abandoned cart recovery</div><div class="cap-desc">Push / email / SMS nudges to finish checkout</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Push notifications</div><div class="cap-desc">Order and delivery status alerts to customer devices</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Ticket management</div><div class="cap-desc">Customers raise, you resolve, order-linked support tickets</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Customer support console</div><div class="cap-desc">Look up and edit any customer's orders by phone/email</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Campaign engine</div><div class="cap-desc">Scheduled Email / SMS / app-notification campaigns</div></div><span class="cap-badge all">All plans</span></div>
+      </div>
+
+      <div class="cap-card">
+        <h3>Analytics &amp; tracking</h3>
+        <span class="cap-count">6 capabilities</span>
+        <div class="cap-row"><div><div class="cap-name">Search keyword history</div><div class="cap-desc">What shoppers search for, for merchandising decisions</div></div><span class="cap-badge business">Business+</span></div>
+        <div class="cap-row"><div><div class="cap-name">Store performance (MIS) reports</div><div class="cap-desc">Automated store-by-store reports to managers and owners</div></div><span class="cap-badge enterprise">Enterprise</span></div>
+        <div class="cap-row"><div><div class="cap-name">Google Tag Manager</div><div class="cap-desc">Manage tracking tags without a code change</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Reports &amp; analytics</div><div class="cap-desc">14 downloadable reports across sales, ops, inventory</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Facebook Pixel analytics</div><div class="cap-desc">Measure and target ad performance</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Google Analytics</div><div class="cap-desc">Site traffic and conversion tracking</div></div><span class="cap-badge all">All plans</span></div>
+      </div>
+
+      <div class="cap-card">
+        <h3>Integrations &amp; payments</h3>
+        <span class="cap-count">8 capabilities</span>
+        <div class="cap-row"><div><div class="cap-name">Third-party invoicing</div><div class="cap-desc">Issue and validate invoices via an approved external provider</div></div><span class="cap-badge enterprise">Enterprise</span></div>
+        <div class="cap-row"><div><div class="cap-name">Facebook SDK</div><div class="cap-desc">Meta App/Client ID for ad audiences and event tracking</div></div><span class="cap-badge business">Business+</span></div>
+        <div class="cap-row"><div><div class="cap-name">Appointment booking</div><div class="cap-desc">TidyCal / oneHashCal scheduling for bookings</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Generic third-party integration</div><div class="cap-desc">Transfer store data to an external system</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Google Merchant Center</div><div class="cap-desc">One-click catalogue sync to Google Shopping</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Shipping &amp; courier partners</div><div class="cap-desc">Fulfil and track via ShipRocket, Dunzo and similar</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Online payment gateway</div><div class="cap-desc">Connect your preferred gateway for online orders</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Tawk.to live chat</div><div class="cap-desc">Live chat widget on web and app</div></div><span class="cap-badge all">All plans</span></div>
+      </div>
+
+      <div class="cap-card">
+        <h3>Storefront &amp; localization</h3>
+        <span class="cap-count">4 capabilities</span>
+        <div class="cap-row"><div><div class="cap-name">Flexible sign-up &amp; login</div><div class="cap-desc">OTP-based SSO or classic sign-up/login flows</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Scheduled page layouts</div><div class="cap-desc">Pre-build pages and auto-swap them on a schedule</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Multi-language storefront</div><div class="cap-desc">Serve your website and apps in multiple languages</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">SEO optimization</div><div class="cap-desc">Custom title, description and keywords per page</div></div><span class="cap-badge all">All plans</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="notes">
+  <div class="shell">
+    <div class="notes-grid">
+      <div class="note"><b>GST</b> — all prices above exclude GST (add 18%).</div>
+      <div class="note"><b>SMS &amp; WhatsApp</b> — prepaid on every plan, no free credits, no surprises.</div>
+      <div class="note"><b>UPI rate</b> — via our PhonePe partnership, gets cheaper as you grow.</div>
+      <div class="note"><b>Trial</b> — every signup runs on Business-tier limits for 14 days.</div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="shell">
+    <h2>Ready to grow without the app-store tax?</h2>
+    <p>Talk to us about which plan fits, or start selling today.</p>
+    <div class="final-actions">
+      <a href="#" class="btn btn-primary">Start Selling <svg class="arrow" width="16" height="16"><use href="#i-arrow"/></svg></a>
+      <a href="#" class="btn btn-outline" style="background:transparent;color:#fff;border-color:#3A4250;">Talk to an Expert</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="shell foot-row">
+    <span>© 2026 Zopping. Commerce infrastructure, not just a storefront.</span>
+    <span>All prices in INR, excl. GST. SMS &amp; WhatsApp are prepaid on every plan.</span>
+  </div>
+</footer>
+
+<script>
+  var prices = {
+    basic: { annual: "₹1,499", strike: "₹1,999", billed: "Billed annually · ₹17,988/yr, excl. GST", billedBi: "Billed bi-annually · ₹11,994 per 6 months, excl. GST" },
+    business: { annual: "₹4,999", strike: "₹6,499", billed: "Billed annually · ₹59,988/yr, excl. GST", billedBi: "Billed bi-annually · ₹38,994 per 6 months, excl. GST" }
+  };
+  function setCycle(cycle) {
+    document.getElementById('btn-annual').classList.toggle('active', cycle === 'annual');
+    document.getElementById('btn-biannual').classList.toggle('active', cycle === 'biannual');
+    document.querySelectorAll('.card').forEach(function (card) {
+      var name = card.querySelector('.card-name').textContent.trim().toLowerCase();
+      if (name !== 'basic' && name !== 'business') return;
+      var main = card.querySelector('.p-annual');
+      var strike = card.querySelector('.p-strike');
+      var billed = card.querySelector('.p-billed');
+      if (!main) return;
+      if (cycle === 'annual') {
+        main.textContent = prices[name].annual;
+        strike.textContent = prices[name].strike;
+        strike.style.display = '';
+        billed.textContent = prices[name].billed;
+      } else {
+        main.textContent = prices[name].strike;
+        strike.style.display = 'none';
+        billed.textContent = prices[name].billedBi;
+      }
+    });
+  }
+</script>
