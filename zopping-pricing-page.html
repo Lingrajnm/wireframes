@@ -133,6 +133,7 @@
   .cap-row .cap-desc { font-size: 12px; color: var(--text-soft); margin-top: 1px; }
   .cap-badge { flex: none; font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 6px; white-space: nowrap; margin-top: 1px; }
   .cap-badge.all { background: var(--bg); color: var(--text-soft); border: 1px solid var(--border); }
+  .cap-badge.basic { background: #EEF2FF; color: #4338CA; }
   .cap-badge.business { background: var(--green-tint); color: var(--green-dark); }
   .cap-badge.enterprise { background: var(--dark); color: #fff; }
 
@@ -217,10 +218,10 @@
         <div class="price-row"><span class="price">₹0</span><span class="price-unit">forever</span></div>
         <div class="price-billed">No billing cycle to choose</div>
         <ul class="feat-list">
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>1 store, 2 team members</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>1 store, 1 user</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>200 products, 100 orders/month</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Web storefront (no native app)</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>WhatsApp order-status automation</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Website storefront on a free Zopping subdomain</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>5 themes from our free library</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Community + email support</li>
         </ul>
         <a href="#" class="btn btn-outline btn-block">Start Selling Free</a>
@@ -232,11 +233,11 @@
         <div class="price-row"><span class="price p-annual">₹1,499</span><span class="price-strike p-strike">₹1,999</span><span class="price-unit">/mo</span></div>
         <div class="price-billed p-billed">Billed annually · ₹17,988/yr, excl. GST</div>
         <ul class="feat-list">
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Up to 3 active stores (5 ready to unlock)</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>5 team members, 3,000 products</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>3 active stores</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>3 team members, 3,000 products</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>1,500 orders/month included</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Native Android app, your brand</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Picker &amp; delivery apps included</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Website + native Android app, your brand</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>1 picker + 1 delivery license</li>
         </ul>
         <a href="#" class="btn btn-primary btn-block">Start Selling <svg class="arrow" width="16" height="16"><use href="#i-arrow"/></svg></a>
       </div>
@@ -248,11 +249,11 @@
         <div class="price-row"><span class="price p-annual">₹4,999</span><span class="price-strike p-strike">₹6,499</span><span class="price-unit">/mo</span></div>
         <div class="price-billed p-billed">Billed annually · ₹59,988/yr, excl. GST</div>
         <ul class="feat-list">
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Up to 15 active stores (25 ready to unlock)</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>20 team members, 20,000 products</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>10 active stores</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>12 staff members, 20,000 products</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>12,000 orders/month included</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Native Android + iOS apps, your brand</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Multi-warehouse ops &amp; shared account manager</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Website + native Android &amp; iOS apps, your brand</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>15 picker + 15 delivery licenses, shared account manager</li>
         </ul>
         <a href="#" class="btn btn-primary btn-block">Start Growing <svg class="arrow" width="16" height="16"><use href="#i-arrow"/></svg></a>
       </div>
@@ -314,15 +315,18 @@
           <thead><tr><th>&nbsp;</th><th>Free</th><th>Basic</th><th>Business</th><th>Enterprise</th></tr></thead>
           <tbody>
             <tr class="grp"><td colspan="5">Scale</td></tr>
-            <tr><td>Stores (active / max)</td><td class="val">1</td><td class="val">3 / 5</td><td class="val">15 / 25</td><td class="val">Unlimited</td></tr>
-            <tr><td>Team members</td><td class="val">2</td><td class="val">5</td><td class="val">20</td><td class="val">Unlimited</td></tr>
+            <tr><td>Stores</td><td class="val">1</td><td class="val">3</td><td class="val">10</td><td class="val">Unlimited</td></tr>
+            <tr><td>Team members</td><td class="val">1</td><td class="val">3</td><td class="val">12</td><td class="val">Unlimited</td></tr>
             <tr><td>Orders / month included</td><td class="val">100</td><td class="val">1,500</td><td class="val">12,000</td><td class="val">Unlimited</td></tr>
 
-            <tr class="grp"><td colspan="5">Apps &amp; operations</td></tr>
-            <tr><td>Mobile app</td><td class="dash">Web only</td><td class="val">Android only</td><td class="val">Android + iOS</td><td class="val">White-labeled</td></tr>
+            <tr class="grp"><td colspan="5">Storefront</td></tr>
+            <tr><td>Storefront</td><td class="dash">Website only</td><td class="val">Website + Android app</td><td class="val">Website + Android + iOS</td><td class="val">White-labeled apps</td></tr>
+            <tr><td>Domain</td><td class="dash">Subdomain only</td><td class="val">Custom domain</td><td class="val">Custom domain</td><td class="val">Custom + multi-domain</td></tr>
+            <tr><td>Themes</td><td class="val">5, free library</td><td class="val">15</td><td class="val">50</td><td class="val">Full customization</td></tr>
+            <tr><td>Picker licenses</td><td class="dash">Not included</td><td class="val">1</td><td class="val">15</td><td class="val">Unlimited</td></tr>
+            <tr><td>Delivery licenses</td><td class="dash">Not included</td><td class="val">1</td><td class="val">15</td><td class="val">Unlimited</td></tr>
             <tr><td>Warehouse management</td><td class="val">Basic stock counter</td><td class="val">Single warehouse</td><td class="val">Multi-warehouse</td><td class="val">Enterprise WSM + ERP</td></tr>
-            <tr><td>Picker &amp; delivery apps</td><td class="val">1 + 1 seat</td><td class="val">3 + 5 seats</td><td class="val">15 + 30 seats</td><td class="val">Unlimited</td></tr>
-            <tr><td>WhatsApp automation</td><td class="val">Status only, prepaid</td><td class="val">3 flows, prepaid</td><td class="val">Unlimited flows, prepaid</td><td class="val">Custom, prepaid</td></tr>
+            <tr><td>WhatsApp automation</td><td class="dash">Not included</td><td class="val">3 flows, prepaid</td><td class="val">Unlimited flows, prepaid</td><td class="val">Custom, prepaid</td></tr>
 
             <tr class="grp"><td colspan="5">Payments &amp; support</td></tr>
             <tr><td>UPI processing (PhonePe)</td><td class="val">1.0%</td><td class="val">0.60%</td><td class="val">0.50%</td><td class="val">Custom, &lt;0.50%</td></tr>
@@ -348,6 +352,7 @@
       <p>Zopping ships 86 individual capabilities today across catalog, orders, marketing, analytics and more — and this list only grows. Nothing here is walled off to force an upgrade; most are on every plan from Free onward. The few that unlock later are genuinely operational-scale or enterprise-integration features.</p>
       <div class="cap-legend">
         <span><span class="cap-badge all" style="padding:2px 6px;">All plans</span> included from Free</span>
+        <span><span class="cap-badge basic" style="padding:2px 6px;">Basic+</span> unlocks on Basic</span>
         <span><span class="cap-badge business" style="padding:2px 6px;">Business+</span> unlocks on Business</span>
         <span><span class="cap-badge enterprise" style="padding:2px 6px;">Enterprise</span> unlocks on Enterprise</span>
       </div>
@@ -364,9 +369,9 @@
         <div class="cap-row"><div><div class="cap-name">Search results control</div><div class="cap-desc">Pin products for chosen keywords</div></div><span class="cap-badge business">Business+</span></div>
         <div class="cap-row"><div><div class="cap-name">Notify me (back-in-stock)</div><div class="cap-desc">Alert shoppers when an item is restocked</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Product bundles</div><div class="cap-desc">Fixed bundles with live inventory sync</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Recipe page generator</div><div class="cap-desc">Shoppable recipe pages with add-to-cart</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Recipe page generator</div><div class="cap-desc">Shoppable recipe pages with add-to-cart</div></div><span class="cap-badge basic">Basic+</span></div>
         <div class="cap-row"><div><div class="cap-name">Digital products</div><div class="cap-desc">Sell ebooks, licenses and files with no delivery charge</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Subscription products</div><div class="cap-desc">Recurring purchase reminders for repeat buys</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Subscription products</div><div class="cap-desc">Recurring purchase reminders for repeat buys</div></div><span class="cap-badge basic">Basic+</span></div>
         <div class="cap-row"><div><div class="cap-name">Product restrictions</div><div class="cap-desc">Purchase limits per customer, per time window</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Reviews &amp; ratings</div><div class="cap-desc">Verified-buyer ratings and photo reviews</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Pre-order support</div><div class="cap-desc">Sell items with a procurement lead time</div></div><span class="cap-badge all">All plans</span></div>
