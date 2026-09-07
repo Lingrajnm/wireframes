@@ -194,16 +194,20 @@
 <section class="hero">
   <div class="shell">
     <div class="eyebrow">Pricing</div>
-    <h1>Everything you need to sell. Nothing extra to pay for.</h1>
+    <h1>Everything you need to sell. No commission, ever.</h1>
     <p class="sub">Storefront, native apps, warehouse tools, and delivery — one plan, one price. No commission on top, ever.</p>
 
     <div class="toggle-row">
+      <div class="toggle">
+        <button id="btn-india" class="active" onclick="setMarket('india')">India (₹)</button>
+        <button id="btn-global" onclick="setMarket('global')">Global ($)</button>
+      </div>
       <div class="toggle">
         <button id="btn-biannual" onclick="setCycle('biannual')">Bi-Annual</button>
         <button id="btn-annual" class="active" onclick="setCycle('annual')">Annual</button>
       </div>
       <span class="save-tag">Annual saves ~25%</span>
-      <span class="trial-note">14-day trial of Business-tier limits on any plan · no card required</span>
+      <span class="trial-note">Same plans, same limits everywhere — only currency and price change. 14-day trial of Business-tier limits on any plan · no card required.</span>
     </div>
   </div>
 </section>
@@ -215,7 +219,7 @@
       <div class="card">
         <div class="card-name">Free</div>
         <div class="card-tagline">Test the waters, no card needed</div>
-        <div class="price-row"><span class="price">₹0</span><span class="price-unit">forever</span></div>
+        <div class="price-row"><span class="price p-free">₹0</span><span class="price-unit">forever</span></div>
         <div class="price-billed">No billing cycle to choose</div>
         <ul class="feat-list">
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>1 store, 1 user</li>
@@ -268,7 +272,7 @@
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>White-labeled apps, built for your brand</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>ERP &amp; 3PL integrations</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Dedicated account manager</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>24/7 support, guaranteed SLA</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>24/7 support, SLA scoped to your contract</li>
         </ul>
         <a href="#" class="btn btn-dark btn-block">Talk to an Expert</a>
       </div>
@@ -318,6 +322,7 @@
             <tr><td>Stores</td><td class="val">1</td><td class="val">3</td><td class="val">10</td><td class="val">Unlimited</td></tr>
             <tr><td>Team members</td><td class="val">1</td><td class="val">3</td><td class="val">12</td><td class="val">Unlimited</td></tr>
             <tr><td>Orders / month included</td><td class="val">100</td><td class="val">1,500</td><td class="val">12,000</td><td class="val">Unlimited</td></tr>
+            <tr><td>Overage per order beyond cap</td><td class="val ov-free">₹5</td><td class="val ov-basic">₹4</td><td class="val ov-biz">₹2.50</td><td class="val">Negotiated</td></tr>
 
             <tr class="grp"><td colspan="5">Storefront</td></tr>
             <tr><td>Storefront</td><td class="dash">Website only</td><td class="val">Website + Android app</td><td class="val">Website + Android + iOS</td><td class="val">White-labeled apps</td></tr>
@@ -329,7 +334,7 @@
             <tr><td>WhatsApp automation</td><td class="dash">Not included</td><td class="val">3 flows, prepaid</td><td class="val">Unlimited flows, prepaid</td><td class="val">Custom, prepaid</td></tr>
 
             <tr class="grp"><td colspan="5">Payments &amp; support</td></tr>
-            <tr><td>UPI processing (PhonePe)</td><td class="val">1.0%</td><td class="val">0.60%</td><td class="val">0.50%</td><td class="val">Custom, &lt;0.50%</td></tr>
+            <tr><td class="pay-label">UPI processing (PhonePe)</td><td class="val pay-free">1.0%</td><td class="val pay-basic">0.60%</td><td class="val pay-biz">0.50%</td><td class="val pay-ent">Custom, &lt;0.50%</td></tr>
             <tr><td>Support</td><td class="val">Community + email</td><td class="val">Email + chat</td><td class="val">Priority + phone</td><td class="val">24/7 dedicated</td></tr>
             <tr><td>Account manager</td><td class="dash">—</td><td class="dash">—</td><td class="val">Shared</td><td class="val">Dedicated</td></tr>
           </tbody>
@@ -417,9 +422,9 @@
         <div class="cap-row"><div><div class="cap-name">Order returns</div><div class="cap-desc">Manage returns with automatic inventory and refund adjustment</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Delivery &amp; pickup slots</div><div class="cap-desc">Configure the slots your business can actually fulfil</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Stock management</div><div class="cap-desc">Track exact unit counts, not just in/out of stock</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Delivery dispatch</div><div class="cap-desc">Trips, vehicles and vendors, plus the Android delivery app</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Delivery dispatch</div><div class="cap-desc">Trips, vehicles and vendors, plus the Android delivery app</div></div><span class="cap-badge basic">Basic+</span></div>
         <div class="cap-row"><div><div class="cap-name">Delivery area set-up</div><div class="cap-desc">Define serviceable boundaries and area-based fees</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Pick &amp; pack (Android picker app)</div><div class="cap-desc">Automated picking queue with QC and barcode labelling</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Pick &amp; pack (Android picker app)</div><div class="cap-desc">Automated picking queue with QC and barcode labelling</div></div><span class="cap-badge basic">Basic+</span></div>
       </div>
 
       <div class="cap-card">
@@ -493,10 +498,14 @@
 <section class="notes">
   <div class="shell">
     <div class="notes-grid">
-      <div class="note"><b>GST</b> — all prices above exclude GST (add 18%).</div>
+      <div class="note"><b>Taxes</b> — India prices exclude GST (add 18%). Global prices exclude sales tax/VAT, shown at checkout by region and remitted by you — we're not a merchant of record.</div>
       <div class="note"><b>SMS &amp; WhatsApp</b> — prepaid on every plan, no free credits, no surprises.</div>
-      <div class="note"><b>UPI rate</b> — via our PhonePe partnership, gets cheaper as you grow.</div>
+      <div class="note"><b>Payment rate (India)</b> — via our PhonePe UPI partnership, gets cheaper as you grow. Global: bring your own Stripe/PayPal gateway.</div>
       <div class="note"><b>Trial</b> — every signup runs on Business-tier limits for 14 days.</div>
+      <div class="note"><b>Order overage</b> — extra orders beyond your monthly cap are billed per order rather than blocked — ₹5 / ₹4 / ₹2.50 in India, $0.10 / $0.08 / $0.05 globally (Free/Basic/Business).</div>
+      <div class="note"><b>Seats</b> — team members, picker licenses and delivery licenses are separate pools; none of them counts against another.</div>
+      <div class="note"><b>Integrations</b> — generic OMS/WMS connections (e.g. Unicommerce) are open on every plan; ERP integrations are scoped as part of an Enterprise contract.</div>
+      <div class="note"><b>Enterprise SLA</b> — response times and uptime commitments are set in your contract, not a fixed platform-wide number.</div>
     </div>
   </div>
 </section>
@@ -515,35 +524,77 @@
 <footer class="site">
   <div class="shell foot-row">
     <span>© 2026 Zopping. Commerce infrastructure, not just a storefront.</span>
-    <span>All prices in INR, excl. GST. SMS &amp; WhatsApp are prepaid on every plan.</span>
+    <span>Prices shown in your selected currency, excl. applicable tax. SMS &amp; WhatsApp are prepaid on every plan.</span>
   </div>
 </footer>
 
 <script>
   var prices = {
-    basic: { annual: "₹1,499", strike: "₹1,999", billed: "Billed annually · ₹17,988/yr, excl. GST", billedBi: "Billed bi-annually · ₹11,994 per 6 months, excl. GST" },
-    business: { annual: "₹4,999", strike: "₹6,499", billed: "Billed annually · ₹59,988/yr, excl. GST", billedBi: "Billed bi-annually · ₹38,994 per 6 months, excl. GST" }
+    india: {
+      basic: { annual: "₹1,499", strike: "₹1,999", billed: "Billed annually · ₹17,988/yr, excl. GST", billedBi: "Billed bi-annually · ₹11,994 per 6 months, excl. GST" },
+      business: { annual: "₹4,999", strike: "₹6,499", billed: "Billed annually · ₹59,988/yr, excl. GST", billedBi: "Billed bi-annually · ₹38,994 per 6 months, excl. GST" }
+    },
+    global: {
+      basic: { annual: "$39", strike: "$49", billed: "Billed annually · $468/yr, plus applicable tax", billedBi: "Billed bi-annually · $294 per 6 months, plus applicable tax" },
+      business: { annual: "$99", strike: "$129", billed: "Billed annually · $1,188/yr, plus applicable tax", billedBi: "Billed bi-annually · $774 per 6 months, plus applicable tax" }
+    }
   };
-  function setCycle(cycle) {
-    document.getElementById('btn-annual').classList.toggle('active', cycle === 'annual');
-    document.getElementById('btn-biannual').classList.toggle('active', cycle === 'biannual');
+  var freePrice = { india: "₹0", global: "$0" };
+  var overage = {
+    india: { free: "₹5", basic: "₹4", biz: "₹2.50" },
+    global: { free: "$0.10", basic: "$0.08", biz: "$0.05" }
+  };
+  var payment = {
+    india: { label: "UPI processing (PhonePe)", free: "1.0%", basic: "0.60%", biz: "0.50%", ent: "Custom, <0.50%" },
+    global: { label: "Payment processing (Stripe/PayPal)", free: "Your own rate", basic: "Your own rate", biz: "Your own rate", ent: "Negotiated rate" }
+  };
+  var state = { market: 'india', cycle: 'annual' };
+
+  function render() {
+    document.getElementById('btn-annual').classList.toggle('active', state.cycle === 'annual');
+    document.getElementById('btn-biannual').classList.toggle('active', state.cycle === 'biannual');
+    document.getElementById('btn-india').classList.toggle('active', state.market === 'india');
+    document.getElementById('btn-global').classList.toggle('active', state.market === 'global');
+
+    var freeEl = document.querySelector('.p-free');
+    if (freeEl) freeEl.textContent = freePrice[state.market];
+
     document.querySelectorAll('.card').forEach(function (card) {
       var name = card.querySelector('.card-name').textContent.trim().toLowerCase();
       if (name !== 'basic' && name !== 'business') return;
+      var data = prices[state.market][name];
       var main = card.querySelector('.p-annual');
       var strike = card.querySelector('.p-strike');
       var billed = card.querySelector('.p-billed');
       if (!main) return;
-      if (cycle === 'annual') {
-        main.textContent = prices[name].annual;
-        strike.textContent = prices[name].strike;
+      if (state.cycle === 'annual') {
+        main.textContent = data.annual;
+        strike.textContent = data.strike;
         strike.style.display = '';
-        billed.textContent = prices[name].billed;
+        billed.textContent = data.billed;
       } else {
-        main.textContent = prices[name].strike;
+        main.textContent = data.strike;
         strike.style.display = 'none';
-        billed.textContent = prices[name].billedBi;
+        billed.textContent = data.billedBi;
       }
     });
+
+    var ov = overage[state.market];
+    var ovFree = document.querySelector('.ov-free'), ovBasic = document.querySelector('.ov-basic'), ovBiz = document.querySelector('.ov-biz');
+    if (ovFree) ovFree.textContent = ov.free;
+    if (ovBasic) ovBasic.textContent = ov.basic;
+    if (ovBiz) ovBiz.textContent = ov.biz;
+
+    var pay = payment[state.market];
+    var payLabel = document.querySelector('.pay-label');
+    var payFree = document.querySelector('.pay-free'), payBasic = document.querySelector('.pay-basic'), payBiz = document.querySelector('.pay-biz'), payEnt = document.querySelector('.pay-ent');
+    if (payLabel) payLabel.textContent = pay.label;
+    if (payFree) payFree.textContent = pay.free;
+    if (payBasic) payBasic.textContent = pay.basic;
+    if (payBiz) payBiz.textContent = pay.biz;
+    if (payEnt) payEnt.textContent = pay.ent;
   }
+
+  function setCycle(cycle) { state.cycle = cycle; render(); }
+  function setMarket(market) { state.market = market; render(); }
 </script>
