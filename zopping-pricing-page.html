@@ -60,6 +60,7 @@
   .toggle button.active { background: var(--dark); color: #fff; }
   .save-tag { font-size: 12.5px; font-weight: 600; color: var(--green-dark); background: var(--green-tint); padding: 5px 10px; border-radius: 6px; }
   .trial-note { font-size: 12.5px; color: var(--text-soft); }
+  .info-mark { cursor: help; font-weight: 700; color: var(--text-soft); border-bottom: 1px dotted var(--text-soft); }
 
   /* ---------- pricing cards ---------- */
   section.plans { background: var(--bg); padding: 8px 0 60px; }
@@ -207,7 +208,7 @@
         <button id="btn-annual" class="active" onclick="setCycle('annual')">Annual</button>
       </div>
       <span class="save-tag">Annual saves ~25%</span>
-      <span class="trial-note">Same plans, same limits everywhere — only currency and price change. 14-day trial of Business-tier limits on any plan · no card required.</span>
+      <span class="trial-note">Same plans, same limits everywhere — only currency and price change.</span>
     </div>
   </div>
 </section>
@@ -225,7 +226,6 @@
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>1 store, 1 user</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>200 products, 100 orders/month</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Website storefront on a free Zopping subdomain</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>5 themes from our free library</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Community + email support</li>
         </ul>
         <a href="#" class="btn btn-outline btn-block">Start Selling Free</a>
@@ -239,7 +239,7 @@
         <ul class="feat-list">
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>3 active stores</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>3 team members, 3,000 products</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>1,500 orders/month included</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>1,000 orders/month included</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Website + native Android app, your brand</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>1 picker + 1 delivery license</li>
         </ul>
@@ -255,9 +255,9 @@
         <ul class="feat-list">
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>10 active stores</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>12 staff members, 20,000 products</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>12,000 orders/month included</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>3,000 orders/month included</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Website + native Android &amp; iOS apps, your brand</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>15 picker + 15 delivery licenses, shared account manager</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>5 picker + 5 delivery licenses, shared account manager + phone</li>
         </ul>
         <a href="#" class="btn btn-primary btn-block">Start Growing <svg class="arrow" width="16" height="16"><use href="#i-arrow"/></svg></a>
       </div>
@@ -271,8 +271,7 @@
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Unlimited stores, users &amp; products</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>White-labeled apps, built for your brand</li>
           <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>ERP &amp; 3PL integrations</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Dedicated account manager</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>24/7 support, SLA scoped to your contract</li>
+          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Shared account manager · 18×7 support<span class="info-mark" title="Support hours: 18 hours a day, every day of the week">*</span>, SLA scoped to your contract</li>
         </ul>
         <a href="#" class="btn btn-dark btn-block">Talk to an Expert</a>
       </div>
@@ -321,22 +320,20 @@
             <tr class="grp"><td colspan="5">Scale</td></tr>
             <tr><td>Stores</td><td class="val">1</td><td class="val">3</td><td class="val">10</td><td class="val">Unlimited</td></tr>
             <tr><td>Team members</td><td class="val">1</td><td class="val">3</td><td class="val">12</td><td class="val">Unlimited</td></tr>
-            <tr><td>Orders / month included</td><td class="val">100</td><td class="val">1,500</td><td class="val">12,000</td><td class="val">Unlimited</td></tr>
+            <tr><td>Orders / month included</td><td class="val">100</td><td class="val">1,000</td><td class="val">3,000</td><td class="val">Unlimited</td></tr>
             <tr><td>Overage per order beyond cap</td><td class="val ov-free">₹5</td><td class="val ov-basic">₹4</td><td class="val ov-biz">₹2.50</td><td class="val">Negotiated</td></tr>
 
             <tr class="grp"><td colspan="5">Storefront</td></tr>
             <tr><td>Storefront</td><td class="dash">Website only</td><td class="val">Website + Android app</td><td class="val">Website + Android + iOS</td><td class="val">White-labeled apps</td></tr>
             <tr><td>Domain</td><td class="dash">Subdomain only</td><td class="val">Custom domain</td><td class="val">Custom domain</td><td class="val">Custom + multi-domain</td></tr>
-            <tr><td>Themes</td><td class="val">5, free library</td><td class="val">15</td><td class="val">50</td><td class="val">Full customization</td></tr>
-            <tr><td>Picker licenses</td><td class="dash">Not included</td><td class="val">1</td><td class="val">15</td><td class="val">Unlimited</td></tr>
-            <tr><td>Delivery licenses</td><td class="dash">Not included</td><td class="val">1</td><td class="val">15</td><td class="val">Unlimited</td></tr>
+            <tr><td>Picker licenses</td><td class="dash">Not included</td><td class="val">1</td><td class="val">5</td><td class="val">Unlimited</td></tr>
+            <tr><td>Delivery licenses</td><td class="dash">Not included</td><td class="val">1</td><td class="val">5</td><td class="val">Unlimited</td></tr>
             <tr><td>Warehouse management</td><td class="val">Basic stock counter</td><td class="val">Single warehouse</td><td class="val">Multi-warehouse</td><td class="val">Enterprise WSM + ERP</td></tr>
             <tr><td>WhatsApp automation</td><td class="dash">Not included</td><td class="val">3 flows, prepaid</td><td class="val">Unlimited flows, prepaid</td><td class="val">Custom, prepaid</td></tr>
 
             <tr class="grp"><td colspan="5">Payments &amp; support</td></tr>
             <tr><td class="pay-label">UPI processing (PhonePe)</td><td class="val pay-free">1.0%</td><td class="val pay-basic">0.60%</td><td class="val pay-biz">0.50%</td><td class="val pay-ent">Custom, &lt;0.50%</td></tr>
-            <tr><td>Support</td><td class="val">Community + email</td><td class="val">Email + chat</td><td class="val">Priority + phone</td><td class="val">24/7 dedicated</td></tr>
-            <tr><td>Account manager</td><td class="dash">—</td><td class="dash">—</td><td class="val">Shared</td><td class="val">Dedicated</td></tr>
+            <tr><td>Support</td><td class="val">Community + email</td><td class="val">Email + chat</td><td class="val">Shared account manager + phone<span class="info-mark" title="Support hours: Mon–Fri, standard business hours">*</span></td><td class="val">Shared account manager · 18×7<span class="info-mark" title="Support hours: 18 hours a day, every day of the week">*</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -411,7 +408,7 @@
         <div class="cap-row"><div><div class="cap-name">Order gating</div><div class="cap-desc">Manual review and approval before orders confirm</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Order status nomenclature</div><div class="cap-desc">Rename order statuses to match your brand terms</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Rider earnings &amp; incentives</div><div class="cap-desc">Distance, order-value and milestone-based rider pay</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">OMS / WMS integrations</div><div class="cap-desc">Plug into Unicommerce and similar order/warehouse systems</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">OMS / WMS integrations</div><div class="cap-desc">Plug into external order/warehouse management systems</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Free delivery by product</div><div class="cap-desc">Waive delivery fee on selected SKUs</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Low stock alerts</div><div class="cap-desc">Real-time email alerts below a stock threshold</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Hub trip support</div><div class="cap-desc">Track orders moving between packaging and dispatch hubs</div></div><span class="cap-badge all">All plans</span></div>
@@ -436,7 +433,7 @@
         <div class="cap-row"><div><div class="cap-name">Marketplace / vendor management</div><div class="cap-desc">Onboard vendors with their own catalogue and orders</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Leave management</div><div class="cap-desc">Staff leave requests with manager approval</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Password policy</div><div class="cap-desc">Enforce length and character rules for customer passwords</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Custom fields</div><div class="cap-desc">Capture extra data on products, orders and signup</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Custom fields</div><div class="cap-desc">Capture extra data on products, orders and signup</div></div><span class="cap-badge enterprise">Enterprise</span></div>
         <div class="cap-row"><div><div class="cap-name">Shift &amp; designation management</div><div class="cap-desc">Manage staff shifts, weekly-offs and designations</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Multi-store operations</div><div class="cap-desc">Per-store catalogue, stock and pricing, compared side by side</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Multi-user support</div><div class="cap-desc">Invite teammates with scoped permissions</div></div><span class="cap-badge all">All plans</span></div>
@@ -487,7 +484,7 @@
         <span class="cap-count">4 capabilities</span>
         <div class="cap-row"><div><div class="cap-name">Flexible sign-up &amp; login</div><div class="cap-desc">OTP-based SSO or classic sign-up/login flows</div></div><span class="cap-badge all">All plans</span></div>
         <div class="cap-row"><div><div class="cap-name">Scheduled page layouts</div><div class="cap-desc">Pre-build pages and auto-swap them on a schedule</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Multi-language storefront</div><div class="cap-desc">Serve your website and apps in multiple languages</div></div><span class="cap-badge all">All plans</span></div>
+        <div class="cap-row"><div><div class="cap-name">Multi-language storefront</div><div class="cap-desc">Serve your website and apps in multiple languages</div></div><span class="cap-badge business">Business+</span></div>
         <div class="cap-row"><div><div class="cap-name">SEO optimization</div><div class="cap-desc">Custom title, description and keywords per page</div></div><span class="cap-badge all">All plans</span></div>
       </div>
 
@@ -501,10 +498,9 @@
       <div class="note"><b>Taxes</b> — India prices exclude GST (add 18%). Global prices exclude sales tax/VAT, shown at checkout by region and remitted by you — we're not a merchant of record.</div>
       <div class="note"><b>SMS &amp; WhatsApp</b> — prepaid on every plan, no free credits, no surprises.</div>
       <div class="note"><b>Payment rate (India)</b> — via our PhonePe UPI partnership, gets cheaper as you grow. Global: bring your own Stripe/PayPal gateway.</div>
-      <div class="note"><b>Trial</b> — every signup runs on Business-tier limits for 14 days.</div>
       <div class="note"><b>Order overage</b> — extra orders beyond your monthly cap are billed per order rather than blocked — ₹5 / ₹4 / ₹2.50 in India, $0.10 / $0.08 / $0.05 globally (Free/Basic/Business).</div>
       <div class="note"><b>Seats</b> — team members, picker licenses and delivery licenses are separate pools; none of them counts against another.</div>
-      <div class="note"><b>Integrations</b> — generic OMS/WMS connections (e.g. Unicommerce) are open on every plan; ERP integrations are scoped as part of an Enterprise contract.</div>
+      <div class="note"><b>Integrations</b> — generic OMS/WMS connections are open on every plan; ERP integrations are scoped as part of an Enterprise contract.</div>
       <div class="note"><b>Enterprise SLA</b> — response times and uptime commitments are set in your contract, not a fixed platform-wide number.</div>
     </div>
   </div>
