@@ -1,9 +1,14 @@
 <title>Zopping Plans</title>
 <style>
   :root {
-    --green: #16A34A;
-    --green-dark: #128A3E;
-    --green-tint: #ECFDF3;
+    --green: #4AB819;
+    --green-dark: #3DA015;
+    --green-tint: #E6F4EC;
+    --blue: #0071C5;
+    --check-green: #5DCB89;
+    --offer-1: #3A8F7C;
+    --offer-2: #4691A3;
+    --track: #F3F4F6;
     --dark: #111827;
     --dark-hover: #1F2937;
     --text: #374151;
@@ -15,6 +20,7 @@
 
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
     background: var(--white);
     color: var(--text);
@@ -26,91 +32,162 @@
   .num { font-variant-numeric: tabular-nums; }
   a { color: inherit; }
 
-  .shell { max-width: 1220px; margin: 0 auto; padding: 0 28px; }
+  .shell { max-width: 1360px; margin: 0 auto; padding: 0 28px; }
 
   /* ---------- header ---------- */
-  header.site { background: var(--white); border-bottom: 1px solid var(--border); }
-  header.site .row { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
-  .logo { font-size: 19px; font-weight: 800; color: var(--dark); letter-spacing: -0.01em; }
-  .logo span { color: var(--green); }
-  .head-actions { display: flex; align-items: center; gap: 18px; }
+  header.site { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; box-shadow: 0 1px 3px rgba(17,24,39,0.05); }
+  header.site .row { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; padding-bottom: 16px; gap: 20px; }
+  .logo { display: inline-flex; align-items: center; flex: none; line-height: 0; }
+  .logo svg { height: 34px; width: auto; display: block; }
+  .nav-links { display: flex; align-items: center; gap: 26px; flex: 1; justify-content: center; }
+  .nav-links a, .nav-links .nav-drop { font-size: 15px; font-weight: 500; color: var(--text-soft); text-decoration: none; background: none; border: none; padding: 0; font-family: inherit; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; transition: color 0.15s ease; }
+  .nav-links a:hover, .nav-links .nav-drop:hover { color: var(--green); }
+  .nav-links a.current { color: var(--dark); font-weight: 700; }
+  @media (max-width: 1080px) { .nav-links { display: none; } }
+  .head-actions { display: flex; align-items: center; gap: 14px; flex: none; }
+  .account-icon { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); color: var(--text-soft); flex: none; transition: border-color 0.15s ease, color 0.15s ease; }
+  .account-icon:hover { border-color: var(--dark); color: var(--dark); }
   .link-quiet { font-size: 14px; font-weight: 500; color: var(--text); text-decoration: none; }
 
   /* ---------- buttons ---------- */
-  .btn { display: inline-flex; align-items: center; gap: 7px; font-family: inherit; font-size: 14px; font-weight: 600; border-radius: 8px; padding: 11px 18px; border: 1px solid transparent; cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease; white-space: nowrap; }
+  .btn { display: inline-flex; align-items: center; gap: 7px; font-family: inherit; font-size: 14px; line-height: 1; font-weight: 600; border-radius: 4px; padding: 11px 18px; border: 1px solid transparent; cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease; white-space: nowrap; text-decoration: none; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn-primary:hover { box-shadow: 0 4px 12px rgba(74,184,25,0.25); }
   .btn-primary { background: var(--green); color: #fff; }
   .btn-primary:hover { background: var(--green-dark); }
-  .btn-outline { background: var(--white); color: var(--dark); border-color: var(--border); }
-  .btn-outline:hover { border-color: var(--dark); }
-  .btn-dark { background: var(--dark); color: #fff; }
-  .btn-dark:hover { background: var(--dark-hover); }
+  .btn-outline { background: var(--white); color: var(--green); border: 1px solid var(--green); }
+  .btn-outline:hover { background: var(--green-tint); }
+  .btn-dark { background: var(--white); color: var(--dark); border: 1.5px solid var(--dark); }
+  .btn-dark:hover { background: var(--bg); }
   .btn-block { width: 100%; justify-content: center; }
   .btn .arrow { transition: transform 0.15s ease; }
   .btn:hover .arrow { transform: translateX(2px); }
 
   /* ---------- hero ---------- */
-  section.hero { background: var(--bg); padding: 60px 0 44px; }
+  section.hero { background: var(--bg); padding: 28px 0 44px; }
+  section.hero .shell { text-align: center; }
   .eyebrow { font-size: 12.5px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--green); font-weight: 700; }
-  .hero h1 { font-size: 42px; margin: 12px 0 14px; max-width: 720px; }
-  .hero .sub { font-size: 17px; color: var(--text-soft); max-width: 620px; }
+  .hero h1 { font-size: 30px; margin: 0 auto 14px; max-width: 720px; color: var(--dark); }
+  @supports ((background-clip: text) or (-webkit-background-clip: text)) {
+    .hero h1 { background: linear-gradient(to right, #249373, #0071C5); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+  }
+  .hero .sub { font-size: 17px; color: var(--text-soft); max-width: 620px; margin-left: auto; margin-right: auto; }
+  .save-tag-wrap { position: relative; display: inline-flex; }
+  .deco-arrow { position: absolute; left: -8px; top: -34px; width: 56px; height: auto; pointer-events: none; }
+  .deco-star { position: absolute; pointer-events: none; }
+  .deco-star.star-1 { top: -9px; right: -9px; width: 13px; height: 13px; }
+  .deco-star.star-2 { bottom: -5px; left: -11px; width: 10px; height: 10px; }
 
-  .toggle-row { display: flex; align-items: center; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
-  .toggle { display: inline-flex; background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 3px; }
-  .toggle button { border: none; background: transparent; font-family: inherit; font-size: 13.5px; font-weight: 600; color: var(--text-soft); padding: 8px 18px; border-radius: 6px; cursor: pointer; }
-  .toggle button.active { background: var(--dark); color: #fff; }
-  .save-tag { font-size: 12.5px; font-weight: 600; color: var(--green-dark); background: var(--green-tint); padding: 5px 10px; border-radius: 6px; }
+  .toggle-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
+  .toggle { position: relative; display: inline-flex; background: var(--track); border: none; border-radius: 999px; padding: 4px; }
+  .toggle-indicator { position: absolute; top: 4px; left: 4px; width: calc(50% - 4px); height: calc(100% - 8px); background: var(--white); border-radius: 999px; box-shadow: 0 1px 3px rgba(17,24,39,0.15); transition: transform 0.25s cubic-bezier(0.4,0,0.2,1); z-index: 0; }
+  .toggle button { position: relative; z-index: 1; border: none; background: transparent; font-family: inherit; font-size: 13.5px; font-weight: 500; color: var(--text-soft); padding: 8px 18px; border-radius: 999px; cursor: pointer; transition: color 0.2s ease; }
+  .toggle button.active { color: var(--dark); font-weight: 700; }
+  .market-badge { font-size: 13.5px; font-weight: 600; color: var(--text); background: var(--track); border: none; border-radius: 999px; padding: 8px 16px; }
+  .save-tag { font-size: 12.5px; font-weight: 600; color: #fff; background: linear-gradient(to right, var(--offer-1), var(--offer-2)); padding: 7px 16px; border-radius: 999px; box-shadow: 0 2px 8px rgba(17,24,39,0.15); }
   .trial-note { font-size: 12.5px; color: var(--text-soft); }
-  .info-mark { cursor: help; font-weight: 700; color: var(--text-soft); border-bottom: 1px dotted var(--text-soft); }
+  .info-mark { position: relative; cursor: help; font-weight: 700; color: var(--text-soft); border-bottom: 1px dotted var(--text-soft); }
+  .info-mark::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--dark);
+    color: #fff;
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1.4;
+    padding: 7px 10px;
+    border-radius: 7px;
+    width: max-content;
+    max-width: 220px;
+    text-align: left;
+    white-space: normal;
+    box-shadow: 0 6px 16px rgba(17,24,39,0.18);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.12s ease;
+    z-index: 20;
+    pointer-events: none;
+  }
+  .info-mark::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--dark);
+    margin-bottom: -1px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.12s ease;
+    z-index: 20;
+    pointer-events: none;
+  }
+  .info-mark:hover::after, .info-mark:hover::before,
+  .info-mark:focus::after, .info-mark:focus::before {
+    opacity: 1;
+    visibility: visible;
+  }
 
   /* ---------- pricing cards ---------- */
   section.plans { background: var(--bg); padding: 8px 0 60px; }
-  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: stretch; }
-  .card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 24px 20px; display: flex; flex-direction: column; box-shadow: 0 1px 2px rgba(17,24,39,0.03); }
-  .card.popular { border: 1.5px solid var(--green); box-shadow: 0 4px 18px rgba(22,163,74,0.08); position: relative; }
-  .tag-popular { display: inline-block; background: var(--green); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.02em; padding: 4px 9px; border-radius: 6px; margin-bottom: 12px; width: fit-content; }
-  .card-name { font-size: 18px; font-weight: 700; color: var(--dark); }
-  .card-tagline { font-size: 13px; color: var(--text-soft); margin-top: 4px; margin-bottom: 16px; }
-  .price-row { display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap; }
-  .price { font-size: 29px; font-weight: 800; color: var(--dark); }
-  .price-strike { font-size: 15px; font-weight: 600; color: var(--text-soft); text-decoration: line-through; opacity: 0.7; }
-  .price-unit { font-size: 13px; color: var(--text-soft); font-weight: 500; }
-  .price-billed { font-size: 12px; color: var(--text-soft); margin-top: 4px; margin-bottom: 20px; }
+  .cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; align-items: stretch; }
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 22px 17px; display: flex; flex-direction: column; box-shadow: 0 1px 2px rgba(17,24,39,0.03); position: relative; z-index: 0; width: 100%; min-width: 0; min-height: 520px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .card:hover { transform: scale(1.025); box-shadow: 0 12px 26px rgba(17,24,39,0.09); }
+  .card.popular { border: none; box-shadow: 0 4px 18px rgba(0,113,197,0.10); }
+  .card.popular:hover { box-shadow: 0 16px 30px rgba(0,113,197,0.16); }
+  .card.popular::before { content: ""; position: absolute; inset: 0; border-radius: 12px; padding: 2px; background: linear-gradient(to right, var(--green), var(--blue)); -webkit-mask: linear-gradient(#fff 0 0) content-box exclude, linear-gradient(#fff 0 0); mask: linear-gradient(#fff 0 0) content-box exclude, linear-gradient(#fff 0 0); pointer-events: none; z-index: 1; }
+  .tag-explorer { position: absolute; top: -11px; right: 16px; font-size: 11px; font-weight: 700; letter-spacing: 0.02em; padding: 4px 9px; border-radius: 6px; box-shadow: 0 2px 5px rgba(17,24,39,0.12); z-index: 1; background: #FEF3C7; color: #92400E; }
+  .tag-popular { position: absolute; top: -11px; right: 16px; font-size: 11px; font-weight: 700; letter-spacing: 0.02em; padding: 4px 10px; border-radius: 6px; box-shadow: 0 2px 5px rgba(17,24,39,0.12); z-index: 1; white-space: nowrap; color: #fff; background: linear-gradient(to right, var(--green), var(--blue)); }
+  .card-name { font-size: 18px; font-weight: 700; color: var(--dark); line-height: 1.25; }
+  .card-tagline { font-size: 13px; line-height: 1.35; color: var(--text-soft); margin-top: 4px; margin-bottom: 16px; min-height: 35px; }
+  .price-row { display: flex; align-items: baseline; gap: 3px; flex-wrap: wrap; min-height: 28px; }
+  .price { font-size: 22px; font-weight: 800; color: var(--dark); }
+  .price-strike { font-size: 12px; font-weight: 600; color: var(--text-soft); text-decoration: line-through; opacity: 0.7; }
+  .price-unit { font-size: 11px; color: var(--text-soft); font-weight: 500; }
+  .price-asterisk { font-size: 16px; font-weight: 800; color: var(--dark); line-height: 1; align-self: flex-start; margin-left: -5px; }
+  .price-billed { font-size: 12px; line-height: 1.4; color: var(--text-soft); margin-top: 4px; margin-bottom: 20px; min-height: 34px; }
 
   .feat-list { list-style: none; margin: 0 0 22px; padding: 0; display: flex; flex-direction: column; gap: 11px; flex: 1; }
   .feat-list li { display: flex; gap: 9px; align-items: flex-start; font-size: 13.5px; color: var(--text); }
-  .feat-list svg { flex: none; margin-top: 2px; }
-
-  /* ---------- commission band ---------- */
-  section.commission { background: var(--green-tint); padding: 44px 0; }
-  .commission-row { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; }
-  .commission-num { font-size: 60px; font-weight: 800; color: var(--green-dark); line-height: 1; }
-  .commission-text h2 { font-size: 20px; margin-bottom: 4px; }
-  .commission-text p { font-size: 14px; color: var(--text); margin: 0; max-width: 480px; }
+  .feat-list svg { flex: none; margin-top: 1px; width: 18px; height: 18px; }
+  .feat-list li > div { display: flex; flex-direction: column; gap: 3px; }
+  .feat-sub { font-size: 11.5px; font-weight: 500; color: var(--text-soft); }
 
   /* ---------- differentiators ---------- */
-  section.diff { background: var(--white); padding: 58px 0; }
-  .diff-head { max-width: 560px; margin-bottom: 30px; }
-  .diff-head h2 { font-size: 26px; margin-bottom: 8px; }
-  .diff-head p { font-size: 15px; color: var(--text-soft); }
-  .diff-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
-  .diff-item { display: flex; flex-direction: column; gap: 10px; }
-  .diff-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
-  .diff-item h3 { font-size: 14px; font-weight: 700; }
-  .diff-item p { font-size: 12.5px; color: var(--text-soft); margin: 0; }
+  section.diff { background: var(--white); padding: 64px 0; }
+  .diff-head { max-width: 580px; margin-bottom: 32px; }
+  .diff-head h2 { font-size: 28px; margin-bottom: 10px; }
+  .diff-head p { font-size: 15.5px; color: var(--text-soft); }
+  .diff-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; }
+  .diff-item { display: flex; flex-direction: column; gap: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 22px 18px; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease; }
+  .diff-item:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(17,24,39,0.08); border-color: var(--green); background: var(--white); }
+  .diff-icon { width: 46px; height: 46px; border-radius: 12px; background: var(--green-tint); display: flex; align-items: center; justify-content: center; }
+  .diff-item h3 { font-size: 15px; font-weight: 700; color: var(--dark); }
+  .diff-item p { font-size: 12.5px; line-height: 1.5; color: var(--text-soft); margin: 0; }
 
   /* ---------- compare table ---------- */
   section.compare { background: var(--bg); padding: 58px 0; }
   .compare-head { margin-bottom: 24px; }
   .compare-head h2 { font-size: 26px; margin-bottom: 8px; }
-  .compare-head p { font-size: 15px; color: var(--text-soft); max-width: 560px; }
-  .table-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-  .table-scroll { overflow-x: auto; }
-  table.compare-table { width: 100%; border-collapse: collapse; min-width: 820px; }
+  .compare-head p { font-size: 15px; color: var(--text-soft); white-space: nowrap; }
+  @media (max-width: 700px) { .compare-head p { white-space: normal; } }
+  .table-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: visible; }
+  .table-scroll { border-radius: 16px; overflow-x: auto; overflow-y: auto; max-height: 640px; }
+  table.compare-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 820px; }
   table.compare-table th, table.compare-table td { padding: 13px 18px; text-align: center; font-size: 13px; border-bottom: 1px solid var(--border); }
   table.compare-table th:first-child, table.compare-table td:first-child { text-align: left; }
-  table.compare-table thead th { font-size: 12.5px; font-weight: 700; color: var(--dark); background: var(--bg); }
+  table.compare-table thead th { font-size: 12.5px; font-weight: 700; color: var(--dark); background: var(--bg); position: sticky; top: 0; z-index: 3; box-shadow: 0 1px 0 var(--border); }
   table.compare-table tbody tr:last-child td { border-bottom: none; }
   table.compare-table .grp td { background: var(--white); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green-dark); text-align: left; padding: 15px 18px 7px; border-bottom: none; }
+  table.compare-table .grp .grp-sub { display: inline-block; margin-left: 10px; font-size: 11px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--text-soft); }
+  table.compare-table .grp.grp-highlight td { background: linear-gradient(to right, var(--green-tint), rgba(230,244,236,0.35)); border-left: 3px solid var(--green); padding-top: 16px; padding-bottom: 16px; padding-left: 15px; }
+  table.compare-table .grp.grp-highlight + tr td { border-top: 1px solid rgba(74,184,25,0.25); }
+  .grp-badge { display: inline-block; margin-left: 10px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.02em; text-transform: none; color: #fff; background: linear-gradient(to right, var(--green), var(--blue)); padding: 3px 9px; border-radius: 999px; vertical-align: middle; }
   table.compare-table .val { color: var(--text); font-variant-numeric: tabular-nums; }
   table.compare-table .dash { color: var(--text-soft); }
   .cap-cta { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
@@ -137,36 +214,82 @@
   .cap-badge.basic { background: #EEF2FF; color: #4338CA; }
   .cap-badge.business { background: var(--green-tint); color: var(--green-dark); }
   .cap-badge.enterprise { background: var(--dark); color: #fff; }
+  .cap-table-wrap { position: relative; }
+  .cap-table-wrap.collapsed { max-height: 620px; overflow: hidden; }
+  .cap-table-wrap.collapsed::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255,255,255,0), var(--white)); pointer-events: none; }
+  .cap-th-sub { font-size: 10.5px; font-weight: 500; color: var(--text-soft); text-transform: none; letter-spacing: 0; margin-top: 3px; }
+  table.cap-table thead th > div:first-child { font-size: 12.5px; font-weight: 700; color: var(--dark); }
+  table.cap-table tbody td:first-child { font-weight: 500; }
+  .cap-see-more { display: flex; justify-content: center; margin-top: 20px; }
+  #capSeeMoreIcon { transition: transform 0.2s ease; transform: rotate(90deg); }
+  .cap-table-wrap.expanded + .cap-see-more #capSeeMoreIcon { transform: rotate(-90deg); }
+
 
   /* ---------- good to know ---------- */
-  section.notes { background: var(--white); padding: 8px 0 58px; }
-  .notes-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .note { border: 1px solid var(--border); border-radius: 12px; padding: 16px 17px; font-size: 13px; color: var(--text); background: var(--bg); }
-  .note b { color: var(--dark); }
+  section.notes { background: var(--white); padding: 12px 0 56px; }
+  .notes-head { margin-bottom: 18px; }
+  .notes-head h2 { font-size: 20px; margin-bottom: 5px; }
+  .notes-head p { font-size: 13.5px; color: var(--text-soft); }
+  .notes-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .note { display: flex; flex-direction: column; gap: 6px; border: 1px solid var(--border); border-radius: 10px; padding: 13px 14px; font-size: 13px; color: var(--text); background: var(--bg); transition: border-color 0.2s ease, background 0.2s ease; }
+  .note:hover { border-color: var(--green); background: var(--white); }
+  .note-head-row { display: flex; align-items: center; gap: 8px; }
+  .note-icon { flex: none; width: 26px; height: 26px; border-radius: 7px; background: var(--green-tint); display: flex; align-items: center; justify-content: center; }
+  .note-icon svg { width: 14px; height: 14px; }
+  .note-title { font-size: 12.5px; font-weight: 700; color: var(--dark); }
+  .note p { margin: 0; font-size: 12px; line-height: 1.45; color: var(--text-soft); }
 
-  /* ---------- final cta ---------- */
-  section.final-cta { background: var(--dark); padding: 60px 0; text-align: center; }
-  .final-cta h2 { color: #fff; font-size: 28px; margin-bottom: 12px; }
-  .final-cta p { color: #C7CCD3; font-size: 15px; margin: 0 0 24px; }
-  .final-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-white { background: #fff; color: var(--dark); }
+  .btn-white:hover { background: #EDEFF2; }
 
-  footer.site { background: var(--white); padding: 24px 0; }
-  footer.site .foot-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 12.5px; color: var(--text-soft); }
+  /* ---------- help line ---------- */
+  section.help-line { background: var(--green-tint); padding: 22px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .help-line-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+  .help-line-row span { font-size: 15px; font-weight: 600; color: var(--dark); }
+  .help-line-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .help-line-row .btn { flex: none; }
 
+  /* ---------- existing customers page ---------- */
+  .lookup-plan-badge { flex: none; font-size: 11.5px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+  .lookup-plan-free { background: #FDF3D7; color: #8A6D1B; }
+  .lookup-plan-basic { background: #DCEFFA; color: #1D5F86; }
+  .lookup-plan-business { background: #D9F0DA; color: var(--green-dark); }
+  .lookup-plan-premium { background: #E3DCF5; color: #5B3FA0; }
+  .lookup-plan-enterprise { background: #F7D9D9; color: #A5312F; }
+  section.cust-list-page { background: var(--bg); padding: 40px 0 60px; min-height: 100vh; }
+  .cust-back { background: none; border: none; font-family: inherit; font-size: 13.5px; font-weight: 600; color: var(--green-dark); cursor: pointer; padding: 0; margin-bottom: 22px; }
+  .cust-back:hover { color: var(--dark); }
+  .cust-list-head h2 { font-size: 26px; margin: 0 0 8px; color: var(--dark); }
+  .cust-list-head p { font-size: 14px; color: var(--text-soft); margin: 0 0 28px; max-width: 640px; }
+  .cust-groups { display: flex; flex-direction: column; gap: 22px; }
+  .cust-group { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; }
+  .cust-group-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .cust-group-count { font-size: 12.5px; color: var(--text-soft); }
+  .cust-code-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+  .cust-code { font-size: 13px; font-weight: 600; color: var(--dark); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 7px 10px; text-align: center; }
+  .cust-list-ref { margin-top: 26px; font-size: 12.5px; color: var(--text-soft); }
+  .cust-list-ref a { color: var(--green-dark); font-weight: 600; text-decoration: none; }
+  .cust-list-ref a:hover { color: var(--dark); }
+
+  @media (max-width: 1240px) {
+    .cards { grid-template-columns: repeat(3, 1fr); }
+  }
   @media (max-width: 1080px) {
-    .cards { grid-template-columns: repeat(2, 1fr); }
     .diff-grid { grid-template-columns: repeat(2, 1fr); }
     .notes-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 780px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
     .cap-columns { column-count: 1; }
   }
   @media (max-width: 560px) {
-    .hero h1 { font-size: 30px; }
+    .shell { padding: 0 18px; }
+    .hero h1 { font-size: 26px; }
     .cards { grid-template-columns: 1fr; }
+    .card { min-height: auto; padding: 20px 16px; }
     .diff-grid { grid-template-columns: 1fr; }
     .notes-grid { grid-template-columns: 1fr; }
-    .commission-num { font-size: 46px; }
+    .info-mark::after { max-width: 150px; }
   }
 </style>
 
@@ -181,67 +304,110 @@
   <symbol id="i-chat" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v11H9l-4 4v-4H4V5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="8.5" cy="10.3" r="0.9" fill="currentColor"/><circle cx="12" cy="10.3" r="0.9" fill="currentColor"/><circle cx="15.5" cy="10.3" r="0.9" fill="currentColor"/></symbol>
   <symbol id="i-headset" viewBox="0 0 24 24" fill="none"><path d="M4 13v-1a8 8 0 0116 0v1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><rect x="2.7" y="13" width="4" height="6" rx="1.6" stroke="currentColor" stroke-width="1.7"/><rect x="17.3" y="13" width="4" height="6" rx="1.6" stroke="currentColor" stroke-width="1.7"/><path d="M19.3 19v1a2 2 0 01-2 2h-3.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 20 21"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 0.75C8.07164 0.75 6.18657 1.32183 4.58319 2.39317C2.97982 3.46452 1.73013 4.98726 0.992179 6.76884C0.254225 8.55042 0.061142 10.5108 0.437348 12.4021C0.813554 14.2934 1.74215 16.0307 3.10571 17.3943C4.46928 18.7579 6.20656 19.6865 8.09787 20.0627C9.98919 20.4389 11.9496 20.2458 13.7312 19.5078C15.5127 18.7699 17.0355 17.5202 18.1068 15.9168C19.1782 14.3134 19.75 12.4284 19.75 10.5C19.7473 7.91498 18.7192 5.43661 16.8913 3.60872C15.0634 1.78084 12.585 0.75273 10 0.75ZM14.2806 8.78063L9.03063 14.0306C8.96097 14.1004 8.87826 14.1557 8.78721 14.1934C8.69616 14.2312 8.59857 14.2506 8.5 14.2506C8.40144 14.2506 8.30385 14.2312 8.2128 14.1934C8.12175 14.1557 8.03903 14.1004 7.96938 14.0306L5.71938 11.7806C5.57865 11.6399 5.49959 11.449 5.49959 11.25C5.49959 11.051 5.57865 10.8601 5.71938 10.7194C5.86011 10.5786 6.05098 10.4996 6.25 10.4996C6.44903 10.4996 6.6399 10.5786 6.78063 10.7194L8.5 12.4397L13.2194 7.71937C13.2891 7.64969 13.3718 7.59442 13.4628 7.5567C13.5539 7.51899 13.6515 7.49958 13.75 7.49958C13.8486 7.49958 13.9461 7.51899 14.0372 7.5567C14.1282 7.59442 14.2109 7.64969 14.2806 7.71937C14.3503 7.78906 14.4056 7.87178 14.4433 7.96283C14.481 8.05387 14.5004 8.15145 14.5004 8.25C14.5004 8.34855 14.481 8.44613 14.4433 8.53717C14.4056 8.62822 14.3503 8.71094 14.2806 8.78063Z" fill="currentColor"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 13 8" fill="none"><path d="M12.0326 2.03318L7.03255 7.03318C6.96287 7.1031 6.88008 7.15857 6.78892 7.19643C6.69775 7.23428 6.60001 7.25377 6.5013 7.25377C6.40259 7.25377 6.30485 7.23428 6.21369 7.19643C6.12252 7.15857 6.03973 7.1031 5.97005 7.03318L0.970051 2.03318C0.829155 1.89228 0.75 1.70118 0.75 1.50193C0.75 1.30267 0.829155 1.11157 0.970051 0.970676C1.11095 0.82978 1.30204 0.750625 1.5013 0.750625C1.70056 0.750625 1.89165 0.82978 2.03255 0.970676L6.50193 5.44005L10.9713 0.970051C11.1122 0.829155 11.3033 0.75 11.5026 0.75C11.7018 0.75 11.8929 0.829155 12.0338 0.970051C12.1747 1.11095 12.2539 1.30204 12.2539 1.5013C12.2539 1.70056 12.1747 1.89166 12.0338 2.03255L12.0326 2.03318Z" fill="currentColor"/></symbol>
+  <symbol id="i-account" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.5" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M5.5 19c0-3.3 2.9-6 6.5-6s6.5 2.7 6.5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-receipt" viewBox="0 0 24 24" fill="none"><path d="M6 2.5h12v19l-2.5-1.5-2 1.5-2-1.5-2 1.5-2-1.5-2 1.5v-19z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><line x1="9" y1="7.5" x2="15" y2="7.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="9" y1="11.5" x2="15" y2="11.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24" fill="none"><rect x="2.5" y="5.5" width="19" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><line x1="2.5" y1="9.7" x2="21.5" y2="9.7" stroke="currentColor" stroke-width="1.7"/><line x1="5.5" y1="14.5" x2="9.5" y2="14.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none"><path d="M12 2.5l7.5 3v6c0 5-3.2 8.7-7.5 10-4.3-1.3-7.5-5-7.5-10v-6l7.5-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none"><rect x="2.5" y="5" width="19" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M3 6.5l9 7 9-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="9" r="2.3" stroke="currentColor" stroke-width="1.7"/></symbol>
+  <symbol id="i-social-x" viewBox="0 0 24 24" fill="none"><path d="M4.5 4.5l15 15M19.5 4.5l-15 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-social-fb" viewBox="0 0 24 24" fill="none"><path d="M14 8.5h2.5V5.5h-2.5c-2.2 0-3.5 1.4-3.5 3.6V11H8v3h2.5v7h3v-7h2.3l.4-3h-2.7V9.3c0-.6.2-.8.9-.8z" fill="currentColor"/></symbol>
+  <symbol id="i-social-ig" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.7"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/></symbol>
+  <symbol id="i-social-yt" viewBox="0 0 24 24" fill="none"><rect x="2.5" y="6" width="19" height="12" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M10.5 9.5l5 2.5-5 2.5v-5z" fill="currentColor"/></symbol>
+  <symbol id="i-social-li" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.7"/><circle cx="7.2" cy="8" r="1.1" fill="currentColor"/><line x1="7.2" y1="11" x2="7.2" y2="17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M11 17v-4c0-1.4 1-2.3 2.3-2.3 1.3 0 2.2.9 2.2 2.3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </svg>
 
+<div id="mainView">
 <header class="site">
   <div class="shell row">
-    <div class="logo">Zopping<span>.</span></div>
+    <a class="logo" href="#" aria-label="Zopping"><svg width="110" height="33" viewBox="0 0 110 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31.4494 24.672C30.458 25.1352 29.3693 25.3669 28.1834 25.3669C26.8955 25.3669 25.8254 25.0959 24.973 24.5538C24.1206 24.0118 23.4836 23.2891 23.062 22.3858C22.6405 21.4824 22.4297 20.4841 22.4297 19.3908C22.4297 18.2975 22.6289 17.2482 23.0273 16.243C23.4257 15.2377 23.9862 14.339 24.7089 13.5468C25.4316 12.7546 26.2886 12.1269 27.28 11.6636C28.2714 11.2004 29.3601 10.9688 30.546 10.9688C31.8339 10.9688 32.904 11.2398 33.7564 11.7818C34.6088 12.3238 35.2458 13.0465 35.6673 13.9498C36.0889 14.8532 36.2997 15.8515 36.2997 16.9448C36.2997 18.0381 36.1005 19.0874 35.7021 20.0927C35.3037 21.0979 34.7431 21.9967 34.0205 22.7888C33.2978 23.581 32.4407 24.2087 31.4494 24.672ZM26.6546 21.6145C27.0993 22.226 27.7664 22.5317 28.6559 22.5317C29.462 22.5317 30.1731 22.2862 30.7892 21.7951C31.4053 21.3041 31.8848 20.6532 32.2276 19.8425C32.5704 19.0318 32.7419 18.1493 32.7419 17.195C32.7419 16.1387 32.5172 15.3095 32.0678 14.7073C31.6184 14.105 30.9537 13.8039 30.0735 13.8039C29.2767 13.8039 28.5702 14.0448 27.9541 14.5266C27.3379 15.0084 26.8561 15.6523 26.5087 16.4584C26.1612 17.2645 25.9875 18.1493 25.9875 19.1129C25.9875 20.1691 26.2099 21.003 26.6546 21.6145Z" fill="#181912"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M41.1163 23.5199L39.6654 31.8155H36.2188L39.86 11.1911H42.8897L42.92 12.4284L43.0568 12.3259C43.4432 12.044 43.8461 11.7931 44.2656 11.5733C45.0346 11.1703 45.9287 10.9688 46.9479 10.9688C47.9856 10.9688 48.8681 11.212 49.5954 11.6984C50.3227 12.1848 50.8786 12.8681 51.2631 13.7483C51.6476 14.6285 51.8399 15.6569 51.8399 16.8336C51.8399 18.103 51.6801 19.2611 51.3604 20.3081C51.0408 21.355 50.5775 22.2561 49.9706 23.0112C49.3638 23.7663 48.6341 24.3477 47.7817 24.7554C46.9293 25.163 45.9657 25.3669 44.891 25.3669C43.7328 25.3669 42.8133 25.1005 42.1323 24.5677L42.0069 24.467C41.679 24.1962 41.4015 23.9073 41.1744 23.6006L41.1163 23.5199ZM42.445 21.7256C42.9082 22.263 43.6309 22.5317 44.613 22.5317C45.345 22.5317 45.9866 22.3024 46.5379 21.8438C47.0891 21.3852 47.5177 20.7528 47.8234 19.9467C48.1292 19.1407 48.282 18.2141 48.282 17.1672C48.282 16.1665 48.0921 15.3558 47.7122 14.7351C47.3324 14.1143 46.7162 13.8039 45.8638 13.8039C45.0114 13.8039 44.2772 14.0564 43.661 14.5613C43.0449 15.0663 42.5724 15.7426 42.2434 16.5904C41.9145 17.4382 41.7501 18.3809 41.7501 19.4186C41.7501 20.4193 41.9817 21.1883 42.445 21.7256Z" fill="#181912"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M56.6788 23.5199L55.2279 31.8155H51.7812L55.4225 11.1911H58.4522L58.4825 12.4284L58.6193 12.3259C59.0057 12.044 59.4086 11.7931 59.8281 11.5733C60.5971 11.1703 61.4912 10.9688 62.5104 10.9688C63.5481 10.9688 64.4306 11.212 65.1579 11.6984C65.8852 12.1848 66.4411 12.8681 66.8256 13.7483C67.2101 14.6285 67.4024 15.6569 67.4024 16.8336C67.4024 18.103 67.2426 19.2611 66.9229 20.3081C66.6033 21.355 66.14 22.2561 65.5331 23.0112C64.9263 23.7663 64.1966 24.3477 63.3442 24.7554C62.4918 25.163 61.5282 25.3669 60.4535 25.3669C59.2953 25.3669 58.3758 25.1005 57.6948 24.5677L57.5694 24.467C57.2415 24.1962 56.964 23.9073 56.7369 23.6006L56.6788 23.5199ZM58.0075 21.7256C58.4707 22.263 59.1934 22.5317 60.1755 22.5317C60.9075 22.5317 61.5491 22.3024 62.1004 21.8438C62.6516 21.3852 63.0802 20.7528 63.3859 19.9467C63.6917 19.1407 63.8445 18.2141 63.8445 17.1672C63.8445 16.1665 63.6546 15.3558 63.2747 14.7351C62.8949 14.1143 62.2787 13.8039 61.4263 13.8039C60.5739 13.8039 59.8397 14.0564 59.2235 14.5613C58.6074 15.0663 58.1349 15.7426 57.8059 16.5904C57.477 17.4382 57.3126 18.3809 57.3126 19.4186C57.3126 20.4193 57.5442 21.1883 58.0075 21.7256Z" fill="#181912"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M56.6788 23.5199L55.2279 31.8155H51.7812L58.4522 11.1911L58.4825 12.4284L58.6193 12.3259C59.0057 12.044 59.4086 11.7931 59.8281 11.5733C60.5971 11.1703 61.4912 10.9688 62.5104 10.9688C63.5481 10.9688 64.4306 11.212 65.1579 11.6984C65.8852 12.1848 66.4411 12.8681 66.8256 13.7483C67.2101 14.6285 67.4024 15.6569 67.4024 16.8336C67.4024 18.103 67.2426 19.2611 66.9229 20.3081C66.6033 21.355 66.14 22.2561 65.5331 23.0112C64.9263 23.7663 64.1966 24.3477 63.3442 24.7554C62.4918 25.163 61.5282 25.3669 60.4535 25.3669C59.2953 25.3669 58.3758 25.1005 57.6948 24.5677L57.5694 24.467C57.2415 24.1962 56.964 23.9073 56.7369 23.6006L56.6788 23.5199ZM58.0075 21.7256C58.4707 22.263 59.1934 22.5317 60.1755 22.5317C60.9075 22.5317 61.5491 22.3024 62.1004 21.8438C62.6516 21.3852 63.0802 20.7528 63.3859 19.9467C63.6917 19.1407 63.8445 18.2141 63.8445 17.1672C63.8445 16.1665 63.6546 15.3558 63.2747 14.7351C62.8949 14.1143 62.2787 13.8039 61.4263 13.8039C60.5739 13.8039 59.8397 14.0564 59.2235 14.5613C58.6074 15.0663 58.1349 15.7426 57.8059 16.5904C57.477 17.4382 57.3126 18.3809 57.3126 19.4186C57.3126 20.4193 57.5442 21.1883 58.0075 21.7256Z" fill="#181912"/>
+<path d="M74.8217 9.07947L75.4332 5.63281H71.9587L71.375 9.07947H74.8217Z" fill="#181912"/>
+<path d="M71.9857 25.0931L74.4317 11.1953H70.9851L68.5391 25.0931H71.9857Z" fill="#181912"/>
+<path d="M78.5873 25.3545L80.3669 15.2728L80.4449 15.1958C80.7322 14.9182 81.0229 14.6883 81.317 14.5061L81.4433 14.4309C81.8648 14.19 82.3582 14.0695 82.9234 14.0695C83.6183 14.0695 84.1209 14.2571 84.4313 14.6324C84.7417 15.0076 84.8969 15.5983 84.8969 16.4044C84.8969 16.4785 84.8922 16.5804 84.883 16.7101C84.8737 16.8398 84.8459 17.0668 84.7996 17.3911C84.7533 17.7154 84.6791 18.1925 84.5772 18.8226C84.4753 19.4526 84.334 20.2957 84.1533 21.352C83.9727 22.4082 83.7387 23.7424 83.4515 25.3545H86.926C87.2132 23.7146 87.4494 22.3526 87.6347 21.2686C87.8201 20.1846 87.9683 19.3113 88.0795 18.6489C88.1907 17.9864 88.2694 17.4791 88.3157 17.127C88.3621 16.775 88.3922 16.5155 88.4061 16.3488C88.42 16.182 88.4269 16.043 88.4269 15.9318C88.4269 14.5513 88.0864 13.4233 87.4054 12.5477C86.7244 11.6722 85.6659 11.2344 84.2298 11.2344C83.4515 11.2344 82.7728 11.3479 82.1938 11.5749C81.6147 11.8019 81.0796 12.0775 80.5886 12.4018L80.7586 12.2928L80.6164 11.4567H77.5866L75.1406 25.3545H78.5873Z" fill="#181912"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M94.284 32.0378C95.785 32.0378 97.0705 31.8178 98.1407 31.3777C99.2108 30.9376 100.031 30.3423 100.601 29.5918C101.17 28.8413 101.455 27.9982 101.455 27.0624C101.455 26.3212 101.298 25.7236 100.983 25.2696C100.668 24.8156 100.265 24.4612 99.7737 24.2064C99.2826 23.9516 98.7684 23.764 98.231 23.6435C97.6936 23.5231 97.2026 23.4304 96.7578 23.3656C95.8406 23.2359 95.1063 23.1062 94.555 22.9764C94.0038 22.8467 93.7281 22.6244 93.7281 22.3094C93.7281 22.1518 93.7768 22.0198 93.8741 21.9133C93.9157 21.8676 93.9638 21.8283 94.0183 21.7954L94.0357 21.786L94.1108 21.8018C94.4608 21.872 94.8382 21.911 95.2428 21.9188L95.3959 21.9202C96.3872 21.9202 97.2813 21.7442 98.0781 21.3921C98.8749 21.04 99.5536 20.5605 100.114 19.9537C100.675 19.3468 101.103 18.6589 101.4 17.8899C101.696 17.1208 101.844 16.3148 101.844 15.4716C101.844 14.7144 101.734 14.0502 101.512 13.4789L101.476 13.392C101.581 13.3775 101.68 13.3689 101.775 13.3661C101.932 13.3615 102.058 13.3592 102.15 13.3592H103.457L104.04 11.1911H103.095C102.419 11.1911 101.805 11.2629 101.254 11.4065C100.83 11.517 100.497 11.6343 100.257 11.7585L100.194 11.7924L100.112 11.7346C99.3872 11.2472 98.4961 10.9925 97.4382 10.9703L97.286 10.9688C95.9796 10.9688 94.8446 11.2699 93.881 11.8721C92.9174 12.4743 92.1693 13.2619 91.6365 14.2347C91.1038 15.2076 90.8374 16.2499 90.8374 17.3617C90.8374 18.7608 91.2242 19.8703 91.9978 20.6903C92.0512 20.7468 92.1063 20.8014 92.163 20.8541L92.2107 20.8969L92.1531 20.9259C91.7211 21.1501 91.3673 21.4004 91.0915 21.6767L91.0111 21.7604C90.6729 22.1264 90.5038 22.578 90.5038 23.1154C90.5038 23.7547 90.6915 24.2481 91.0667 24.5955C91.1533 24.6757 91.2458 24.7512 91.3442 24.822L91.345 24.823L91.2167 24.8938C90.842 25.1059 90.4982 25.3303 90.1852 25.5671L90.0313 25.6865C89.5773 26.0479 89.2229 26.4509 88.9681 26.8956C88.7133 27.3404 88.5859 27.8407 88.5859 28.3966C88.5859 29.0174 88.7782 29.6057 89.1627 30.1616C89.5472 30.7175 90.1564 31.1692 90.9903 31.5166C91.8241 31.8641 92.9221 32.0378 94.284 32.0378ZM95.8406 19.3908C95.1735 19.3908 94.6871 19.1916 94.3813 18.7932C94.0756 18.3948 93.9227 17.8343 93.9227 17.1116C93.9227 16.463 94.0339 15.8654 94.2562 15.3188C94.4786 14.7721 94.8052 14.332 95.236 13.9985C95.6669 13.6649 96.1927 13.4981 96.8134 13.4981C97.4805 13.4981 97.9716 13.6974 98.2866 14.0958C98.6016 14.4942 98.7591 15.064 98.7591 15.8052C98.7591 16.4445 98.6456 17.0375 98.4186 17.5841C98.1916 18.1307 97.8604 18.5685 97.4249 18.8974C96.9895 19.2264 96.4614 19.3908 95.8406 19.3908ZM92.2619 29.1123C92.7854 29.432 93.5243 29.5918 94.4786 29.5918C95.1735 29.5918 95.8151 29.5084 96.4035 29.3416C96.9918 29.1749 97.462 28.9409 97.8141 28.6398C98.1662 28.3387 98.3422 27.9889 98.3422 27.5905C98.3422 27.1365 98.1546 26.7983 97.7793 26.576C97.4041 26.3536 96.9177 26.1868 96.3201 26.0757C95.7225 25.9645 95.0901 25.8626 94.423 25.7699L94.1392 25.7278C94.0454 25.7129 93.9522 25.6973 93.8597 25.6808L93.7058 25.6521L93.8671 25.6031C93.478 25.7143 93.1004 25.8626 92.7344 26.0479C92.3685 26.2332 92.0673 26.4671 91.8311 26.7497C91.5948 27.0323 91.4767 27.3774 91.4767 27.7851C91.4767 28.3503 91.7384 28.7927 92.2619 29.1123Z" fill="#181912"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.51729 8.26514C5.29591 10.3223 2.14062 9.4562 2.14062 7.06378V5.25H22.6556L16.0911 16.5562C14.9823 18.4659 12.941 19.6411 10.7328 19.6411L17.4053 8.26514H6.51729Z" fill="#4AB819"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.139 22.4458C17.3603 20.3886 20.5156 21.2547 20.5156 23.6472V25.4609H0.000635147L6.56519 14.1547C7.67396 12.2451 9.71527 11.0698 11.9235 11.0698L5.25095 22.4458H16.139Z" fill="#4AB819"/>
+<circle cx="15.6139" cy="6.77796" r="0.918582" fill="white"/>
+<circle cx="7.34827" cy="6.77796" r="0.918582" fill="white"/>
+<path d="M7.35156 6.77862V5.09455C7.35156 2.81162 9.20225 0.960938 11.4852 0.960938V0.960938C13.7681 0.960938 15.6188 2.81162 15.6188 5.09456V6.77862" stroke="#232935" stroke-width="0.763889" stroke-linecap="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M109.81 24.1295C109.81 23.8909 109.782 23.6644 109.726 23.4502C109.669 23.236 109.601 23.0599 109.521 22.9219L108.696 23.0211C108.785 23.1792 108.854 23.3431 108.905 23.5128C108.955 23.6824 108.98 23.8578 108.98 24.039C108.98 24.4645 108.843 24.7937 108.568 25.0266C108.292 25.2595 107.943 25.376 107.52 25.376C107.08 25.376 106.728 25.2588 106.467 25.0245C106.205 24.7901 106.074 24.4573 106.074 24.026C106.074 23.842 106.097 23.6652 106.143 23.4955C106.189 23.3259 106.249 23.1706 106.322 23.0297L105.502 22.9305C105.422 23.0743 105.356 23.2439 105.304 23.4394C105.252 23.635 105.227 23.8506 105.227 24.0864C105.227 24.5982 105.33 25.0223 105.537 25.3587C105.744 25.6952 106.022 25.946 106.371 26.1114C106.72 26.2767 107.108 26.3594 107.534 26.3594C107.951 26.3594 108.332 26.2753 108.676 26.1071C109.021 25.9389 109.296 25.6894 109.502 25.3587C109.707 25.0281 109.81 24.6183 109.81 24.1295ZM109.619 26.9323H108.473V28.0781H109.619V26.9323ZM109.69 19.2025C109.897 19.545 110.001 19.9573 110.001 20.4392C110.001 20.9242 109.897 21.3373 109.69 21.6783C109.483 22.0193 109.207 22.28 108.861 22.4604C108.515 22.6407 108.133 22.7309 107.716 22.7309C107.299 22.7309 106.916 22.6407 106.567 22.4604C106.218 22.28 105.939 22.0193 105.73 21.6783C105.522 21.3373 105.418 20.9242 105.418 20.4392C105.418 19.9573 105.522 19.545 105.73 19.2025C105.939 18.8599 106.218 18.5985 106.567 18.4181C106.916 18.2378 107.299 18.1476 107.716 18.1476C108.133 18.1476 108.515 18.2378 108.861 18.4181C109.207 18.5985 109.483 18.8599 109.69 19.2025ZM109.237 20.4372C109.237 20.8032 109.098 21.086 108.821 21.2856C108.543 21.4853 108.175 21.5851 107.716 21.5851C107.251 21.5851 106.879 21.4853 106.6 21.2856C106.321 21.086 106.181 20.8032 106.181 20.4372C106.181 20.0712 106.321 19.789 106.6 19.5908C106.879 19.3925 107.251 19.2934 107.716 19.2934C108.175 19.2934 108.543 19.3925 108.821 19.5908C109.098 19.789 109.237 20.0712 109.237 20.4372ZM106.537 16.2389H109.81V17.1927H105.304V16.3971L105.714 16.3422L105.642 16.2544C105.544 16.1271 105.462 15.9929 105.394 15.8518C105.283 15.6165 105.227 15.3534 105.227 15.0626C105.227 14.843 105.262 14.6427 105.333 14.4616C105.404 14.2805 105.514 14.1223 105.662 13.9868L105.756 13.9087C105.789 13.8837 105.824 13.8598 105.86 13.8369L105.944 13.7886L105.919 13.7728C105.737 13.6509 105.588 13.4962 105.472 13.3089C105.308 13.0465 105.227 12.73 105.227 12.3593C105.227 11.98 105.306 11.6678 105.465 11.4225C105.624 11.1773 105.854 10.9955 106.157 10.8772C106.459 10.7588 106.824 10.6997 107.25 10.6997H109.81V11.6578H107.305C106.884 11.6578 106.575 11.7248 106.377 11.8588C106.179 11.9928 106.08 12.2153 106.08 12.5261C106.08 12.7057 106.111 12.8569 106.173 12.9795C106.235 13.1021 106.322 13.1991 106.434 13.2704C106.546 13.3416 106.673 13.3923 106.815 13.4222C106.957 13.4521 107.108 13.4671 107.269 13.4671H109.81V14.4252H107.364C107.052 14.4252 106.803 14.458 106.615 14.5236C106.428 14.5892 106.291 14.6876 106.207 14.8188C106.122 14.9499 106.08 15.1125 106.08 15.3064C106.08 15.5659 106.142 15.7862 106.268 15.9672L106.335 16.0546C106.383 16.1108 106.438 16.1628 106.498 16.2105L106.537 16.2389Z" fill="#4AB819"/>
+</svg></a>
+    <nav class="nav-links">
+      <button type="button" class="nav-drop">Products<svg width="11" height="7"><use href="#i-chevron-down"/></svg></button>
+      <button type="button" class="nav-drop">Solutions<svg width="11" height="7"><use href="#i-chevron-down"/></svg></button>
+      <a href="#">Themes</a>
+      <a href="#" class="current">Pricing</a>
+      <a href="#">Enterprise</a>
+      <a href="#">Knowledge Center</a>
+    </nav>
     <div class="head-actions">
-      <a class="link-quiet" href="#">Talk to an Expert</a>
+      <a class="btn btn-primary" href="#">Book a Demo</a>
+      <a class="account-icon" href="#" aria-label="Account"><svg width="18" height="18"><use href="#i-account"/></svg></a>
     </div>
   </div>
 </header>
 
 <section class="hero">
   <div class="shell">
-    <div class="eyebrow">Pricing</div>
-    <h1>Everything you need to sell. No commission, ever.</h1>
-    <p class="sub">Storefront, native apps, warehouse tools, and delivery — one plan, one price. No commission on top, ever.</p>
+    <h1>Choose a Plan That Works for You</h1>
+    <p class="sub">Choose a subscription plan that fits your needs and scale confidently with Zopping's powerful e-commerce platform.</p>
 
     <div class="toggle-row">
       <div class="toggle">
-        <button id="btn-india" class="active" onclick="setMarket('india')">India (₹)</button>
-        <button id="btn-global" onclick="setMarket('global')">Global ($)</button>
-      </div>
-      <div class="toggle">
+        <div class="toggle-indicator" id="cycleIndicator" style="transform: translateX(100%);"></div>
         <button id="btn-biannual" onclick="setCycle('biannual')">Bi-Annual</button>
         <button id="btn-annual" class="active" onclick="setCycle('annual')">Annual</button>
       </div>
-      <span class="save-tag">Annual saves ~25%</span>
-      <span class="trial-note">Same plans, same limits everywhere — only currency and price change.</span>
+      <div class="save-tag-wrap">
+        <svg class="deco-arrow" viewBox="0 0 92 41" fill="none"><path d="M4.28044 28.6919C4.17151 28.6567 4.06895 28.6043 3.97672 28.5365L3.60796 28.2656C3.23115 27.9887 2.92398 27.6279 2.71077 27.2117C2.56315 26.9236 2.46296 26.6136 2.41403 26.2936L2.05782 23.9639L1.8789 23L1.51305 20.4009L0.909919 16.4562C0.872757 16.2131 0.885352 15.9651 0.946944 15.727C1.0048 15.5034 1.1048 15.2928 1.24157 15.1067L1.52367 14.7227C1.72263 14.452 1.99728 14.2461 2.31302 14.1312L2.43932 14.0852C2.63488 14.014 2.84564 13.9951 3.05075 14.0303C3.23373 14.0617 3.40689 14.1353 3.5565 14.2452L3.76405 14.3977C4.04665 14.6054 4.27704 14.876 4.43695 15.1881C4.54766 15.4042 4.62281 15.6367 4.6595 15.8767L5.60762 22.0777L9.10898 17.9921L11.7653 15.283L14.5584 12.8409L18.715 9.90245L21.3558 8.34721L24.054 7.16702L26.7014 6.28246L27.6391 6.1391L30.0482 5.57883L31.9235 5.29211L34.6062 5.26575L36.6469 5.4335L38.5001 5.62993L41.9968 6.5346L44.2316 7.34436L45.7252 6.44431L47.6733 5.37881L50.9848 3.81698L53.3366 2.88166L55.2626 2.29931L57.1092 1.82507C57.6612 1.67684 58.2252 1.57784 58.7946 1.52923L59.3595 1.481C60.9102 1.18004 62.4976 1.00273 64.0764 0.951723L65.4842 0.970625C66.0832 0.978667 66.6805 1.03361 67.2709 1.13497L69.4197 1.38215L72.9164 2.28682L75.0431 3.01715L77.8471 4.41157L79.0075 5.09774L82.2505 7.48053L84.7147 9.79049L90.6935 16.041C90.9754 16.3357 91.1596 16.7099 91.2212 17.113L91.2514 17.3106C91.2637 17.3906 91.2629 17.472 91.2492 17.5518C91.2295 17.667 91.1831 17.776 91.1139 17.8702L90.6928 18.4433C90.4684 18.7488 90.1439 18.9659 89.7759 19.0569L89.5906 19.1027C89.4192 19.1451 89.2394 19.1388 89.0713 19.0846C88.9742 19.0533 88.8828 19.0065 88.8005 18.9461L88.195 18.5012C87.9612 18.3294 87.7411 18.1396 87.5367 17.9335L80.567 10.9044L79.2412 9.76379L77.7278 8.65182L75.407 7.27948L73.0354 6.20278L72.8968 6.1581C71.3762 5.66778 69.8227 5.28601 68.248 5.01566L66.5824 4.79056L64.6498 4.70223L62.4503 4.75067L59.5293 5.10133L58.1372 5.41014L55.6486 6.0785L53.3762 6.90572L50.678 8.0859L48.3763 9.19835C48.362 9.20527 48.3483 9.21336 48.3353 9.22253C48.1745 9.33621 48.1724 9.57403 48.3311 9.69064L51.0689 11.7023C51.1904 11.7915 51.3043 11.8907 51.4095 11.9987L53.5281 14.1751L54.1513 15.0023C54.8584 15.9408 55.4911 16.933 56.0437 17.97C56.6553 19.1179 57.1667 20.3164 57.5719 21.5523L57.682 21.888L58.0482 23.6551C58.2008 24.6536 58.2707 25.6629 58.2572 26.6728L58.2465 27.463C58.1158 28.6964 57.8847 29.922 57.5581 31.1186L56.8498 32.7621L56.3225 33.7064L55.6572 34.6118C55.3069 35.0886 54.9232 35.5399 54.509 35.9623C54.0391 36.4416 53.5313 36.8822 52.9905 37.28L52.958 37.3039C52.3151 37.7769 51.63 38.1896 50.9115 38.5369L50.7361 38.6217C50.0255 38.9651 49.289 39.2524 48.5334 39.4809L47.7425 39.72C46.8164 39.9254 45.8732 40.0442 44.9252 40.0749L43.9633 40.1059L41.627 39.8874L39.4208 39.2652L37.7773 38.557L35.7521 37.2354L34.1813 35.7483L32.9856 34.204L31.8915 32.0684L31.3378 30.3299L30.9496 29.0459L30.7202 27.5457L30.6497 25.8293L30.8968 23.6805L31.3095 21.9862L32.7833 19.0741L33.5489 17.8056L35.3757 15.3193L37.2599 13.2081L39.7574 10.7152C40.12 10.4145 39.9995 9.83076 39.5474 9.69836L39.1022 9.56796L35.9584 9.08909L34.0258 9.00077L32.3094 9.07129L31.5593 9.18598L30.1385 9.30726L28.3714 9.67341L25.9909 10.4212L23.5596 11.4646L20.8107 12.9404L17.8521 14.9281L15.2973 17.0459L13.1175 19.1063L10.6487 21.7867L8.55496 24.4098L12.6805 23.779L14.1013 23.6577L15.3599 23.4653C15.5199 23.4408 15.6828 23.4423 15.8424 23.4697C16.0728 23.5092 16.2908 23.6019 16.4792 23.7403L16.6102 23.8366C16.9019 24.0509 17.1236 24.3467 17.2474 24.6868L17.2685 24.7449C17.3475 24.9617 17.3773 25.1934 17.3558 25.4232C17.3295 25.7044 17.2272 25.9732 17.06 26.2009L16.9979 26.2854C16.79 26.5683 16.5091 26.7894 16.1853 26.9251L16.1595 26.9359C16.026 26.9918 15.887 27.0333 15.7448 27.0598L13.3789 27.5L11.9413 27.7302L11.1912 27.8449L8.08268 28.2242L4.76819 28.731C4.60477 28.756 4.43778 28.7426 4.28044 28.6919ZM39.1938 35.2698L41.2411 36.1083L43.0148 36.4128L44.6518 36.4504L46.4476 36.2717L47.5816 36.008C47.6271 35.9974 47.6674 35.9709 47.6951 35.9332L47.7129 35.909C47.7671 35.8352 47.8709 35.8193 47.9446 35.8736C47.9953 35.9108 48.0625 35.9162 48.1184 35.8875L49.6606 35.0974C49.8171 35.0172 49.9663 34.9232 50.1062 34.8166L51.0891 34.0678C51.5528 33.7145 51.9772 33.3124 52.3549 32.8684C52.7878 32.3596 53.1564 31.7995 53.4523 31.2007L53.6045 30.8927C53.8893 30.3164 54.1205 29.715 54.295 29.0963C54.534 28.249 54.6651 27.3749 54.6853 26.4947L54.6925 26.1833L54.6405 25.7418C54.4609 24.2176 54.1296 22.7152 53.6514 21.2569C53.1582 20.1192 52.5663 19.0269 51.8825 17.9925L51.4123 17.2812C50.7073 16.4308 49.9396 15.6345 49.1154 14.899L48.2421 14.1197L45.9721 12.4517L45.6757 12.2728C45.0755 11.9106 44.3263 11.9016 43.7175 12.2492C43.6103 12.3105 43.5092 12.3818 43.4156 12.4624L40.8426 14.6753L40.263 15.2664C39.3224 16.2257 38.4511 17.2505 37.6556 18.3331L37.611 18.3939C36.5336 19.8602 35.6038 21.4293 34.8349 23.0784L34.3207 25.3639L34.3913 27.0803L34.7067 29.1431L35.5052 31.228L36.0523 32.2958L36.7869 33.3349L37.248 33.8401L39.1938 35.2698Z" fill="url(#offer-arrow-grad)"/><defs><linearGradient id="offer-arrow-grad" x1="149.003" y1="69.0269" x2="-6.3554" y2="-39.094" gradientUnits="userSpaceOnUse"><stop stop-color="#4AB819"/><stop offset="0.84443" stop-color="#0071C5"/></linearGradient></defs></svg>
+        <span class="save-tag">Annual saves ~25%</span>
+        <svg class="deco-star star-1" viewBox="0 0 10 10" fill="none"><path d="M9.37431 5.00126C9.3753 5.12944 9.33633 5.25474 9.26283 5.35975C9.18932 5.46476 9.08492 5.54426 8.96415 5.5872L6.48602 6.48837L5.58524 8.9661C5.54085 9.08571 5.46091 9.18887 5.35616 9.26172C5.25142 9.33457 5.12689 9.37361 4.99931 9.37361C4.87172 9.37361 4.74719 9.33457 4.64245 9.26172C4.53771 9.18887 4.45777 9.08571 4.41337 8.9661L3.51259 6.48798L1.03446 5.5872C0.914852 5.5428 0.811694 5.46286 0.738847 5.35812C0.665999 5.25337 0.626953 5.12884 0.626953 5.00126C0.626953 4.87367 0.665999 4.74915 0.738847 4.6444C0.811694 4.53966 0.914852 4.45972 1.03446 4.41532L3.51259 3.51454L4.41337 1.03642C4.45777 0.916805 4.53771 0.813647 4.64245 0.7408C4.74719 0.667953 4.87172 0.628906 4.99931 0.628906C5.12689 0.628906 5.25142 0.667953 5.35616 0.7408C5.46091 0.813647 5.54085 0.916805 5.58524 1.03642L6.48642 3.51454L8.96415 4.41532C9.08492 4.45826 9.18932 4.53776 9.26283 4.64277C9.33633 4.74778 9.3753 4.87308 9.37431 5.00126Z" fill="url(#offer-star-grad)"/><defs><linearGradient id="offer-star-grad" x1="-8.46059" y1="7.98241" x2="13.8919" y2="7.49152" gradientUnits="userSpaceOnUse"><stop stop-color="#4AB819"/><stop offset="0.84443" stop-color="#0071C5"/></linearGradient></defs></svg>
+        <svg class="deco-star star-2" viewBox="0 0 10 10" fill="none"><path d="M9.37431 5.00126C9.3753 5.12944 9.33633 5.25474 9.26283 5.35975C9.18932 5.46476 9.08492 5.54426 8.96415 5.5872L6.48602 6.48837L5.58524 8.9661C5.54085 9.08571 5.46091 9.18887 5.35616 9.26172C5.25142 9.33457 5.12689 9.37361 4.99931 9.37361C4.87172 9.37361 4.74719 9.33457 4.64245 9.26172C4.53771 9.18887 4.45777 9.08571 4.41337 8.9661L3.51259 6.48798L1.03446 5.5872C0.914852 5.5428 0.811694 5.46286 0.738847 5.35812C0.665999 5.25337 0.626953 5.12884 0.626953 5.00126C0.626953 4.87367 0.665999 4.74915 0.738847 4.6444C0.811694 4.53966 0.914852 4.45972 1.03446 4.41532L3.51259 3.51454L4.41337 1.03642C4.45777 0.916805 4.53771 0.813647 4.64245 0.7408C4.74719 0.667953 4.87172 0.628906 4.99931 0.628906C5.12689 0.628906 5.25142 0.667953 5.35616 0.7408C5.46091 0.813647 5.54085 0.916805 5.58524 1.03642L6.48642 3.51454L8.96415 4.41532C9.08492 4.45826 9.18932 4.53776 9.26283 4.64277C9.33633 4.74778 9.3753 4.87308 9.37431 5.00126Z" fill="url(#offer-star-grad-2)"/><defs><linearGradient id="offer-star-grad-2" x1="-8.46059" y1="7.98241" x2="13.8919" y2="7.49152" gradientUnits="userSpaceOnUse"><stop stop-color="#4AB819"/><stop offset="0.84443" stop-color="#0071C5"/></linearGradient></defs></svg>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="plans">
+<section class="plans" id="plansSection">
   <div class="shell">
     <div class="cards">
 
       <div class="card">
+        <div class="tag-explorer">Explorer</div>
         <div class="card-name">Free</div>
         <div class="card-tagline">Test the waters, no card needed</div>
         <div class="price-row"><span class="price p-free">₹0</span><span class="price-unit">forever</span></div>
         <div class="price-billed">No billing cycle to choose</div>
         <ul class="feat-list">
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>1 store, 1 user</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>200 products, 100 orders/month</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Website storefront on a free Zopping subdomain</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Community + email support</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>1 store</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>500 products</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>100 orders/mo included</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>Website storefront on a free Zopping subdomain</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg><div><div>1 picker + 1 delivery license</div><div class="feat-sub">try the full ops flow</div></div></li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>Basic stock counter</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>Support: Talk to us</li>
         </ul>
-        <a href="#" class="btn btn-outline btn-block">Start Selling Free</a>
+        <a href="#" class="btn btn-outline btn-block">Explore Free</a>
       </div>
 
       <div class="card">
         <div class="card-name">Basic</div>
         <div class="card-tagline">For entrepreneurs and small teams</div>
-        <div class="price-row"><span class="price p-annual">₹1,499</span><span class="price-strike p-strike">₹1,999</span><span class="price-unit">/mo</span></div>
-        <div class="price-billed p-billed">Billed annually · ₹17,988/yr, excl. GST</div>
+        <div class="price-row"><span class="price p-annual">₹1,299</span><span class="price-strike p-strike">₹1,799</span><span class="price-unit">/mo</span></div>
+        <div class="price-billed p-billed">₹15,588/yr, excl. GST</div>
         <ul class="feat-list">
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>3 active stores</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>3 team members, 3,000 products</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>1,000 orders/month included</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Website + native Android app, your brand</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>1 picker + 1 delivery license</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg><div><div>2 stores</div><div class="feat-sub">+<span class="store-add-basic">₹600</span>/mo per extra store</div></div></li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>5,000 products</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg><div><div>500 orders/mo included</div><div class="feat-sub"><span class="ov-basic">₹3</span> per order after cap</div></div></li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>Website</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg><div><div>4 concurrent users</div><div class="feat-sub">(pickers/riders)<span class="info-mark" data-tip="Shared pool across picker and rider apps — up to 4 people can be logged in and active at the same time.">*</span></div></div></li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>Support: Email</li>
         </ul>
         <a href="#" class="btn btn-primary btn-block">Start Selling <svg class="arrow" width="16" height="16"><use href="#i-arrow"/></svg></a>
       </div>
@@ -249,43 +415,55 @@
       <div class="card popular">
         <div class="tag-popular">Most Popular</div>
         <div class="card-name">Business</div>
-        <div class="card-tagline">For businesses ready to scale</div>
-        <div class="price-row"><span class="price p-annual">₹4,999</span><span class="price-strike p-strike">₹6,499</span><span class="price-unit">/mo</span></div>
-        <div class="price-billed p-billed">Billed annually · ₹59,988/yr, excl. GST</div>
+        <div class="card-tagline">For scaling businesses</div>
+        <div class="price-row"><span class="price p-annual">₹4,299</span><span class="price-strike p-strike">₹5,799</span><span class="price-unit">/mo</span></div>
+        <div class="price-billed p-billed">₹51,588/yr, excl. GST</div>
         <ul class="feat-list">
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>10 active stores</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>12 staff members, 20,000 products</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>3,000 orders/month included</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Website + native Android &amp; iOS apps, your brand</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>5 picker + 5 delivery licenses, shared account manager + phone</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg><div><div>6 stores</div><div class="feat-sub">+<span class="store-add-biz">₹500</span>/mo per extra store</div></div></li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>15,000 products</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg><div><div>1,500 orders/mo included</div><div class="feat-sub"><span class="ov-biz">₹2.50</span> per order after cap</div></div></li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>Website and Android App</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg><div><div>12 concurrent users</div><div class="feat-sub">(pickers/riders)<span class="info-mark" data-tip="Shared pool across picker and rider apps — up to 12 people can be logged in and active at the same time.">*</span></div></div></li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>One warehouse, excludes stock transfer</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>Support: Email + WhatsApp Chat</li>
         </ul>
         <a href="#" class="btn btn-primary btn-block">Start Growing <svg class="arrow" width="16" height="16"><use href="#i-arrow"/></svg></a>
       </div>
 
       <div class="card">
-        <div class="card-name">Enterprise</div>
-        <div class="card-tagline">For multi-store &amp; multi-city businesses</div>
-        <div class="price-row"><span class="price">Custom</span></div>
-        <div class="price-billed">Scoped to volume &amp; contract term</div>
+        <div class="card-name">Premium</div>
+        <div class="card-tagline">For high-volume operations</div>
+        <div class="price-row"><span class="price p-annual">₹12,299</span><span class="price-strike p-strike">₹16,799</span><span class="price-unit">/mo</span></div>
+        <div class="price-billed p-billed">₹1,47,588/yr, excl. GST</div>
         <ul class="feat-list">
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Unlimited stores, users &amp; products</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>White-labeled apps, built for your brand</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>ERP &amp; 3PL integrations</li>
-          <li><svg width="16" height="16" style="color:var(--green)"><use href="#i-check"/></svg>Shared account manager · 18×7 support<span class="info-mark" title="Support hours: 18 hours a day, every day of the week">*</span>, SLA scoped to your contract</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg><div><div>10 stores</div><div class="feat-sub">+<span class="store-add-premium">₹400</span>/mo per extra store</div></div></li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>35,000 products</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg><div><div>3,000 orders/mo included</div><div class="feat-sub"><span class="ov-premium">₹2</span> per order after cap</div></div></li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>Website + Android &amp; iOS apps</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg><div><div>20 concurrent users</div><div class="feat-sub">(pickers/riders)<span class="info-mark" data-tip="Shared pool across picker and rider apps — up to 20 people can be logged in and active at the same time.">*</span></div></div></li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>One warehouse, includes stock transfer</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg><div><div>Support: Email + WhatsApp Chat</div><div class="feat-sub">+ Phone Calls (Mon–Fri)<span class="info-mark" data-tip="Phone support hours: Monday to Friday, standard business hours.">*</span></div></div></li>
+        </ul>
+        <a href="#" class="btn btn-primary btn-block">Start Scaling <svg class="arrow" width="16" height="16"><use href="#i-arrow"/></svg></a>
+      </div>
+
+      <div class="card">
+        <div class="card-name">Enterprise</div>
+        <div class="card-tagline">For multi-store businesses</div>
+        <div class="price-row"><span class="price p-ent-floor">₹99,999</span><span class="price-asterisk">*</span><span class="price-unit">/mo</span></div>
+        <div class="price-billed">Custom quote from here, scoped to volume &amp; contract term</div>
+        <ul class="feat-list">
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg><span>Unlimited stores &amp; products<span class="info-mark" data-tip="Store count is scoped to your Enterprise contract; additional stores available on request.">*</span></span></li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>White-labeled apps, built for your brand</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>ERP and 3rd party integration</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>Concurrent users, scoped to your contract</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>Advanced warehouse management (WMS)</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>Advanced ops: order hopping, kiosk ordering &amp; cycle counts</li>
+          <li><svg width="18" height="18" style="color:var(--check-green)"><use href="#i-check-circle"/></svg>Support: Shared Account Manager</li>
         </ul>
         <a href="#" class="btn btn-dark btn-block">Talk to an Expert</a>
       </div>
 
-    </div>
-  </div>
-</section>
-
-<section class="commission">
-  <div class="shell commission-row">
-    <div class="commission-num">0%</div>
-    <div class="commission-text">
-      <h2>Additional commission. On any plan.</h2>
-      <p>We charge for the platform — never a cut of your sales. Every order stays yours, in full, no matter which plan you're on.</p>
     </div>
   </div>
 </section>
@@ -297,267 +475,371 @@
       <p>Capabilities most platforms sell back to you as separate apps — Zopping ships them in.</p>
     </div>
     <div class="diff-grid">
-      <div class="diff-item"><div class="diff-icon"><svg width="19" height="19" style="color:var(--dark)"><use href="#i-phone"/></svg></div><h3>Native mobile apps</h3><p>Android &amp; iOS apps under your own brand, not a plug-in.</p></div>
-      <div class="diff-item"><div class="diff-icon"><svg width="19" height="19" style="color:var(--dark)"><use href="#i-box"/></svg></div><h3>Warehouse &amp; store ops</h3><p>Multi-warehouse routing and batch picking, built in.</p></div>
-      <div class="diff-item"><div class="diff-icon"><svg width="19" height="19" style="color:var(--dark)"><use href="#i-truck"/></svg></div><h3>Picker &amp; delivery apps</h3><p>Run in-store fulfillment and last-mile delivery natively.</p></div>
-      <div class="diff-item"><div class="diff-icon"><svg width="19" height="19" style="color:var(--dark)"><use href="#i-chat"/></svg></div><h3>WhatsApp automation</h3><p>Order updates &amp; marketing flows — pay only for what you send.</p></div>
-      <div class="diff-item"><div class="diff-icon"><svg width="19" height="19" style="color:var(--dark)"><use href="#i-headset"/></svg></div><h3>Real support</h3><p>An account manager from Business upward, not a ticket queue.</p></div>
+      <div class="diff-item"><div class="diff-icon"><svg width="21" height="21" style="color:var(--green-dark)"><use href="#i-phone"/></svg></div><h3>Native mobile apps</h3><p>Android &amp; iOS apps under your own brand, not a plug-in.</p></div>
+      <div class="diff-item"><div class="diff-icon"><svg width="21" height="21" style="color:var(--green-dark)"><use href="#i-box"/></svg></div><h3>Warehouse &amp; store ops</h3><p>Multi-warehouse routing and batch picking, built in.</p></div>
+      <div class="diff-item"><div class="diff-icon"><svg width="21" height="21" style="color:var(--green-dark)"><use href="#i-truck"/></svg></div><h3>Picker &amp; delivery apps</h3><p>Run in-store fulfillment and last-mile delivery natively.</p></div>
+      <div class="diff-item"><div class="diff-icon"><svg width="21" height="21" style="color:var(--green-dark)"><use href="#i-chat"/></svg></div><h3>WhatsApp automation</h3><p>Order updates &amp; marketing flows — pay only for what you send.</p></div>
+      <div class="diff-item"><div class="diff-icon"><svg width="21" height="21" style="color:var(--green-dark)"><use href="#i-headset"/></svg></div><h3>Real support</h3><p>An account manager from Business upward, not a ticket queue.</p></div>
     </div>
   </div>
 </section>
 
-<section class="compare">
+<section class="compare" id="capabilities">
   <div class="shell">
     <div class="compare-head">
       <h2>Compare plans</h2>
-      <p>The numbers that actually change as you grow — nothing else is hidden between plans.</p>
+      <p>Every number and every one of our 86 features, side by side — nothing hidden between plans.</p>
     </div>
-    <div class="table-wrap">
-      <div class="table-scroll">
-        <table class="compare-table">
-          <thead><tr><th>&nbsp;</th><th>Free</th><th>Basic</th><th>Business</th><th>Enterprise</th></tr></thead>
+
+    <div class="cap-table-wrap collapsed" id="capTableWrap">
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table class="compare-table cap-table">
+          <thead>
+            <tr>
+              <th>&nbsp;</th>
+              <th><div>Free</div><div class="cap-th-sub">Test the waters</div></th>
+              <th><div>Basic</div><div class="cap-th-sub">Entrepreneurs &amp; small teams</div></th>
+              <th><div>Business</div><div class="cap-th-sub">Ready to scale and grow</div></th>
+              <th><div>Premium</div><div class="cap-th-sub">High-volume, multi-city</div></th>
+              <th><div>Enterprise</div><div class="cap-th-sub">Multi-store &amp; multi-city</div></th>
+            </tr>
+          </thead>
           <tbody>
-            <tr class="grp"><td colspan="5">Scale</td></tr>
-            <tr><td>Stores</td><td class="val">1</td><td class="val">3</td><td class="val">10</td><td class="val">Unlimited</td></tr>
-            <tr><td>Team members</td><td class="val">1</td><td class="val">3</td><td class="val">12</td><td class="val">Unlimited</td></tr>
-            <tr><td>Orders / month included</td><td class="val">100</td><td class="val">1,000</td><td class="val">3,000</td><td class="val">Unlimited</td></tr>
-            <tr><td>Overage per order beyond cap</td><td class="val ov-free">₹5</td><td class="val ov-basic">₹4</td><td class="val ov-biz">₹2.50</td><td class="val">Negotiated</td></tr>
 
-            <tr class="grp"><td colspan="5">Storefront</td></tr>
-            <tr><td>Storefront</td><td class="dash">Website only</td><td class="val">Website + Android app</td><td class="val">Website + Android + iOS</td><td class="val">White-labeled apps</td></tr>
-            <tr><td>Domain</td><td class="dash">Subdomain only</td><td class="val">Custom domain</td><td class="val">Custom domain</td><td class="val">Custom + multi-domain</td></tr>
-            <tr><td>Picker licenses</td><td class="dash">Not included</td><td class="val">1</td><td class="val">5</td><td class="val">Unlimited</td></tr>
-            <tr><td>Delivery licenses</td><td class="dash">Not included</td><td class="val">1</td><td class="val">5</td><td class="val">Unlimited</td></tr>
-            <tr><td>Warehouse management</td><td class="val">Basic stock counter</td><td class="val">Single warehouse</td><td class="val">Multi-warehouse</td><td class="val">Enterprise WSM + ERP</td></tr>
-            <tr><td>WhatsApp automation</td><td class="dash">Not included</td><td class="val">3 flows, prepaid</td><td class="val">Unlimited flows, prepaid</td><td class="val">Custom, prepaid</td></tr>
+            <tr class="grp"><td colspan="6">Scale</td></tr>
+            <tr><td>Stores</td><td class="val">1</td><td class="val">2</td><td class="val">6</td><td class="val">10</td><td class="val">Unlimited<span class="info-mark" data-tip="Store count is scoped to your Enterprise contract; additional stores available on request.">*</span></td></tr>
+            <tr><td>Orders / month included</td><td class="val">100</td><td class="val">500</td><td class="val">1,500</td><td class="val">3,000</td><td class="val">Unlimited</td></tr>
+            <tr><td>Overage per order beyond cap</td><td class="dash">Upgrade</td><td class="val ov-basic">₹3</td><td class="val ov-biz">₹2.50</td><td class="val ov-premium">₹2</td><td class="val">Talk to an expert</td></tr>
+            <tr><td>Additional store cost</td><td class="dash">Upgrade</td><td class="val store-add-basic">₹600</td><td class="val store-add-biz">₹500</td><td class="val store-add-premium">₹400</td><td class="val">Talk to an expert</td></tr>
 
-            <tr class="grp"><td colspan="5">Payments &amp; support</td></tr>
-            <tr><td class="pay-label">UPI processing (PhonePe)</td><td class="val pay-free">1.0%</td><td class="val pay-basic">0.60%</td><td class="val pay-biz">0.50%</td><td class="val pay-ent">Custom, &lt;0.50%</td></tr>
-            <tr><td>Support</td><td class="val">Community + email</td><td class="val">Email + chat</td><td class="val">Shared account manager + phone<span class="info-mark" title="Support hours: Mon–Fri, standard business hours">*</span></td><td class="val">Shared account manager · 18×7<span class="info-mark" title="Support hours: 18 hours a day, every day of the week">*</span></td></tr>
+            <tr class="grp"><td colspan="6">Storefront</td></tr>
+            <tr><td>Storefront</td><td class="dash">Website only with Zopping Subdomain</td><td class="val">Website</td><td class="val">Website + Android app</td><td class="val">Website + Android + iOS</td><td class="val">White-labeled apps</td></tr>
+            <tr><td>Concurrent users (pickers/riders)</td><td class="val">2</td><td class="val">4</td><td class="val">12</td><td class="val">20</td><td class="val">Talk to an expert</td></tr>
+            <tr class="grp grp-highlight"><td colspan="6">Storefront extras <span class="grp-badge">Included free</span><span class="grp-sub">Usually separate paid apps on other platforms</span></td></tr>
+            <tr><td>Customer wishlist</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Reviews &amp; ratings</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Notify me (back-in-stock)</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Delivery &amp; pickup slots</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Delivery zones &amp; area set-up</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Slot capacity planning</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Slot surcharge / discount</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+<tr class="grp"><td colspan="6">Catalog &amp; merchandising</td></tr>
+            <tr><td>Dynamic hero banners</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Trending searches</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Personalized search results</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Search results control</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Product bundles</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Recipe page generator</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Digital products</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Subscription products</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Product restrictions</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Pre-order support</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Sold-by-weight products</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Product substitution</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Product tags</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Product variants</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Brand pages</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr class="grp"><td colspan="6">Pricing, promotions &amp; loyalty</td></tr>
+            <tr><td>VIP membership plans</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Customer groups</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Tiered pricing</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Customer credit</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Unique coupon generator</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Offers &amp; promotions</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Wallet &amp; cashback</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Customer tags &amp; segmentation</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr class="grp"><td colspan="6">Orders, delivery &amp; warehouse ops</td></tr>
+            <tr><td>Order accept/reject with hopping</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Endless aisle kiosk</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Inventory cycle counts</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Order split</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Order gating</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Order status nomenclature</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Rider earnings &amp; incentives</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>OMS / WMS integrations</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Free delivery by product</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Low stock alerts</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Hub trip support</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Multiple &amp; partial order picking</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Bulk-order handling</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Stock buffer set-up</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Order returns</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Stock management</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Delivery dispatch</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Pick &amp; pack (Android picker app)</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr class="grp"><td colspan="6">Multi-store, team &amp; access</td></tr>
+            <tr><td>Sales location mapping</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>B2B / wholesale accounts</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>User activity logs</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Marketplace / vendor management</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Leave management</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Password policy</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Custom fields</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Shift &amp; designation management</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Multi-store operations</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Multi-user support</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr class="grp"><td colspan="6">Marketing &amp; engagement</td></tr>
+            <tr><td>Instagram feed</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Newsletter subscription</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Whatmore shoppable video</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Referral management</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Marketing banners</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Abandoned cart recovery</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Push notifications</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Ticket management</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Customer support console</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Campaign engine</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr class="grp"><td colspan="6">Analytics &amp; tracking</td></tr>
+            <tr><td>Search keyword history</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Store performance (MIS) reports</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Google Tag Manager</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Reports &amp; analytics</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Facebook Pixel analytics</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Google Analytics</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr class="grp"><td colspan="6">Integrations &amp; payments</td></tr>
+            <tr><td>Third-party invoicing</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Facebook SDK</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Appointment booking</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Generic third-party integration</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Google Merchant Center</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Shipping &amp; courier partners</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Online payment gateway</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Tawk.to live chat</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr class="grp"><td colspan="6">Storefront &amp; localization</td></tr>
+            <tr><td>Flexible sign-up &amp; login</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Scheduled page layouts</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>Multi-language storefront</td><td class="dash">–</td><td class="dash">–</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+            <tr><td>SEO optimization</td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td><td class="val"><svg width="15" height="15" style="color:var(--check-green)"><use href="#i-check-circle"/></svg></td></tr>
+          
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
     </div>
-
-    <div class="cap-cta">
-      <a href="#capabilities" class="btn btn-outline">See every capability, plan by plan <svg class="arrow" width="16" height="16"><use href="#i-arrow"/></svg></a>
-      <span class="cap-cta-note">86 features today — new ones ship every release, and none of them get locked away later.</span>
-    </div>
-  </div>
-</section>
-
-<section class="capabilities" id="capabilities">
-  <div class="shell">
-    <div class="cap-head">
-      <span class="cap-eyebrow">The full list</span>
-      <h2>Every platform capability, and which plan unlocks it</h2>
-      <p>Zopping ships 86 individual capabilities today across catalog, orders, marketing, analytics and more — and this list only grows. Nothing here is walled off to force an upgrade; most are on every plan from Free onward. The few that unlock later are genuinely operational-scale or enterprise-integration features.</p>
-      <div class="cap-legend">
-        <span><span class="cap-badge all" style="padding:2px 6px;">All plans</span> included from Free</span>
-        <span><span class="cap-badge basic" style="padding:2px 6px;">Basic+</span> unlocks on Basic</span>
-        <span><span class="cap-badge business" style="padding:2px 6px;">Business+</span> unlocks on Business</span>
-        <span><span class="cap-badge enterprise" style="padding:2px 6px;">Enterprise</span> unlocks on Enterprise</span>
-      </div>
+    <div class="cap-see-more">
+      <button type="button" class="btn btn-outline" onclick="toggleCapabilities()" id="capSeeMoreBtn">See more <svg class="arrow" width="16" height="16" id="capSeeMoreIcon"><use href="#i-arrow"/></svg></button>
     </div>
 
-    <div class="cap-columns">
-
-      <div class="cap-card">
-        <h3>Catalog &amp; merchandising</h3>
-        <span class="cap-count">17 capabilities</span>
-        <div class="cap-row"><div><div class="cap-name">Dynamic hero banners</div><div class="cap-desc">Entity-driven header layouts per category</div></div><span class="cap-badge business">Business+</span></div>
-        <div class="cap-row"><div><div class="cap-name">Trending searches</div><div class="cap-desc">Surface popular queries to boost discovery</div></div><span class="cap-badge business">Business+</span></div>
-        <div class="cap-row"><div><div class="cap-name">Personalized search results</div><div class="cap-desc">Rank listings by each customer's purchase history</div></div><span class="cap-badge business">Business+</span></div>
-        <div class="cap-row"><div><div class="cap-name">Search results control</div><div class="cap-desc">Pin products for chosen keywords</div></div><span class="cap-badge business">Business+</span></div>
-        <div class="cap-row"><div><div class="cap-name">Notify me (back-in-stock)</div><div class="cap-desc">Alert shoppers when an item is restocked</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Product bundles</div><div class="cap-desc">Fixed bundles with live inventory sync</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Recipe page generator</div><div class="cap-desc">Shoppable recipe pages with add-to-cart</div></div><span class="cap-badge basic">Basic+</span></div>
-        <div class="cap-row"><div><div class="cap-name">Digital products</div><div class="cap-desc">Sell ebooks, licenses and files with no delivery charge</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Subscription products</div><div class="cap-desc">Recurring purchase reminders for repeat buys</div></div><span class="cap-badge basic">Basic+</span></div>
-        <div class="cap-row"><div><div class="cap-name">Product restrictions</div><div class="cap-desc">Purchase limits per customer, per time window</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Reviews &amp; ratings</div><div class="cap-desc">Verified-buyer ratings and photo reviews</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Pre-order support</div><div class="cap-desc">Sell items with a procurement lead time</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Sold-by-weight products</div><div class="cap-desc">Billing for loose, fractional-quantity items</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Product substitution</div><div class="cap-desc">Auto-suggest swaps for out-of-stock items</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Product tags</div><div class="cap-desc">Tag-based collection pages and filtering</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Product variants</div><div class="cap-desc">Colour, size and weight variants per SKU</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Brand pages</div><div class="cap-desc">Browse, filter and analyse sales by brand</div></div><span class="cap-badge all">All plans</span></div>
-      </div>
-
-      <div class="cap-card">
-        <h3>Pricing, promotions &amp; loyalty</h3>
-        <span class="cap-count">9 capabilities</span>
-        <div class="cap-row"><div><div class="cap-name">VIP membership plans</div><div class="cap-desc">Paid loyalty tiers with waived fees and perks</div></div><span class="cap-badge business">Business+</span></div>
-        <div class="cap-row"><div><div class="cap-name">Customer groups</div><div class="cap-desc">Segment-based access and shared account management</div></div><span class="cap-badge business">Business+</span></div>
-        <div class="cap-row"><div><div class="cap-name">Tiered pricing</div><div class="cap-desc">Rules by customer tag and quantity bracket</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Customer credit</div><div class="cap-desc">Buy-now, pay-later with a repayment schedule</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Unique coupon generator</div><div class="cap-desc">Bulk-generate one-time discount codes</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Offers &amp; promotions</div><div class="cap-desc">10+ built-in offer types incl. BOGO and bundling</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Wallet &amp; cashback</div><div class="cap-desc">Store credit, top-ups and cashback on orders</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Customer tags &amp; segmentation</div><div class="cap-desc">System and custom tags for targeted offers</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Slot surcharge / discount</div><div class="cap-desc">Price delivery and pickup slots differently</div></div><span class="cap-badge all">All plans</span></div>
-      </div>
-
-      <div class="cap-card">
-        <h3>Orders, delivery &amp; warehouse ops</h3>
-        <span class="cap-count">21 capabilities</span>
-        <div class="cap-row"><div><div class="cap-name">Order accept/reject with hopping</div><div class="cap-desc">Auto-reassign orders on reject or timeout</div></div><span class="cap-badge enterprise">Enterprise</span></div>
-        <div class="cap-row"><div><div class="cap-name">Endless aisle kiosk</div><div class="cap-desc">In-store tablets ordering from the full online catalogue</div></div><span class="cap-badge enterprise">Enterprise</span></div>
-        <div class="cap-row"><div><div class="cap-name">Inventory cycle counts</div><div class="cap-desc">Scheduled stock counting tasks with audit trail</div></div><span class="cap-badge enterprise">Enterprise</span></div>
-        <div class="cap-row"><div><div class="cap-name">Order split</div><div class="cap-desc">One cart checks out as independent, back-orderable orders</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Order gating</div><div class="cap-desc">Manual review and approval before orders confirm</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Order status nomenclature</div><div class="cap-desc">Rename order statuses to match your brand terms</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Rider earnings &amp; incentives</div><div class="cap-desc">Distance, order-value and milestone-based rider pay</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">OMS / WMS integrations</div><div class="cap-desc">Plug into external order/warehouse management systems</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Free delivery by product</div><div class="cap-desc">Waive delivery fee on selected SKUs</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Low stock alerts</div><div class="cap-desc">Real-time email alerts below a stock threshold</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Hub trip support</div><div class="cap-desc">Track orders moving between packaging and dispatch hubs</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Multiple &amp; partial order picking</div><div class="cap-desc">Pickers batch or split orders by zone</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Bulk-order handling</div><div class="cap-desc">Route large orders to a different fulfilling store</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Slot capacity planning</div><div class="cap-desc">Cap orders per delivery/pickup slot, per store</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Stock buffer set-up</div><div class="cap-desc">Reserve buffer stock by product or category</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Order returns</div><div class="cap-desc">Manage returns with automatic inventory and refund adjustment</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Delivery &amp; pickup slots</div><div class="cap-desc">Configure the slots your business can actually fulfil</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Stock management</div><div class="cap-desc">Track exact unit counts, not just in/out of stock</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Delivery dispatch</div><div class="cap-desc">Trips, vehicles and vendors, plus the Android delivery app</div></div><span class="cap-badge basic">Basic+</span></div>
-        <div class="cap-row"><div><div class="cap-name">Delivery area set-up</div><div class="cap-desc">Define serviceable boundaries and area-based fees</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Pick &amp; pack (Android picker app)</div><div class="cap-desc">Automated picking queue with QC and barcode labelling</div></div><span class="cap-badge basic">Basic+</span></div>
-      </div>
-
-      <div class="cap-card">
-        <h3>Multi-store, team &amp; access</h3>
-        <span class="cap-count">10 capabilities</span>
-        <div class="cap-row"><div><div class="cap-name">Sales location mapping</div><div class="cap-desc">Assign villages, blocks or zones to staff and codes</div></div><span class="cap-badge enterprise">Enterprise</span></div>
-        <div class="cap-row"><div><div class="cap-name">B2B / wholesale accounts</div><div class="cap-desc">GST-verified business accounts, group pricing, order visibility</div></div><span class="cap-badge enterprise">Enterprise</span></div>
-        <div class="cap-row"><div><div class="cap-name">User activity logs</div><div class="cap-desc">Centralized audit trail of login and account actions</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Marketplace / vendor management</div><div class="cap-desc">Onboard vendors with their own catalogue and orders</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Leave management</div><div class="cap-desc">Staff leave requests with manager approval</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Password policy</div><div class="cap-desc">Enforce length and character rules for customer passwords</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Custom fields</div><div class="cap-desc">Capture extra data on products, orders and signup</div></div><span class="cap-badge enterprise">Enterprise</span></div>
-        <div class="cap-row"><div><div class="cap-name">Shift &amp; designation management</div><div class="cap-desc">Manage staff shifts, weekly-offs and designations</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Multi-store operations</div><div class="cap-desc">Per-store catalogue, stock and pricing, compared side by side</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Multi-user support</div><div class="cap-desc">Invite teammates with scoped permissions</div></div><span class="cap-badge all">All plans</span></div>
-      </div>
-
-      <div class="cap-card">
-        <h3>Marketing &amp; engagement</h3>
-        <span class="cap-count">11 capabilities</span>
-        <div class="cap-row"><div><div class="cap-name">Customer wishlist</div><div class="cap-desc">Save-for-later to drive return visits</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Instagram feed</div><div class="cap-desc">Auto-updating Instagram gallery on your storefront</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Newsletter subscription</div><div class="cap-desc">Opt-in capture for offers and launches</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Whatmore shoppable video</div><div class="cap-desc">Interactive, shoppable video embeds</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Referral management</div><div class="cap-desc">Unique referral codes with wallet cashback both ways</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Marketing banners</div><div class="cap-desc">Multilingual, page-targeted, pre-scheduled banners</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Abandoned cart recovery</div><div class="cap-desc">Push / email / SMS nudges to finish checkout</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Push notifications</div><div class="cap-desc">Order and delivery status alerts to customer devices</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Ticket management</div><div class="cap-desc">Customers raise, you resolve, order-linked support tickets</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Customer support console</div><div class="cap-desc">Look up and edit any customer's orders by phone/email</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Campaign engine</div><div class="cap-desc">Scheduled Email / SMS / app-notification campaigns</div></div><span class="cap-badge all">All plans</span></div>
-      </div>
-
-      <div class="cap-card">
-        <h3>Analytics &amp; tracking</h3>
-        <span class="cap-count">6 capabilities</span>
-        <div class="cap-row"><div><div class="cap-name">Search keyword history</div><div class="cap-desc">What shoppers search for, for merchandising decisions</div></div><span class="cap-badge business">Business+</span></div>
-        <div class="cap-row"><div><div class="cap-name">Store performance (MIS) reports</div><div class="cap-desc">Automated store-by-store reports to managers and owners</div></div><span class="cap-badge enterprise">Enterprise</span></div>
-        <div class="cap-row"><div><div class="cap-name">Google Tag Manager</div><div class="cap-desc">Manage tracking tags without a code change</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Reports &amp; analytics</div><div class="cap-desc">14 downloadable reports across sales, ops, inventory</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Facebook Pixel analytics</div><div class="cap-desc">Measure and target ad performance</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Google Analytics</div><div class="cap-desc">Site traffic and conversion tracking</div></div><span class="cap-badge all">All plans</span></div>
-      </div>
-
-      <div class="cap-card">
-        <h3>Integrations &amp; payments</h3>
-        <span class="cap-count">8 capabilities</span>
-        <div class="cap-row"><div><div class="cap-name">Third-party invoicing</div><div class="cap-desc">Issue and validate invoices via an approved external provider</div></div><span class="cap-badge enterprise">Enterprise</span></div>
-        <div class="cap-row"><div><div class="cap-name">Facebook SDK</div><div class="cap-desc">Meta App/Client ID for ad audiences and event tracking</div></div><span class="cap-badge business">Business+</span></div>
-        <div class="cap-row"><div><div class="cap-name">Appointment booking</div><div class="cap-desc">TidyCal / oneHashCal scheduling for bookings</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Generic third-party integration</div><div class="cap-desc">Transfer store data to an external system</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Google Merchant Center</div><div class="cap-desc">One-click catalogue sync to Google Shopping</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Shipping &amp; courier partners</div><div class="cap-desc">Fulfil and track via ShipRocket, Dunzo and similar</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Online payment gateway</div><div class="cap-desc">Connect your preferred gateway for online orders</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Tawk.to live chat</div><div class="cap-desc">Live chat widget on web and app</div></div><span class="cap-badge all">All plans</span></div>
-      </div>
-
-      <div class="cap-card">
-        <h3>Storefront &amp; localization</h3>
-        <span class="cap-count">4 capabilities</span>
-        <div class="cap-row"><div><div class="cap-name">Flexible sign-up &amp; login</div><div class="cap-desc">OTP-based SSO or classic sign-up/login flows</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Scheduled page layouts</div><div class="cap-desc">Pre-build pages and auto-swap them on a schedule</div></div><span class="cap-badge all">All plans</span></div>
-        <div class="cap-row"><div><div class="cap-name">Multi-language storefront</div><div class="cap-desc">Serve your website and apps in multiple languages</div></div><span class="cap-badge business">Business+</span></div>
-        <div class="cap-row"><div><div class="cap-name">SEO optimization</div><div class="cap-desc">Custom title, description and keywords per page</div></div><span class="cap-badge all">All plans</span></div>
-      </div>
-
-    </div>
   </div>
 </section>
 
 <section class="notes">
   <div class="shell">
+    <div class="notes-head">
+      <h2>Good to know</h2>
+      <p>A few courtesy details on billing and support, so nothing catches you by surprise later.</p>
+    </div>
     <div class="notes-grid">
-      <div class="note"><b>Taxes</b> — India prices exclude GST (add 18%). Global prices exclude sales tax/VAT, shown at checkout by region and remitted by you — we're not a merchant of record.</div>
-      <div class="note"><b>SMS &amp; WhatsApp</b> — prepaid on every plan, no free credits, no surprises.</div>
-      <div class="note"><b>Payment rate (India)</b> — via our PhonePe UPI partnership, gets cheaper as you grow. Global: bring your own Stripe/PayPal gateway.</div>
-      <div class="note"><b>Order overage</b> — extra orders beyond your monthly cap are billed per order rather than blocked — ₹5 / ₹4 / ₹2.50 in India, $0.10 / $0.08 / $0.05 globally (Free/Basic/Business).</div>
-      <div class="note"><b>Seats</b> — team members, picker licenses and delivery licenses are separate pools; none of them counts against another.</div>
-      <div class="note"><b>Integrations</b> — generic OMS/WMS connections are open on every plan; ERP integrations are scoped as part of an Enterprise contract.</div>
-      <div class="note"><b>Enterprise SLA</b> — response times and uptime commitments are set in your contract, not a fixed platform-wide number.</div>
+      <div class="note">
+        <div class="note-head-row">
+          <div class="note-icon"><svg width="14" height="14" style="color:var(--green-dark)"><use href="#i-receipt"/></svg></div>
+          <div class="note-title">Taxes</div>
+        </div>
+        <p>Prices exclude tax — GST (+18%) in India, sales tax/VAT elsewhere. Shown at checkout and remitted by you; we're not the merchant of record.</p>
+      </div>
+      <div class="note">
+        <div class="note-head-row">
+          <div class="note-icon"><svg width="14" height="14" style="color:var(--green-dark)"><use href="#i-chat"/></svg></div>
+          <div class="note-title">SMS &amp; WhatsApp</div>
+        </div>
+        <p>Prepaid on every plan, so you always know the cost in advance — no free credits, no surprise bills.</p>
+      </div>
+      <div class="note">
+        <div class="note-head-row">
+          <div class="note-icon"><svg width="14" height="14" style="color:var(--green-dark)"><use href="#i-card"/></svg></div>
+          <div class="note-title">Payment rate (India)</div>
+        </div>
+        <p>UPI payments via our PhonePe partnership get more affordable as you scale. Outside India, you're welcome to connect your own Stripe or PayPal.</p>
+      </div>
+      <div class="note">
+        <div class="note-head-row">
+          <div class="note-icon"><svg width="14" height="14" style="color:var(--green-dark)"><use href="#i-shield"/></svg></div>
+          <div class="note-title">Enterprise SLA</div>
+        </div>
+        <p>Response times and uptime commitments are agreed in your contract, tailored to your needs rather than a one-size-fits-all number.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="final-cta">
-  <div class="shell">
-    <h2>Ready to grow without the app-store tax?</h2>
-    <p>Talk to us about which plan fits, or start selling today.</p>
-    <div class="final-actions">
-      <a href="#" class="btn btn-primary">Start Selling <svg class="arrow" width="16" height="16"><use href="#i-arrow"/></svg></a>
-      <a href="#" class="btn btn-outline" style="background:transparent;color:#fff;border-color:#3A4250;">Talk to an Expert</a>
+<section class="help-line">
+  <div class="shell help-line-row">
+    <span>From here, as it is on the live website.</span>
+    <div class="help-line-actions">
+      <button type="button" class="btn btn-outline" onclick="showCustomerList()">Existing Customers</button>
+      <a href="#" class="btn btn-outline">Methodology</a>
+      <button type="button" class="btn btn-outline" id="marketToggleBtn" onclick="toggleMarket()">View Global Pricing — switch to USD</button>
     </div>
   </div>
 </section>
+</div>
 
-<footer class="site">
-  <div class="shell foot-row">
-    <span>© 2026 Zopping. Commerce infrastructure, not just a storefront.</span>
-    <span>Prices shown in your selected currency, excl. applicable tax. SMS &amp; WhatsApp are prepaid on every plan.</span>
+<section class="cust-list-page" id="customerListView" style="display:none">
+  <div class="shell cust-list-shell">
+    <button type="button" class="link-quiet cust-back" onclick="showMainPricing()">&larr; Back to pricing</button>
+    <div class="cust-list-head">
+      <h2>Existing customers</h2>
+      <p>Find your Customer Code below to see which plan you're on. Full detail and the underlying calculation lives in the reference sheet.</p>
+    </div>
+    <div class="cust-groups">
+          <div class="cust-group">
+          <div class="cust-group-head"><span class="lookup-plan-badge lookup-plan-basic">Basic</span><span class="cust-group-count">5 customers</span></div>
+          <div class="cust-code-grid">
+          <div class="cust-code">ZOP-00103</div>
+          <div class="cust-code">ZOP-00106</div>
+          <div class="cust-code">ZOP-00108</div>
+          <div class="cust-code">ZOP-00117</div>
+          <div class="cust-code">ZOP-00179</div>
+          </div></div>
+          <div class="cust-group">
+          <div class="cust-group-head"><span class="lookup-plan-badge lookup-plan-business">Business</span><span class="cust-group-count">1 customer</span></div>
+          <div class="cust-code-grid">
+          <div class="cust-code">ZOP-00177</div>
+          </div></div>
+          <div class="cust-group">
+          <div class="cust-group-head"><span class="lookup-plan-badge lookup-plan-premium">Premium</span><span class="cust-group-count">33 customers</span></div>
+          <div class="cust-code-grid">
+          <div class="cust-code">ZOP-0002</div>
+          <div class="cust-code">ZOP-0003</div>
+          <div class="cust-code">ZOP-0008</div>
+          <div class="cust-code">ZOP-0009</div>
+          <div class="cust-code">ZOP-0010</div>
+          <div class="cust-code">ZOP-00100</div>
+          <div class="cust-code">ZOP-00101</div>
+          <div class="cust-code">ZOP-00109</div>
+          <div class="cust-code">ZOP-0011</div>
+          <div class="cust-code">ZOP-00110</div>
+          <div class="cust-code">ZOP-00111</div>
+          <div class="cust-code">ZOP-00122</div>
+          <div class="cust-code">ZOP-00128</div>
+          <div class="cust-code">ZOP-00131</div>
+          <div class="cust-code">ZOP-00132</div>
+          <div class="cust-code">ZOP-00133</div>
+          <div class="cust-code">ZOP-0014</div>
+          <div class="cust-code">ZOP-00141</div>
+          <div class="cust-code">ZOP-00151</div>
+          <div class="cust-code">ZOP-0016</div>
+          <div class="cust-code">ZOP-00164</div>
+          <div class="cust-code">ZOP-00173</div>
+          <div class="cust-code">ZOP-00176</div>
+          <div class="cust-code">ZOP-0018</div>
+          <div class="cust-code">ZOP-00182</div>
+          <div class="cust-code">ZOP-0022</div>
+          <div class="cust-code">ZOP-0024</div>
+          <div class="cust-code">ZOP-0025</div>
+          <div class="cust-code">ZOP-0030</div>
+          <div class="cust-code">ZOP-0040</div>
+          <div class="cust-code">ZOP-0041</div>
+          <div class="cust-code">ZOP-0045</div>
+          <div class="cust-code">ZOP-0046</div>
+          </div></div>
+          <div class="cust-group">
+          <div class="cust-group-head"><span class="lookup-plan-badge lookup-plan-enterprise">Enterprise</span><span class="cust-group-count">50 customers</span></div>
+          <div class="cust-code-grid">
+          <div class="cust-code">ZOP-0001</div>
+          <div class="cust-code">ZOP-0006</div>
+          <div class="cust-code">ZOP-0007</div>
+          <div class="cust-code">ZOP-00102</div>
+          <div class="cust-code">ZOP-00104</div>
+          <div class="cust-code">ZOP-00105</div>
+          <div class="cust-code">ZOP-00112</div>
+          <div class="cust-code">ZOP-00113</div>
+          <div class="cust-code">ZOP-00115</div>
+          <div class="cust-code">ZOP-00118</div>
+          <div class="cust-code">ZOP-00119</div>
+          <div class="cust-code">ZOP-00120</div>
+          <div class="cust-code">ZOP-00121</div>
+          <div class="cust-code">ZOP-00124</div>
+          <div class="cust-code">ZOP-00125</div>
+          <div class="cust-code">ZOP-00126</div>
+          <div class="cust-code">ZOP-00127</div>
+          <div class="cust-code">ZOP-00129</div>
+          <div class="cust-code">ZOP-00130</div>
+          <div class="cust-code">ZOP-00135</div>
+          <div class="cust-code">ZOP-00137</div>
+          <div class="cust-code">ZOP-00138</div>
+          <div class="cust-code">ZOP-00139</div>
+          <div class="cust-code">ZOP-00143</div>
+          <div class="cust-code">ZOP-00144</div>
+          <div class="cust-code">ZOP-00145</div>
+          <div class="cust-code">ZOP-00146</div>
+          <div class="cust-code">ZOP-00147</div>
+          <div class="cust-code">ZOP-00152</div>
+          <div class="cust-code">ZOP-00153</div>
+          <div class="cust-code">ZOP-00154</div>
+          <div class="cust-code">ZOP-00156</div>
+          <div class="cust-code">ZOP-00157</div>
+          <div class="cust-code">ZOP-0017</div>
+          <div class="cust-code">ZOP-00171</div>
+          <div class="cust-code">ZOP-00175</div>
+          <div class="cust-code">ZOP-00178</div>
+          <div class="cust-code">ZOP-00180</div>
+          <div class="cust-code">ZOP-00181</div>
+          <div class="cust-code">ZOP-00183</div>
+          <div class="cust-code">ZOP-0021</div>
+          <div class="cust-code">ZOP-0023</div>
+          <div class="cust-code">ZOP-0026</div>
+          <div class="cust-code">ZOP-0027</div>
+          <div class="cust-code">ZOP-0028</div>
+          <div class="cust-code">ZOP-0032</div>
+          <div class="cust-code">ZOP-0036</div>
+          <div class="cust-code">ZOP-0047</div>
+          <div class="cust-code">ZOP-0095</div>
+          <div class="cust-code">ZOP-0099</div>
+          </div></div>
+    </div>
+    <div class="cust-list-ref">Reference: full customer list &amp; plan-fit calculations — <a href="https://docs.google.com/spreadsheets/d/1ksMvG6w951dLcuOFZc3LrX6m4XHmYRfKiD6yCMqY7Xk/edit?gid=1344721620#gid=1344721620" target="_blank" rel="noopener noreferrer">open sheet &#8599;</a></div>
   </div>
-</footer>
+</section>
 
 <script>
   var prices = {
     india: {
-      basic: { annual: "₹1,499", strike: "₹1,999", billed: "Billed annually · ₹17,988/yr, excl. GST", billedBi: "Billed bi-annually · ₹11,994 per 6 months, excl. GST" },
-      business: { annual: "₹4,999", strike: "₹6,499", billed: "Billed annually · ₹59,988/yr, excl. GST", billedBi: "Billed bi-annually · ₹38,994 per 6 months, excl. GST" }
+      basic: { annual: "₹1,299", strike: "₹1,799", billed: "₹15,588/yr, excl. GST", billedBi: "₹10,794 per 6 months, excl. GST" },
+      business: { annual: "₹4,299", strike: "₹5,799", billed: "₹51,588/yr, excl. GST", billedBi: "₹34,794 per 6 months, excl. GST" },
+      premium: { annual: "₹12,299", strike: "₹16,799", billed: "₹1,47,588/yr, excl. GST", billedBi: "₹1,00,794 per 6 months, excl. GST" }
     },
     global: {
-      basic: { annual: "$39", strike: "$49", billed: "Billed annually · $468/yr, plus applicable tax", billedBi: "Billed bi-annually · $294 per 6 months, plus applicable tax" },
-      business: { annual: "$99", strike: "$129", billed: "Billed annually · $1,188/yr, plus applicable tax", billedBi: "Billed bi-annually · $774 per 6 months, plus applicable tax" }
+      basic: { annual: "$29", strike: "$39", billed: "$348/yr + tax", billedBi: "$234 per 6 months + tax" },
+      business: { annual: "$99", strike: "$129", billed: "$1,188/yr + tax", billedBi: "$774 per 6 months + tax" },
+      premium: { annual: "$279", strike: "$379", billed: "$3,348/yr + tax", billedBi: "$2,274 per 6 months + tax" }
     }
   };
   var freePrice = { india: "₹0", global: "$0" };
+  var enterpriseFloor = { india: "₹99,999", global: "$2,299+" };
   var overage = {
-    india: { free: "₹5", basic: "₹4", biz: "₹2.50" },
-    global: { free: "$0.10", basic: "$0.08", biz: "$0.05" }
+    india: { free: "₹5", basic: "₹3", biz: "₹2.50", premium: "₹2" },
+    global: { free: "$0.10", basic: "$0.06", biz: "$0.05", premium: "$0.04" }
+  };
+  var storeAdd = {
+    india: { basic: "₹600", biz: "₹500", premium: "₹400" },
+    global: { basic: "Contact us", biz: "Contact us", premium: "Contact us" }
   };
   var payment = {
-    india: { label: "UPI processing (PhonePe)", free: "1.0%", basic: "0.60%", biz: "0.50%", ent: "Custom, <0.50%" },
-    global: { label: "Payment processing (Stripe/PayPal)", free: "Your own rate", basic: "Your own rate", biz: "Your own rate", ent: "Negotiated rate" }
+    india: { label: "UPI processing (PhonePe)", free: "1.0%", basic: "0.60%", biz: "0.50%", premium: "0.45%", ent: "Custom, <0.50%" },
+    global: { label: "Payment processing (Stripe/PayPal)", free: "Your own rate", basic: "Your own rate", biz: "Your own rate", premium: "Your own rate", ent: "Negotiated rate" }
   };
   var state = { market: 'india', cycle: 'annual' };
 
   function render() {
     document.getElementById('btn-annual').classList.toggle('active', state.cycle === 'annual');
     document.getElementById('btn-biannual').classList.toggle('active', state.cycle === 'biannual');
-    document.getElementById('btn-india').classList.toggle('active', state.market === 'india');
-    document.getElementById('btn-global').classList.toggle('active', state.market === 'global');
+    var cycleIndicator = document.getElementById('cycleIndicator');
+    if (cycleIndicator) cycleIndicator.style.transform = state.cycle === 'annual' ? 'translateX(100%)' : 'translateX(0)';
 
     var freeEl = document.querySelector('.p-free');
     if (freeEl) freeEl.textContent = freePrice[state.market];
 
+    var entEl = document.querySelector('.p-ent-floor');
+    if (entEl) entEl.textContent = enterpriseFloor[state.market];
+
+    var marketBtn = document.getElementById('marketToggleBtn');
+    if (marketBtn) marketBtn.textContent = state.market === 'global' ? 'View India Pricing — switch to INR' : 'View Global Pricing — switch to USD';
+
     document.querySelectorAll('.card').forEach(function (card) {
       var name = card.querySelector('.card-name').textContent.trim().toLowerCase();
-      if (name !== 'basic' && name !== 'business') return;
+      if (name !== 'basic' && name !== 'business' && name !== 'premium') return;
       var data = prices[state.market][name];
       var main = card.querySelector('.p-annual');
       var strike = card.querySelector('.p-strike');
@@ -576,21 +858,57 @@
     });
 
     var ov = overage[state.market];
-    var ovFree = document.querySelector('.ov-free'), ovBasic = document.querySelector('.ov-basic'), ovBiz = document.querySelector('.ov-biz');
-    if (ovFree) ovFree.textContent = ov.free;
-    if (ovBasic) ovBasic.textContent = ov.basic;
-    if (ovBiz) ovBiz.textContent = ov.biz;
+    document.querySelectorAll('.ov-free').forEach(function (el) { el.textContent = ov.free; });
+    document.querySelectorAll('.ov-basic').forEach(function (el) { el.textContent = ov.basic; });
+    document.querySelectorAll('.ov-biz').forEach(function (el) { el.textContent = ov.biz; });
+    document.querySelectorAll('.ov-premium').forEach(function (el) { el.textContent = ov.premium; });
+
+    var sa = storeAdd[state.market];
+    document.querySelectorAll('.store-add-basic').forEach(function (el) { el.textContent = sa.basic; });
+    document.querySelectorAll('.store-add-biz').forEach(function (el) { el.textContent = sa.biz; });
+    document.querySelectorAll('.store-add-premium').forEach(function (el) { el.textContent = sa.premium; });
 
     var pay = payment[state.market];
     var payLabel = document.querySelector('.pay-label');
-    var payFree = document.querySelector('.pay-free'), payBasic = document.querySelector('.pay-basic'), payBiz = document.querySelector('.pay-biz'), payEnt = document.querySelector('.pay-ent');
+    var payFree = document.querySelector('.pay-free'), payBasic = document.querySelector('.pay-basic'), payBiz = document.querySelector('.pay-biz'), payPremium = document.querySelector('.pay-premium'), payEnt = document.querySelector('.pay-ent');
     if (payLabel) payLabel.textContent = pay.label;
     if (payFree) payFree.textContent = pay.free;
     if (payBasic) payBasic.textContent = pay.basic;
     if (payBiz) payBiz.textContent = pay.biz;
+    if (payPremium) payPremium.textContent = pay.premium;
     if (payEnt) payEnt.textContent = pay.ent;
   }
 
   function setCycle(cycle) { state.cycle = cycle; render(); }
   function setMarket(market) { state.market = market; render(); }
+  function toggleMarket() {
+    setMarket(state.market === 'global' ? 'india' : 'global');
+    var plansSection = document.getElementById('plansSection');
+    if (plansSection) {
+      if (typeof plansSection.scrollIntoView === 'function') {
+        plansSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (typeof window.scrollTo === 'function') {
+        window.scrollTo(0, plansSection.offsetTop);
+      }
+    }
+  }
+
+function showCustomerList() {
+  document.getElementById('mainView').style.display = 'none';
+  document.getElementById('customerListView').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+function showMainPricing() {
+  document.getElementById('customerListView').style.display = 'none';
+  document.getElementById('mainView').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+    function toggleCapabilities() {
+    var wrap = document.getElementById('capTableWrap');
+    var btn = document.getElementById('capSeeMoreBtn');
+    var expanded = wrap.classList.toggle('expanded');
+    wrap.classList.toggle('collapsed', !expanded);
+    btn.childNodes[0].textContent = expanded ? 'See less ' : 'See more ';
+  }
 </script>
